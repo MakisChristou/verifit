@@ -2,12 +2,14 @@ package com.example.harderthanlasttime;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.CalendarView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         // To JSON
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println(gson.toJson(Workout_Days));
+        
     }
 
 
