@@ -1,9 +1,14 @@
 package com.example.harderthanlasttime;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.CalendarView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // "Data Structures"
     public Set<String> Days = new TreeSet<String>();
@@ -37,13 +42,25 @@ public class MainActivity extends AppCompatActivity {
         // To JSON
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println(gson.toJson(Workout_Days));
-        
+
+
+        // Bottom Navigation Bar Intents
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+
+
     }
 
 
     // Parses CSV
     public void parseCSV(List csvList)
     {
+
+        // Clear Data Structures
+        Days.clear();
+        Workout_Days.clear();
 
         // i = 1 since first row is only Strings
         for(int i = 1; i < csvList.size(); i++)
@@ -166,4 +183,37 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.home)
+        {
+            System.out.println("Home");
+            Intent in = new Intent(this,MainActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.diary)
+        {
+            System.out.println("Diary");
+            Intent in = new Intent(this,DiaryActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.trends)
+        {
+            System.out.println("Trends");
+            Intent in = new Intent(this,TrendsActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.settings)
+        {
+            System.out.println("Settings");
+            Intent in = new Intent(this,SettingsActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        return true;
+    }
 }
