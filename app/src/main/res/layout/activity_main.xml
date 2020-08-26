@@ -8,7 +8,11 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
+    <com.applandeo.materialcalendarview.CalendarView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
+    </com.applandeo.materialcalendarview.CalendarView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
