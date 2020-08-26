@@ -20,6 +20,12 @@
         android:visible="true">
     </item>
     <item
+        android:id="@+id/goals"
+        android:icon="@drawable/ic_emoji_events_24px"
+        android:title="Goals"
+        android:visible="true">
+    </item>
+    <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings_24px"
         android:title="Settings"

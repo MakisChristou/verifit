@@ -9,18 +9,20 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class SettingsActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class GoalsActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_goals);
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        bottomNavigationView.setSelectedItemId(R.id.settings);
+        bottomNavigationView.setSelectedItemId(R.id.goals);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -61,5 +63,4 @@ public class SettingsActivity extends AppCompatActivity implements BottomNavigat
         }
         return true;
     }
-
 }

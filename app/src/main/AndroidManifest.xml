@@ -10,19 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".GoalsActivity"
+            android:label="Goals">
+        </activity>
+        <activity
+            android:name=".AddExerciseActivity"
+            android:label="Add Exercise"/>
+        <activity
             android:name=".SettingsActivity"
-            android:label="Settings"
-            ></activity>
+            android:label="Settings" />
         <activity
             android:name=".DiaryActivity"
-            android:label="Diary"/>
+            android:label="Diary" />
         <activity
             android:name=".TrendsActivity"
-            android:label="Trends"/>
+            android:label="Trends" />
         <activity
             android:name=".MainActivity"
-            android:label="Fit App"
-            >
+            android:label="Fit App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

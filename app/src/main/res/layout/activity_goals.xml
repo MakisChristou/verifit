@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".GoalsActivity">
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,7 +16,6 @@
         app:itemIconSize="30dp"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_menu"
-        tools:layout_editor_absoluteX="-16dp" />
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

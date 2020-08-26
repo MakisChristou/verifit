@@ -265,6 +265,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             startActivity(in);
             overridePendingTransition(0,0);
         }
+        else if(item.getItemId() == R.id.goals)
+        {
+            System.out.println("Settings");
+            Intent in = new Intent(this,GoalsActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
         else if(item.getItemId() == R.id.settings)
         {
             System.out.println("Settings");

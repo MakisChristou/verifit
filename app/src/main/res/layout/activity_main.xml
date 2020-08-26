@@ -12,7 +12,9 @@
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:headerColor="@color/colorPrimary"></com.applandeo.materialcalendarview.CalendarView>
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        app:headerColor="@color/cardview_dark_background"></com.applandeo.materialcalendarview.CalendarView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
@@ -21,7 +23,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         app:backgroundTint="@color/cardview_light_background"
-        app:itemIconSize="28dp"
+        app:itemIconSize="30dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_navigation_menu" />
 
