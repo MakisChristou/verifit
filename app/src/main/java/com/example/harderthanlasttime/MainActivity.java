@@ -4,17 +4,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.CalendarView;
 
+import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.datepicker.MaterialCalendar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // "Data Structures"
     public Set<String> Days = new TreeSet<String>();
     public ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
+    public com.applandeo.materialcalendarview.CalendarView calendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +60,59 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
 
+        // Get Material Calendar Instance
+        calendarView = findViewById(R.id.calendarView);
+
+        // Update Workouts on Calendar
+        updateCalendar();
+
+        // Returns Date clicked as Event Object
+        calendarView.setOnDayClickListener(new OnDayClickListener() {
+            @Override
+            public void onDayClick(EventDay eventDay) {
+
+                // Save Date Object
+                Date date_clicked = eventDay.getCalendar().getTime();
+                System.out.println(date_clicked);
+            }
+        });
 
     }
 
+    // Update Workouts on Calendar
+    public void updateCalendar()
+    {
+        // Parse Data Structure and obtain workout days
+        List<EventDay> events = new ArrayList<>();
 
-    // Parses CSV
+        // For Date Parsing According to CSV Data
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        // Parse Workout Days
+        for(int i = 0; i < Workout_Days.size(); i++)
+        {
+            Calendar calendar = Calendar.getInstance();
+
+            Date date = null;
+
+            try
+            {
+                date = format.parse(Workout_Days.get(i).getDate());
+            }
+            catch (ParseException e)
+            {
+                e.printStackTrace();
+            }
+
+            calendar.setTime(date);
+            events.add(new EventDay(calendar, R.drawable.ic_check_24px, Color.parseColor("#567ad5")));
+        }
+
+
+        calendarView.setEvents(events);
+    }
+
+    // Parses CSV and updates data structures
     public void parseCSV(List csvList)
     {
 
