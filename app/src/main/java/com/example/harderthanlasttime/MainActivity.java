@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CalendarView;
 
@@ -60,6 +61,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
 
+        Menu menu = bottomNavigationView.getMenu();
+        menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px_selected);
+        menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px);
+        menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
+        menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
+        menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
+
+
         // Get Material Calendar Instance
         calendarView = findViewById(R.id.calendarView);
 
@@ -76,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 System.out.println(date_clicked);
             }
         });
+
+
+
 
     }
 
@@ -243,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
 
         if(item.getItemId() == R.id.home)
         {

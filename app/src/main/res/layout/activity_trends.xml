@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:backgroundTint="@color/cardview_light_background"
-        app:itemIconSize="30dp"
+        app:elevation="0dp"
+        app:itemIconSize="28dp"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" />

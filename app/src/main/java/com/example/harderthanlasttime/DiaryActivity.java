@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,6 +21,13 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setSelectedItemId(R.id.diary);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        Menu menu = bottomNavigationView.getMenu();
+        menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px);
+        menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px_selected);
+        menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
+        menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
+        menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
     }
 
     @Override
