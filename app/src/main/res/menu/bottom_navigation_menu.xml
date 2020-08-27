@@ -3,32 +3,27 @@
 
     <item
         android:id="@+id/home"
-        android:icon="@drawable/ic_home_24px"
-        android:title="Home"
+        android:icon="@drawable/ic_event_note_24px"
         android:visible="true">
     </item>
     <item
         android:id="@+id/diary"
-        android:icon="@drawable/ic_sticky_note_2_24px"
-        android:title="Diary"
+        android:icon="@drawable/ic_book_24px"
         android:visible="true">
     </item>
     <item
         android:id="@+id/trends"
-        android:icon="@drawable/ic_insert_chart_24px"
-        android:title="Trends"
+        android:icon="@drawable/ic_trending_up_24px"
         android:visible="true">
     </item>
     <item
         android:id="@+id/goals"
         android:icon="@drawable/ic_emoji_events_24px"
-        android:title="Goals"
         android:visible="true">
     </item>
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings_24px"
-        android:title="Settings"
         android:visible="true">
     </item>
 
