@@ -14,7 +14,10 @@
         android:layout_alignParentBottom="true"
         app:backgroundTint="@color/cardview_light_background"
         app:elevation="0dp"
-        app:itemIconSize="28dp"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconSize="24dp"
+        app:itemIconTint="@drawable/tab_color"
+        app:itemTextColor="@drawable/tab_color"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" />

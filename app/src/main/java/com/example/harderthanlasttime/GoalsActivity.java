@@ -22,7 +22,7 @@ public class GoalsActivity extends AppCompatActivity implements BottomNavigation
         bottomNavigationView.setSelectedItemId(R.id.goals);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-
+        // Change selected menu item icon to filled
         Menu menu = bottomNavigationView.getMenu();
         menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px);
         menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px);

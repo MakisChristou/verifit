@@ -60,13 +60,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-
+        // Change selected menu item icon to filled
         Menu menu = bottomNavigationView.getMenu();
         menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px_selected);
         menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px);
         menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
         menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
         menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
+
+        // Remove top bar
+        getSupportActionBar().hide();
 
 
         // Get Material Calendar Instance

@@ -27,8 +27,10 @@
         app:backgroundTint="@color/cardview_light_background"
         app:elevation="0dp"
         app:itemHorizontalTranslationEnabled="false"
-        app:itemIconSize="28dp"
+        app:itemIconSize="24dp"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemIconTint="@drawable/tab_color"
+        app:itemTextColor="@drawable/tab_color"/>
 
 </RelativeLayout>
