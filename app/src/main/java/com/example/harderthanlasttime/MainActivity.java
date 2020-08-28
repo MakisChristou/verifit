@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // "Data Structures"
     public Set<String> Days = new TreeSet<String>();
-    public ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
+    public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
     public com.applandeo.materialcalendarview.CalendarView calendarView;
 
     @Override
