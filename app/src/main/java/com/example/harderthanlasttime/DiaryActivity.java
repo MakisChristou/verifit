@@ -30,6 +30,8 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu1,menu);
         return super.onCreateOptionsMenu(menu);
+
+
     }
 
     @Override

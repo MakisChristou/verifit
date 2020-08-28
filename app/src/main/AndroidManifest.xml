@@ -12,11 +12,11 @@
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".DiaryActivity"></activity>
         <activity
             android:name=".CalculatorActivity"
             android:label="Plate Calculator"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".DiaryActivity"></activity>
         <activity
             android:name=".MeActivity"
             android:label="Me" />

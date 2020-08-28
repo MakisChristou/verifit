@@ -24,29 +24,6 @@ public class MeActivity extends AppCompatActivity implements BottomNavigationVie
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu1,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if(item.getItemId() == R.id.settings)
-        {
-            Intent in = new Intent(this,SettingsActivity.class);
-            startActivity(in);
-        }
-        else if(item.getItemId() == R.id.calculator)
-        {
-            Intent in = new Intent(this,CalculatorActivity.class);
-            startActivity(in);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

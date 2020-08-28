@@ -5,9 +5,9 @@
     <!--    <color name="colorAccent">#03DAC5</color>-->
 
     <!--    Color Primary = #262626-->
-    <color name="colorPrimary">#FF424242</color>
-    <color name="colorPrimaryDark">#9e9e9e</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#3581E5</color>
+    <color name="colorPrimaryDark">#255AA0</color>
+    <color name="colorAccent">#262626</color>
 
     <!--    Signal Colours -->
     <color name="core_ultramarine">#2c6bed</color>
