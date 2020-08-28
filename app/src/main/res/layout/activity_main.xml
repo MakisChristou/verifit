@@ -28,9 +28,9 @@
         app:elevation="0dp"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconSize="24dp"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation_menu"
         app:itemIconTint="@drawable/tab_color"
-        app:itemTextColor="@drawable/tab_color"/>
+        app:itemTextColor="@drawable/tab_color"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </RelativeLayout>

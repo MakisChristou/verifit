@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CalendarView;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Writes in Workout_Sets and Days_Set
         parseCSV(csvList);
 
-        // To JSON
+        // To JSON (for debugging)
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println(gson.toJson(Workout_Days));
 
@@ -61,14 +62,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         // Change selected menu item icon to filled
-        Menu menu = bottomNavigationView.getMenu();
-        menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px_selected);
-        menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px);
-        menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
-        menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
-        menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
+//        Menu menu = bottomNavigationView.getMenu();
+//        menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px_selected);
+//        menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px);
+//        menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
+//        menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
+//        menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
 
-        // Remove top bar
+        // Remove top bar for aesthetic purposes
         getSupportActionBar().hide();
 
 
@@ -256,6 +257,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return false;
     }
 
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -274,24 +277,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             startActivity(in);
             overridePendingTransition(0,0);
         }
-        else if(item.getItemId() == R.id.trends)
-        {
-            System.out.println("Trends");
-            Intent in = new Intent(this,TrendsActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        else if(item.getItemId() == R.id.goals)
+        else if(item.getItemId() == R.id.me)
         {
             System.out.println("Settings");
-            Intent in = new Intent(this,GoalsActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        else if(item.getItemId() == R.id.settings)
-        {
-            System.out.println("Settings");
-            Intent in = new Intent(this,SettingsActivity.class);
+            Intent in = new Intent(this,MeActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }

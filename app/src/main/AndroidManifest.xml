@@ -10,21 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".GoalsActivity"
-            android:label="Goals">
-        </activity>
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".CalculatorActivity"
+            android:label="Plate Calculator"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".MeActivity"
+            android:label="Me" />
         <activity
             android:name=".AddExerciseActivity"
-            android:label="Add Exercise"/>
-        <activity
-            android:name=".SettingsActivity"
-            android:label="Settings" />
+            android:label="Add Exercise" />
         <activity
             android:name=".DiaryActivity"
             android:label="Diary" />
-        <activity
-            android:name=".TrendsActivity"
-            android:label="Trends" />
         <activity
             android:name=".MainActivity"
             android:label="Fit App">

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,17 +23,34 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         bottomNavigationView.setSelectedItemId(R.id.diary);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        // Change selected menu item icon to filled
-        Menu menu = bottomNavigationView.getMenu();
-        menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px);
-        menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px_selected);
-        menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
-        menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
-        menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu1,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.settings)
+        {
+            Intent in = new Intent(this,SettingsActivity.class);
+            startActivity(in);
+        }
+        else if(item.getItemId() == R.id.calculator)
+        {
+            Intent in = new Intent(this,CalculatorActivity.class);
+            startActivity(in);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
 
         if(item.getItemId() == R.id.home)
         {
@@ -48,24 +66,10 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
             startActivity(in);
             overridePendingTransition(0,0);
         }
-        else if(item.getItemId() == R.id.trends)
-        {
-            System.out.println("Trends");
-            Intent in = new Intent(this,TrendsActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        else if(item.getItemId() == R.id.goals)
+        else if(item.getItemId() == R.id.me)
         {
             System.out.println("Settings");
-            Intent in = new Intent(this,GoalsActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        else if(item.getItemId() == R.id.settings)
-        {
-            System.out.println("Settings");
-            Intent in = new Intent(this,SettingsActivity.class);
+            Intent in = new Intent(this,MeActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
