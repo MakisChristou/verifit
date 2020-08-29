@@ -8,6 +8,24 @@ public class WorkoutExercise {
     private Double MaxWeight;
     private Double MaxReps;
     private Double TotalReps;
+    private Double TotalSets;
+
+    public boolean isPR() {
+        return PR;
+    }
+    public void setPR(boolean PR) {
+        this.PR = PR;
+    }
+    private boolean PR;
+
+
+    public Double getTotalSets() {
+        return TotalSets;
+    }
+
+    public void setTotalSets(Double totalSets) {
+        TotalSets = totalSets;
+    }
 
     public Double getEstimatedOneRepMax() {
         return EstimatedOneRepMax;

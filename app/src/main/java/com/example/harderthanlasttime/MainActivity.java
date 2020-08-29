@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Start Loading Animation
+        // LoadingDialog ld = new LoadingDialog(MainActivity.this);
+        // ld.startLoadingAnimation();
+
         // Read CSV
         InputStream inputStream = getResources().openRawResource(R.raw.fitnotes);
         CSVFile csvFile = new CSVFile(inputStream);
@@ -61,13 +66,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        //        Change selected menu item icon to filled
-        //        Menu menu = bottomNavigationView.getMenu();
-        //        menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px_selected);
-        //        menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px);
-        //        menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
-        //        menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
-        //        menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
+        // Change selected menu item icon to filled
+        // Menu menu = bottomNavigationView.getMenu();
+        // menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px_selected);
+        // menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px);
+        // menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
+        // menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
+        // menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
 
         // Remove top bar for aesthetic purposes
         // getSupportActionBar().hide();
@@ -86,11 +91,25 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 // Save Date Object
                 Date date_clicked = eventDay.getCalendar().getTime();
-                System.out.println(date_clicked);
+
+                // Start Intent
+                Intent in = new Intent(getApplicationContext(), AddExerciseActivity.class);
+                Bundle mBundle = new Bundle();
+
+                // Date -> String
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String date_selected = dateFormat.format(date_clicked);
+
+                // Send Date and start activity
+                mBundle.putString("date", date_selected);
+                in.putExtras(mBundle);
+                startActivity(in);
+
             }
         });
 
-
+        // Stop Loading Animation
+        // ld.dismissDialog();
 
 
     }
@@ -181,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         for(int i = 0; i < Workout_Days.size(); i++)
         {
             WorkoutDay temp_day = Workout_Days.get(i);
-            System.out.print(temp_day.getDate());
             ArrayList day_sets = temp_day.getSets();
             ArrayList<WorkoutExercise> Day_Exercises = new ArrayList<WorkoutExercise>();
             Set<String> Exercises_Set = new TreeSet<String>();
@@ -208,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Double exercise_max_reps = 0.0;
                 Double exercise_max_weight = 0.0;
                 Double exercise_total_reps = 0.0;
+                Double exercise_total_sets = 0.0;
 
                 for(int j = 0; j < day_sets.size(); j++)
                 {
@@ -217,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         // Cumulative Values
                         exercise_volume = exercise_volume + temp_set.getVolume();
                         exercise_total_reps = exercise_total_reps + temp_set.getReps();
+                        exercise_total_sets = exercise_total_sets + 1;
 
                         // Max Values
                         if(temp_set.getEplayOneRepMax() > exercise_one_rep_max)
@@ -239,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     day_exercise.setMaxReps(exercise_max_reps);
                     day_exercise.setMaxWeight(exercise_max_weight);
                     day_exercise.setTotalReps(exercise_total_reps);
+                    day_exercise.setTotalSets(exercise_total_sets);
 
                 }
                 Day_Exercises.add(day_exercise);
@@ -257,8 +278,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return false;
     }
 
-
-
+    // Navigates to given activity based on the selected menu item
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 

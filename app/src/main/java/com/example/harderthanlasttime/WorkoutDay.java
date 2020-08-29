@@ -4,19 +4,32 @@ import java.util.ArrayList;
 
 public class WorkoutDay {
 
+    // Attributes
     private ArrayList<WorkoutExercise> Exercises;
     private ArrayList<WorkoutSet> Sets;
     private Double DayVolume;
     private String Date;
+    private int Reps;
 
+    public int getReps()
+    {
+        return this.Reps;
+    }
+
+    // Methods
     public ArrayList<WorkoutSet> getSets() {
         return Sets;
     }
     public void setSets(ArrayList<WorkoutSet> sets) {
-        Sets = sets;
+        this.Sets = sets;
     }
     public void setExercises(ArrayList<WorkoutExercise> exercises) {
-        Exercises = exercises;
+        this.Exercises = exercises;
+        this.Reps = 0;
+        for(int i = 0; i < Exercises.size(); i++)
+        {
+            Reps = Reps + (int)Math.round(Exercises.get(i).getTotalReps());
+        }
     }
     public void setDate(String date) {
         Date = date;

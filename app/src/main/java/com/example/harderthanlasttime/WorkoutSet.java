@@ -2,12 +2,14 @@ package com.example.harderthanlasttime;
 
 public class WorkoutSet {
 
+    // Attributes
     private String Date;
     private String Exercise;
     private String Category;
     private Double Reps;
     private Double Weight;
 
+    // Methods
     // Setters
     public void setDate(String Date)
     {

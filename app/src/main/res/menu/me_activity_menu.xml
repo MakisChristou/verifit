@@ -8,9 +8,4 @@
         app:showAsAction="never">
     </item>
 
-    <item
-        android:id="@+id/calculator"
-        android:title="Plate Calculator"
-        app:showAsAction="never">
-    </item>
 </menu>
