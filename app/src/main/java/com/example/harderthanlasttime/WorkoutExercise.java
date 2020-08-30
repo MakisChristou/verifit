@@ -1,6 +1,14 @@
 package com.example.harderthanlasttime;
 
+import java.util.ArrayList;
+
 public class WorkoutExercise {
+
+    // Attributes
+    private ArrayList<WorkoutSet> Sets;
+    private String Date;
+
+
 
     private String Exercise;
     private Double Volume;
@@ -9,7 +17,30 @@ public class WorkoutExercise {
     private Double MaxReps;
     private Double TotalReps;
     private Double TotalSets;
+    private Double MaxSetVolume;
 
+
+
+    // Methods
+    public String getDate() {
+        return Date;
+    }
+    public Double getMaxSetVolume() {
+        return MaxSetVolume;
+    }
+
+    public void setMaxSetVolume(Double maxSetVolume) {
+        MaxSetVolume = maxSetVolume;
+    }
+    public void setDate(String date) {
+        Date = date;
+    }
+    public ArrayList<WorkoutSet> getSets() {
+        return Sets;
+    }
+    public void setSets(ArrayList<WorkoutSet> sets) {
+        Sets = sets;
+    }
     public boolean isPR() {
         return PR;
     }
@@ -17,8 +48,6 @@ public class WorkoutExercise {
         this.PR = PR;
     }
     private boolean PR;
-
-
     public Double getTotalSets() {
         return TotalSets;
     }

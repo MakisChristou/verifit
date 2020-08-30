@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public Set<String> Days = new TreeSet<String>();
     public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
     public com.applandeo.materialcalendarview.CalendarView calendarView;
+    public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // initialized with hardcoded exercises
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Remove top bar for aesthetic purposes
         // getSupportActionBar().hide();
 
+        initExercises();
 
         // Get Material Calendar Instance
         calendarView = findViewById(R.id.calendarView);
@@ -110,6 +112,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         // Stop Loading Animation
         // ld.dismissDialog();
+
+        Intent in = new Intent(this,ExercisesActivity.class);
+        startActivity(in);
 
 
     }
@@ -145,6 +150,39 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         calendarView.setEvents(events);
+    }
+
+    // Initialized KnownExercises ArrayList with some hardcoded exercises
+    public void initExercises()
+    {
+        KnownExercises.clear();
+        // Some hardcoded Exercises
+        KnownExercises.add(new Exercise("Flat Barbell Bench Press","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Incline Barbell Bench Press","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Decline Barbell Bench Press","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Flat Dumbell Bench Press","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Incline Dumbell Bench Press","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Decline Dumbell Bench Press","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Chin Up","Compound","Back",""));
+        KnownExercises.add(new Exercise("Seated Dumbell Press","Compound","Shoulders",""));
+        KnownExercises.add(new Exercise("Ring Dip","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Lateral Cable Raise","Isolation","Shoulders",""));
+        KnownExercises.add(new Exercise("Barbel Curl","Compound","Biceps",""));
+        KnownExercises.add(new Exercise("Tricep Extension","Isolation","Triceps",""));
+        KnownExercises.add(new Exercise("Squat","Compound","Legs",""));
+        KnownExercises.add(new Exercise("Leg Extension","Isolation","Legs",""));
+        KnownExercises.add(new Exercise("Hammstring Leg Curl","Isolation","Legs",""));
+        KnownExercises.add(new Exercise("Deadlift","Compound","Back",""));
+        KnownExercises.add(new Exercise("Sumo Deadlift","Compound","Back",""));
+        KnownExercises.add(new Exercise("Seated Machine Chest Press","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Seated Machine Shoulder Press","Compound","Shoulders",""));
+        KnownExercises.add(new Exercise("Dumbell Lateral Raises","Isolation","Shoulders",""));
+        KnownExercises.add(new Exercise("Seated Calf Raise","Isolation","Legs",""));
+        KnownExercises.add(new Exercise("Donkey Calf Raise","Isolation","Legs",""));
+        KnownExercises.add(new Exercise("Seated Machine Curl","Isolation","Biceps",""));
+        KnownExercises.add(new Exercise("Lat Pulldown","Compound","Back",""));
+        KnownExercises.add(new Exercise("Pull Up","Compound","Back",""));
+        KnownExercises.add(new Exercise("Push Up","Compound","Chest",""));
     }
 
     // Parses CSV and updates data structures
@@ -227,6 +265,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Double exercise_max_weight = 0.0;
                 Double exercise_total_reps = 0.0;
                 Double exercise_total_sets = 0.0;
+                String exercise_date = "";
+                double exercise_max_set_volume = 0.0;
+
+                ArrayList<WorkoutSet> exercise_sets = new ArrayList<WorkoutSet>();
 
                 for(int j = 0; j < day_sets.size(); j++)
                 {
@@ -237,6 +279,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         exercise_volume = exercise_volume + temp_set.getVolume();
                         exercise_total_reps = exercise_total_reps + temp_set.getReps();
                         exercise_total_sets = exercise_total_sets + 1;
+                        exercise_sets.add(temp_set);
+                        exercise_date = temp_set.getDate();
 
                         // Max Values
                         if(temp_set.getEplayOneRepMax() > exercise_one_rep_max)
@@ -251,6 +295,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         {
                             exercise_max_weight = temp_set.getWeight();
                         }
+                        if((temp_set.getReps()* temp_set.getWeight()) > exercise_max_set_volume)
+                        {
+                            exercise_max_set_volume = temp_set.getReps()* temp_set.getWeight();
+                        }
                     }
 
                     // Update exercise object
@@ -260,6 +308,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     day_exercise.setMaxWeight(exercise_max_weight);
                     day_exercise.setTotalReps(exercise_total_reps);
                     day_exercise.setTotalSets(exercise_total_sets);
+                    day_exercise.setSets(exercise_sets);
+                    day_exercise.setDate(exercise_date);
+                    day_exercise.setMaxSetVolume(exercise_max_set_volume);
 
                 }
                 Day_Exercises.add(day_exercise);

@@ -4,21 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 
-// Adapter for WorkoutDay Class
+// Adapter for Exercise Class
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyViewHolder> {
 
     Context ct;
-    ArrayList<WorkoutExercise> Exercises;
+    ArrayList<Exercise> Exercises;
 
     // Adapter Constructor 7 minute mark
-    public ExerciseAdapter(Context ct, ArrayList<WorkoutExercise> Exercises)
+    public ExerciseAdapter(Context ct, ArrayList<Exercise> Exercises)
     {
         this.ct = ct;
         this.Exercises = Exercises;
@@ -38,9 +38,10 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
         // Change TextView text
-        holder.tv_exercise_name.setText(Exercises.get(position).getExercise());
-        int sets = (int) Math.round(Exercises.get(position).getTotalSets());
-        holder.tv_exercise_sets.setText(String.valueOf(sets));
+        holder.tv_exercise_name.setText(Exercises.get(position).getName());
+        holder.tv_exercise_category.setText(Exercises.get(position).getCategory());
+        holder.tv_exercise_bodypart.setText(Exercises.get(position).getBodyPart());
+
 
     }
 
@@ -53,15 +54,16 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     public class MyViewHolder extends  RecyclerView.ViewHolder
     {
         TextView tv_exercise_name;
-        TextView tv_exercise_sets;
-        ImageView buble;
+        TextView tv_exercise_category;
+        TextView tv_exercise_bodypart;
+
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_exercise_name = itemView.findViewById(R.id.exercise_name);
-            tv_exercise_sets = itemView.findViewById(R.id.sets);
-            buble = itemView.findViewById(R.id.imageView);
+            tv_exercise_category = itemView.findViewById(R.id.exercise_category);
+            tv_exercise_bodypart = itemView.findViewById(R.id.exercise_bodypart);
         }
     }
 }

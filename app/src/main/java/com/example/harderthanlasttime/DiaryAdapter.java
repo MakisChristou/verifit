@@ -50,19 +50,20 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         try {
 
             Date date = parser.parse(Workout_Days.get(position).getDate());
-            // String pattern = "EEEE MMMM dd YYYY";
-            SimpleDateFormat formatter = new SimpleDateFormat("EEEE MMM dd YYYY");
+            SimpleDateFormat formatter2 = new SimpleDateFormat("EEEE, MMM dd YYYY");
 
             // Change TextView texts
-            holder.tv_date.setText(formatter.format(date));
+            holder.tv_day.setText(formatter2.format(date));
+
+
             holder.tv_volume.setText(Workout_Days.get(position).getDayVolume().toString());
             holder.tv_sets.setText(String.valueOf(Workout_Days.get(position).getSets().size()));
             holder.tv_exercises.setText(String.valueOf(Workout_Days.get(position).getExercises().size()));
             holder.tv_reps.setText(String.valueOf(Workout_Days.get(position).getReps()));
 
             // Change RecyclerView items
-            ExerciseAdapter exerciseAdapter = new ExerciseAdapter(ct, MainActivity.Workout_Days.get(position).getExercises());
-            holder.recyclerView.setAdapter(exerciseAdapter);
+            WorkoutExerciseAdapter workoutExerciseAdapter = new WorkoutExerciseAdapter(ct, MainActivity.Workout_Days.get(position).getExercises());
+            holder.recyclerView.setAdapter(workoutExerciseAdapter);
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
 
 
@@ -70,7 +71,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             e.printStackTrace();
         }
     }
-
 
 
     @Override
@@ -81,6 +81,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
     public class MyViewHolder extends  RecyclerView.ViewHolder
     {
+        TextView tv_day;
         TextView tv_date;
         TextView tv_volume;
         TextView tv_reps;
@@ -91,15 +92,18 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            tv_day = itemView.findViewById(R.id.day);
             tv_date = itemView.findViewById(R.id.exercise_name);
-            tv_volume = itemView.findViewById(R.id.volume);
-            tv_reps = itemView.findViewById(R.id.reps);
-            tv_sets = itemView.findViewById(R.id.sets);
-            tv_exercises = itemView.findViewById(R.id.exercises);
+            tv_volume = itemView.findViewById(R.id.totalvolume);
+            tv_reps = itemView.findViewById(R.id.totalreps);
+            tv_sets = itemView.findViewById(R.id.totalsets);
+            tv_exercises = itemView.findViewById(R.id.totalexercises);
 
             // Find Recycler View Object
             recyclerView = itemView.findViewById(R.id.recycler_view_diary);
             expand_button = itemView.findViewById(R.id.expand_button);
+
+
 
 
             // Expand More/Less Button
