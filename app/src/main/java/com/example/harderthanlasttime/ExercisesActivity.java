@@ -11,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class ExercisesActivity extends AppCompatActivity {
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+public class ExercisesActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     public RecyclerView recyclerView;
     public ExerciseAdapter exerciseAdapter;
@@ -20,6 +22,13 @@ public class ExercisesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
+
+        // Bottom Navigation Bar Intents
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setSelectedItemId(R.id.exercises);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+
 
         // Find Recycler View Object
         recyclerView = findViewById(R.id.recycler_view_exercises);
@@ -40,17 +49,44 @@ public class ExercisesActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId() == R.id.search)
-        {
 
-        }
-        else if(item.getItemId() == R.id.add)
+        if(item.getItemId() == R.id.home)
         {
-            Intent in = new Intent(this,CustomExerciseActivity.class);
+            System.out.println("Home");
+            Intent in = new Intent(this,MainActivity.class);
             startActivity(in);
+            overridePendingTransition(0,0);
         }
-        return super.onOptionsItemSelected(item);
+        else if(item.getItemId() == R.id.exercises)
+        {
+            System.out.println("Diary");
+            Intent in = new Intent(this,ExercisesActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.diary)
+        {
+            System.out.println("Diary");
+            Intent in = new Intent(this,DiaryActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.charts)
+        {
+            System.out.println("Diary");
+            Intent in = new Intent(this,ChartsActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.me)
+        {
+            System.out.println("Settings");
+            Intent in = new Intent(this,MeActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        return true;
     }
 }

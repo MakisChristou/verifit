@@ -8,10 +8,28 @@
     </item>
 
     <item
+        android:id="@+id/exercises"
+        android:visible="true"
+        android:icon="@drawable/weight">
+
+    </item>
+
+
+    <item
         android:id="@+id/diary"
         android:icon="@drawable/ic_dashboard_24px"
         android:visible="true">
     </item>
+
+
+
+    <item
+        android:id="@+id/charts"
+        android:icon="@drawable/ic_pie_chart_24px"
+        android:visible="true"
+        >
+    </item>
+
     <item
         android:id="@+id/me"
         android:icon="@drawable/ic_person_24px"

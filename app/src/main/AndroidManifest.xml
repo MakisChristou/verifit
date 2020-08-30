@@ -9,15 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CustomExerciseActivity"
+        <activity android:name=".ChartsActivity"
+            android:label="Charts">
+
+        </activity>
+        <activity
+            android:name=".CustomExerciseActivity"
             android:label="Custom Exercise"
             android:parentActivityName=".ExercisesActivity">
 
         </activity>
         <activity
             android:name=".ExercisesActivity"
-            android:label="All Exercises"
-            android:parentActivityName=".MainActivity"></activity>
+            android:label="All Exercises" />
         <activity
             android:name=".DayActivity"
             android:label="Day Activity"

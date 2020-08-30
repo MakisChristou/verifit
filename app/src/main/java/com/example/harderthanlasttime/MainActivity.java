@@ -336,10 +336,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             startActivity(in);
             overridePendingTransition(0,0);
         }
+        else if(item.getItemId() == R.id.exercises)
+        {
+            System.out.println("Diary");
+            Intent in = new Intent(this,ExercisesActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
         else if(item.getItemId() == R.id.diary)
         {
             System.out.println("Diary");
             Intent in = new Intent(this,DiaryActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.charts)
+        {
+            System.out.println("Diary");
+            Intent in = new Intent(this,ChartsActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }

@@ -60,6 +60,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
     }
 
 
+    // Navigates to given activity based on the selected menu item
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -69,13 +70,26 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
             System.out.println("Home");
             Intent in = new Intent(this,MainActivity.class);
             startActivity(in);
-//            startActivity(in,ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.exercises)
+        {
+            System.out.println("Diary");
+            Intent in = new Intent(this,ExercisesActivity.class);
+            startActivity(in);
             overridePendingTransition(0,0);
         }
         else if(item.getItemId() == R.id.diary)
         {
             System.out.println("Diary");
             Intent in = new Intent(this,DiaryActivity.class);
+            startActivity(in);
+            overridePendingTransition(0,0);
+        }
+        else if(item.getItemId() == R.id.charts)
+        {
+            System.out.println("Diary");
+            Intent in = new Intent(this,ChartsActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
