@@ -71,7 +71,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         TextView maxweight = view.findViewById(R.id.maxweight);
         TextView maxreps = view.findViewById(R.id.maxreps);
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
-        TextView name = view.findViewById(R.id.set_weight);
+        TextView name = view.findViewById(R.id.date);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
 
         // Set Values
@@ -105,7 +105,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_exercise_name = itemView.findViewById(R.id.set_weight);
+            tv_exercise_name = itemView.findViewById(R.id.date);
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             expandButton = itemView.findViewById(R.id.expandButton);
             view = itemView.findViewById(R.id.view);

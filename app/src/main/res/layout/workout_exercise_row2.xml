@@ -21,7 +21,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/set_weight"
+                android:id="@+id/date"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -43,7 +43,7 @@
                 android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/set_weight" />
+                app:layout_constraintTop_toBottomOf="@+id/date" />
 
             <ImageButton
                 android:id="@+id/expandButton"

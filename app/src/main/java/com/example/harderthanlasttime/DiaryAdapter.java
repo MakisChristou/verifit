@@ -1,7 +1,6 @@
 package com.example.harderthanlasttime;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,12 +53,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             // Change TextView texts
             holder.tv_day.setText(formatter2.format(date));
 
-
-            holder.tv_volume.setText(Workout_Days.get(position).getDayVolume().toString());
-            holder.tv_sets.setText(String.valueOf(Workout_Days.get(position).getSets().size()));
-            holder.tv_exercises.setText(String.valueOf(Workout_Days.get(position).getExercises().size()));
-            holder.tv_reps.setText(String.valueOf(Workout_Days.get(position).getReps()));
-
             // Change RecyclerView items
             WorkoutExerciseAdapter workoutExerciseAdapter = new WorkoutExerciseAdapter(ct, MainActivity.Workout_Days.get(position).getExercises());
             holder.recyclerView.setAdapter(workoutExerciseAdapter);
@@ -69,6 +62,42 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        holder.tv_day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                showDayDialog(position);
+            }
+
+        });
+    }
+
+    public void showDayDialog(int position)
+    {
+        // Prepare to show exercise dialog box
+        LayoutInflater inflater = LayoutInflater.from(ct);
+        View view = inflater.inflate(R.layout.day_dialog,null);
+        AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
+
+        // Get TextViews
+        TextView totalsets = view.findViewById(R.id.totalsets);
+        TextView totalreps = view.findViewById(R.id.totalreps);
+        TextView totalvolume = view.findViewById(R.id.totalvolume);
+        TextView date = view.findViewById(R.id.date);
+        TextView totalexercises = view.findViewById(R.id.totalexercises);
+
+        // Crash Here
+        totalsets.setText(String.valueOf(Workout_Days.get(position).getSets().size()));
+        totalreps.setText(String.valueOf(Workout_Days.get(position).getReps()));
+        totalexercises.setText(String.valueOf(Workout_Days.get(position).getExercises().size()));
+        totalvolume.setText(Workout_Days.get(position).getDayVolume().toString());
+
+        // Format Date like a human being
+        date.setText(Workout_Days.get(position).getDate());
+
+        // Show Exercise Dialog Box
+        alertDialog.show();
     }
 
 
@@ -81,26 +110,18 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     public class MyViewHolder extends  RecyclerView.ViewHolder
     {
         TextView tv_day;
-        TextView tv_date;
-        TextView tv_volume;
-        TextView tv_reps;
-        TextView tv_sets;
-        TextView tv_exercises;
+
         RecyclerView recyclerView;
         ImageButton expand_button;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_day = itemView.findViewById(R.id.day);
-            tv_date = itemView.findViewById(R.id.set_weight);
-            tv_volume = itemView.findViewById(R.id.totalvolume);
-            tv_reps = itemView.findViewById(R.id.totalreps);
-            tv_sets = itemView.findViewById(R.id.totalsets);
-            tv_exercises = itemView.findViewById(R.id.totalexercises);
 
             // Find Recycler View Object
             recyclerView = itemView.findViewById(R.id.recycler_view_diary);
             expand_button = itemView.findViewById(R.id.expand_button);
+
 
 
 

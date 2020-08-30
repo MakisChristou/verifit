@@ -4,16 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 
 // Adapter for WorkoutSet Class
 public class WorkoutSetAdapter extends RecyclerView.Adapter<WorkoutSetAdapter.MyViewHolder> {
@@ -65,7 +60,7 @@ public class WorkoutSetAdapter extends RecyclerView.Adapter<WorkoutSetAdapter.My
             super(itemView);
 
             tv_reps = itemView.findViewById(R.id.set_reps);
-            tv_weight = itemView.findViewById(R.id.set_weight);
+            tv_weight = itemView.findViewById(R.id.date);
 
         }
     }

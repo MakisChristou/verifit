@@ -61,7 +61,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_exercise_name = itemView.findViewById(R.id.set_weight);
+            tv_exercise_name = itemView.findViewById(R.id.date);
             tv_exercise_category = itemView.findViewById(R.id.exercise_category);
             tv_exercise_bodypart = itemView.findViewById(R.id.exercise_bodypart);
         }
