@@ -5,20 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 
-// Adapter for Exercise Class
-public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyViewHolder> {
+// Adapter for WorkoutExercise Class
+public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExerciseAdapter2.MyViewHolder> {
 
     Context ct;
-    ArrayList<Exercise> Exercises;
+    ArrayList<WorkoutExercise> Exercises;
 
-    // Adapter Constructor 7 minute mark
-    public ExerciseAdapter(Context ct, ArrayList<Exercise> Exercises)
+    public WorkoutExerciseAdapter2(Context ct, ArrayList<WorkoutExercise> Exercises)
     {
         this.ct = ct;
         this.Exercises = Exercises;
@@ -29,8 +28,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(this.ct);
-        View view = inflater.inflate(R.layout.exercise_row,parent,false);
-
+        View view = inflater.inflate(R.layout.workout_exercise_row2,parent,false);
         return new MyViewHolder(view);
     }
 
@@ -38,11 +36,13 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
         // Change TextView text
-        holder.tv_exercise_name.setText(Exercises.get(position).getName());
-        holder.tv_exercise_category.setText(Exercises.get(position).getCategory());
-        holder.tv_exercise_bodypart.setText(Exercises.get(position).getBodyPart());
+        holder.tv_exercise_name.setText(Exercises.get(position).getExercise());
 
-
+        // Recycler View Stuff
+        // Change RecyclerView items
+        WorkoutSetAdapter workoutSetAdapter = new WorkoutSetAdapter(ct, Exercises.get(position).getSets());
+        holder.recyclerView.setAdapter(workoutSetAdapter);
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
     }
 
     @Override
@@ -54,16 +54,13 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     public class MyViewHolder extends  RecyclerView.ViewHolder
     {
         TextView tv_exercise_name;
-        TextView tv_exercise_category;
-        TextView tv_exercise_bodypart;
-
-
+        RecyclerView recyclerView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_exercise_name = itemView.findViewById(R.id.set_weight);
-            tv_exercise_category = itemView.findViewById(R.id.exercise_category);
-            tv_exercise_bodypart = itemView.findViewById(R.id.exercise_bodypart);
+            recyclerView = itemView.findViewById(R.id.recycler_view_day);
+
         }
     }
 }

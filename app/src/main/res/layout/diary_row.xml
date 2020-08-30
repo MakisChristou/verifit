@@ -32,7 +32,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:text="Monday, Aug 21 2020"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/core_black"
                 android:textSize="26sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

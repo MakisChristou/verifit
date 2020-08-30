@@ -7,9 +7,6 @@ public class WorkoutExercise {
     // Attributes
     private ArrayList<WorkoutSet> Sets;
     private String Date;
-
-
-
     private String Exercise;
     private Double Volume;
     private Double EstimatedOneRepMax; // Epley formula
@@ -28,7 +25,6 @@ public class WorkoutExercise {
     public Double getMaxSetVolume() {
         return MaxSetVolume;
     }
-
     public void setMaxSetVolume(Double maxSetVolume) {
         MaxSetVolume = maxSetVolume;
     }

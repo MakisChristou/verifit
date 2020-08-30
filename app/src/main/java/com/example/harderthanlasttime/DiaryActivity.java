@@ -38,14 +38,12 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         bottomNavigationView.setSelectedItemId(R.id.diary);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-
         // Find Recycler View Object
         recyclerView = findViewById(R.id.recycler_view);
 
         diaryAdapter = new DiaryAdapter(this, MainActivity.Workout_Days);
         recyclerView.setAdapter(diaryAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
     }
 

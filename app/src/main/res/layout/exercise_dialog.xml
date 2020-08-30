@@ -16,7 +16,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/totalsets4"
@@ -55,7 +55,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/maxsetvolume"
@@ -92,7 +92,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/maxreps"
@@ -129,7 +129,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/maxweight"
@@ -166,7 +166,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/totalvolume"
@@ -215,7 +215,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/totalsets6"
@@ -230,12 +230,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/exercise_name"
+        android:id="@+id/set_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Seated Machine Shoulder Press"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp"
@@ -249,8 +251,9 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="10dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name"
+        app:layout_constraintTop_toBottomOf="@+id/set_weight"
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
@@ -264,7 +267,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/totalreps"

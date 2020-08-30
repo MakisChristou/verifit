@@ -6,11 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     Context ct;
     ArrayList<WorkoutDay> Workout_Days;
 
-    // Adapter Constructor 7 minute mark
     public DiaryAdapter(Context ct, ArrayList<WorkoutDay> Workout_Days)
     {
         this.ct = ct;
@@ -93,7 +90,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_day = itemView.findViewById(R.id.day);
-            tv_date = itemView.findViewById(R.id.exercise_name);
+            tv_date = itemView.findViewById(R.id.set_weight);
             tv_volume = itemView.findViewById(R.id.totalvolume);
             tv_reps = itemView.findViewById(R.id.totalreps);
             tv_sets = itemView.findViewById(R.id.totalsets);

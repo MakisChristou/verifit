@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Date date_clicked = eventDay.getCalendar().getTime();
 
                 // Start Intent
-                Intent in = new Intent(getApplicationContext(), AddExerciseActivity.class);
+                Intent in = new Intent(getApplicationContext(), DayActivity.class);
                 Bundle mBundle = new Bundle();
 
                 // Date -> String
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Stop Loading Animation
         // ld.dismissDialog();
 
-        Intent in = new Intent(this,ExercisesActivity.class);
+        Intent in = new Intent(this,AddExerciseActivity.class);
         startActivity(in);
 
 

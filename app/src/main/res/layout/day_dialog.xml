@@ -16,7 +16,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/totalsets13"
@@ -55,7 +55,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/totalvolume"
@@ -104,7 +104,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/totalsets6"
@@ -119,12 +119,12 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/exercise_name"
+        android:id="@+id/set_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:text="Friday, Aug 28 2020"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
@@ -139,7 +139,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name"
+        app:layout_constraintTop_toBottomOf="@+id/set_weight"
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
@@ -153,7 +153,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/set_weight" />
 
     <TextView
         android:id="@+id/totalreps"

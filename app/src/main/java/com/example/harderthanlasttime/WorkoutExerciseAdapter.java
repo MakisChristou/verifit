@@ -45,7 +45,6 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
             public void onClick(View view)
             {
                 showExerciseDialog(position);
-
             }
         });
 
@@ -66,7 +65,7 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         TextView maxweight = view.findViewById(R.id.maxweight);
         TextView maxreps = view.findViewById(R.id.maxreps);
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
-        TextView name = view.findViewById(R.id.exercise_name);
+        TextView name = view.findViewById(R.id.set_weight);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
 
         // Set Values

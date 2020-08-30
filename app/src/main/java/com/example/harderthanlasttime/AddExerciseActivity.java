@@ -23,7 +23,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_exercise);
 
         // Self Explanatory I guess
-        initActivity();
+        // initActivity();
 
 
         // Find Recycler View Object
