@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,6 +41,17 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
 
         // Find Recycler View Object
         recyclerView = findViewById(R.id.recycler_view);
+
+
+        if(MainActivity.Workout_Days.isEmpty())
+        {
+            TextView tv = findViewById(R.id.tv);
+            tv.setVisibility(View.VISIBLE);
+        }
+        else {
+            TextView tv = findViewById(R.id.tv);
+            tv.setVisibility(View.GONE);
+        }
 
         diaryAdapter = new DiaryAdapter(this, MainActivity.Workout_Days);
         recyclerView.setAdapter(diaryAdapter);

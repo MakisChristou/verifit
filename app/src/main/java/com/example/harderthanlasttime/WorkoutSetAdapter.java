@@ -42,7 +42,11 @@ public class WorkoutSetAdapter extends RecyclerView.Adapter<WorkoutSetAdapter.My
     {
         holder.tv_reps.setText(Workout_Sets.get(position).getReps().toString());
         holder.tv_weight.setText(Workout_Sets.get(position).getWeight().toString());
+
+
     }
+
+
 
 
     @Override

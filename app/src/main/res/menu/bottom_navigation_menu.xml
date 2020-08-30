@@ -6,6 +6,7 @@
         android:icon="@drawable/ic_event_available_24px"
         android:visible="true">
     </item>
+
     <item
         android:id="@+id/diary"
         android:icon="@drawable/ic_dashboard_24px"

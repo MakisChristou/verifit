@@ -1,5 +1,7 @@
 package com.example.harderthanlasttime;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -105,7 +105,8 @@ public class DayActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.add)
         {
-
+            Intent in = new Intent(this,ExercisesActivity.class);
+            startActivity(in);
         }
         return super.onOptionsItemSelected(item);
     }

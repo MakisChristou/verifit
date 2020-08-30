@@ -9,14 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ExercisesActivity"
-            android:label="Exercises"
-            android:parentActivityName=".MainActivity">
+        <activity android:name=".CustomExerciseActivity"
+            android:label="Custom Exercise"
+            android:parentActivityName=".ExercisesActivity">
 
         </activity>
-        <activity android:name=".DayActivity"
+        <activity
+            android:name=".ExercisesActivity"
+            android:label="All Exercises"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".DayActivity"
             android:label="Day Activity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
@@ -37,7 +42,7 @@
             android:label="Workout Diary" />
         <activity
             android:name=".MainActivity"
-            android:label="Fit App Name">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

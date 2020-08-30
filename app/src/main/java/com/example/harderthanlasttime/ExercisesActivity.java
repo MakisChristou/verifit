@@ -48,7 +48,8 @@ public class ExercisesActivity extends AppCompatActivity {
         }
         else if(item.getItemId() == R.id.add)
         {
-
+            Intent in = new Intent(this,CustomExerciseActivity.class);
+            startActivity(in);
         }
         return super.onOptionsItemSelected(item);
     }

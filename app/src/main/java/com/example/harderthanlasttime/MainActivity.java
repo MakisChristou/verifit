@@ -49,17 +49,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // LoadingDialog ld = new LoadingDialog(MainActivity.this);
         // ld.startLoadingAnimation();
 
-        // Read CSV
+        // Read csv file line by line
         InputStream inputStream = getResources().openRawResource(R.raw.fitnotes);
         CSVFile csvFile = new CSVFile(inputStream);
         List csvList = csvFile.read();
 
-        // Writes in Workout_Sets and Days_Set
+        // Writes in Workout_Sets and Days_Set, takes the most amount of time
         parseCSV(csvList);
 
         // To JSON (for debugging)
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(gson.toJson(Workout_Days));
+        // Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        // System.out.println(gson.toJson(Workout_Days));
 
 
         // Bottom Navigation Bar Intents
@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Stop Loading Animation
         // ld.dismissDialog();
 
-        Intent in = new Intent(this,AddExerciseActivity.class);
-        startActivity(in);
+//        Intent in = new Intent(this,AddExerciseActivity.class);
+//        startActivity(in);
 
 
     }
@@ -323,11 +323,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    // Returns true if volume was greater than previous workout
-    public boolean harderThanLastTime(String Exercise, String Date)
-    {
-        return false;
-    }
 
     // Navigates to given activity based on the selected menu item
     @Override
