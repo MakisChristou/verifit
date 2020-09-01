@@ -8,15 +8,6 @@
     android:orientation="vertical"
     tools:context=".DayActivity">
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="No Logged Workout"
-        android:textSize="26dp" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_day"
         android:layout_width="match_parent"

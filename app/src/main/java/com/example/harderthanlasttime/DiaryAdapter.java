@@ -2,6 +2,9 @@ package com.example.harderthanlasttime;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.transition.Slide;
+import android.transition.TransitionManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,6 +134,9 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         RecyclerView recyclerView;
         ImageButton expand_button;
 
+        // For Animation
+        ViewGroup tcontainer;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_day = itemView.findViewById(R.id.day);
@@ -139,8 +145,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             recyclerView = itemView.findViewById(R.id.recycler_view_diary);
             expand_button = itemView.findViewById(R.id.expand_button);
 
-
-
+            // For Animation
+            tcontainer = itemView.findViewById(R.id.constraint_diary);
 
 
             // Expand More/Less Button
@@ -149,6 +155,9 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
                 public void onClick(View view) {
                     if(recyclerView.getVisibility() == View.GONE)
                     {
+                        // For Animation
+                        TransitionManager.beginDelayedTransition(tcontainer);
+
                         recyclerView.setVisibility(View.VISIBLE);
                         expand_button.setImageResource(R.drawable.ic_expand_less_24px);
                     }

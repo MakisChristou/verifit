@@ -10,11 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
+import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,26 +21,26 @@ public class DayActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     public WorkoutExerciseAdapter2 workoutExerciseAdapter;
-    public TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day);
 
-
-        // Recycler View Stuff
-        recyclerView = findViewById(R.id.recycler_view_day);
-        tv = findViewById(R.id.tv);
-
+        // Self Explanatory I guess
         initActivity();
 
 
     }
 
 
+    // Haven't we said that already?
     public void initActivity()
     {
+
+        // Recycler View Stuff
+        recyclerView = findViewById(R.id.recycler_view_day);
+
         // From Main Activity
         Intent mIntent = getIntent();
         Bundle extras = mIntent.getExtras();
@@ -75,14 +72,12 @@ public class DayActivity extends AppCompatActivity {
             recyclerView.setAdapter(workoutExerciseAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+            // Notify User
             if(Today_Execrises.isEmpty())
             {
-                tv.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(),"No Logged Exercises",Toast.LENGTH_SHORT).show();
             }
-            else
-            {
-                tv.setVisibility(View.GONE);
-            }
+
 
         } catch (ParseException e) {
             e.printStackTrace();

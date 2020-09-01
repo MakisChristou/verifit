@@ -55,9 +55,6 @@ public class WorkoutSetAdapter2 extends RecyclerView.Adapter<WorkoutSetAdapter2.
                 updateView(position);
             }
         });
-
-
-
     }
 
     public void updateView(int position)
@@ -79,18 +76,6 @@ public class WorkoutSetAdapter2 extends RecyclerView.Adapter<WorkoutSetAdapter2.
         TextView tv_weight;
         CardView cardView;
 
-        // Add Exercise Activity Specifics
-        EditText et_reps;
-        EditText et_weight;
-        ImageButton plus_reps;
-        ImageButton minus_reps;
-        ImageButton plus_weight;
-        ImageButton minus_weight;
-        Button bt_save;
-        Button bt_clear;
-
-
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -98,32 +83,6 @@ public class WorkoutSetAdapter2 extends RecyclerView.Adapter<WorkoutSetAdapter2.
             tv_weight = itemView.findViewById(R.id.exercise_name);
             cardView = itemView.findViewById(R.id.cardview_set);
 
-            // Add Exercise Activity Specifics
-            et_reps = itemView.findViewById(R.id.et_reps);
-            et_weight = itemView.findViewById(R.id.et_weight);
-            plus_reps = itemView.findViewById(R.id.plus_reps);
-            minus_reps = itemView.findViewById(R.id.minus_reps);
-            plus_weight = itemView.findViewById(R.id.plus_weight);
-            minus_weight = itemView.findViewById(R.id.minus_weight);
-            bt_clear = itemView.findViewById(R.id.bt_clear);
-            bt_save = itemView.findViewById(R.id.bt_save);
-
-
-            // Clear Button On Click
-            bt_clear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-
-            // Save Button On Click
-            bt_save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
 
         }
     }

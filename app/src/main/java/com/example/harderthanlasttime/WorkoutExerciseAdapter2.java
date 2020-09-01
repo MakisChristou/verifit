@@ -2,6 +2,7 @@ package com.example.harderthanlasttime;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,6 +113,9 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         ImageButton expandButton;
         View view;
 
+        // For Animation
+        ViewGroup tcontainer;
+
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -120,6 +124,8 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             expandButton = itemView.findViewById(R.id.expandButton);
             view = itemView.findViewById(R.id.view);
+            // For Animation
+            tcontainer = itemView.findViewById(R.id.constraint_day);
 
                 // Expand More/Less
                 expandButton.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +133,9 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
                 public void onClick(View view) {
                     if(recyclerView.getVisibility() == View.GONE)
                     {
+                        // For Animation
+                        TransitionManager.beginDelayedTransition(tcontainer);
+
                         recyclerView.setVisibility(View.VISIBLE);
                         expandButton.setImageResource(R.drawable.ic_expand_less_24px);
                     }

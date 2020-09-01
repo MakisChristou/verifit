@@ -1,94 +1,82 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="Backup and Restore">
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="importcsv"
+            app:summary="Import workout data from a previous backup"
+            app:title="Import Workout Data"
+            app:useSimpleSummaryProvider="false" />
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="exportcsv"
+            app:summary="Create a backup of your current workout data"
+            app:title="Export Workout Data"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            app:key="deletedata"
+            app:summary="Delete all local workout data"
+            app:title="Delete Data"
+            app:useSimpleSummaryProvider="false" />
+
+        <SwitchPreferenceCompat
+            app:key="nextsync"
+            app:summaryOff="Automatic Backup is currently turned off"
+            app:summaryOn="Automatic Backup is currently turned on"
+            app:title="Nextcloud Sync" />
+
+
+
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="General">
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+        <Preference
+            app:key="theme"
+            app:summary="Light"
+            app:title="Theme"
+            app:useSimpleSummaryProvider="false" />
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
 
-    </PreferenceCategory>
-    <PreferenceCategory app:title="@string/messages_header">
+        <Preference
+            app:key="github"
+            app:summary="Get the source code from Github"
+            app:title="Get Source Code"
+            app:useSimpleSummaryProvider="false" />
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="version"
+            app:summary="0.0.1"
+            app:title="Version"
+            app:useSimpleSummaryProvider="false" />
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="donatebitcoin"
+            app:summary="1Makis5hJTed3A68Nky9dsiXMwCJtg4vN3"
+            app:title="Donate Bitcoin"
+            app:useSimpleSummaryProvider="false" />
 
-    </PreferenceCategory>
-    <PreferenceCategory app:title="@string/sync_header">
+        <Preference
+            app:key="donateverium"
+            app:summary="VEPR4c1AC6dJARs7oAEhwqDMwowuAU2yWV"
+            app:title="Donate Verium"
+            app:useSimpleSummaryProvider="false" />
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
 
-    </PreferenceCategory>
-    <PreferenceCategory app:title="@string/messages_header">
+        <Preference
+            app:key="licence"
+            app:summary="GNU General Public Licence, version 3"
+            app:title="Licence"
+            app:useSimpleSummaryProvider="false" />
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
-
-    </PreferenceCategory>
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+        <Preference
+            app:key="help"
+            app:summary=""
+            app:title="Help"
+            app:useSimpleSummaryProvider="false" />
 
     </PreferenceCategory>
 

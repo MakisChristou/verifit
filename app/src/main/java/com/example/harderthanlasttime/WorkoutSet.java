@@ -9,6 +9,22 @@ public class WorkoutSet {
     private Double Reps;
     private Double Weight;
 
+
+    public WorkoutSet()
+    {
+
+    }
+
+    public WorkoutSet(String Date, String Exercise, String Category, Double Reps, Double Weight)
+    {
+        this.Date = Date;
+        this.Exercise = Exercise;
+        this.Category = Category;
+        this.Reps = Reps;
+        this.Weight = Weight;
+    }
+
+
     // Methods
     // Setters
     public void setDate(String Date)
