@@ -12,8 +12,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
@@ -143,6 +145,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+
+    // Returns index of day
+    public static int getDayPosition(String Date)
+    {
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            if(MainActivity.Workout_Days.get(i).getDate().equals(Date))
+            {
+               return i;
+            }
+        }
+        return -1;
+    }
+
+
     // Converts CSV file to Internally used Dat Structure
     public void CSVtoSets(List csvList)
     {
@@ -201,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Workout_Days.add(temp_day);
         }
     }
-    
+
 
     // Initialized KnownExercises ArrayList with some hardcoded exercises
     public void initExercises()
@@ -338,5 +355,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             overridePendingTransition(0,0);
         }
         return true;
+    }
+
+    // Menu Stuff
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.home)
+        {
+            Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+        }
+        else if(item.getItemId() == R.id.settings)
+        {
+            Intent in = new Intent(this,SettingsActivity.class);
+            startActivity(in);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

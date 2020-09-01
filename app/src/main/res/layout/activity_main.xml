@@ -12,6 +12,8 @@
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:animationCache="false"
+        android:fitsSystemWindows="false"
         android:overScrollMode="ifContentScrolls"
         android:scrollbarAlwaysDrawVerticalTrack="false"
         app:headerColor="@color/cardview_dark_background">

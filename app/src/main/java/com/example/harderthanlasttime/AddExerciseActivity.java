@@ -67,9 +67,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     // Button On Click Methods
     public void clickSave(View view)
     {
-        System.out.println("Clicked Save");
-
-        if(et_weight.getText().toString().isEmpty() || et_weight.getText().toString().isEmpty())
+        if(et_weight.getText().toString().isEmpty() || et_reps.getText().toString().isEmpty())
         {
             Toast.makeText(getApplicationContext(),"Please write Weight and Reps",Toast.LENGTH_SHORT).show();
         }
@@ -80,14 +78,26 @@ public class AddExerciseActivity extends AppCompatActivity {
             Double weight = Double.parseDouble(et_weight.getText().toString());
             WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name,"Unknown Category",reps,weight);
 
+            // If day was previously saved find it and add the set
+            // Else create new day object and add the set to it
+            // Update Data ?
 
+            int position = MainActivity.getDayPosition(MainActivity.date_selected);
 
-            // WorkoutDay workoutDay = new WorkoutDay();
+            if(position >= 0)
+            {
+                MainActivity.Workout_Days.get(position).addSet(workoutSet);
 
-            // workoutDay.getSets().add(workoutSet);
+            }
+            else
+            {
+                WorkoutDay workoutDay = new WorkoutDay();
+                workoutDay.addSet(workoutSet);
+                MainActivity.Workout_Days.add(workoutDay);
 
+            }
 
-
+            updateTodaysExercises();
             Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
         }
 
@@ -97,27 +107,36 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     public void clickClear(View view)
     {
-        System.out.println("Clicked Clear");
+        et_reps.setText("");
+        et_weight.setText("");
     }
 
     public void clickPlusWeight(View view)
     {
-        System.out.println("Clicked Plus Weight");
+        Double weight = Double.parseDouble(et_weight.getText().toString());
+        weight = weight + 1;
+        et_weight.setText(weight.toString());
     }
 
     public void clickPlusReps(View view)
     {
-        System.out.println("Clicked Plus Reps");
+        int reps = Integer.parseInt(et_reps.getText().toString());
+        reps = reps + 1;
+        et_reps.setText(String.valueOf(reps));
     }
 
     public void clickMinusWeight(View view)
     {
-        System.out.println("Clicked Minus Weight");
+        Double weight = Double.parseDouble(et_weight.getText().toString());
+        weight = weight - 1;
+        et_weight.setText(weight.toString());
     }
 
     public void clickMinusReps(View view)
     {
-        System.out.println("Clicked Minus Reps");
+        int reps = Integer.parseInt(et_reps.getText().toString());
+        reps = reps - 1;
+        et_reps.setText(String.valueOf(reps));
     }
 
     // Init Methods

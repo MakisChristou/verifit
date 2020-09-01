@@ -78,6 +78,7 @@
         android:gravity="center_horizontal"
         android:inputType="numberDecimal"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/plus_weight"
         app:layout_constraintStart_toEndOf="@+id/minus_weight"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -133,6 +134,7 @@
         android:inputType="number"
         android:singleLine="false"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/plus_reps"
         app:layout_constraintStart_toEndOf="@+id/minus_reps"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
