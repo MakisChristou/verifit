@@ -1,12 +1,13 @@
 package com.example.harderthanlasttime;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
@@ -42,6 +43,18 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
         holder.tv_exercise_category.setText(Exercises.get(position).getCategory());
         holder.tv_exercise_bodypart.setText(Exercises.get(position).getBodyPart());
 
+        // Goto Add Exercise Activity
+        holder.cardview_exercise_1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ct,AddExerciseActivity.class);
+                in.putExtra("exercise",holder.tv_exercise_name.getText().toString());
+                ct.startActivity(in);
+            }
+        });
+
+
 
     }
 
@@ -56,14 +69,16 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
         TextView tv_exercise_name;
         TextView tv_exercise_category;
         TextView tv_exercise_bodypart;
+        CardView cardview_exercise_1;
 
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_exercise_name = itemView.findViewById(R.id.date);
+            tv_exercise_name = itemView.findViewById(R.id.exercise_name);
             tv_exercise_category = itemView.findViewById(R.id.exercise_category);
             tv_exercise_bodypart = itemView.findViewById(R.id.exercise_bodypart);
+            cardview_exercise_1 = itemView.findViewById(R.id.cardview_exercise_1);
         }
     }
 }

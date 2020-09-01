@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -19,8 +20,10 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.datepicker.MaterialCalendar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
     public com.applandeo.materialcalendarview.CalendarView calendarView;
     public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // initialized with hardcoded exercises
+    public static String date_selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         InputStream inputStream = getResources().openRawResource(R.raw.fitnotes);
         CSVFile csvFile = new CSVFile(inputStream);
         List csvList = csvFile.read();
+
+        // Loads previously saved data
+        // loadData();
 
         // Writes in Workout_Sets and Days_Set, takes the most amount of time
         parseCSV(csvList);
@@ -78,6 +85,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Remove top bar for aesthetic purposes
         // getSupportActionBar().hide();
 
+        // Date delected is by default today
+        Date date_clicked = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        date_selected = dateFormat.format(date_clicked);
+
+
         initExercises();
 
         // Get Material Calendar Instance
@@ -100,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 // Date -> String
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String date_selected = dateFormat.format(date_clicked);
+                date_selected = dateFormat.format(date_clicked);
 
                 // Send Date and start activity
                 mBundle.putString("date", date_selected);
@@ -113,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Stop Loading Animation
         // ld.dismissDialog();
 
-//        Intent in = new Intent(this,AddExerciseActivity.class);
-//        startActivity(in);
 
 
     }
@@ -167,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises.add(new Exercise("Seated Dumbell Press","Compound","Shoulders",""));
         KnownExercises.add(new Exercise("Ring Dip","Compound","Chest",""));
         KnownExercises.add(new Exercise("Lateral Cable Raise","Isolation","Shoulders",""));
-        KnownExercises.add(new Exercise("Barbel Curl","Compound","Biceps",""));
+        KnownExercises.add(new Exercise("Barbell Curl","Compound","Biceps",""));
         KnownExercises.add(new Exercise("Tricep Extension","Isolation","Triceps",""));
         KnownExercises.add(new Exercise("Squat","Compound","Legs",""));
         KnownExercises.add(new Exercise("Leg Extension","Isolation","Legs",""));
@@ -188,7 +199,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Parses CSV and updates data structures
     public void parseCSV(List csvList)
     {
+        // Initialize Days Set
+        initDays(csvList);
 
+        // Initialize Workout_Days ArrayList
+        initWorkout_Days(csvList);
+
+        // Calculate User Stats
+        calculateStats();
+
+    }
+
+    // Helper function
+    public void initDays(List csvList)
+    {
         // Clear Data Structures
         Days.clear();
         Workout_Days.clear();
@@ -199,10 +223,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             String[] row = (String[]) csvList.get(i);
             Days.add(row[0]);
         }
+    }
 
+    // Helper function
+    public void initWorkout_Days(List csvList)
+    {
         Iterator<String> it = Days.iterator();
 
-        // Iterate Dates Set
+        // Construct Workout_Days Array List
         while (it.hasNext())
         {
             String Date = it.next();
@@ -234,7 +262,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Workout_Days.add(temp_day);
 
         }
+    }
 
+    // Helper function
+    public void calculateStats()
+    {
+        // Calculate Volume, 1RM, stats, etc
         for(int i = 0; i < Workout_Days.size(); i++)
         {
             WorkoutDay temp_day = Workout_Days.get(i);
@@ -321,6 +354,35 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Workout_Days.get(i).setDayVolume(Day_Volume);
             Workout_Days.get(i).setExercises(Day_Exercises);
         }
+    }
+
+
+    // Saves Workout_Days Array List in shared preferences
+    public void saveData()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(Workout_Days);
+        editor.putString("workouts",json);
+        editor.apply();
+    }
+
+    // Loads Workout_Days Array List from shared preferences
+    public void loadData()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("workouts",null);
+        Type type = new TypeToken<ArrayList<WorkoutDay>>(){}.getType();
+        Workout_Days = gson.fromJson(json,type);
+
+        // If there are no previously saved entries make a new object
+        if(Workout_Days == null)
+        {
+            Workout_Days = new ArrayList<WorkoutDay>();
+        }
+
     }
 
 

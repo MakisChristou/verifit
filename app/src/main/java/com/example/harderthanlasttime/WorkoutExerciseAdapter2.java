@@ -46,6 +46,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         holder.recyclerView.setAdapter(workoutSetAdapter);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
 
+
         holder.tv_exercise_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -65,21 +66,29 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
 
         // Get TextViews
-        TextView totalsets = view.findViewById(R.id.totalsets);
+        TextView totalsets = view.findViewById(R.id.volume);
         TextView totalreps = view.findViewById(R.id.totalreps);
         TextView totalvolume = view.findViewById(R.id.totalvolume);
         TextView maxweight = view.findViewById(R.id.maxweight);
         TextView maxreps = view.findViewById(R.id.maxreps);
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
-        TextView name = view.findViewById(R.id.date);
+        TextView name = view.findViewById(R.id.exercise_name);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
 
         // Set Values
-        totalsets.setText(Exercises.get(position).getTotalSets().toString());
-        totalreps.setText(Exercises.get(position).getTotalReps().toString());
+
+        // Double -> Integer
+        int sets = (int)Math.round(Exercises.get(position).getTotalSets());
+        int reps = (int)Math.round(Exercises.get(position).getTotalReps());
+        int max_reps = (int)Math.round(Exercises.get(position).getMaxReps());
+
+        totalsets.setText(String.valueOf(sets));
+        totalreps.setText(String.valueOf(reps));
+        maxreps.setText(String.valueOf(max_reps));
+
+
         totalvolume.setText(Exercises.get(position).getVolume().toString());
         maxweight.setText(Exercises.get(position).getMaxWeight().toString());
-        maxreps.setText(Exercises.get(position).getMaxReps().toString());
         onerepmax.setText(Exercises.get(position).getEstimatedOneRepMax().toString());
         name.setText(Exercises.get(position).getExercise());
         maxsetvolume.setText(Exercises.get(position).getMaxSetVolume().toString());
@@ -103,9 +112,11 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         ImageButton expandButton;
         View view;
 
+
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_exercise_name = itemView.findViewById(R.id.date);
+            tv_exercise_name = itemView.findViewById(R.id.exercise_name);
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             expandButton = itemView.findViewById(R.id.expandButton);
             view = itemView.findViewById(R.id.view);

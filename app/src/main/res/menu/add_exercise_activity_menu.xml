@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/timer"
+        android:icon="@drawable/ic_alarm_24px"
+        app:showAsAction="always"
+        app:iconTint="@color/cardview_light_background">
+
+    </item>
+
+    <item
+        android:id="@+id/calculator"
+        android:icon="@drawable/ic_calculate_24px"
+        app:showAsAction="always"
+        app:iconTint="@color/cardview_light_background">
+    </item>
+
+
+
+
+</menu>

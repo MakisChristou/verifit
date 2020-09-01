@@ -40,7 +40,7 @@
         <activity
             android:name=".AddExerciseActivity"
             android:label="Add Exercise"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ExercisesActivity" />
         <activity
             android:name=".DiaryActivity"
             android:label="Workout Diary" />

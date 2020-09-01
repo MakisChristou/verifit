@@ -73,6 +73,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         });
     }
 
+    // Shows Day's Stats when clicked
     public void showDayDialog(int position)
     {
         // Prepare to show exercise dialog box
@@ -81,10 +82,10 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
 
         // Get TextViews
-        TextView totalsets = view.findViewById(R.id.totalsets);
+        TextView totalsets = view.findViewById(R.id.volume);
         TextView totalreps = view.findViewById(R.id.totalreps);
         TextView totalvolume = view.findViewById(R.id.totalvolume);
-        TextView date = view.findViewById(R.id.date);
+        TextView date = view.findViewById(R.id.exercise_name);
         TextView totalexercises = view.findViewById(R.id.totalexercises);
 
         // Crash Here
@@ -93,8 +94,24 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         totalexercises.setText(String.valueOf(Workout_Days.get(position).getExercises().size()));
         totalvolume.setText(Workout_Days.get(position).getDayVolume().toString());
 
-        // Format Date like a human being
-        date.setText(Workout_Days.get(position).getDate());
+        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+
+        // Possible Error
+        try {
+
+            Date date_object = parser.parse(Workout_Days.get(position).getDate());
+            SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMM dd YYYY");
+
+            // Format Date like a human being
+            // date.setText(Workout_Days.get(position).getDate());
+
+            date.setText(formatter.format(date_object));
+
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+
 
         // Show Exercise Dialog Box
         alertDialog.show();

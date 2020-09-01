@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/diary"
-        android:icon="@drawable/ic_dashboard_24px"
+        android:icon="@drawable/ic_create_24px"
         android:visible="true">
     </item>
 

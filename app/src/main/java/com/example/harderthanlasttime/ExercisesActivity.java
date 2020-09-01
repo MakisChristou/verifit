@@ -17,11 +17,17 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
 
     public RecyclerView recyclerView;
     public ExerciseAdapter exerciseAdapter;
+    public String date_clicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
+
+        // Intent from DayActivity
+        Intent in = getIntent();
+        date_clicked = in.getStringExtra("date");
+
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -29,10 +35,8 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
 
-
         // Find Recycler View Object
         recyclerView = findViewById(R.id.recycler_view_exercises);
-
         exerciseAdapter = new ExerciseAdapter(this, MainActivity.KnownExercises);
         recyclerView.setAdapter(exerciseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,6 +50,17 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
         return super.onCreateOptionsMenu(menu);
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.add)
+        {
+            Intent in = new Intent(this,CustomExerciseActivity.class);
+            startActivity(in);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
