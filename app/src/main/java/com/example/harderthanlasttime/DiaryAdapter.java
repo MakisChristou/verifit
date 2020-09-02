@@ -8,6 +8,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -52,10 +56,13 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         try {
 
             Date date = parser.parse(Workout_Days.get(position).getDate());
-            SimpleDateFormat formatter2 = new SimpleDateFormat("EEEE, MMM dd YYYY");
+            SimpleDateFormat formatter1 = new SimpleDateFormat("EEEE");
+            SimpleDateFormat formatter2 = new SimpleDateFormat("MMMM dd YYYY");
 
             // Change TextView texts
-            holder.tv_day.setText(formatter2.format(date));
+            holder.tv_day.setText(formatter1.format(date));
+            holder.date.setText(formatter2.format(date));
+
 
             // Change RecyclerView items
             WorkoutExerciseAdapter workoutExerciseAdapter = new WorkoutExerciseAdapter(ct, MainActivity.Workout_Days.get(position).getExercises());
@@ -131,7 +138,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     public class MyViewHolder extends  RecyclerView.ViewHolder
     {
         TextView tv_day;
-
+        TextView date;
         RecyclerView recyclerView;
         ImageButton expand_button;
         CardView cardview_diary;
@@ -142,6 +149,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_day = itemView.findViewById(R.id.day);
+            date = itemView.findViewById(R.id.date);
 
             // Find Recycler View Object
             recyclerView = itemView.findViewById(R.id.recycler_view_diary);
@@ -158,15 +166,29 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
                 public void onClick(View view) {
                     if(recyclerView.getVisibility() == View.GONE)
                     {
+                        // Expand Button Animation
+                        RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
+                        rotate.setDuration(200);
+                        rotate.setInterpolator(new LinearInterpolator());
+                        expand_button.startAnimation(rotate);
+                        expand_button.setImageResource(R.drawable.ic_expand_less_24px);
+
                         // For Animation
                         TransitionManager.beginDelayedTransition(tcontainer);
 
                         recyclerView.setVisibility(View.VISIBLE);
-                        expand_button.setImageResource(R.drawable.ic_expand_less_24px);
+
                     }
                     else if(recyclerView.getVisibility() == View.VISIBLE)
                     {
+
                         recyclerView.setVisibility(View.GONE);
+
+                        // Expand Button Animation
+                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
+                        rotate.setDuration(200);
+                        rotate.setInterpolator(new LinearInterpolator());
+                        expand_button.startAnimation(rotate);
                         expand_button.setImageResource(R.drawable.ic_expand_more_24px);
                     }
                 }

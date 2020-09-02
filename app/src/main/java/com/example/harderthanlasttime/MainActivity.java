@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         loadData();
 
         // Update Sets Root Data Structure
-        // CSVtoSets(csvList);
+        CSVtoSets(csvList);
 
         // Update all other Data Structures
-        // SetsToEverything();
+        SetsToEverything();
 
 
         // To JSON (for debugging)
