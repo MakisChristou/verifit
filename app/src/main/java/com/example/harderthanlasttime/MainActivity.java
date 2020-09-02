@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -109,8 +110,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         // Update Workouts on Calendar
         updateCalendar();
-
-
 
 
         // Returns Date clicked as Event Object
@@ -232,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises.add(new Exercise("Seated Dumbell Press","Compound","Shoulders",""));
         KnownExercises.add(new Exercise("Ring Dip","Compound","Chest",""));
         KnownExercises.add(new Exercise("Lateral Cable Raise","Isolation","Shoulders",""));
+        KnownExercises.add(new Exercise("Lateral Dumbell Raise","Isolation","Shoulders",""));
         KnownExercises.add(new Exercise("Barbell Curl","Compound","Biceps",""));
         KnownExercises.add(new Exercise("Tricep Extension","Isolation","Triceps",""));
         KnownExercises.add(new Exercise("Squat","Compound","Legs",""));
@@ -241,9 +241,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises.add(new Exercise("Sumo Deadlift","Compound","Back",""));
         KnownExercises.add(new Exercise("Seated Machine Chest Press","Compound","Chest",""));
         KnownExercises.add(new Exercise("Seated Machine Shoulder Press","Compound","Shoulders",""));
-        KnownExercises.add(new Exercise("Dumbell Lateral Raises","Isolation","Shoulders",""));
         KnownExercises.add(new Exercise("Seated Calf Raise","Isolation","Legs",""));
         KnownExercises.add(new Exercise("Donkey Calf Raise","Isolation","Legs",""));
+        KnownExercises.add(new Exercise("Standing Calf Raise","Isolation","Legs",""));
         KnownExercises.add(new Exercise("Seated Machine Curl","Isolation","Biceps",""));
         KnownExercises.add(new Exercise("Lat Pulldown","Compound","Back",""));
         KnownExercises.add(new Exercise("Pull Up","Compound","Back",""));
@@ -372,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         if(item.getItemId() == R.id.home)
         {
-            Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Today", Toast.LENGTH_SHORT).show();
         }
         else if(item.getItemId() == R.id.settings)
         {

@@ -47,12 +47,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_exercise);
 
 
-        // Self Explanatory I guess
-        initActivity();
-
-        // Self Explanatory I guess
-        initrecyclerView();
-
         // find views
         et_reps = findViewById(R.id.et_reps);
         et_weight = findViewById(R.id.et_weight);
@@ -62,6 +56,12 @@ public class AddExerciseActivity extends AppCompatActivity {
         minus_weight = findViewById(R.id.minus_weight);
         bt_clear = findViewById(R.id.bt_clear);
         bt_save = findViewById(R.id.bt_save);
+
+        // Self Explanatory I guess
+        initActivity();
+
+        // Self Explanatory I guess
+        initrecyclerView();
     }
 
     // Button On Click Methods
@@ -155,7 +155,6 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     }
 
-
     // Handles Intent Stuff
     public void initActivity()
     {
@@ -198,7 +197,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Clear since we don't want duplicates
         Todays_Exercise_Sets.clear();
 
-
         // Find Sets for a specific date and exercise
         for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
         {
@@ -221,6 +219,44 @@ public class AddExerciseActivity extends AppCompatActivity {
         workoutSetAdapter2 = new WorkoutSetAdapter2(this,Todays_Exercise_Sets);
         recyclerView.setAdapter(workoutSetAdapter2);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        // Set Edit Text values to max set volume if possible
+        initEditTexts();
+
+    }
+
+    // Set Edit Text values to max set volume if possible
+    public void initEditTexts()
+    {
+        Double max_weight = 0.0;
+        int max_reps = 0;
+        Double max_exercise_volume = 0.0;
+
+        // Find Max Weight and Reps for a specific exercise
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            {
+                if(MainActivity.Workout_Days.get(i).getSets().get(j).getVolume() > max_exercise_volume && MainActivity.Workout_Days.get(i).getSets().get(j).getExercise().equals(exercise_name))
+                {
+                    max_exercise_volume = MainActivity.Workout_Days.get(i).getSets().get(j).getVolume();
+                    max_reps = (int)Math.round(MainActivity.Workout_Days.get(i).getSets().get(j).getReps());
+                    max_weight = MainActivity.Workout_Days.get(i).getSets().get(j).getWeight();
+                }
+            }
+        }
+
+        // If never performed the exercise leave Edit Texts blank
+        if(max_reps == 0 || max_weight == 0.0)
+        {
+            et_reps.setText("");
+            et_weight.setText("");
+        }else
+        {
+            et_reps.setText(String.valueOf(max_reps));
+            et_weight.setText(max_weight.toString());
+        }
     }
 
     // Menu Stuff

@@ -59,8 +59,7 @@ public class WorkoutSetAdapter2 extends RecyclerView.Adapter<WorkoutSetAdapter2.
 
     public void updateView(int position)
     {
-
-
+        System.out.println("DEBUG SET CLICK");
     }
 
 
