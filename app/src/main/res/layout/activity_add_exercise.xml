@@ -150,7 +150,7 @@
         android:onClick="clickClear"
         android:text="Clear"
         android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_reps" />
 

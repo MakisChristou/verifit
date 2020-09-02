@@ -6,6 +6,7 @@
 
     <!--    Color Primary = #262626-->
     <color name="colorPrimary">#3581E5</color>
+    <color name="colorPrimaryLight">#D3DEEC</color>
     <color name="colorPrimaryDark">#255AA0</color>
     <color name="colorAccent">#262626</color>
 

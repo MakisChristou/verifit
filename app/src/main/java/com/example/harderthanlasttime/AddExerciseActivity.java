@@ -2,6 +2,7 @@ package com.example.harderthanlasttime;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     public String exercise_name;
     public ArrayList<WorkoutSet> Todays_Exercise_Sets = new ArrayList<WorkoutSet>();
     public WorkoutSetAdapter2  workoutSetAdapter2;
+    public static int Clicked_Set = 0;
 
     // Add Exercise Activity Specifics
     public EditText et_reps;
@@ -97,18 +99,56 @@ public class AddExerciseActivity extends AppCompatActivity {
 
             }
 
+            // Update Local Data Structure
             updateTodaysExercises();
             Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
         }
 
-        // Save Data
+        // Actually Save Changes in shared preferences
         MainActivity.saveData(getApplicationContext());
     }
 
+    // Clear / Delete
     public void clickClear(View view)
     {
-        et_reps.setText("");
-        et_weight.setText("");
+        if(Todays_Exercise_Sets.isEmpty())
+        {
+            et_reps.setText("");
+            et_weight.setText("");
+        }
+        else
+        {
+            // Get soon to be deleted set attributes
+            WorkoutSet to_be_removed_set = Todays_Exercise_Sets.get(Clicked_Set);
+
+            // Find the set in main data structure and delete it
+            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            {
+                if(MainActivity.Workout_Days.get(i).getSets().contains(to_be_removed_set))
+                {
+                    // If last set the delete the whole object
+                    if(MainActivity.Workout_Days.get(i).getSets().size() == 1)
+                    {
+                        MainActivity.Workout_Days.remove(MainActivity.Workout_Days.get(i));
+                    }
+                    // Just delete the set
+                    else
+                    {
+                        MainActivity.Workout_Days.get(i).removeSet(to_be_removed_set);
+                        break;
+                    }
+
+                }
+            }
+
+            Toast.makeText(getApplicationContext(),"Set Deleted",Toast.LENGTH_SHORT).show();
+
+            // Actually Save Changes in shared preferences
+            MainActivity.saveData(getApplicationContext());
+
+            // Update Local Data Structure
+            updateTodaysExercises();
+        }
     }
 
     public void clickPlusWeight(View view)
@@ -184,6 +224,16 @@ public class AddExerciseActivity extends AppCompatActivity {
                     }
                 }
             }
+        }
+
+        // Change Button Functionality
+        if(Todays_Exercise_Sets.isEmpty())
+        {
+            bt_clear.setText("Clear");
+        }
+        else
+        {
+            bt_clear.setText("Delete");
         }
 
         // Update Recycler View

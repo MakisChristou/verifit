@@ -32,6 +32,16 @@ public class WorkoutDay {
         UpdateData();
     }
 
+    public void removeSet(WorkoutSet Set)
+    {
+
+        assert this.Sets.size() > 1 : "removeSet should not be called in this case but delete the whole object instead";
+        this.getSets().remove(Set);
+        UpdateData();
+
+
+    }
+
     // Update Data Structure Data
     public void UpdateData()
     {

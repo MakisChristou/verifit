@@ -57,9 +57,10 @@ public class WorkoutSetAdapter2 extends RecyclerView.Adapter<WorkoutSetAdapter2.
         });
     }
 
+    // Notify AddExerciseActivity of the clicked position
     public void updateView(int position)
     {
-        System.out.println("DEBUG SET CLICK");
+        AddExerciseActivity.Clicked_Set = position;
     }
 
 
