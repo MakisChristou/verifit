@@ -151,27 +151,26 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
                 public void onClick(View view) {
                     if(recyclerView.getVisibility() == View.GONE)
                     {
-                        // For Animation
-                        TransitionManager.beginDelayedTransition(tcontainer);
-
+                        // Expand Button Animation
                         recyclerView.setVisibility(View.VISIBLE);
+                        notifyItemChanged(getAdapterPosition());
+
                         // Expand Button Animation
                         RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
                         rotate.setDuration(200);
                         rotate.setInterpolator(new LinearInterpolator());
                         expandButton.startAnimation(rotate);
                         expandButton.setImageResource(R.drawable.ic_expand_less_24px);
-                        expandButton.setImageResource(R.drawable.ic_expand_less_24px);
                     }
                     else if(recyclerView.getVisibility() == View.VISIBLE)
                     {
                         recyclerView.setVisibility(View.GONE);
+
                         // Expand Button Animation
                         RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
                         rotate.setDuration(200);
                         rotate.setInterpolator(new LinearInterpolator());
                         expandButton.startAnimation(rotate);
-                        expandButton.setImageResource(R.drawable.ic_expand_more_24px);
                         expandButton.setImageResource(R.drawable.ic_expand_more_24px);
                     }
                 }

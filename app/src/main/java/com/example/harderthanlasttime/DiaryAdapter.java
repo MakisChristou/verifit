@@ -143,8 +143,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         ImageButton expand_button;
         CardView cardview_diary;
 
-        // For Animation
-        ViewGroup tcontainer;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -156,9 +154,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             expand_button = itemView.findViewById(R.id.expand_button);
             cardview_diary = itemView.findViewById(R.id.cardview_diary);
 
-            // For Animation
-            tcontainer = itemView.findViewById(R.id.constraint_diary);
-
 
             // Expand More/Less Button
             expand_button.setOnClickListener(new View.OnClickListener() {
@@ -166,22 +161,18 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
                 public void onClick(View view) {
                     if(recyclerView.getVisibility() == View.GONE)
                     {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        notifyItemChanged(getAdapterPosition());
+
                         // Expand Button Animation
                         RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
                         rotate.setDuration(200);
                         rotate.setInterpolator(new LinearInterpolator());
                         expand_button.startAnimation(rotate);
                         expand_button.setImageResource(R.drawable.ic_expand_less_24px);
-
-                        // For Animation
-                        TransitionManager.beginDelayedTransition(tcontainer);
-
-                        recyclerView.setVisibility(View.VISIBLE);
-
                     }
                     else if(recyclerView.getVisibility() == View.VISIBLE)
                     {
-
                         recyclerView.setVisibility(View.GONE);
 
                         // Expand Button Animation

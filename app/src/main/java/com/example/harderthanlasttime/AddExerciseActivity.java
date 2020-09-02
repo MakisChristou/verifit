@@ -274,6 +274,17 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Set Edit Text values to max set volume if possible
         initEditTexts();
 
+
+        // Change Button Functionality
+        if(Todays_Exercise_Sets.isEmpty())
+        {
+            bt_clear.setText("Clear");
+        }
+        else
+        {
+            bt_clear.setText("Delete");
+        }
+
     }
 
     // Set Edit Text values to max set volume if possible
