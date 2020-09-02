@@ -2,6 +2,7 @@ package com.example.harderthanlasttime;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,41 +62,51 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
     // Blatant copy of Fitnotes but ohh well ;)
     public void showExerciseDialog(int position) {
 
-        // Prepare to show exercise dialog box
-        LayoutInflater inflater = LayoutInflater.from(ct);
-        View view = inflater.inflate(R.layout.exercise_dialog,null);
-        AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
+        Intent in = new Intent(ct,AddExerciseActivity.class);
+        in.putExtra("exercise",Exercises.get(position).getExercise());
+        ct.startActivity(in);
 
-        // Get TextViews
-        TextView totalsets = view.findViewById(R.id.volume);
-        TextView totalreps = view.findViewById(R.id.totalreps);
-        TextView totalvolume = view.findViewById(R.id.totalvolume);
-        TextView maxweight = view.findViewById(R.id.maxweight);
-        TextView maxreps = view.findViewById(R.id.maxreps);
-        TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
-        TextView name = view.findViewById(R.id.exercise_name);
-        TextView onerepmax = view.findViewById(R.id.onerepmax);
+        // Show Exercise Stats (Not used but decided to leave it there)
+        if(false)
+        {
+            // Prepare to show exercise dialog box
+            LayoutInflater inflater = LayoutInflater.from(ct);
+            View view = inflater.inflate(R.layout.exercise_dialog,null);
+            AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
 
-        // Set Values
+            // Get TextViews
+            TextView totalsets = view.findViewById(R.id.volume);
+            TextView totalreps = view.findViewById(R.id.totalreps);
+            TextView totalvolume = view.findViewById(R.id.totalvolume);
+            TextView maxweight = view.findViewById(R.id.maxweight);
+            TextView maxreps = view.findViewById(R.id.maxreps);
+            TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
+            TextView name = view.findViewById(R.id.exercise_name);
+            TextView onerepmax = view.findViewById(R.id.onerepmax);
 
-        // Double -> Integer
-        int sets = (int)Math.round(Exercises.get(position).getTotalSets());
-        int reps = (int)Math.round(Exercises.get(position).getTotalReps());
-        int max_reps = (int)Math.round(Exercises.get(position).getMaxReps());
+            // Set Values
 
-        totalsets.setText(String.valueOf(sets));
-        totalreps.setText(String.valueOf(reps));
-        maxreps.setText(String.valueOf(max_reps));
+            // Double -> Integer
+            int sets = (int)Math.round(Exercises.get(position).getTotalSets());
+            int reps = (int)Math.round(Exercises.get(position).getTotalReps());
+            int max_reps = (int)Math.round(Exercises.get(position).getMaxReps());
+
+            totalsets.setText(String.valueOf(sets));
+            totalreps.setText(String.valueOf(reps));
+            maxreps.setText(String.valueOf(max_reps));
 
 
-        totalvolume.setText(Exercises.get(position).getVolume().toString());
-        maxweight.setText(Exercises.get(position).getMaxWeight().toString());
-        onerepmax.setText(Exercises.get(position).getEstimatedOneRepMax().toString());
-        name.setText(Exercises.get(position).getExercise());
-        maxsetvolume.setText(Exercises.get(position).getMaxSetVolume().toString());
+            totalvolume.setText(Exercises.get(position).getVolume().toString());
+            maxweight.setText(Exercises.get(position).getMaxWeight().toString());
+            onerepmax.setText(Exercises.get(position).getEstimatedOneRepMax().toString());
+            name.setText(Exercises.get(position).getExercise());
+            maxsetvolume.setText(Exercises.get(position).getMaxSetVolume().toString());
 
-        // Show Exercise Dialog Box
-        alertDialog.show();
+            // Show Exercise Dialog Box
+            alertDialog.show();
+        }
+
+
 
     }
 

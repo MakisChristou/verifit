@@ -53,7 +53,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Self Explanatory I guess
         initrecyclerView();
 
-        // Add Exercise Activity Specifics
+        // find views
         et_reps = findViewById(R.id.et_reps);
         et_weight = findViewById(R.id.et_weight);
         plus_reps = findViewById(R.id.plus_reps);
@@ -101,8 +101,8 @@ public class AddExerciseActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
         }
 
-
-
+        // Save Data
+        MainActivity.saveData(getApplicationContext());
     }
 
     public void clickClear(View view)
@@ -113,40 +113,55 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     public void clickPlusWeight(View view)
     {
-        Double weight = Double.parseDouble(et_weight.getText().toString());
-        weight = weight + 1;
-        et_weight.setText(weight.toString());
+        if(!et_weight.getText().toString().isEmpty())
+        {
+            Double weight = Double.parseDouble(et_weight.getText().toString());
+            weight = weight + 1;
+            et_weight.setText(weight.toString());
+        }
+
     }
 
     public void clickPlusReps(View view)
     {
-        int reps = Integer.parseInt(et_reps.getText().toString());
-        reps = reps + 1;
-        et_reps.setText(String.valueOf(reps));
+        if(!et_reps.getText().toString().isEmpty())
+        {
+            int reps = Integer.parseInt(et_reps.getText().toString());
+            reps = reps + 1;
+            et_reps.setText(String.valueOf(reps));
+        }
+
     }
 
     public void clickMinusWeight(View view)
     {
-        Double weight = Double.parseDouble(et_weight.getText().toString());
-        weight = weight - 1;
-        et_weight.setText(weight.toString());
+        if(!et_weight.getText().toString().isEmpty())
+        {
+            Double weight = Double.parseDouble(et_weight.getText().toString());
+            weight = weight - 1;
+            et_weight.setText(weight.toString());
+        }
+
     }
 
     public void clickMinusReps(View view)
     {
-        int reps = Integer.parseInt(et_reps.getText().toString());
-        reps = reps - 1;
-        et_reps.setText(String.valueOf(reps));
+        if(!et_reps.getText().toString().isEmpty())
+        {
+            int reps = Integer.parseInt(et_reps.getText().toString());
+            reps = reps - 1;
+            et_reps.setText(String.valueOf(reps));
+        }
+
     }
 
-    // Init Methods
+
     // Handles Intent Stuff
     public void initActivity()
     {
         Intent in = getIntent();
         exercise_name = in.getStringExtra("exercise");
         getSupportActionBar().setTitle(exercise_name);
-
     }
 
     // Updates Local Data Structure

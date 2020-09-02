@@ -3,6 +3,7 @@ package com.example.harderthanlasttime;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -65,18 +66,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         CSVFile csvFile = new CSVFile(inputStream);
         List csvList = csvFile.read();
 
-        // Loads previously saved data
-        // loadData();
+        // Loads Data Structures from shared preferences
+        loadData();
 
         // Update Sets Root Data Structure
-        CSVtoSets(csvList);
+        // CSVtoSets(csvList);
 
         // Update all other Data Structures
-        SetsToEverything();
-
-
-
-
+        // SetsToEverything();
 
 
         // To JSON (for debugging)
@@ -266,9 +263,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         for(int i = 0; i < Workout_Days.size(); i++)
         {
             Calendar calendar = Calendar.getInstance();
-
             Date date = null;
-
             try
             {
                 date = format.parse(Workout_Days.get(i).getDate());
@@ -279,16 +274,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
 
             calendar.setTime(date);
-            events.add(new EventDay(calendar, R.drawable.ic_check_24px, Color.parseColor("#567ad5")));
+            events.add(new EventDay(calendar, R.drawable.ic_brightness_1_8px, Color.parseColor("#567ad5")));
         }
         calendarView.setEvents(events);
     }
 
 
     // Saves Workout_Days Array List in shared preferences
-    public void saveData()
+    // For some reason when I pass the context it works so let's roll with it :D
+    public static void saveData(Context ct)
     {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = ct.getSharedPreferences("shared preferences",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(Workout_Days);
@@ -313,6 +309,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+
+    // Self explanatory I guess
+    public void exportCSV()
+    {
+
+    }
 
     // Navigates to given activity based on the selected menu item
     @Override
