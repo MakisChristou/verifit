@@ -8,12 +8,12 @@
     android:animateLayoutChanges="true">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_diary"
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="0dp"
+        android:backgroundTint="@color/custom_row"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -55,7 +55,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:background="#FFFFFF"
+                android:background="@android:color/transparent"
                 android:clickable="true"
                 android:onClick="hideExercises"
                 android:tint="@color/colorAccent"

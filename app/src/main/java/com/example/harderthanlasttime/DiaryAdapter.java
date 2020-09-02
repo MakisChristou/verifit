@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.text.ParseException;
@@ -66,7 +67,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             e.printStackTrace();
         }
 
-        holder.tv_day.setOnClickListener(new View.OnClickListener() {
+        holder.cardview_diary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -133,6 +134,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
         RecyclerView recyclerView;
         ImageButton expand_button;
+        CardView cardview_diary;
 
         // For Animation
         ViewGroup tcontainer;
@@ -144,6 +146,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             // Find Recycler View Object
             recyclerView = itemView.findViewById(R.id.recycler_view_diary);
             expand_button = itemView.findViewById(R.id.expand_button);
+            cardview_diary = itemView.findViewById(R.id.cardview_diary);
 
             // For Animation
             tcontainer = itemView.findViewById(R.id.constraint_diary);

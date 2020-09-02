@@ -9,6 +9,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_set"
         style="@style/CardView.Light"
+        android:backgroundTint="@color/custom_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

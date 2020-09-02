@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
 
 
-        holder.tv_exercise_name.setOnClickListener(new View.OnClickListener() {
+        holder.cardview_exercise2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -123,6 +124,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         RecyclerView recyclerView;
         ImageButton expandButton;
         View view;
+        CardView cardview_exercise2;
 
         // For Animation
         ViewGroup tcontainer;
@@ -135,6 +137,8 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             expandButton = itemView.findViewById(R.id.expandButton);
             view = itemView.findViewById(R.id.view);
+            cardview_exercise2 = itemView.findViewById(R.id.cardview_exercise2);
+
             // For Animation
             tcontainer = itemView.findViewById(R.id.constraint_day);
 

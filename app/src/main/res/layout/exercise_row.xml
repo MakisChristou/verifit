@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_exercise_1"
-        style="@style/CardView.Light"
+        android:backgroundTint="@color/custom_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -72,6 +72,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
                 android:tint="@color/core_grey_50"
                 app:layout_constraintStart_toEndOf="@+id/exercise_category"
                 app:layout_constraintTop_toBottomOf="@+id/exercise_name"
