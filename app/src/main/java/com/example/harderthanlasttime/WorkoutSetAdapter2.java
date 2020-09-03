@@ -47,7 +47,6 @@ public class WorkoutSetAdapter2 extends RecyclerView.Adapter<WorkoutSetAdapter2.
         int reps = (int)Math.round(Workout_Sets.get(position).getReps());
         holder.tv_reps.setText(String.valueOf(reps));
 
-
         // Updates Edit Texts and Buttons when clicked
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

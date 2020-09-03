@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Gym Log</string>
+    <string name="app_name">Fit Diary</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->

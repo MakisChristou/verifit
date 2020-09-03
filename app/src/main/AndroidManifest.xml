@@ -14,43 +14,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ChartsActivity"
             android:label="Charts">
-
         </activity>
         <activity
             android:name=".CustomExerciseActivity"
-            android:label="Custom Exercise"
-            android:parentActivityName=".ExercisesActivity">
-
+            android:label="Custom Exercise">
         </activity>
         <activity
             android:name=".ExercisesActivity"
-            android:label="Exercises" />
+            android:label="Exercises"/>
         <activity
             android:name=".DayActivity"
-            android:label="Day Activity"
-            android:parentActivityName=".MainActivity" />
+            android:label="Day"/>
         <activity
             android:name=".SettingsActivity"
             android:label="Settings" />
         <activity
             android:name=".CalculatorActivity"
-            android:label="Plate Calculator"
-            android:parentActivityName=".MainActivity" />
+            android:label="Plate Calculator" />
         <activity
             android:name=".MeActivity"
             android:label="Me" />
         <activity
             android:name=".AddExerciseActivity"
-            android:label="Add Exercise"
-            android:parentActivityName=".ExercisesActivity" />
+            android:label="Add Exercise" />
         <activity
             android:name=".DiaryActivity"
             android:label="Diary" />
         <activity
             android:name=".MainActivity"
-            android:label="Month">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

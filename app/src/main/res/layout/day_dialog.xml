@@ -25,10 +25,8 @@
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="20dp"
         android:text="exercises"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/totalexercises"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -179,5 +177,44 @@
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/totalreps"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_statsDay"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:backgroundTint="@color/custom_button1"
+        android:text="Share"
+        android:textAllCaps="false"
+        app:cornerRadius="20dp"
+        app:icon="@drawable/ic_share_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_viewDay"
+        app:layout_constraintTop_toBottomOf="@+id/totalsets13" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_viewDay"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/custom_button1"
+        android:text="Edit"
+        android:textAllCaps="false"
+        app:cornerRadius="20dp"
+        app:icon="@drawable/ic_create_24px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_statsDay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalsets13" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

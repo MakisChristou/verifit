@@ -2,16 +2,14 @@ package com.example.harderthanlasttime;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.transition.Slide;
-import android.transition.TransitionManager;
-import android.view.Gravity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -98,6 +96,9 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         TextView totalvolume = view.findViewById(R.id.totalvolume);
         TextView date = view.findViewById(R.id.exercise_name);
         TextView totalexercises = view.findViewById(R.id.totalexercises);
+        Button bt_viewDay = view.findViewById(R.id.bt_viewDay);
+        Button bt_statsDay = view.findViewById(R.id.bt_statsDay);
+
 
         // Crash Here
         totalsets.setText(String.valueOf(Workout_Days.get(position).getSets().size()));
@@ -121,6 +122,27 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         }catch (ParseException e){
             e.printStackTrace();
         }
+
+        // Goto Day Activity
+        bt_viewDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ct,DayActivity.class);
+
+                // Update Date Selected in MainActivity
+                MainActivity.date_selected = Workout_Days.get(position).getDate();
+                in.putExtra("date",Workout_Days.get(position).getDate());
+                ct.startActivity(in);
+            }
+        });
+
+        // View Day Stats
+        bt_statsDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Day Stats!");
+            }
+        });
 
 
 

@@ -63,35 +63,30 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
 
         if(item.getItemId() == R.id.home)
         {
-            System.out.println("Home");
             Intent in = new Intent(this,MainActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
         else if(item.getItemId() == R.id.exercises)
         {
-            System.out.println("Diary");
             Intent in = new Intent(this,ExercisesActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
         else if(item.getItemId() == R.id.diary)
         {
-            System.out.println("Diary");
             Intent in = new Intent(this,DiaryActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
         else if(item.getItemId() == R.id.charts)
         {
-            System.out.println("Diary");
             Intent in = new Intent(this,ChartsActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
         else if(item.getItemId() == R.id.me)
         {
-            System.out.println("Settings");
             Intent in = new Intent(this,MeActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);

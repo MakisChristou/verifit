@@ -48,7 +48,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exercise);
 
-
         // find views
         et_reps = findViewById(R.id.et_reps);
         et_weight = findViewById(R.id.et_weight);

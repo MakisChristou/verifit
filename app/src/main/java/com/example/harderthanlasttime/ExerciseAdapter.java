@@ -40,7 +40,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     {
         // Change TextView text
         holder.tv_exercise_name.setText(Exercises.get(position).getName());
-        holder.tv_exercise_category.setText(Exercises.get(position).getCategory());
         holder.tv_exercise_bodypart.setText(Exercises.get(position).getBodyPart());
 
         // Goto Add Exercise Activity
@@ -67,7 +66,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     public class MyViewHolder extends  RecyclerView.ViewHolder
     {
         TextView tv_exercise_name;
-        TextView tv_exercise_category;
         TextView tv_exercise_bodypart;
         CardView cardview_exercise_1;
 
@@ -76,7 +74,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_exercise_name = itemView.findViewById(R.id.exercise_name);
-            tv_exercise_category = itemView.findViewById(R.id.exercise_category);
             tv_exercise_bodypart = itemView.findViewById(R.id.exercise_bodypart);
             cardview_exercise_1 = itemView.findViewById(R.id.cardview_exercise_1);
         }

@@ -40,11 +40,8 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         // Change TextView text
         holder.tv_exercise_name.setText(Exercises.get(position).getExercise());
 
-        // Double -> Integer
-        int reps = (int)Math.round(Exercises.get(position).getTotalReps());
         int sets = (int)Math.round(Exercises.get(position).getTotalSets());
 
-        holder.reps.setText(String.valueOf(reps));
         holder.sets.setText(String.valueOf(sets));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -109,16 +106,12 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         TextView tv_exercise_name;
         CardView cardView;
         TextView sets;
-        TextView reps;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_exercise_name = itemView.findViewById(R.id.day);
             cardView = itemView.findViewById(R.id.cardview_exercise);
             sets = itemView.findViewById(R.id.sets);
-            reps = itemView.findViewById(R.id.reps);
-
-
         }
     }
 }
