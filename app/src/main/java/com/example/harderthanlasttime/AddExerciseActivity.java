@@ -2,10 +2,8 @@ package com.example.harderthanlasttime;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,14 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.sql.Array;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class AddExerciseActivity extends AppCompatActivity {
 
@@ -88,14 +80,12 @@ public class AddExerciseActivity extends AppCompatActivity {
             if(position >= 0)
             {
                 MainActivity.Workout_Days.get(position).addSet(workoutSet);
-
             }
             else
             {
                 WorkoutDay workoutDay = new WorkoutDay();
                 workoutDay.addSet(workoutSet);
                 MainActivity.Workout_Days.add(workoutDay);
-
             }
 
             // Update Local Data Structure

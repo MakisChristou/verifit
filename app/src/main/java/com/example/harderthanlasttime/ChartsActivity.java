@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -25,6 +26,13 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         setContentView(R.layout.activity_charts);
 
 
+         barChart();
+
+    }
+
+
+    public void barChart()
+    {
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setSelectedItemId(R.id.charts);
@@ -33,7 +41,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
         // Bar Chart Example
         BarChart barChart = findViewById(R.id.barChart);
-        // Intercation Customization
+        // Interaction Customization
         barChart.setTouchEnabled(false);
         barChart.setDragEnabled(false);
         barChart.setScaleEnabled(false);
@@ -60,10 +68,6 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         barChart.getDescription().setText("");
         barChart.invalidate();
         barChart.animateY(500);
-
-
-
-
 
     }
 
