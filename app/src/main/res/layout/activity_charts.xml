@@ -23,4 +23,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
 
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.github.mikephil.charting.charts.BarChart>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
