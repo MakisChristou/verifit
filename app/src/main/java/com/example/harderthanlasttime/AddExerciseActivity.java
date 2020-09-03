@@ -150,6 +150,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         }
     }
 
+    // Do I even need to explain this?
     public void clickPlusWeight(View view)
     {
         if(!et_weight.getText().toString().isEmpty())
