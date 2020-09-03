@@ -159,7 +159,7 @@
         app:layout_constraintStart_toEndOf="@+id/minus_reps"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_clear"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -173,13 +173,14 @@
         android:onClick="clickClear"
         android:text="Clear"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
+        app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_save"
         app:layout_constraintTop_toBottomOf="@+id/et_reps" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -195,6 +196,7 @@
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
+        app:cornerRadius="20dp"
         app:layout_constraintEnd_toStartOf="@+id/bt_clear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_reps" />
@@ -202,8 +204,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

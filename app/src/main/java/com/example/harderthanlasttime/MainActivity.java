@@ -272,9 +272,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             {
                 e.printStackTrace();
             }
-
             calendar.setTime(date);
-            events.add(new EventDay(calendar, R.drawable.ic_brightness_1_8px, Color.parseColor("#567ad5")));
+            events.add(new EventDay(calendar, R.drawable.ic_check_24px, Color.parseColor("#567ad5")));
         }
         calendarView.setEvents(events);
     }
