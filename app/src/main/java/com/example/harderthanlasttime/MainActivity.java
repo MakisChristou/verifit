@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         initActivity();
 
         // Start Loading Animation
@@ -190,8 +189,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             {
 
             }
-
         }
+
+        loadData();
     }
 
 
@@ -416,6 +416,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
+    // Read CSV from internal storage
     public void readCSV(String filename)
     {
         List csvList = new ArrayList();
@@ -438,48 +439,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         saveData(this);
         updateCalendar();
     }
-
-
-    // Reads a text file in internal storage
-    public void readCSV2(String filename)
-    {
-
-        StringBuilder sb = new StringBuilder();
-        try
-        {
-            File textFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename);
-            FileInputStream fis = new FileInputStream(textFile);
-
-            if(fis != null)
-            {
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader buff = new BufferedReader(isr);
-
-                String line = null;
-
-                while((line = buff.readLine()) != null)
-                {
-                    System.out.println(line);
-                    sb.append(line + "\n");
-
-                }
-                fis.close();
-            }
-            else
-            {
-                System.out.println("File is empty");
-            }
-
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-
-
-
-    }
-
 
 
     // Returns the exercise category if exists, else it returns an empty string
