@@ -29,8 +29,6 @@ public class DayActivity extends AppCompatActivity {
 
         // Self Explanatory I guess
         initActivity();
-
-
     }
 
 

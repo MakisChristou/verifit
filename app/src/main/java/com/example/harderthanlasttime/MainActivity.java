@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         initActivity();
 
+
+
         // Start Loading Animation
         // LoadingDialog ld = new LoadingDialog(MainActivity.this);
         // ld.startLoadingAnimation();
@@ -102,8 +105,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         // To JSON (for debugging)
-        // Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        // System.out.println(gson.toJson(Workout_Days));
+//         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//         System.out.println(gson.toJson(Workout_Days));
 
 
         // Bottom Navigation Bar Intents
@@ -422,22 +425,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         List csvList = new ArrayList();
 
         try {
+            System.out.println(Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+ filename);
             File textFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename);
             FileInputStream inputStream = new FileInputStream(textFile);
 
             CSVFile csvFile = new CSVFile(inputStream);
             csvList = csvFile.read();
+
+
+            // Here is where the magic happens
+            CSVtoSets(csvList);
+            SetsToEverything();
+            saveData(this);
+            updateCalendar();
+
         }
         catch (IOException e)
         {
             System.out.println(e.getMessage());
+            Toast.makeText(getApplicationContext(), "Could not locate file",Toast.LENGTH_SHORT).show();
+
+            // Clear everything just in case
+            this.Workout_Days.clear();
+            this.KnownExercises.clear();
+            this.Sets.clear();
+            this.Days.clear();
         }
 
-        // Here is where the magic happens
-        CSVtoSets(csvList);
-        SetsToEverything();
-        saveData(this);
-        updateCalendar();
     }
 
 

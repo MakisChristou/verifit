@@ -48,10 +48,15 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         {
             Toast.makeText(this, "Empty Diary", Toast.LENGTH_SHORT).show();
         }
+        else
+        {
+            // Crash Otherwise
+            diaryAdapter = new DiaryAdapter(this, MainActivity.Workout_Days);
+            recyclerView.setAdapter(diaryAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
 
-        diaryAdapter = new DiaryAdapter(this, MainActivity.Workout_Days);
-        recyclerView.setAdapter(diaryAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
     }
 
