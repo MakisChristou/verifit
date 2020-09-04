@@ -1,18 +1,28 @@
 package com.example.harderthanlasttime;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CalendarView;
 import android.widget.Toast;
 
@@ -26,8 +36,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.security.spec.EncodedKeySpec;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,12 +71,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // initialized with hardcoded exercises
     public static String date_selected;
 
+    // For File I/O permissions
+    public static final int READ_REQUEST_CODE = 42;
+    public static final int PERMISSION_REQUEST_STORAGE = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Rename top bar to something sensible
         getSupportActionBar().setTitle("Calendar");
+
+
+        permissionStuff();
+
+        fileSearch();
+
+
 
         // Start Loading Animation
         // LoadingDialog ld = new LoadingDialog(MainActivity.this);
@@ -70,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         List csvList = csvFile.read();
 
         // Loads Data Structures from shared preferences
-        loadData();
+        // loadData();
 
         // Update Sets Root Data Structure
         // CSVtoSets(csvList);
@@ -143,6 +173,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    // Ask For File Permissions
+    public void permissionStuff()
+    {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == PERMISSION_REQUEST_STORAGE)
+        {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                System.out.println("Permission Granted!");
+            }
+            else
+            {
+                System.out.println("Permission Not Granted!");
+                finish();
+            }
+        }
+    }
 
     // Returns index of day
     public static int getDayPosition(String Date)
@@ -157,6 +211,32 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return -1;
     }
 
+
+    // Select File from file manager
+    private void fileSearch()
+    {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/*");
+        startActivityForResult(intent,READ_REQUEST_CODE);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK)
+        {
+            if(data != null)
+            {
+                Uri uri = data.getData();
+                String filename = uri.getPath();
+                filename = filename.substring(filename.indexOf(":") + 1);
+                System.out.println(filename);
+                readCSV(filename);
+            }
+        }
+    }
 
     // Converts CSV file to Internally used Dat Structure
     public void CSVtoSets(List csvList)
@@ -311,11 +391,48 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
-    // Self explanatory I guess
-    public void exportCSV()
+    // Reads a text file in internal storage
+    public void readCSV(String filename)
     {
 
+        StringBuilder sb = new StringBuilder();
+        try
+        {
+            System.out.println(Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
+            File textFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename);
+            FileInputStream fis = new FileInputStream(textFile);
+
+            if(fis != null)
+            {
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader buff = new BufferedReader(isr);
+
+                String line = null;
+
+                while((line = buff.readLine()) != null)
+                {
+                    System.out.println(line);
+                    sb.append(line + "\n");
+
+                }
+                fis.close();
+            }
+            else
+            {
+                System.out.println("File is empty");
+            }
+
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+
+
     }
+
+
 
     // Returns the exercise category if exists, else it returns an empty string
     public static String getexerciseCategory(String Exercise)

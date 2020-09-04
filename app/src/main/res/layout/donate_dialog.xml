@@ -33,23 +33,6 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_vericoin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginBottom="30dp"
-        android:text="Vericoin"
-        app:cornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_monero"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_bitcoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,26 +43,30 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="30dp"
         android:text="Bitcoin"
+        android:textAllCaps="false"
         app:cornerRadius="20dp"
+        app:icon="@drawable/currency_btc"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_monero"
+        app:layout_constraintEnd_toStartOf="@+id/bt_ethereum"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_monero"
+        android:id="@+id/bt_ethereum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
         android:layout_marginBottom="30dp"
-        android:text="Monero"
+        android:text="Ethereum"
+        android:textAllCaps="false"
         app:cornerRadius="20dp"
+        app:icon="@drawable/ethereum"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_vericoin"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_bitcoin"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 

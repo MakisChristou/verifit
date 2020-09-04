@@ -1,16 +1,12 @@
 package com.example.harderthanlasttime;
 
 import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
             // Backup & Restore
             if(key.equals("importcsv"))
             {
-                System.out.println("importcsv");
+
             }
             else if(key.equals("exportcsv"))
             {
@@ -142,8 +138,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
             Button bt_bitcoin = view.findViewById(R.id.bt_bitcoin);
-            Button bt_monero = view.findViewById(R.id.bt_monero);
-            Button bt_vericoin = view.findViewById(R.id.bt_vericoin);
+            Button bt_monero = view.findViewById(R.id.bt_ethereum);
 
             bt_bitcoin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -154,14 +149,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 
             bt_monero.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-
-
-            bt_vericoin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
