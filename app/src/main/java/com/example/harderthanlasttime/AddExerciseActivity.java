@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -69,8 +71,8 @@ public class AddExerciseActivity extends AppCompatActivity {
             // Create New Set Object
             Double reps = Double.parseDouble(et_reps.getText().toString());
             Double weight = Double.parseDouble(et_weight.getText().toString());
-            WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name,"Unknown Category",reps,weight);
-
+            WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getexerciseCategory(exercise_name),reps,weight);
+            System.out.println(workoutSet.getCategory());
             // If day was previously saved find it and add the set
             // Else create new day object and add the set to it
             // Update Data ?

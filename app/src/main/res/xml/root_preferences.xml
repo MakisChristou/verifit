@@ -53,17 +53,10 @@
             app:useSimpleSummaryProvider="false" />
 
         <Preference
-            app:key="donatebitcoin"
-            app:summary="1Makis5hJTed3A68Nky9dsiXMwCJtg4vN3"
-            app:title="Donate Bitcoin"
+            app:key="donate"
+            app:summary="If you like this app consider donating"
+            app:title="Donate"
             app:useSimpleSummaryProvider="false" />
-
-        <Preference
-            app:key="donateverium"
-            app:summary="VEPR4c1AC6dJARs7oAEhwqDMwowuAU2yWV"
-            app:title="Donate Verium"
-            app:useSimpleSummaryProvider="false" />
-
 
 
         <Preference

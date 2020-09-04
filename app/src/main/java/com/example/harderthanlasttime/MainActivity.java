@@ -223,33 +223,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         KnownExercises.clear();
         // Some hardcoded Exercises
-        KnownExercises.add(new Exercise("Flat Barbell Bench Press","Compound","Chest",""));
-        KnownExercises.add(new Exercise("Incline Barbell Bench Press","Compound","Chest",""));
-        KnownExercises.add(new Exercise("Decline Barbell Bench Press","Compound","Chest",""));
-        KnownExercises.add(new Exercise("Flat Dumbell Bench Press","Compound","Chest",""));
-        KnownExercises.add(new Exercise("Incline Dumbell Bench Press","Compound","Chest",""));
-        KnownExercises.add(new Exercise("Decline Dumbell Bench Press","Compound","Chest",""));
-        KnownExercises.add(new Exercise("Chin Up","Compound","Back",""));
-        KnownExercises.add(new Exercise("Seated Dumbell Press","Compound","Shoulders",""));
-        KnownExercises.add(new Exercise("Ring Dip","Compound","Chest",""));
-        KnownExercises.add(new Exercise("Lateral Cable Raise","Isolation","Shoulders",""));
-        KnownExercises.add(new Exercise("Lateral Dumbell Raise","Isolation","Shoulders",""));
-        KnownExercises.add(new Exercise("Barbell Curl","Compound","Biceps",""));
-        KnownExercises.add(new Exercise("Tricep Extension","Isolation","Triceps",""));
-        KnownExercises.add(new Exercise("Squat","Compound","Legs",""));
-        KnownExercises.add(new Exercise("Leg Extension","Isolation","Legs",""));
-        KnownExercises.add(new Exercise("Hammstring Leg Curl","Isolation","Legs",""));
-        KnownExercises.add(new Exercise("Deadlift","Compound","Back",""));
-        KnownExercises.add(new Exercise("Sumo Deadlift","Compound","Back",""));
-        KnownExercises.add(new Exercise("Seated Machine Chest Press","Compound","Chest",""));
-        KnownExercises.add(new Exercise("Seated Machine Shoulder Press","Compound","Shoulders",""));
-        KnownExercises.add(new Exercise("Seated Calf Raise","Isolation","Legs",""));
-        KnownExercises.add(new Exercise("Donkey Calf Raise","Isolation","Legs",""));
-        KnownExercises.add(new Exercise("Standing Calf Raise","Isolation","Legs",""));
-        KnownExercises.add(new Exercise("Seated Machine Curl","Isolation","Biceps",""));
-        KnownExercises.add(new Exercise("Lat Pulldown","Compound","Back",""));
-        KnownExercises.add(new Exercise("Pull Up","Compound","Back",""));
-        KnownExercises.add(new Exercise("Push Up","Compound","Chest",""));
+        KnownExercises.add(new Exercise("Flat Barbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Incline Barbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Decline Barbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Flat Dumbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Incline Dumbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Decline Dumbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Chin Up","Back"));
+        KnownExercises.add(new Exercise("Seated Dumbell Press","Shoulders"));
+        KnownExercises.add(new Exercise("Ring Dip","Chest"));
+        KnownExercises.add(new Exercise("Lateral Cable Raise","Shoulders"));
+        KnownExercises.add(new Exercise("Lateral Dumbell Raise","Shoulders"));
+        KnownExercises.add(new Exercise("Barbell Curl","Biceps"));
+        KnownExercises.add(new Exercise("Tricep Extension","Triceps"));
+        KnownExercises.add(new Exercise("Squat","Legs"));
+        KnownExercises.add(new Exercise("Leg Extension","Legs"));
+        KnownExercises.add(new Exercise("Hammstring Leg Curl","Legs"));
+        KnownExercises.add(new Exercise("Deadlift","Back"));
+        KnownExercises.add(new Exercise("Sumo Deadlift","Back"));
+        KnownExercises.add(new Exercise("Seated Machine Chest Press","Chest"));
+        KnownExercises.add(new Exercise("Seated Machine Shoulder Press","Shoulders"));
+        KnownExercises.add(new Exercise("Seated Calf Raise","Legs"));
+        KnownExercises.add(new Exercise("Donkey Calf Raise","Legs"));
+        KnownExercises.add(new Exercise("Standing Calf Raise","Legs"));
+        KnownExercises.add(new Exercise("Seated Machine Curl","Biceps"));
+        KnownExercises.add(new Exercise("Lat Pulldown","Back"));
+        KnownExercises.add(new Exercise("Pull Up","Back"));
+        KnownExercises.add(new Exercise("Push Up","Chest"));
     }
 
     // Update Workouts on Calendar
@@ -315,6 +315,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void exportCSV()
     {
 
+    }
+
+    // Returns the exercise category if exists, else it returns an empty string
+    public static String getexerciseCategory(String Exercise)
+    {
+        for(int i = 0; i < KnownExercises.size(); i++)
+        {
+            if(KnownExercises.get(i).getName().equals(Exercise))
+            {
+                return KnownExercises.get(i).getBodyPart();
+            }
+        }
+        return "";
     }
 
     // Navigates to given activity based on the selected menu item

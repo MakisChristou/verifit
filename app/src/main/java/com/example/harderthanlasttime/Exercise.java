@@ -4,18 +4,14 @@ public class Exercise {
 
     // Attributes
     private String Name;
-    private String Category;
     private String BodyPart;
-    private String Comments;
 
 
     // Methods
-    public Exercise(String name, String category, String bodypart, String comments)
+    public Exercise(String name, String bodypart)
     {
         this.Name = name;
         this.BodyPart = bodypart;
-        this.Category = category;
-        this.Comments = comments;
     }
 
     public String getBodyPart() {
@@ -34,19 +30,4 @@ public class Exercise {
         Name = name;
     }
 
-    public String getCategory() {
-        return Category;
-    }
-
-    public void setCategory(String category) {
-        Category = category;
-    }
-
-    public String getComments() {
-        return Comments;
-    }
-
-    public void setComments(String comments) {
-        Comments = comments;
-    }
 }
