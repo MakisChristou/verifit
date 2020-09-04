@@ -47,7 +47,9 @@ public class SettingsActivity extends AppCompatActivity {
             // Backup & Restore
             if(key.equals("importcsv"))
             {
-
+                 Intent in = new Intent(getActivity(),MainActivity.class);
+                 in.putExtra("doit","importcsv");
+                 startActivity(in);
             }
             else if(key.equals("exportcsv"))
             {

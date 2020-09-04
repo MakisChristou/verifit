@@ -80,15 +80,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Rename top bar to something sensible
-        getSupportActionBar().setTitle("Calendar");
 
-
-        permissionStuff();
-
-        fileSearch();
-
-
+        initActivity();
 
         // Start Loading Animation
         // LoadingDialog ld = new LoadingDialog(MainActivity.this);
@@ -173,7 +166,36 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    // Ask For File Permissions
+
+    // You guessed it!
+    public void initActivity()
+    {
+        // Rename top bar to something sensible
+        getSupportActionBar().setTitle("Calendar");
+
+        // From Settings Activity when importing CSV
+        Intent in = getIntent();
+
+        String WhatToDO = null;
+        WhatToDO = in.getStringExtra("doit");
+
+        if(WhatToDO != null)
+        {
+            if(WhatToDO.equals("importcsv"))
+            {
+                permissionStuff();
+                fileSearch();
+            }
+            else if(WhatToDO.equals("exportcsv"))
+            {
+
+            }
+
+        }
+    }
+
+
+    // Ask For File I/O Permissions
     public void permissionStuff()
     {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
@@ -182,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    // Get the results after user gives/denies permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == PERMISSION_REQUEST_STORAGE)
@@ -198,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+
     // Returns index of day
     public static int getDayPosition(String Date)
     {
@@ -212,8 +236,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
-    // Select File from file manager
-    private void fileSearch()
+    // Select a file using the build in file manager
+    public void fileSearch()
     {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -222,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
+    // When File explorer stops this function runs
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -232,8 +257,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Uri uri = data.getData();
                 String filename = uri.getPath();
                 filename = filename.substring(filename.indexOf(":") + 1);
-                System.out.println(filename);
                 readCSV(filename);
+                saveData(this);
             }
         }
     }
@@ -391,14 +416,37 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
-    // Reads a text file in internal storage
     public void readCSV(String filename)
+    {
+        List csvList = new ArrayList();
+
+        try {
+            File textFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename);
+            FileInputStream inputStream = new FileInputStream(textFile);
+
+            CSVFile csvFile = new CSVFile(inputStream);
+            csvList = csvFile.read();
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        // Here is where the magic happens
+        CSVtoSets(csvList);
+        SetsToEverything();
+        saveData(this);
+        updateCalendar();
+    }
+
+
+    // Reads a text file in internal storage
+    public void readCSV2(String filename)
     {
 
         StringBuilder sb = new StringBuilder();
         try
         {
-            System.out.println(Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
             File textFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename);
             FileInputStream fis = new FileInputStream(textFile);
 
