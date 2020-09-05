@@ -2,9 +2,12 @@ package com.example.harderthanlasttime;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -37,12 +40,53 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
+        String exercise_name = Exercises.get(position).getExercise();
+
         // Change TextView text
-        holder.tv_exercise_name.setText(Exercises.get(position).getExercise());
+        holder.tv_exercise_name.setText(exercise_name);
 
         int sets = (int)Math.round(Exercises.get(position).getTotalSets());
 
         holder.sets.setText(String.valueOf(sets));
+
+        String exercise_category = MainActivity.getexerciseCategory(exercise_name);
+
+        if(exercise_category.equals("Shoulders"))
+        {
+            holder.imageView.setColorFilter(Color.argb(255, 37, 90, 160)); // Primary Color
+        }
+        else if(exercise_category.equals("Back"))
+        {
+            holder.imageView.setColorFilter(Color.argb(255, 40, 176, 192));
+        }
+        else if(exercise_category.equals("Chest"))
+        {
+            holder.imageView.setColorFilter(Color.argb(255, 	92, 88, 157));
+        }
+        else if(exercise_category.equals("Biceps"))
+        {
+            holder.imageView.setColorFilter(Color.argb(255, 	255, 50, 50));
+        }
+        else if(exercise_category.equals("Triceps"))
+        {
+            holder.imageView.setColorFilter(Color.argb(255,    204, 154, 0));
+        }
+        else if(exercise_category.equals("Legs"))
+        {
+            holder.imageView.setColorFilter(Color.argb(255, 	240, 231, 211));
+        }
+        else if(exercise_category.equals("Abs"))
+        {
+            holder.imageView.setColorFilter(Color.argb(255, 	255, 153, 171));
+        }
+        else
+        {
+            holder.imageView.setColorFilter(Color.argb(255, 	52, 58, 64)); // Grey AF
+        }
+
+
+
+
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,12 +150,14 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         TextView tv_exercise_name;
         CardView cardView;
         TextView sets;
+        ImageView imageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_exercise_name = itemView.findViewById(R.id.day);
             cardView = itemView.findViewById(R.id.cardview_exercise);
             sets = itemView.findViewById(R.id.sets);
+            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 }

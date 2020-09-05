@@ -437,7 +437,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises.add(new Exercise("Push Up","Chest"));
     }
 
-    // Update Workouts on Calendar
+    // Update Workouts on Calendar (selected days not events for performance's sake!)
     public void updateCalendar()
     {
 
@@ -477,9 +477,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     // Returns hex string based on the exercise category
-    public static String getCategoryColor(String category)
+    public static String getCategoryColor(String exercise_name)
     {
 
+        for(int i = 0; i < KnownExercises.size(); i++)
+        {
+            if(KnownExercises.get(i).getName().equals(exercise_name))
+            {
+                return KnownExercises.get(i).getBodyPart();
+            }
+        }
+        return "";
     }
 
 
