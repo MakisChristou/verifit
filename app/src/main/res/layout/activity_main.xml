@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,19 +9,30 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alwaysDrawnWithCache="false"
-        android:animationCache="false"
-        android:fitsSystemWindows="false"
-        android:overScrollMode="ifContentScrolls"
-        android:scrollbarAlwaysDrawVerticalTrack="false"
-        android:visibility="gone"
-        app:headerColor="@color/cardview_dark_background">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:hapticFeedbackEnabled="false"
+        android:isScrollContainer="true"
+        android:keepScreenOn="false"
+        android:soundEffectsEnabled="false"
+        android:visibility="visible"
+        app:datePicker="false"
+        app:daysLabelsColor="@color/core_black"
+        app:eventsEnabled="true"
+        app:headerColor="@android:color/white"
+        app:headerLabelColor="@android:color/black"
+        app:highlightedDaysLabelsColor="@color/colorAccent"
+        app:selectionColor="@color/core_ultramarine_light"
+        app:swipeEnabled="true"
+        app:todayLabelColor="@color/colorPrimary"
+        app:type="many_days_picker">
 
     </com.applandeo.materialcalendarview.CalendarView>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
@@ -37,4 +49,4 @@
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_navigation_menu" />
 
-</RelativeLayout>
+</LinearLayout>

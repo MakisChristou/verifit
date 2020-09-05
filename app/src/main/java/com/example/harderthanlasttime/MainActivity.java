@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -439,6 +441,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void updateCalendar()
     {
 
+        // Let's See
+        List<Calendar> calendars = new ArrayList<>();
+
         // Parse Data Structure and obtain workout days
         List<EventDay> events = new ArrayList<>();
 
@@ -459,12 +464,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             {
                 e.printStackTrace();
             }
+
             calendar.setTime(date);
+            calendars.add(calendar);
+
             events.add(new EventDay(calendar, R.drawable.ic_check_24px, Color.parseColor("#567ad5")));
-
-
         }
-        calendarView.setEvents(events);
+
+        //calendarView.setEvents(events);
+        calendarView.setSelectedDates(calendars);
+    }
+
+
+    // Returns hex string based on the exercise category
+    public static String getCategoryColor(String category)
+    {
+
     }
 
 
