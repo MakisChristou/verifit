@@ -36,7 +36,13 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
 
+        long start = System.currentTimeMillis();
+
         initActivity();
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Diary Activity: " + timeElapsed);
 
     }
 

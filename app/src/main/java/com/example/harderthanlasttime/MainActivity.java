@@ -69,8 +69,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        long start = System.currentTimeMillis();
+
+
         // Hacky way to have the same code run in onRestart() as well
         onCreateStuff();
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Main Activity: " + timeElapsed);
 
     }
 

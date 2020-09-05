@@ -3,7 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="30dp"
+        android:text="EUR"
+        android:textAllCaps="false"
+        app:cornerRadius="20dp"
+        app:icon="@drawable/currency_eur"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_litecoin"
+        app:layout_constraintTop_toBottomOf="@+id/bt_bitcoin"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/exercise_name"
@@ -50,14 +70,23 @@
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_bitcoin2"
+        android:id="@+id/bt_litecoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="VRC"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="30dp"
+        android:text="LTC"
         android:textAllCaps="false"
         app:cornerRadius="20dp"
-        tools:layout_editor_absoluteX="102dp"
-        tools:layout_editor_absoluteY="170dp" />
+        app:icon="@drawable/litecoin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_other"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_bitcoin" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_ethereum"

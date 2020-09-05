@@ -17,7 +17,7 @@
         android:fitsSystemWindows="false"
         android:overScrollMode="ifContentScrolls"
         android:scrollbarAlwaysDrawVerticalTrack="false"
-        android:visibility="visible"
+        android:visibility="gone"
         app:headerColor="@color/cardview_dark_background">
 
     </com.applandeo.materialcalendarview.CalendarView>

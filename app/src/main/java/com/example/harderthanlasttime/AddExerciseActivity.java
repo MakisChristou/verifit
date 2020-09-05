@@ -62,6 +62,8 @@ public class AddExerciseActivity extends AppCompatActivity {
     // Button On Click Methods
     public void clickSave(View view)
     {
+        long start = System.currentTimeMillis();
+
         if(et_weight.getText().toString().isEmpty() || et_reps.getText().toString().isEmpty())
         {
             Toast.makeText(getApplicationContext(),"Please write Weight and Reps",Toast.LENGTH_SHORT).show();
@@ -92,13 +94,17 @@ public class AddExerciseActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
         }
 
-        // Actually Save Changes in shared preferences
-        MainActivity.saveData(getApplicationContext());
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Save Data Button: " + timeElapsed);
     }
 
     // Clear / Delete
     public void clickClear(View view)
     {
+        long start = System.currentTimeMillis();
+
         if(Todays_Exercise_Sets.isEmpty())
         {
             et_reps.setText("");
@@ -131,12 +137,25 @@ public class AddExerciseActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(),"Set Deleted",Toast.LENGTH_SHORT).show();
 
+            // Inefficient
             // Actually Save Changes in shared preferences
-            MainActivity.saveData(getApplicationContext());
+//            MainActivity.saveData(getApplicationContext());
 
             // Update Local Data Structure
             updateTodaysExercises();
         }
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Clear Data Button: " + timeElapsed);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Actually Save Changes in shared preferences
+        MainActivity.saveData(getApplicationContext());
     }
 
     // Do I even need to explain this?
