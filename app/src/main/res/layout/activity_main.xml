@@ -12,9 +12,12 @@
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:alwaysDrawnWithCache="false"
+        android:animationCache="false"
         android:fitsSystemWindows="false"
         android:overScrollMode="ifContentScrolls"
         android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:visibility="visible"
         app:headerColor="@color/cardview_dark_background">
 
     </com.applandeo.materialcalendarview.CalendarView>

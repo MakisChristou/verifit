@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -401,6 +402,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Update Workouts on Calendar
     public void updateCalendar()
     {
+
         // Parse Data Structure and obtain workout days
         List<EventDay> events = new ArrayList<>();
 
@@ -410,6 +412,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Parse Workout Days
         for(int i = 0; i < Workout_Days.size(); i++)
         {
+
             Calendar calendar = Calendar.getInstance();
             Date date = null;
             try
@@ -422,6 +425,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
             calendar.setTime(date);
             events.add(new EventDay(calendar, R.drawable.ic_check_24px, Color.parseColor("#567ad5")));
+
+
         }
         calendarView.setEvents(events);
     }
