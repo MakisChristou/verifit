@@ -39,11 +39,10 @@
             app:title="Theme"
             app:useSimpleSummaryProvider="false" />
 
-
         <Preference
             app:key="github"
-            app:summary="Get the source code from Github"
-            app:title="Get Source Code"
+            app:summary="Contributions are always welcome"
+            app:title="Source Code"
             app:useSimpleSummaryProvider="false" />
 
         <Preference

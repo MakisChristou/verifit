@@ -21,6 +21,7 @@ public class DayActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     public WorkoutExerciseAdapter2 workoutExerciseAdapter;
+    String date_clicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class DayActivity extends AppCompatActivity {
         // From Main Activity
         Intent mIntent = getIntent();
         Bundle extras = mIntent.getExtras();
-        String date_clicked = extras.getString("date");
+        date_clicked = extras.getString("date");
 
         //Date Stuff
         SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
@@ -81,6 +82,15 @@ public class DayActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    // When back button is pressed by another app
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        // Self Explanatory I guess
+        initActivity();
     }
 
     // Menu Methods

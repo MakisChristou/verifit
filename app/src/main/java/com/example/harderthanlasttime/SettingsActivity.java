@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,9 +48,39 @@ public class SettingsActivity extends AppCompatActivity {
             // Backup & Restore
             if(key.equals("importcsv"))
             {
-                 Intent in = new Intent(getActivity(),MainActivity.class);
-                 in.putExtra("doit","importcsv");
-                 startActivity(in);
+
+                // Prepare to show exercise dialog box
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View view = inflater.inflate(R.layout.import_warning_dialog,null);
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
+
+
+                Button bt_yes3 = view.findViewById(R.id.bt_yes3);
+                Button bt_no3 = view.findViewById(R.id.bt_no3);
+
+                bt_yes3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        Intent in = new Intent(getActivity(),MainActivity.class);
+                        in.putExtra("doit","importcsv");
+                        startActivity(in);
+                    }
+                });
+
+                bt_no3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        alertDialog.dismiss();
+                    }
+                });
+
+
+                alertDialog.show();
+
+
+
             }
             else if(key.equals("exportcsv"))
             {
@@ -61,7 +92,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("nextsync"))
             {
-
+                Toast.makeText(getContext(),"Not implemented yet",Toast.LENGTH_SHORT);
             }
             // General
             else if(key.equals("theme"))
@@ -75,7 +106,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("version"))
             {
-
+                Toast.makeText(getContext(),"Nothing to see here",Toast.LENGTH_SHORT);
             }
             else if(key.equals("donate"))
             {
@@ -88,7 +119,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("help"))
             {
-
+                Toast.makeText(getContext(),"Not implemented yet",Toast.LENGTH_SHORT);
             }
             return true;
         }
@@ -99,11 +130,11 @@ public class SettingsActivity extends AppCompatActivity {
         {
             // Prepare to show exercise dialog box
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.delete_dialog,null);
+            View view = inflater.inflate(R.layout.delete_all_dialog,null);
             AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
-            Button bt_yes = view.findViewById(R.id.bt_yes);
-            Button bt_no = view.findViewById(R.id.bt_no);
+            Button bt_yes = view.findViewById(R.id.bt_yes3);
+            Button bt_no = view.findViewById(R.id.bt_no3);
 
 
             bt_yes.setOnClickListener(new View.OnClickListener() {

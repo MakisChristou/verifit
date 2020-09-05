@@ -2,9 +2,7 @@ package com.example.harderthanlasttime;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,47 +11,33 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.datepicker.MaterialCalendar;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.security.spec.EncodedKeySpec;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -75,15 +59,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
     public static final int PERMISSION_REQUEST_STORAGE = 1000;
+    public static String EXPORT_FILENAME = "FitBook_Backup";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Hacky way to have the same code run in onRestart() as well
+        onCreateStuff();
+
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        onCreateStuff();
+    }
+
+    public void onCreateStuff()
+    {
         initActivity();
-
-
 
         // Start Loading Animation
         // LoadingDialog ld = new LoadingDialog(MainActivity.this);
@@ -165,13 +163,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         // Stop Loading Animation
         // ld.dismissDialog();
-
     }
 
 
     // You guessed it!
     public void initActivity()
     {
+        setExportBackupName();
+
         // Rename top bar to something sensible
         getSupportActionBar().setTitle("Calendar");
 
@@ -185,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             if(WhatToDO.equals("importcsv"))
             {
-                permissionStuff();
+                askReadPermission();
                 fileSearch();
             }
             else if(WhatToDO.equals("exportcsv"))
@@ -197,13 +196,48 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         loadData();
     }
 
+    // Formats backup name in case of export
+    public void setExportBackupName()
+    {
+        Format formatter = new SimpleDateFormat("_yyyy-MM-dd HH:mm:ss");
+        String str_date = formatter.format(new Date());
+        EXPORT_FILENAME = EXPORT_FILENAME + str_date;
+    }
 
     // Ask For File I/O Permissions
-    public void permissionStuff()
+    public void askReadPermission()
     {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
             requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
+        }
+    }
+
+
+    // Super Inneficient but works
+    public void reverseSortWorkoutDays()
+    {
+        for(int i = 0; i < MainActivity.Workout_Days.size() - 1; i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.size() - i - 1; j++)
+            {
+                String date1 = this.Workout_Days.get(j).getDate();
+                String date2 = this.Workout_Days.get(j+1).getDate();
+                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+
+                try {
+                    Date date_object1 = parser.parse(date1);
+                    Date date_object2 = parser.parse(date2);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                // Date 1 is before date 2
+                if (date1.compareTo(date2) < 0)
+                {
+                    Collections.swap(MainActivity.Workout_Days,i,j);
+                }
+            }
         }
     }
 
@@ -214,11 +248,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
-                System.out.println("Permission Granted!");
+                System.out.println("Read Permission Granted!");
             }
             else
             {
-                System.out.println("Permission Not Granted!");
+                System.out.println("Read Permission Not Granted!");
                 finish();
             }
         }
@@ -236,6 +270,44 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
         return -1;
+    }
+
+    // Returns index of day
+    public static int getReverseDayPosition(String Date)
+    {
+        ArrayList<WorkoutDay>  Reversed_Workout_Days= new ArrayList<WorkoutDay>(Workout_Days);
+        Collections.reverse(Reversed_Workout_Days);
+
+        for(int i = 0; i < Reversed_Workout_Days.size(); i++)
+        {
+            if(Reversed_Workout_Days.get(i).getDate().equals(Date))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+
+    // Haven't Tested this yet
+    public static void deleteWorkoutDay(String Date)
+    {
+        int remove_position = -1;
+
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            if(MainActivity.Workout_Days.get(i).getDate().equals(Date))
+            {
+                remove_position = i;
+            }
+        }
+
+        // If date exists
+        if(remove_position > 0)
+        {
+            MainActivity.Workout_Days.remove(remove_position);
+        }
     }
 
 
@@ -416,6 +488,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Workout_Days = new ArrayList<WorkoutDay>();
         }
 
+        reverseSortWorkoutDays();
     }
 
 
@@ -436,8 +509,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // Here is where the magic happens
             CSVtoSets(csvList);
             SetsToEverything();
-            saveData(this);
             updateCalendar();
+            saveData(this);
 
         }
         catch (IOException e)
@@ -445,13 +518,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             System.out.println(e.getMessage());
             Toast.makeText(getApplicationContext(), "Could not locate file",Toast.LENGTH_SHORT).show();
 
-            // Clear everything just in case
-            this.Workout_Days.clear();
-            this.KnownExercises.clear();
-            this.Sets.clear();
-            this.Days.clear();
+            clearDataStructures();
         }
 
+    }
+
+
+    // Self explanatory
+    private boolean isExternalStorageWritable()
+    {
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void clearDataStructures()
+    {
+        // Clear everything just in case
+        this.Workout_Days.clear();
+        this.KnownExercises.clear();
+        this.Sets.clear();
+        this.Days.clear();
+        saveData(this);
     }
 
 

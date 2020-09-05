@@ -7,14 +7,12 @@
 
     <TextView
         android:id="@+id/exercise_name"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="Delete all saved data?"
+        android:text="This will overwrite all saved data"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +22,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_yes"
+        android:id="@+id/bt_yes3"
         app:cornerRadius="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,12 +35,12 @@
         android:text="Yes"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_no"
+        app:layout_constraintEnd_toStartOf="@+id/bt_no3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_no"
+        android:id="@+id/bt_no3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -54,7 +52,7 @@
         android:textAllCaps="false"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_yes"
+        app:layout_constraintStart_toEndOf="@+id/bt_yes3"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <View

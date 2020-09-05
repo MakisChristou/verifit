@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.utils.FSize;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -34,6 +35,20 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
+
+        initActivity();
+
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initActivity();
+    }
+
+    public void initActivity()
+    {
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -54,8 +69,8 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
             diaryAdapter = new DiaryAdapter(this, MainActivity.Workout_Days);
             recyclerView.setAdapter(diaryAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        }
 
+        }
 
 
     }
