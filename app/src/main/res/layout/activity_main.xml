@@ -26,7 +26,7 @@
         app:headerColor="@android:color/white"
         app:headerLabelColor="@android:color/black"
         app:highlightedDaysLabelsColor="@color/colorAccent"
-        app:selectionColor="@color/core_ultramarine_light"
+        app:selectionColor="@color/core_grey_45"
         app:swipeEnabled="true"
         app:todayLabelColor="@color/colorPrimary"
         app:type="many_days_picker">

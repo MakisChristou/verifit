@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,12 +24,9 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -87,6 +83,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        onCreateStuff();
+    }
+
     // When choosing date from menu
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2)
@@ -114,11 +117,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        onCreateStuff();
-    }
 
     public void onCreateStuff()
     {
@@ -135,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
 
-        // To JSON (for debugging)
+//         To JSON (for debugging)
 //         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 //         System.out.println(gson.toJson(Workout_Days));
 
@@ -160,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         date_selected = dateFormat.format(date_clicked);
 
         // Initialize Exercise Data Structures
-        initExercises();
+        initKnownExercises();
 
         // Get Material Calendar Instance
         calendarView = findViewById(R.id.calendarView);
@@ -277,44 +275,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return -1;
     }
 
-    // Returns index of day
-    public static int getReverseDayPosition(String Date)
-    {
-        ArrayList<WorkoutDay>  Reversed_Workout_Days= new ArrayList<WorkoutDay>(Workout_Days);
-        Collections.reverse(Reversed_Workout_Days);
-
-        for(int i = 0; i < Reversed_Workout_Days.size(); i++)
-        {
-            if(Reversed_Workout_Days.get(i).getDate().equals(Date))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-
-    // Haven't Tested this yet
-    public static void deleteWorkoutDay(String Date)
-    {
-        int remove_position = -1;
-
-        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
-        {
-            if(MainActivity.Workout_Days.get(i).getDate().equals(Date))
-            {
-                remove_position = i;
-            }
-        }
-
-        // If date exists
-        if(remove_position > 0)
-        {
-            MainActivity.Workout_Days.remove(remove_position);
-        }
-    }
-
 
     // Select a file using the build in file manager
     public void fileSearch()
@@ -404,21 +364,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     // Initialized KnownExercises ArrayList with some hardcoded exercises
-    public void initExercises()
+    public void initKnownExercises()
     {
         KnownExercises.clear();
         // Some hardcoded Exercises
         KnownExercises.add(new Exercise("Flat Barbell Bench Press","Chest"));
         KnownExercises.add(new Exercise("Incline Barbell Bench Press","Chest"));
         KnownExercises.add(new Exercise("Decline Barbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Flat Dumbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Incline Dumbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Decline Dumbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Flat Dumbbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Incline Dumbbell Bench Press","Chest"));
+        KnownExercises.add(new Exercise("Decline Dumbbell Bench Press","Chest"));
         KnownExercises.add(new Exercise("Chin Up","Back"));
-        KnownExercises.add(new Exercise("Seated Dumbell Press","Shoulders"));
+        KnownExercises.add(new Exercise("Seated Dumbbell Press","Shoulders"));
         KnownExercises.add(new Exercise("Ring Dip","Chest"));
         KnownExercises.add(new Exercise("Lateral Cable Raise","Shoulders"));
-        KnownExercises.add(new Exercise("Lateral Dumbell Raise","Shoulders"));
+        KnownExercises.add(new Exercise("Lateral Dumbbell Raise","Shoulders"));
         KnownExercises.add(new Exercise("Barbell Curl","Biceps"));
         KnownExercises.add(new Exercise("Tricep Extension","Triceps"));
         KnownExercises.add(new Exercise("Squat","Legs"));
@@ -435,17 +395,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises.add(new Exercise("Lat Pulldown","Back"));
         KnownExercises.add(new Exercise("Pull Up","Back"));
         KnownExercises.add(new Exercise("Push Up","Chest"));
+        KnownExercises.add(new Exercise("Leg Press","Legs"));
+        KnownExercises.add(new Exercise("Push Press","Shoulders"));
+        KnownExercises.add(new Exercise("Dumbbell Curl","Biceps"));
+        KnownExercises.add(new Exercise("Decline Hammer Strength Chest Press","Chest"));
+        KnownExercises.add(new Exercise("Leg Extension Machine","Legs"));
+        KnownExercises.add(new Exercise("Seated Calf Raise Machine","Legs"));
+        KnownExercises.add(new Exercise("Lying Triceps Extension","Triceps"));
+        KnownExercises.add(new Exercise("Cable Curl","Biceps"));
     }
 
-    // Update Workouts on Calendar (selected days not events for performance's sake!)
+
+    // Update Workouts on Calendar
     public void updateCalendar()
     {
 
-        // Let's See
-        List<Calendar> calendars = new ArrayList<>();
+//         Mark only the current year for extra juicy performance increase
+//        Calendar c = calendarView.getCurrentPageDate();
+//        int year = c.get(Calendar.YEAR);
+//        String Year = String.valueOf(year);
 
-        // Parse Data Structure and obtain workout days
-        List<EventDay> events = new ArrayList<>();
+        // Selected Dates
+        List<Calendar> calendars = new ArrayList<>();
 
         // For Date Parsing According to CSV Data
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -453,22 +424,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Parse Workout Days
         for(int i = 0; i < Workout_Days.size(); i++)
         {
-
-            Calendar calendar = Calendar.getInstance();
-            Date date = null;
             try
             {
+                Calendar calendar = Calendar.getInstance();
+                Date date = null;
                 date = format.parse(Workout_Days.get(i).getDate());
+                calendar.setTime(date);
+                calendars.add(calendar);
             }
             catch (ParseException e)
             {
                 e.printStackTrace();
             }
-
-            calendar.setTime(date);
-            calendars.add(calendar);
-
-            events.add(new EventDay(calendar, R.drawable.ic_check_24px, Color.parseColor("#567ad5")));
         }
 
         //calendarView.setEvents(events);

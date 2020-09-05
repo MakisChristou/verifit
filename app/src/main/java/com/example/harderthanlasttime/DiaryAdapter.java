@@ -149,7 +149,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ct,DayActivity.class);
-
                 // Update Date Selected in MainActivity
                 MainActivity.date_selected = Workout_Days.get(position).getDate();
                 in.putExtra("date",Workout_Days.get(position).getDate());

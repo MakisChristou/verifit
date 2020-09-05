@@ -2,11 +2,12 @@ package com.example.harderthanlasttime;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -49,6 +50,22 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
 
         holder.sets.setText(String.valueOf(sets));
 
+        // Set icon tint based on exercise category
+        setCategoryIconTint(holder, exercise_name);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                showExerciseDialog(position);
+            }
+        });
+
+    }
+
+    // Simple
+    public void setCategoryIconTint(MyViewHolder holder, String exercise_name)
+    {
         String exercise_category = MainActivity.getexerciseCategory(exercise_name);
 
         if(exercise_category.equals("Shoulders"))
@@ -73,7 +90,7 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         }
         else if(exercise_category.equals("Legs"))
         {
-            holder.imageView.setColorFilter(Color.argb(255, 	240, 231, 211));
+            holder.imageView.setColorFilter(Color.argb(255, 	212, 	25, 97));
         }
         else if(exercise_category.equals("Abs"))
         {
@@ -83,19 +100,6 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         {
             holder.imageView.setColorFilter(Color.argb(255, 	52, 58, 64)); // Grey AF
         }
-
-
-
-
-
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                showExerciseDialog(position);
-            }
-        });
-
     }
 
     // Blatant copy of Fitnotes but ohh well ;)
@@ -115,6 +119,8 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
         TextView name = view.findViewById(R.id.exercise_name);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
+        Button bt_delete_exercise = view.findViewById(R.id.bt_delete_exercise);
+        Button bt_edit_exercise = view.findViewById(R.id.bt_edit_exercise);
 
         // Set Values
 
@@ -133,6 +139,33 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         onerepmax.setText(Exercises.get(position).getEstimatedOneRepMax().toString());
         name.setText(Exercises.get(position).getExercise());
         maxsetvolume.setText(Exercises.get(position).getMaxSetVolume().toString());
+
+
+        // Navigate to AddExercise Activity
+        bt_edit_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Intent in = new Intent(ct,AddExerciseActivity.class);
+                in.putExtra("exercise",Exercises.get(position).getExercise());
+                MainActivity.date_selected = Exercises.get(position).getDate(); // this is required by AddExerciseActivity
+                System.out.println(Exercises.get(position).getExercise());
+                System.out.println(MainActivity.date_selected);
+                ct.startActivity(in);
+            }
+        });
+
+        bt_delete_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+
+            }
+        });
+
+
+
+
 
         // Show Exercise Dialog Box
         alertDialog.show();
