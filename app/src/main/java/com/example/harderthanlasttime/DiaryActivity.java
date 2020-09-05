@@ -49,6 +49,18 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
 
     public void initActivity()
     {
+        // From Day Activity
+        Intent in = getIntent();
+        String date_clicked = in.getStringExtra("date");
+
+        // If day exists scroll to it otherwise scroll to the last day
+        int position = -1;
+
+        if(date_clicked != null)
+        {
+            position = MainActivity.getDayPosition(date_clicked);
+        }
+
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -70,6 +82,17 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
             recyclerView.setAdapter(diaryAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+            if(position > 0)
+            {
+                // Scroll to the selected date
+                recyclerView.scrollToPosition(position);
+            }
+            else
+            {
+                // Scroll to the bottom
+                recyclerView.scrollToPosition(MainActivity.Workout_Days.size()-1);
+            }
         }
 
 

@@ -4,6 +4,13 @@
 
 
     <item
+        android:id="@+id/diary"
+        android:icon="@drawable/notebook"
+        app:showAsAction="always"
+        app:iconTint="@color/cardview_light_background">
+    </item>
+
+    <item
         android:id="@+id/add"
         android:icon="@drawable/ic_create_24px"
         app:showAsAction="always"

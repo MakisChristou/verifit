@@ -24,6 +24,7 @@ import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -92,14 +93,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         CSVFile csvFile = new CSVFile(inputStream);
         List csvList = csvFile.read();
 
-        // Loads Data Structures from shared preferences
-        // loadData();
-
-        // Update Sets Root Data Structure
-        // CSVtoSets(csvList);
-
-        // Update all other Data Structures
-        // SetsToEverything();
 
 
         // To JSON (for debugging)
@@ -213,33 +206,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-
-    // Super Inneficient but works
-    public void reverseSortWorkoutDays()
-    {
-        for(int i = 0; i < MainActivity.Workout_Days.size() - 1; i++)
-        {
-            for(int j = 0; j < MainActivity.Workout_Days.size() - i - 1; j++)
-            {
-                String date1 = this.Workout_Days.get(j).getDate();
-                String date2 = this.Workout_Days.get(j+1).getDate();
-                SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
-
-                try {
-                    Date date_object1 = parser.parse(date1);
-                    Date date_object2 = parser.parse(date2);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                // Date 1 is before date 2
-                if (date1.compareTo(date2) < 0)
-                {
-                    Collections.swap(MainActivity.Workout_Days,i,j);
-                }
-            }
-        }
-    }
 
     // Get the results after user gives/denies permission
     @Override
@@ -487,8 +453,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             Workout_Days = new ArrayList<WorkoutDay>();
         }
-
-        reverseSortWorkoutDays();
     }
 
 

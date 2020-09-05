@@ -111,6 +111,12 @@ public class DayActivity extends AppCompatActivity {
             Intent in = new Intent(this,ExercisesActivity.class);
             startActivity(in);
         }
+        else if(item.getItemId() == R.id.diary)
+        {
+            Intent in = new Intent(this,DiaryActivity.class);
+            in.putExtra("date",date_clicked);
+            startActivity(in);
+        }
         return super.onOptionsItemSelected(item);
     }
 }
