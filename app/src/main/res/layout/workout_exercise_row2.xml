@@ -40,7 +40,7 @@
                 android:text="Seated Machine Shoulder Press"
                 android:textColor="@color/core_black"
                 android:textSize="26sp"
-                app:layout_constraintEnd_toStartOf="@+id/expandButton"
+                app:layout_constraintEnd_toStartOf="@+id/editButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,7 +55,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
 
             <ImageButton
-                android:id="@+id/expandButton"
+                android:id="@+id/editButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"
@@ -64,7 +64,7 @@
                 android:background="@android:color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_expand_less_24px" />
+                app:srcCompat="@drawable/ic_create_24px" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_day"

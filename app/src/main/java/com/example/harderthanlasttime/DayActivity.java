@@ -99,8 +99,6 @@ public class DayActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.day_activity_menu,menu);
         return super.onCreateOptionsMenu(menu);
-
-
     }
 
     @Override

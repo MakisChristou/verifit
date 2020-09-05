@@ -3,13 +3,9 @@ package com.example.harderthanlasttime;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -53,7 +49,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
 
 
-        holder.cardview_exercise2.setOnClickListener(new View.OnClickListener() {
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -110,8 +106,6 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
             alertDialog.show();
         }
 
-
-
     }
 
 
@@ -125,28 +119,20 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
     {
         TextView tv_exercise_name;
         RecyclerView recyclerView;
-        ImageButton expandButton;
+        ImageButton editButton;
         View view;
         CardView cardview_exercise2;
-
-        // For Animation
-        ViewGroup tcontainer;
-
-
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_exercise_name = itemView.findViewById(R.id.exercise_name);
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
-            expandButton = itemView.findViewById(R.id.expandButton);
+            editButton = itemView.findViewById(R.id.editButton);
             view = itemView.findViewById(R.id.view);
             cardview_exercise2 = itemView.findViewById(R.id.cardview_exercise2);
 
-            // For Animation
-            tcontainer = itemView.findViewById(R.id.constraint_day);
-
                 // Expand More/Less
-                expandButton.setOnClickListener(new View.OnClickListener() {
+                cardview_exercise2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(recyclerView.getVisibility() == View.GONE)
@@ -155,23 +141,23 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
                         recyclerView.setVisibility(View.VISIBLE);
                         notifyItemChanged(getAdapterPosition());
 
-                        // Expand Button Animation
-                        RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
-                        rotate.setDuration(200);
-                        rotate.setInterpolator(new LinearInterpolator());
-                        expandButton.startAnimation(rotate);
-                        expandButton.setImageResource(R.drawable.ic_expand_less_24px);
+//                         Expand Button Animation
+//                        RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
+//                        rotate.setDuration(200);
+//                        rotate.setInterpolator(new LinearInterpolator());
+//                        expandButton.startAnimation(rotate);
+//                        expandButton.setImageResource(R.drawable.ic_expand_less_24px);
                     }
                     else if(recyclerView.getVisibility() == View.VISIBLE)
                     {
                         recyclerView.setVisibility(View.GONE);
 
-                        // Expand Button Animation
-                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
-                        rotate.setDuration(200);
-                        rotate.setInterpolator(new LinearInterpolator());
-                        expandButton.startAnimation(rotate);
-                        expandButton.setImageResource(R.drawable.ic_expand_more_24px);
+//                         Expand Button Animation
+//                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
+//                        rotate.setDuration(200);
+//                        rotate.setInterpolator(new LinearInterpolator());
+//                        expandButton.startAnimation(rotate);
+//                        expandButton.setImageResource(R.drawable.ic_expand_more_24px);
                     }
                 }
             });

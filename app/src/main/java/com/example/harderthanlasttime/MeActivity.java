@@ -30,8 +30,6 @@ public class MeActivity extends AppCompatActivity implements BottomNavigationVie
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.me_activity_menu,menu);
         return super.onCreateOptionsMenu(menu);
-
-
     }
 
     @Override

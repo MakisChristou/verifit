@@ -142,4 +142,25 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         }
         return true;
     }
+
+    // Menu Stuff
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.diary_activity_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.settings)
+        {
+            Intent in = new Intent(this,SettingsActivity.class);
+            startActivity(in);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

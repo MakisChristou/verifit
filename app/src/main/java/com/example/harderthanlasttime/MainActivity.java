@@ -3,9 +3,11 @@ package com.example.harderthanlasttime;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +20,7 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
@@ -46,7 +49,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
     // Root Data Structure
     public ArrayList<WorkoutSet> Sets = new ArrayList<WorkoutSet>();
@@ -81,6 +84,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+
+    // When choosing date from menu
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2)
+    {
+
+        i1++;
+        String year = String.valueOf(i);
+        String month;
+        String day;
+
+        month = String.format("%02d", i1);
+        day = String.format("%02d", i2);
+
+        String date_clicked = year+"-"+month+"-"+day;
+
+        // Start Intent
+        Intent in = new Intent(getApplicationContext(), DayActivity.class);
+        Bundle mBundle = new Bundle();
+
+
+        // Send Date and start activity
+        mBundle.putString("date", date_clicked);
+        in.putExtras(mBundle);
+        startActivity(in);
+
+    }
 
     @Override
     protected void onRestart() {
@@ -165,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Stop Loading Animation
         // ld.dismissDialog();
     }
-
 
     // You guessed it!
     public void initActivity()
@@ -588,7 +617,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         if(item.getItemId() == R.id.home)
         {
-            Toast.makeText(this, "Today", Toast.LENGTH_SHORT).show();
+            DialogFragment datePicker = new DatePickerFragment();
+            datePicker.show(getSupportFragmentManager(),"date picker");
         }
         else if(item.getItemId() == R.id.settings)
         {
