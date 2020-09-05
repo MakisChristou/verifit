@@ -59,6 +59,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@android:color/transparent"
                 android:tint="@color/core_grey_55"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

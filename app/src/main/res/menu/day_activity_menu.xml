@@ -5,14 +5,14 @@
 
     <item
         android:id="@+id/diary"
-        android:icon="@drawable/notebook"
+        android:icon="@drawable/ic_ballot_24px"
         app:showAsAction="always"
         app:iconTint="@color/cardview_light_background">
     </item>
 
     <item
         android:id="@+id/add"
-        android:icon="@drawable/ic_create_24px"
+        android:icon="@drawable/ic_add_24px"
         app:showAsAction="always"
         app:iconTint="@color/cardview_light_background">
     </item>

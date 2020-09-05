@@ -94,7 +94,6 @@ public class AddExerciseActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
         }
 
-
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
         System.out.println("Save Data Button: " + timeElapsed);

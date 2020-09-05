@@ -10,14 +10,14 @@
     <item
         android:id="@+id/exercises"
         android:visible="true"
-        android:icon="@drawable/weight">
+        android:icon="@drawable/arm_flex">
 
     </item>
 
 
     <item
         android:id="@+id/diary"
-        android:icon="@drawable/ic_dashboard_24px"
+        android:icon="@drawable/ic_ballot_24px"
         android:visible="true">
     </item>
 

@@ -93,7 +93,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             e.printStackTrace();
         }
 
-        holder.cardview_diary.setOnClickListener(new View.OnClickListener() {
+        holder.expand_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -189,31 +189,34 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
 
             // Expand More/Less Button
-            expand_button.setOnClickListener(new View.OnClickListener() {
+            cardview_diary.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(recyclerView.getVisibility() == View.GONE)
                     {
-                        recyclerView.setVisibility(View.VISIBLE);
                         notifyItemChanged(getAdapterPosition());
+                        recyclerView.setVisibility(View.VISIBLE);
 
-                        // Expand Button Animation
-                        RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
-                        rotate.setDuration(200);
-                        rotate.setInterpolator(new LinearInterpolator());
-                        expand_button.startAnimation(rotate);
-                        expand_button.setImageResource(R.drawable.ic_expand_less_24px);
+//
+//                        // Expand Button Animation
+//                        RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
+//                        rotate.setDuration(200);
+//                        rotate.setInterpolator(new LinearInterpolator());
+//                        expand_button.startAnimation(rotate);
+//                        expand_button.setImageResource(R.drawable.ic_expand_less_24px);
                     }
                     else if(recyclerView.getVisibility() == View.VISIBLE)
                     {
+                        // notifyItemChanged(getAdapterPosition());
                         recyclerView.setVisibility(View.GONE);
 
-                        // Expand Button Animation
-                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
-                        rotate.setDuration(200);
-                        rotate.setInterpolator(new LinearInterpolator());
-                        expand_button.startAnimation(rotate);
-                        expand_button.setImageResource(R.drawable.ic_expand_more_24px);
+
+//                        // Expand Button Animation
+//                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
+//                        rotate.setDuration(200);
+//                        rotate.setInterpolator(new LinearInterpolator());
+//                        expand_button.startAnimation(rotate);
+//                         expand_button.setImageResource(R.drawable.ic_expand_more_24px);
                     }
                 }
             });
