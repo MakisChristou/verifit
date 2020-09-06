@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Fit Book</string>
+    <string name="app_name">FitBook</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->
@@ -16,4 +16,16 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    
+    <string-array name="Categories">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Shoulders</item>
+        <item>Biceps</item>
+        <item>Triceps</item>
+        <item>Legs</item>
+        <item>Abs</item>
+    </string-array>
+    
+    
 </resources>

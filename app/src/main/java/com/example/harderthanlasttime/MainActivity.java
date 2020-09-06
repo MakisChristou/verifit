@@ -601,6 +601,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         });
     }
 
+    // Just Check if an exercise is known
+    public static boolean doesExerciseExist(String exercise_name)
+    {
+        for(int i = 0; i < KnownExercises.size(); i++)
+        {
+            if(KnownExercises.get(i).getName().equals(exercise_name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Returns the exercise category if exists, else it returns an empty string
     public static String getExerciseCategory(String Exercise)
     {

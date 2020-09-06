@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".CustomExerciseActivity"
-            android:label="Custom Exercise">
+            android:label="New Exercise">
         </activity>
         <activity
             android:name=".ExercisesActivity"
