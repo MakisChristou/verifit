@@ -41,8 +41,6 @@ public class CustomExerciseActivity extends AppCompatActivity implements Adapter
 
         // Initialize Edit Text Object
         et_exercise_name = findViewById(R.id.et_exercise_name);
-
-
     }
 
     // Menu Stuff
@@ -63,14 +61,15 @@ public class CustomExerciseActivity extends AppCompatActivity implements Adapter
             {
                 Exercise new_exercise = new Exercise(et_exercise_name.getText().toString(),selected_category);
                 MainActivity.KnownExercises.add(new_exercise);
+                MainActivity.saveKnownExerciseData(getApplicationContext());
                 Toast.makeText(getApplicationContext(),"Exercise Saved",Toast.LENGTH_SHORT).show();
+                Intent in = new Intent(this,ExercisesActivity.class);
+                startActivity(in);
             }
             else
             {
                 Toast.makeText(getApplicationContext(),"Exercise Already Exists",Toast.LENGTH_SHORT).show();
             }
-
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -79,12 +78,7 @@ public class CustomExerciseActivity extends AppCompatActivity implements Adapter
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
     {
-        Toast.makeText(adapterView.getContext(),
-                "OnItemSelectedListener : " + adapterView.getItemAtPosition(i).toString(),
-                Toast.LENGTH_SHORT).show();
-
         selected_category = adapterView.getItemAtPosition(i).toString();
-
     }
 
     @Override

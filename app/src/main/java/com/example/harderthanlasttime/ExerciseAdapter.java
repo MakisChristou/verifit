@@ -58,6 +58,17 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
         });
 
 
+        holder.cardview_exercise_1.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View view)
+            {
+                System.out.println("Long Click");
+                return false;
+            }
+        });
+
+
 
     }
 

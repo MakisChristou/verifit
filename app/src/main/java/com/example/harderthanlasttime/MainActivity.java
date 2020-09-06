@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         date_selected = dateFormat.format(date_clicked);
 
-        // Initialize Exercise Data Structures
-        initKnownExercises();
+//        // Initialize Exercise Data Structures
+//        initKnownExercises();
 
         // Get Material Calendar Instance
         calendarView = findViewById(R.id.calendarView);
@@ -177,6 +177,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
+
+        // Get Known Exercises from shared preferences
+        loadKnownExercisesData();
     }
 
     // Formats backup name in case of export
@@ -459,6 +462,35 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    // Saves Workout_Days Array List in shared preferences
+    // For some reason when I pass the context it works so let's roll with it :D
+    public static void saveKnownExerciseData(Context ct)
+    {
+        SharedPreferences sharedPreferences = ct.getSharedPreferences("shared preferences",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(KnownExercises);
+        editor.putString("known_exercises",json);
+        editor.apply();
+    }
+
+    // Loads Workout_Days Array List from shared preferences
+    public void loadKnownExercisesData()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("known_exercises",null);
+        Type type = new TypeToken<ArrayList<Exercise>>(){}.getType();
+        KnownExercises = gson.fromJson(json,type);
+
+        // If there are no previously saved entries make a new object
+        if(KnownExercises == null)
+        {
+            KnownExercises = new ArrayList<Exercise>();
+            initKnownExercises();
+        }
+    }
+
 
     // Read CSV from internal storage
     public void readCSV(String filename)
@@ -574,6 +606,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         this.Sets.clear();
         this.Days.clear();
         saveWorkoutData(this);
+        saveKnownExerciseData(this);
     }
 
     // Inefficient bubble sort but does the job
