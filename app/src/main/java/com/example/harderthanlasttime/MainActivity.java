@@ -8,14 +8,17 @@ import androidx.fragment.app.DialogFragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.fonts.SystemFonts;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,10 +31,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.Format;
@@ -48,18 +53,16 @@ import java.util.TreeSet;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
-    // Root Data Structure
-    public ArrayList<WorkoutSet> Sets = new ArrayList<WorkoutSet>();
-
     // "Data Structures"
     public Set<String> Days = new TreeSet<String>();
+    public ArrayList<WorkoutSet> Sets = new ArrayList<WorkoutSet>();
     public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
     public com.applandeo.materialcalendarview.CalendarView calendarView;
-    public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // initialized with hardcoded exercises
+    public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // Initialized with hardcoded exercises
+    public static ArrayList<Exercise> CustomExercises = new ArrayList<Exercise>(); // User defined Custom exercises
     public static String date_selected;
     public static HashMap<String,Double> VolumePRs = new HashMap<String,Double>();
     public static HashMap<String,Double> WeightPRs = new HashMap<String,Double>();
-
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -545,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
-    // Self explanatory
+    // Stevdza-San Tutorial
     private boolean isExternalStorageWritable()
     {
         if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
@@ -557,6 +560,41 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return false;
         }
     }
+
+    // Stevdza-San Tutorial
+    private boolean isExternalStorageReadable()
+    {
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(Environment.getExternalStorageState()))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // Stevdza-San Tutorial
+    public void readFile(String filename)
+    {
+        System.out.println(getExternalFilesDir(null).getAbsolutePath());
+        System.out.println(Environment.getStorageDirectory());
+        System.out.println(Environment.getDataDirectory());
+        System.out.println(Environment.getRootDirectory());
+        System.out.println(Environment.getExternalStorageDirectory());
+
+        ContentValues contentValues = new ContentValues();
+        Uri uri = getContentResolver().insert(MediaStore.Files.getContentUri("external"),contentValues );
+        System.out.println(uri.getPath());
+
+    }
+
+    // Stevdza-San Tutorial
+    public void writeFile()
+    {
+
+    }
+
 
     // Clears all locally used data structures
     public void clearDataStructures()
