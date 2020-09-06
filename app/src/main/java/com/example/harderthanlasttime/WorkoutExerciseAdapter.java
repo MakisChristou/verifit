@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -53,6 +54,16 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         // Set icon tint based on exercise category
         setCategoryIconTint(holder, exercise_name);
 
+        if(Exercises.get(position).isPR())
+        {
+            holder.pr_button.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            holder.pr_button.setVisibility(View.GONE);
+        }
+
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -60,13 +71,12 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
                 showExerciseDialog(position);
             }
         });
-
     }
 
     // Simple
     public void setCategoryIconTint(MyViewHolder holder, String exercise_name)
     {
-        String exercise_category = MainActivity.getexerciseCategory(exercise_name);
+        String exercise_category = MainActivity.getExerciseCategory(exercise_name);
 
         if(exercise_category.equals("Shoulders"))
         {
@@ -184,6 +194,8 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         CardView cardView;
         TextView sets;
         ImageView imageView;
+        ImageButton pr_button;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -191,6 +203,7 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
             cardView = itemView.findViewById(R.id.cardview_exercise);
             sets = itemView.findViewById(R.id.sets);
             imageView = itemView.findViewById(R.id.imageView);
+            pr_button = itemView.findViewById(R.id.pr_button);
         }
     }
 }

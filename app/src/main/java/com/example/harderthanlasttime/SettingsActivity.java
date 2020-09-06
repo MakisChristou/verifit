@@ -141,7 +141,7 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     MainActivity.Workout_Days.clear();
-                    MainActivity.saveData(getContext());
+                    MainActivity.saveWorkoutData(getContext());
                     alertDialog.dismiss();
                     Intent in = new Intent(getContext(),MainActivity.class);
                     startActivity(in);

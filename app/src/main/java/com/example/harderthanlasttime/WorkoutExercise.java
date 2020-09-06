@@ -15,8 +15,7 @@ public class WorkoutExercise {
     private Double TotalReps;
     private Double TotalSets;
     private Double MaxSetVolume;
-
-
+    private boolean PR;
 
     // Methods
     public String getDate() {
@@ -43,7 +42,7 @@ public class WorkoutExercise {
     public void setPR(boolean PR) {
         this.PR = PR;
     }
-    private boolean PR;
+
     public Double getTotalSets() {
         return TotalSets;
     }

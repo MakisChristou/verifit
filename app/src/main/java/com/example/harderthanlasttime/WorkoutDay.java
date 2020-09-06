@@ -39,7 +39,6 @@ public class WorkoutDay {
         this.getSets().remove(Set);
         UpdateData();
 
-
     }
 
     // Update Data Structure Data
@@ -52,6 +51,7 @@ public class WorkoutDay {
             DayVolume = 0.0;
             Date = "0000-00-00";
             Reps = 0;
+            return;
         }
 
         Date = Sets.get(0).getDate();

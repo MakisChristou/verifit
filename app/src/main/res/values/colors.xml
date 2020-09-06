@@ -10,9 +10,9 @@
 <!--    <color name="colorPrimaryDark">#255AA0</color>-->
 <!--    <color name="colorAccent">#262626</color>-->
 
-        <color name="colorPrimary">#2c6bed</color>
-        <color name="colorPrimaryLight">#c6c6c6</color>
-        <color name="colorPrimaryDark">#1851b4</color>
+        <color name="colorPrimary">#0074bd</color>
+        <color name="colorPrimaryLight">#00aeef</color>
+        <color name="colorPrimaryDark">#0074bd</color>
         <color name="colorAccent">#262626</color>
 
     <!--    Signal Colours -->

@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,8 +39,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -58,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public com.applandeo.materialcalendarview.CalendarView calendarView;
     public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // initialized with hardcoded exercises
     public static String date_selected;
+    public static HashMap<String,Double> VolumePRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> WeightPRs = new HashMap<String,Double>();
+
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -76,19 +78,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Hacky way to have the same code run in onRestart() as well
         onCreateStuff();
 
+
+
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
-        System.out.println("Main Activity: " + timeElapsed);
+        System.out.println("Main Activity " + timeElapsed + " ms");
 
     }
 
-
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        onCreateStuff();
-    }
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        onCreateStuff();
+//    }
 
     // When choosing date from menu
     @Override
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-
+    // General Initialization Stuff
     public void onCreateStuff()
     {
         initActivity();
@@ -216,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             {
                 askReadPermission();
                 fileSearch();
+                System.out.println("importCSV");
             }
             else if(WhatToDO.equals("exportcsv"))
             {
@@ -223,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
 
-        loadData();
+        loadWorkoutData();
     }
 
     // Formats backup name in case of export
@@ -298,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 String filename = uri.getPath();
                 filename = filename.substring(filename.indexOf(":") + 1);
                 readCSV(filename);
-                saveData(this);
+                saveWorkoutData(this);
             }
         }
     }
@@ -442,25 +445,48 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         calendarView.setSelectedDates(calendars);
     }
 
-
-    // Returns hex string based on the exercise category
-    public static String getCategoryColor(String exercise_name)
+    // Calculate all Volume Personal Records from scratch
+    public static void calculateVolumeRecords()
     {
+        MainActivity.VolumePRs.clear();
 
-        for(int i = 0; i < KnownExercises.size(); i++)
+        // Initialize Volume Record Hashmap
+        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
         {
-            if(KnownExercises.get(i).getName().equals(exercise_name))
+            MainActivity.VolumePRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
+        }
+
+        // Calculate Volume PRs
+        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.size(); j++)
             {
-                return KnownExercises.get(i).getBodyPart();
+                for(int k = 0; k < MainActivity.Workout_Days.get(j).getExercises().size(); k++)
+                {
+                    if(MainActivity.Workout_Days.get(j).getExercises().get(k).getExercise().equals(MainActivity.KnownExercises.get(i).getName()))
+                    {
+                        if(VolumePRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume()))
+                        {
+                            MainActivity.Workout_Days.get(j).getExercises().get(k).setPR(true);
+                            VolumePRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
+                        }
+                    }
+                }
+
             }
         }
-        return "";
-    }
 
+
+//        // Initialize Volume Record Hashmap
+//        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+//        {
+//            System.out.println(MainActivity.KnownExercises.get(i).getName() +" "+ MainActivity.VolumePRs.get((MainActivity.KnownExercises.get(i).getName())));
+//        }
+    }
 
     // Saves Workout_Days Array List in shared preferences
     // For some reason when I pass the context it works so let's roll with it :D
-    public static void saveData(Context ct)
+    public static void saveWorkoutData(Context ct)
     {
         SharedPreferences sharedPreferences = ct.getSharedPreferences("shared preferences",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -471,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     // Loads Workout_Days Array List from shared preferences
-    public void loadData()
+    public void loadWorkoutData()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
         Gson gson = new Gson();
@@ -505,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             CSVtoSets(csvList);
             SetsToEverything();
             updateCalendar();
-            saveData(this);
+            saveWorkoutData(this);
 
         }
         catch (IOException e)
@@ -532,6 +558,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    // Clears all locally used data structures
     public void clearDataStructures()
     {
         // Clear everything just in case
@@ -539,12 +566,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         this.KnownExercises.clear();
         this.Sets.clear();
         this.Days.clear();
-        saveData(this);
+        saveWorkoutData(this);
     }
 
 
     // Returns the exercise category if exists, else it returns an empty string
-    public static String getexerciseCategory(String Exercise)
+    public static String getExerciseCategory(String Exercise)
     {
         for(int i = 0; i < KnownExercises.size(); i++)
         {
@@ -555,6 +582,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         return "";
     }
+
 
     // Navigates to given activity based on the selected menu item
     @Override

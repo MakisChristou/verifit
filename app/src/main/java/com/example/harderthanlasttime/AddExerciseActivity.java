@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -73,7 +72,7 @@ public class AddExerciseActivity extends AppCompatActivity {
             // Create New Set Object
             Double reps = Double.parseDouble(et_reps.getText().toString());
             Double weight = Double.parseDouble(et_weight.getText().toString());
-            WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getexerciseCategory(exercise_name),reps,weight);
+            WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getExerciseCategory(exercise_name),reps,weight);
 
 
             int position = MainActivity.getDayPosition(MainActivity.date_selected);
@@ -154,7 +153,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         // Actually Save Changes in shared preferences
-        MainActivity.saveData(getApplicationContext());
+        MainActivity.saveWorkoutData(getApplicationContext());
     }
 
     // Do I even need to explain this?
