@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+
+
+    <item
+        android:id="@+id/calendar"
+        android:icon="@drawable/ic_calendar_today_24px"
+        app:showAsAction="always"
+        app:iconTint="@color/cardview_light_background">
+    </item>
+
     <item
         android:id="@+id/diary"
         android:icon="@drawable/ic_ballot_24px"

@@ -3,11 +3,13 @@ package com.example.harderthanlasttime;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +22,10 @@ import android.widget.Toast;
 import com.github.mikephil.charting.utils.FSize;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.crypto.AEADBadTagException;
@@ -52,6 +57,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         super.onRestart();
         initActivity();
     }
+
 
     public void initActivity()
     {
@@ -103,8 +109,6 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
                 recyclerView.scrollToPosition(MainActivity.Workout_Days.size()-1);
             }
         }
-
-
     }
 
 

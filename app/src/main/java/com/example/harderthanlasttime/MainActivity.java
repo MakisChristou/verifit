@@ -3,40 +3,34 @@ package com.example.harderthanlasttime;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.fonts.SystemFonts;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.Format;
@@ -44,6 +38,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -51,11 +47,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // "Data Structures"
     public Set<String> Days = new TreeSet<String>();
-    public ArrayList<WorkoutSet> Sets = new ArrayList<WorkoutSet>();
+    public static ArrayList<WorkoutSet> Sets = new ArrayList<WorkoutSet>();
     public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
     public com.applandeo.materialcalendarview.CalendarView calendarView;
     public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // Initialized with hardcoded exercises
@@ -77,11 +73,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         long start = System.currentTimeMillis();
 
-
         // Hacky way to have the same code run in onRestart() as well
         onCreateStuff();
-
-
 
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
@@ -89,53 +82,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        onCreateStuff();
-//    }
-
-    // When choosing date from menu
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2)
-    {
-
-        i1++;
-        String year = String.valueOf(i);
-        String month;
-        String day;
-
-        month = String.format("%02d", i1);
-        day = String.format("%02d", i2);
-
-        String date_clicked = year+"-"+month+"-"+day;
-
-        // Start Intent
-        Intent in = new Intent(getApplicationContext(), DayActivity.class);
-        Bundle mBundle = new Bundle();
-
-
-        // Send Date and start activity
-        mBundle.putString("date", date_clicked);
-        in.putExtras(mBundle);
-        startActivity(in);
-
-    }
 
     // General Initialization Stuff
     public void onCreateStuff()
     {
         initActivity();
 
-        // Start Loading Animation
-        // LoadingDialog ld = new LoadingDialog(MainActivity.this);
-        // ld.startLoadingAnimation();
-
-        // Read csv file line by line
-        InputStream inputStream = getResources().openRawResource(R.raw.fitnotes);
-        CSVFile csvFile = new CSVFile(inputStream);
-        List csvList = csvFile.read();
-
+//         Read csv file line by line
+//        InputStream inputStream = getResources().openRawResource(R.raw.fitnotes);
+//        CSVFile csvFile = new CSVFile(inputStream);
+//        List csvList = csvFile.read();
 
 
 //         To JSON (for debugging)
@@ -148,14 +104,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        // Change selected menu item icon to filled
-        // Menu menu = bottomNavigationView.getMenu();
-        // menu.findItem(R.id.home).setIcon(R.drawable.ic_event_available_24px_selected);
-        // menu.findItem(R.id.diary).setIcon(R.drawable.ic_assignment_24px);
-        // menu.findItem(R.id.trends).setIcon(R.drawable.ic_assessment_24px);
-        // menu.findItem(R.id.goals).setIcon(R.drawable.ic_emoji_events_24px);
-        // menu.findItem(R.id.settings).setIcon(R.drawable.ic_build_circle_24px);
-
 
         // Date selected is by default today
         Date date_clicked = new Date();
@@ -167,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         // Get Material Calendar Instance
         calendarView = findViewById(R.id.calendarView);
-
 
         // Update Workouts on Calendar
         updateCalendar();
@@ -193,17 +140,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 mBundle.putString("date", date_selected);
                 in.putExtras(mBundle);
                 startActivity(in);
-
             }
         });
-
-        // Stop Loading Animation
-        // ld.dismissDialog();
     }
 
     // You guessed it!
     public void initActivity()
     {
+
+        // Spyware Intensifies
+        askReadPermission();
+        askWritePermission();
+
         setExportBackupName();
 
         // Rename top bar to something sensible
@@ -219,25 +167,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             if(WhatToDO.equals("importcsv"))
             {
-                askReadPermission();
                 fileSearch();
-                System.out.println("importCSV");
             }
             else if(WhatToDO.equals("exportcsv"))
             {
-
+                writeFile();
             }
         }
 
+        // Get WorkoutDays from shared preferences
         loadWorkoutData();
     }
 
     // Formats backup name in case of export
     public void setExportBackupName()
     {
-        Format formatter = new SimpleDateFormat("_yyyy-MM-dd HH:mm:ss");
+        Format formatter = new SimpleDateFormat("_yyyy-MM-dd_HH:mm:ss");
         String str_date = formatter.format(new Date());
-        EXPORT_FILENAME = EXPORT_FILENAME + str_date;
+        EXPORT_FILENAME = EXPORT_FILENAME + str_date+".csv";
     }
 
     // Ask For File I/O Permissions
@@ -249,6 +196,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    // Ask For File I/O Permissions
+    public void askWritePermission()
+    {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
+        }
+    }
+
 
     // Get the results after user gives/denies permission
     @Override
@@ -257,11 +213,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
-                System.out.println("Read Permission Granted!");
+                System.out.println("Permission Granted!");
             }
             else
             {
-                System.out.println("Read Permission Not Granted!");
+                System.out.println("Permission Not Granted!");
                 finish();
             }
         }
@@ -308,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
     }
+
 
     // Converts CSV file to Internally used Dat Structure
     public void CSVtoSets(List csvList)
@@ -409,18 +366,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises.add(new Exercise("Seated Calf Raise Machine","Legs"));
         KnownExercises.add(new Exercise("Lying Triceps Extension","Triceps"));
         KnownExercises.add(new Exercise("Cable Curl","Biceps"));
+        KnownExercises.add(new Exercise("Hammer Strength Shoulder Press","Shoulders"));
     }
 
 
     // Update Workouts on Calendar
     public void updateCalendar()
     {
-
-//         Mark only the current year for extra juicy performance increase
-//        Calendar c = calendarView.getCurrentPageDate();
-//        int year = c.get(Calendar.YEAR);
-//        String Year = String.valueOf(year);
-
         // Selected Dates
         List<Calendar> calendars = new ArrayList<>();
 
@@ -475,16 +427,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         }
                     }
                 }
-
             }
         }
-
-
-//        // Initialize Volume Record Hashmap
-//        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
-//        {
-//            System.out.println(MainActivity.KnownExercises.get(i).getName() +" "+ MainActivity.VolumePRs.get((MainActivity.KnownExercises.get(i).getName())));
-//        }
     }
 
     // Saves Workout_Days Array List in shared preferences
@@ -519,6 +463,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Read CSV from internal storage
     public void readCSV(String filename)
     {
+
         List csvList = new ArrayList();
 
         try {
@@ -542,6 +487,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             System.out.println(e.getMessage());
             Toast.makeText(getApplicationContext(), "Could not locate file",Toast.LENGTH_SHORT).show();
 
+            // Avoid Errors
             clearDataStructures();
         }
 
@@ -577,24 +523,47 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Stevdza-San Tutorial
     public void readFile(String filename)
     {
-        System.out.println(getExternalFilesDir(null).getAbsolutePath());
-        System.out.println(Environment.getStorageDirectory());
-        System.out.println(Environment.getDataDirectory());
-        System.out.println(Environment.getRootDirectory());
-        System.out.println(Environment.getExternalStorageDirectory());
-
-        ContentValues contentValues = new ContentValues();
-        Uri uri = getContentResolver().insert(MediaStore.Files.getContentUri("external"),contentValues );
-        System.out.println(uri.getPath());
 
     }
 
     // Stevdza-San Tutorial
     public void writeFile()
     {
+        if(isExternalStorageWritable() && checkWritePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        {
+            File textfile = new File(Environment.getExternalStorageDirectory(),EXPORT_FILENAME);
+            try
+            {
+                FileOutputStream fos = new FileOutputStream(textfile);
+                fos.write("Date,Exercise,Category,Weight (kg),Reps\n".getBytes());
 
+                for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+                {
+                    for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+                    {
+                        fos.write((MainActivity.Workout_Days.get(i).getSets().get(j).getDate() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getExercise() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getCategory() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getWeight() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getReps() + "\n").getBytes());
+                    }
+                }
+                fos.close();
+                Toast.makeText(getApplicationContext(), "File Written in " + Environment.getExternalStorageDirectory(), Toast.LENGTH_SHORT).show();
+            }
+            catch (IOException e)
+            {
+                System.out.println(e.getMessage());
+            }
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "External Storage Not Readable", Toast.LENGTH_SHORT).show();
+        }
     }
 
+    // Ask/Check Write Permission
+    public boolean checkWritePermission(String permission)
+    {
+        int check = ContextCompat.checkSelfPermission(this,permission);
+        return (check == PackageManager.PERMISSION_GRANTED);
+    }
 
     // Clears all locally used data structures
     public void clearDataStructures()
@@ -607,6 +576,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         saveWorkoutData(this);
     }
 
+    // Inefficient bubble sort but does the job
+    public static void sortWorkoutDaysDate()
+    {
+        Collections.sort(MainActivity.Workout_Days, new Comparator<WorkoutDay>() {
+            @Override
+            public int compare(WorkoutDay workoutDay, WorkoutDay t1)
+            {
+                String date1 = workoutDay.getDate();
+                String date2 = t1.getDate();
+                Date date_object1 = new Date();
+                Date date_object2 = new Date();
+
+                try {
+                    date_object1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+                    date_object2 = new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+                }
+                catch (Exception e)
+                {
+                    System.out.println(e.getMessage());
+                }
+                return date_object1.compareTo(date_object2);
+            }
+        });
+    }
 
     // Returns the exercise category if exists, else it returns an empty string
     public static String getExerciseCategory(String Exercise)
@@ -620,7 +613,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         return "";
     }
-
 
     // Navigates to given activity based on the selected menu item
     @Override
@@ -662,19 +654,26 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // Menu Stuff
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
         if(item.getItemId() == R.id.home)
         {
-            DialogFragment datePicker = new DatePickerFragment();
-            datePicker.show(getSupportFragmentManager(),"date picker");
+            try
+            {
+                calendarView.setDate(new Date());
+                Toast.makeText(getApplicationContext(),"Today",Toast.LENGTH_SHORT);
+            }
+            catch (OutOfDateRangeException e) {
+                e.printStackTrace();
+            }
         }
         else if(item.getItemId() == R.id.settings)
         {

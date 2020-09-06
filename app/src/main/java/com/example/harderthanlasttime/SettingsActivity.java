@@ -84,7 +84,9 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("exportcsv"))
             {
-
+                Intent in = new Intent(getActivity(),MainActivity.class);
+                in.putExtra("doit","exportcsv");
+                startActivity(in);
             }
             else if(key.equals("deletedata"))
             {

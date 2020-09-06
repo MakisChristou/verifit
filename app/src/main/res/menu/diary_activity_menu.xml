@@ -10,16 +10,6 @@
         app:showAsAction="always"
         app:iconTint="@color/cardview_light_background">
     </item>
-
-    <item
-        android:id="@+id/add"
-        android:title="Add"
-        android:icon="@drawable/ic_add_24px"
-        app:showAsAction="always"
-        app:iconTint="@color/cardview_light_background">
-
-    </item>
-
     <item
         android:id="@+id/settings"
         android:title="Settings"

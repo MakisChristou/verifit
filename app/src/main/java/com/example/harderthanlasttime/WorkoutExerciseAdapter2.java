@@ -58,6 +58,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
             }
         });
 
+
     }
 
     // Blatant copy of Fitnotes but ohh well ;)

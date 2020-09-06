@@ -37,8 +37,6 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
         long timeElapsed = finish - start;
         System.out.println("Exercises Activity " + timeElapsed+" ms");
 
-
-
     }
 
 

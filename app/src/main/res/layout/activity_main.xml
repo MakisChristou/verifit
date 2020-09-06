@@ -27,8 +27,8 @@
         app:headerLabelColor="@android:color/black"
         app:highlightedDaysLabelsColor="@color/colorAccent"
         app:selectionColor="@color/core_grey_45"
+        app:selectionLabelColor="@color/core_white"
         app:swipeEnabled="true"
-        app:todayLabelColor="@color/colorPrimary"
         app:type="many_days_picker">
 
     </com.applandeo.materialcalendarview.CalendarView>

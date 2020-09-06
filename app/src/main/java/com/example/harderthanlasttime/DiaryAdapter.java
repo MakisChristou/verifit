@@ -34,27 +34,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     {
         this.ct = ct;
         this.Workout_Days = new ArrayList<WorkoutDay>(Workout_Days);
-
-
-//        // Reverse Workout List only when you have to
-//        try {
-//            String date1 = this.Workout_Days.get(0).getDate();
-//            String date2 = this.Workout_Days.get(this.Workout_Days.size()-1).getDate();
-//            SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
-//            Date date_object1 = parser.parse(date1);
-//            Date date_object2 = parser.parse(date2);
-//
-//            if (date1.compareTo(date2) < 0)
-//            {
-//                // System.out.println(date1 + " is before " + date2);
-////                System.out.println("Reversing Workout_Days");
-////                Collections.reverse(this.Workout_Days);
-//            }
-//
-//            }catch (ParseException e){
-//                System.out.println(e.getMessage());
-//                e.printStackTrace();
-//            }
     }
 
     @NonNull
@@ -155,6 +134,16 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
                 ct.startActivity(in);
             }
         });
+
+        // Delete Day
+        bt_deleteDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                System.out.println("Delete Day " + position);
+            }
+        });
+
 
         // Show Exercise Dialog Box
         alertDialog.show();

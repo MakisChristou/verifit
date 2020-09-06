@@ -152,6 +152,10 @@ public class AddExerciseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        // Sort Before Saving
+        MainActivity.sortWorkoutDaysDate();
+
         // Actually Save Changes in shared preferences
         MainActivity.saveWorkoutData(getApplicationContext());
     }
