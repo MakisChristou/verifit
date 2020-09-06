@@ -2,6 +2,7 @@ package com.example.harderthanlasttime;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,8 +11,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class ExercisesActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
@@ -24,6 +28,22 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
 
+
+        long start = System.currentTimeMillis();
+
+        onCreateStuff();
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Exercises Activity " + timeElapsed+" ms");
+
+
+
+    }
+
+
+    public void onCreateStuff()
+    {
         // Intent from DayActivity
         Intent in = getIntent();
         date_clicked = in.getStringExtra("date");
@@ -37,19 +57,39 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
 
         // Find Recycler View Object
         recyclerView = findViewById(R.id.recycler_view_exercises);
-        exerciseAdapter = new ExerciseAdapter(this, MainActivity.KnownExercises);
+        exerciseAdapter = new ExerciseAdapter(this,MainActivity.KnownExercises);
         recyclerView.setAdapter(exerciseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.exercises_activity_menu,menu);
-        return super.onCreateOptionsMenu(menu);
 
 
+        // Search Stuff
+        MenuItem searchItem = menu.findItem(R.id.search);
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s)
+            {
+                exerciseAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
+        return true;
     }
 
     @Override

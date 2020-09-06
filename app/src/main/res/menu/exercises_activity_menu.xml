@@ -7,14 +7,15 @@
         android:id="@+id/search"
         android:title="Search"
         android:icon="@drawable/ic_search_24px"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:iconTint="@color/cardview_light_background">
     </item>
 
     <item
         android:id="@+id/add"
         android:title="Add"
-        android:icon="@drawable/ic_add_24px"
+        android:icon="@drawable/ic_create_24px"
         app:showAsAction="always"
         app:iconTint="@color/cardview_light_background">
 

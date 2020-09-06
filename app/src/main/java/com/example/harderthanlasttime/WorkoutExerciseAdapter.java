@@ -27,7 +27,7 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
     public WorkoutExerciseAdapter(Context ct, ArrayList<WorkoutExercise> Exercises)
     {
         this.ct = ct;
-        this.Exercises = Exercises;
+        this.Exercises = new ArrayList<>(Exercises);
     }
 
     @NonNull
@@ -54,6 +54,7 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         // Set icon tint based on exercise category
         setCategoryIconTint(holder, exercise_name);
 
+        // Set Volume PR Icon if exercise was a Volume PR
         if(Exercises.get(position).isPR())
         {
             holder.pr_button.setVisibility(View.VISIBLE);
@@ -64,6 +65,15 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         }
 
 
+        holder.pr_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                showVolumePRDialog();
+            }
+        });
+
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -71,6 +81,18 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
                 showExerciseDialog(position);
             }
         });
+    }
+
+
+    public void showVolumePRDialog()
+    {
+        // Prepare to show exercise dialog box
+        LayoutInflater inflater = LayoutInflater.from(ct);
+        View view = inflater.inflate(R.layout.personal_record_dialog,null);
+        AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
+
+        // Show Exercise Dialog Box
+        alertDialog.show();
     }
 
     // Simple
@@ -172,10 +194,6 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
 
             }
         });
-
-
-
-
 
         // Show Exercise Dialog Box
         alertDialog.show();

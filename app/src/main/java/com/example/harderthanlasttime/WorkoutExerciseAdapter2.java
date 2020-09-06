@@ -25,7 +25,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
     public WorkoutExerciseAdapter2(Context ct, ArrayList<WorkoutExercise> Exercises)
     {
         this.ct = ct;
-        this.Exercises = Exercises;
+        this.Exercises = new ArrayList<>(Exercises);
     }
 
     @NonNull
