@@ -341,12 +341,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId() == R.id.calculator)
-        {
-            Toast bread = Toast.makeText(getApplicationContext(), "Plate Calculator Selected", Toast.LENGTH_SHORT);
-            bread.show();
-        }
-        else if(item.getItemId() == R.id.timer)
+        if(item.getItemId() == R.id.timer)
         {
             Toast bread = Toast.makeText(getApplicationContext(), "Timer Selected", Toast.LENGTH_SHORT);
             bread.show();

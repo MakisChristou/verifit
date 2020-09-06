@@ -4,6 +4,21 @@
 
 
     <item
+        android:id="@+id/history"
+        android:icon="@drawable/ic_history_24px"
+        app:showAsAction="always"
+        app:iconTint="@color/cardview_light_background">
+    </item>
+
+    <item
+        android:id="@+id/graph"
+        android:icon="@drawable/ic_poll_24px"
+        app:showAsAction="always"
+        app:iconTint="@color/cardview_light_background">
+    </item>
+
+
+    <item
         android:id="@+id/timer"
         android:icon="@drawable/ic_alarm_24px"
         app:showAsAction="always"
@@ -11,12 +26,9 @@
 
     </item>
 
-    <item
-        android:id="@+id/calculator"
-        android:icon="@drawable/ic_calculate_24px"
-        app:showAsAction="always"
-        app:iconTint="@color/cardview_light_background">
-    </item>
+
+
+
 
 
 

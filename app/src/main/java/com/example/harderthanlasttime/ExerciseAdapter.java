@@ -64,7 +64,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
             public boolean onLongClick(View view)
             {
                 System.out.println("Long Click");
-                return false;
+                return true;
             }
         });
 

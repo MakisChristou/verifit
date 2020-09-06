@@ -15,7 +15,7 @@
     <item
         android:id="@+id/add"
         android:title="Add"
-        android:icon="@drawable/ic_create_24px"
+        android:icon="@drawable/ic_brush_24px"
         app:showAsAction="always"
         app:iconTint="@color/cardview_light_background">
 
