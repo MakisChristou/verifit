@@ -148,7 +148,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         System.out.println("Clear Data Button: " + timeElapsed);
     }
 
-
+    // Save Changes in main data structure, save data structure in shared preferences
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -251,7 +251,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     }
 
-    // Initialized Recycler View Object
+    // Initialize Recycler View Object
     public void initrecyclerView()
     {
         // Clear since we don't want duplicates
@@ -297,7 +297,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     }
 
-    // Set Edit Text values to max set volume if possible
+    // Set Edit Text values to max set volume if sets exist
     public void initEditTexts()
     {
         Double max_weight = 0.0;
