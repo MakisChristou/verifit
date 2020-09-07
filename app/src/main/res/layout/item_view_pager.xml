@@ -12,11 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardElevation="5dp"
-        app:cardCornerRadius="5dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:backgroundTint="@color/custom_row">
 
         <androidx.constraintlayout.widget.ConstraintLayout

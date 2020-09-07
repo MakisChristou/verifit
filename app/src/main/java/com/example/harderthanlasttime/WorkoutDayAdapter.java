@@ -45,13 +45,14 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
     public void onBindViewHolder(@NonNull WorkoutDayViewHolder holder, int position)
     {
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                System.out.println("CardView Clicked!");
-            }
-        });
+//        Makes Card View Clickable and it's visually ugly
+//        holder.cardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                System.out.println("CardView Clicked!");
+//            }
+//        });
 
         // Back Button
         holder.imageButton2.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +84,8 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
                 Today_Execrises = MainActivity.Workout_Days.get(i).getExercises();
             }
         }
+
+        MainActivity.date_selected = Date_Str1;
 
 
         // Set Recycler View

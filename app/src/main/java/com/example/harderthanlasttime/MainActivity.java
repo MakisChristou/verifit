@@ -2,12 +2,9 @@ package com.example.harderthanlasttime;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import android.Manifest;
 import android.app.Activity;
@@ -23,7 +20,6 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -268,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Uri uri = data.getData();
                 String filename = uri.getPath();
                 filename = filename.substring(filename.indexOf(":") + 1);
-                readCSV(filename);
+                readFile(filename);
                 saveWorkoutData(this);
             }
         }
@@ -499,37 +495,31 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     // Read CSV from internal storage
-    public void readCSV(String filename)
+    public void readFile(String filename)
     {
-
         List csvList = new ArrayList();
 
         try {
-            System.out.println(Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+ filename);
+            System.out.println("Reading file from: " + Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+ filename);
             File textFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename);
             FileInputStream inputStream = new FileInputStream(textFile);
-
             CSVFile csvFile = new CSVFile(inputStream);
             csvList = csvFile.read();
-
 
             // Here is where the magic happens
             CSVtoSets(csvList);
             SetsToEverything();
             saveWorkoutData(this);
-
         }
         catch (IOException e)
         {
             System.out.println(e.getMessage());
             Toast.makeText(getApplicationContext(), "Could not locate file",Toast.LENGTH_SHORT).show();
-
             // Avoid Errors
             clearDataStructures();
         }
 
     }
-
 
     // Stevdza-San Tutorial
     private boolean isExternalStorageWritable()
@@ -555,12 +545,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             return false;
         }
-    }
-
-    // Stevdza-San Tutorial
-    public void readFile(String filename)
-    {
-
     }
 
     // Stevdza-San Tutorial
@@ -664,6 +648,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         return "";
     }
+
 
     // Navigates to given activity based on the selected menu item
     @Override
