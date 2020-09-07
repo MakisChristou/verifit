@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void initViewPager()
     {
         viewPager2 = findViewById(R.id.viewPager2);
-        viewPager2.setAdapter(new WorkoutDayAdapter(getApplicationContext(),Workout_Days));
+        viewPager2.setAdapter(new WorkoutDayAdapter(this,Workout_Days));
     }
 
     // Formats backup name in case of export

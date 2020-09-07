@@ -18,14 +18,14 @@ import java.util.Date;
 
 public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.WorkoutDayViewHolder> {
 
-    public ArrayList<WorkoutDay> Workout_Days;
-    public static Context ct;
+    ArrayList<WorkoutDay> Workout_Days;
+    Context ct;
 
     // Constructor
     public WorkoutDayAdapter(Context ct, ArrayList<WorkoutDay> Workout_Days)
     {
         this.Workout_Days = new ArrayList<>(Workout_Days);
-        WorkoutDayAdapter.ct = ct;
+        this.ct = ct;
     }
 
     @NonNull
@@ -44,7 +44,6 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
     @Override
     public void onBindViewHolder(@NonNull WorkoutDayViewHolder holder, int position)
     {
-        holder.setData(Workout_Days.get(position));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +71,41 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             }
         });
 
+        // Set Data Method used to be here :D
+        String Date_Str1 = Workout_Days.get(position).getDate();
+
+        // Find which exercises were performed that given date
+        ArrayList<WorkoutExercise> Today_Execrises = new ArrayList<WorkoutExercise>();
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            if(Date_Str1.equals(MainActivity.Workout_Days.get(i).getDate()))
+            {
+                Today_Execrises = MainActivity.Workout_Days.get(i).getExercises();
+            }
+        }
+
+
+        // Set Recycler View
+        WorkoutExerciseAdapter2 workoutExerciseAdapter = new WorkoutExerciseAdapter2(ct, Today_Execrises);
+        holder.recyclerView_Main.setAdapter(workoutExerciseAdapter);
+        holder.recyclerView_Main.setLayoutManager(new LinearLayoutManager(ct));
+
+        // Convert Date To Something Sensible
+        try
+        {
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(Date_Str1); //potential exception
+            DateFormat date2 = new SimpleDateFormat("EEEE dd MMM yyyy");
+            String Date_Str2 = date2.format(date1);
+            holder.tv_date.setText(Date_Str2);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -97,44 +129,6 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             imageButton2 = itemView.findViewById(R.id.imageButton2);
             imageButton3 = itemView.findViewById(R.id.imageButton3);
             recyclerView_Main = itemView.findViewById(R.id.recyclerView_Main);
-        }
-
-        // Set All Data
-        void setData(WorkoutDay today)
-        {
-            String Date_Str1 = today.getDate();
-
-            // Find which exercises were performed that given date
-            ArrayList<WorkoutExercise> Today_Execrises = new ArrayList<WorkoutExercise>();
-            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
-            {
-                if(Date_Str1.equals(MainActivity.Workout_Days.get(i).getDate()))
-                {
-                    Today_Execrises = MainActivity.Workout_Days.get(i).getExercises();
-                }
-            }
-
-
-            // Set Recycler View
-            WorkoutExerciseAdapter2 workoutExerciseAdapter = new WorkoutExerciseAdapter2(ct, Today_Execrises);
-            recyclerView_Main.setAdapter(workoutExerciseAdapter);
-            recyclerView_Main.setLayoutManager(new LinearLayoutManager(ct));
-
-
-
-            // Convert Date To Something Sensible
-            try
-            {
-                Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(Date_Str1); //potential exception
-                DateFormat date2 = new SimpleDateFormat("EEEE dd MMM yyyy");
-                String Date_Str2 = date2.format(date1);
-                tv_date.setText(Date_Str2);
-            }
-            catch (ParseException e)
-            {
-                e.printStackTrace();
-            }
-
         }
     }
 }
