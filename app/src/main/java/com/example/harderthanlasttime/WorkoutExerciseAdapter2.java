@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -83,7 +82,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
             TextView maxweight = view.findViewById(R.id.maxweight);
             TextView maxreps = view.findViewById(R.id.maxreps);
             TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
-            TextView name = view.findViewById(R.id.exercise_name);
+            TextView name = view.findViewById(R.id.tv_date);
             TextView onerepmax = view.findViewById(R.id.onerepmax);
 
             // Set Values
@@ -127,7 +126,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_exercise_name = itemView.findViewById(R.id.exercise_name);
+            tv_exercise_name = itemView.findViewById(R.id.tv_date);
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             editButton = itemView.findViewById(R.id.editButton);
             view = itemView.findViewById(R.id.view);

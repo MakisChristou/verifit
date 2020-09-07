@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -21,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 // Adapter for WorkoutDay Class
@@ -94,7 +89,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         TextView totalsets = view.findViewById(R.id.volume);
         TextView totalreps = view.findViewById(R.id.totalreps);
         TextView totalvolume = view.findViewById(R.id.totalvolume);
-        TextView date = view.findViewById(R.id.exercise_name);
+        TextView date = view.findViewById(R.id.tv_date);
         TextView totalexercises = view.findViewById(R.id.totalexercises);
         Button bt_viewDay = view.findViewById(R.id.bt_viewDay);
         Button bt_deleteDay = view.findViewById(R.id.bt_deleteDay);
@@ -168,7 +163,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_day = itemView.findViewById(R.id.day);
-            date = itemView.findViewById(R.id.date);
+            date = itemView.findViewById(R.id.tv_date);
 
             // Find Recycler View Object
             recyclerView = itemView.findViewById(R.id.recycler_view_diary);

@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/home"
-        android:icon="@drawable/ic_event_available_24px"
+        android:icon="@drawable/ic_view_carousel_24px"
         android:visible="true">
     </item>
 

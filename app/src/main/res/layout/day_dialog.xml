@@ -16,7 +16,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
     <TextView
         android:id="@+id/totalsets13"
@@ -53,7 +53,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
     <TextView
         android:id="@+id/totalvolume"
@@ -102,7 +102,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
     <TextView
         android:id="@+id/totalsets6"
@@ -117,7 +117,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/exercise_name"
+        android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -138,7 +138,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date"
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
@@ -152,7 +152,7 @@
         android:textColor="@color/core_black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
     <TextView
         android:id="@+id/totalreps"

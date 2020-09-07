@@ -10,29 +10,6 @@
     tools:context=".MainActivity">
 
 
-    <com.applandeo.materialcalendarview.CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:hapticFeedbackEnabled="false"
-        android:isScrollContainer="true"
-        android:keepScreenOn="false"
-        android:soundEffectsEnabled="false"
-        android:visibility="gone"
-        app:datePicker="false"
-        app:daysLabelsColor="@color/core_black"
-        app:eventsEnabled="true"
-        app:headerColor="@android:color/white"
-        app:headerLabelColor="@android:color/black"
-        app:highlightedDaysLabelsColor="@color/colorAccent"
-        app:selectionColor="@color/core_grey_45"
-        app:selectionLabelColor="@color/core_white"
-        app:swipeEnabled="true"
-        app:type="many_days_picker">
-    </com.applandeo.materialcalendarview.CalendarView>
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
@@ -49,5 +26,12 @@
         app:menu="@menu/bottom_navigation_menu" >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="409dp"
+        android:layout_height="673dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,7 +65,7 @@ public class WorkoutSetAdapter extends RecyclerView.Adapter<WorkoutSetAdapter.My
         TextView volume = view.findViewById(R.id.volume);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
         TextView reps = view.findViewById(R.id.reps);
-        TextView kg = view.findViewById(R.id.exercise_name);
+        TextView kg = view.findViewById(R.id.tv_date);
 
         // Double -> Integer
         int repetitions = (int)Math.round(Workout_Sets.get(position).getReps());
@@ -99,7 +99,7 @@ public class WorkoutSetAdapter extends RecyclerView.Adapter<WorkoutSetAdapter.My
             super(itemView);
 
             tv_reps = itemView.findViewById(R.id.set_reps);
-            tv_weight = itemView.findViewById(R.id.exercise_name);
+            tv_weight = itemView.findViewById(R.id.tv_date);
             cardView = itemView.findViewById(R.id.cardview_set);
 
         }

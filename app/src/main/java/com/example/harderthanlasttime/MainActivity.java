@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,15 +22,11 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.DatePicker;
 import android.widget.Toast;
-
-import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , DatePickerDialog.OnDateSetListener{
 
     // "Data Structures"
     public Set<String> Days = new TreeSet<String>();
@@ -55,10 +55,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
     public com.applandeo.materialcalendarview.CalendarView calendarView;
     public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // Initialized with hardcoded exercises
-    public static ArrayList<Exercise> CustomExercises = new ArrayList<Exercise>(); // User defined Custom exercises
     public static String date_selected;
     public static HashMap<String,Double> VolumePRs = new HashMap<String,Double>();
-    public static HashMap<String,Double> WeightPRs = new HashMap<String,Double>();
+    public ViewPager2 viewPager2;
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -110,38 +109,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         date_selected = dateFormat.format(date_clicked);
 
-//        // Initialize Exercise Data Structures
-//        initKnownExercises();
+    }
 
-        // Get Material Calendar Instance
-        calendarView = findViewById(R.id.calendarView);
+    // When choosing date from DatePicker
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2)
+    {
 
-        // Update Workouts on Calendar
-        updateCalendar();
+        i1++;
+        String year = String.valueOf(i);
+        String month;
+        String day;
+
+        month = String.format("%02d", i1);
+        day = String.format("%02d", i2);
+
+        String date_clicked = year+"-"+month+"-"+day;
+
+        // Start Intent
+        Intent in = new Intent(getApplicationContext(), DayActivity.class);
+        Bundle mBundle = new Bundle();
 
 
-        // Returns Date clicked as Event Object
-        calendarView.setOnDayClickListener(new OnDayClickListener() {
-            @Override
-            public void onDayClick(EventDay eventDay) {
+        // Send Date and start activity
+        mBundle.putString("date", date_clicked);
+        in.putExtras(mBundle);
+        startActivity(in);
 
-                // Save Date Object
-                Date date_clicked = eventDay.getCalendar().getTime();
-
-                // Start Intent
-                Intent in = new Intent(getApplicationContext(), DayActivity.class);
-                Bundle mBundle = new Bundle();
-
-                // Date -> String
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                date_selected = dateFormat.format(date_clicked);
-
-                // Send Date and start activity
-                mBundle.putString("date", date_selected);
-                in.putExtras(mBundle);
-                startActivity(in);
-            }
-        });
     }
 
     // You guessed it!
@@ -175,11 +169,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
 
+        // Self Explanatory
+        initViewPager();
+
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
 
         // Get Known Exercises from shared preferences
         loadKnownExercisesData();
+    }
+
+    // Initialize View pager object
+    public void initViewPager()
+    {
+        viewPager2 = findViewById(R.id.viewPager2);
+        viewPager2.setAdapter(new WorkoutDayAdapter(Workout_Days));
+
+
     }
 
     // Formats backup name in case of export
@@ -510,7 +516,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // Here is where the magic happens
             CSVtoSets(csvList);
             SetsToEverything();
-            updateCalendar();
             saveWorkoutData(this);
 
         }
@@ -712,14 +717,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         if(item.getItemId() == R.id.home)
         {
-            try
-            {
-                calendarView.setDate(new Date());
-                Toast.makeText(getApplicationContext(),"Today",Toast.LENGTH_SHORT);
-            }
-            catch (OutOfDateRangeException e) {
-                e.printStackTrace();
-            }
+            DialogFragment datePicker = new DatePickerFragment();
+            datePicker.show(getSupportFragmentManager(),"date picker");
         }
         else if(item.getItemId() == R.id.settings)
         {

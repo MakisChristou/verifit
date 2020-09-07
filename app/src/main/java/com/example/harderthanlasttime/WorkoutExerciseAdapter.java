@@ -149,7 +149,7 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         TextView maxweight = view.findViewById(R.id.maxweight);
         TextView maxreps = view.findViewById(R.id.maxreps);
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
-        TextView name = view.findViewById(R.id.exercise_name);
+        TextView name = view.findViewById(R.id.tv_date);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
         Button bt_delete_exercise = view.findViewById(R.id.bt_delete_exercise);
         Button bt_edit_exercise = view.findViewById(R.id.bt_edit_exercise);

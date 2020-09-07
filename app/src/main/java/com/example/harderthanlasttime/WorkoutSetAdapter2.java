@@ -1,13 +1,9 @@
 package com.example.harderthanlasttime;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -79,7 +75,7 @@ public class WorkoutSetAdapter2 extends RecyclerView.Adapter<WorkoutSetAdapter2.
             super(itemView);
 
             tv_reps = itemView.findViewById(R.id.set_reps);
-            tv_weight = itemView.findViewById(R.id.exercise_name);
+            tv_weight = itemView.findViewById(R.id.tv_date);
             cardView = itemView.findViewById(R.id.cardview_set);
 
 

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/exercise_name"
+        android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -61,7 +61,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date"
         tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
