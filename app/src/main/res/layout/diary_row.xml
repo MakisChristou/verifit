@@ -8,12 +8,13 @@
     android:animateLayoutChanges="true">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardview_diary"
+        android:id="@+id/cardview_main"
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="8dp"
+        app:cardElevation="15dp"
         android:layout_marginTop="15dp"
+        app:cardCornerRadius="5dp"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -53,7 +54,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/day" />
 
             <View
-                android:id="@+id/view"
+                android:id="@+id/blue_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="30dp"
@@ -86,7 +87,7 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
+                app:layout_constraintTop_toBottomOf="@+id/blue_line" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

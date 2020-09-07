@@ -7,11 +7,12 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardview_diary"
+        android:id="@+id/cardview_main"
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardElevation="8dp"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="5dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
@@ -44,7 +45,7 @@
 
 
             <View
-                android:id="@+id/view"
+                android:id="@+id/blue_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
@@ -77,12 +78,11 @@
                 app:srcCompat="@drawable/ic_keyboard_arrow_right_24px" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/recyclerView_Main"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/view"
-                tools:layout_editor_absoluteX="16dp" />
+                app:layout_constraintTop_toBottomOf="@+id/blue_line"
+                tools:layout_editor_absoluteX="-16dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

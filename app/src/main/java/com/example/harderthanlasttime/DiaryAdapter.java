@@ -158,6 +158,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         RecyclerView recyclerView;
         ImageButton expand_button;
         CardView cardview_diary;
+        View blue_line;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -168,7 +169,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             // Find Recycler View Object
             recyclerView = itemView.findViewById(R.id.recycler_view_diary);
             expand_button = itemView.findViewById(R.id.expand_button);
-            cardview_diary = itemView.findViewById(R.id.cardview_diary);
+            cardview_diary = itemView.findViewById(R.id.cardview_main);
+            blue_line = itemView.findViewById(R.id.blue_line);
 
 
             // Expand More/Less Button
@@ -179,6 +181,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
                     {
                         notifyItemChanged(getAdapterPosition());
                         recyclerView.setVisibility(View.VISIBLE);
+                        blue_line.setVisibility(View.VISIBLE);
 
 //
 //                        // Expand Button Animation
@@ -192,6 +195,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
                     {
                         // notifyItemChanged(getAdapterPosition());
                         recyclerView.setVisibility(View.GONE);
+                        blue_line.setVisibility(View.INVISIBLE);
 
 
 //                        // Expand Button Animation

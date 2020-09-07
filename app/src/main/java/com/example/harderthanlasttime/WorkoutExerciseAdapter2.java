@@ -121,7 +121,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
         TextView tv_exercise_name;
         RecyclerView recyclerView;
         ImageButton editButton;
-        View view;
+        View blue_line;
         CardView cardview_exercise2;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -129,7 +129,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
             tv_exercise_name = itemView.findViewById(R.id.tv_date);
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             editButton = itemView.findViewById(R.id.editButton);
-            view = itemView.findViewById(R.id.view);
+            blue_line = itemView.findViewById(R.id.blue_line);
             cardview_exercise2 = itemView.findViewById(R.id.cardview_exercise2);
 
                 // Expand More/Less
@@ -140,6 +140,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
                     {
                         // Expand Button Animation
                         recyclerView.setVisibility(View.VISIBLE);
+                        blue_line.setVisibility(View.VISIBLE);
                         notifyItemChanged(getAdapterPosition());
 
 //                         Expand Button Animation
@@ -152,6 +153,8 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
                     else if(recyclerView.getVisibility() == View.VISIBLE)
                     {
                         recyclerView.setVisibility(View.GONE);
+                        blue_line.setVisibility(View.INVISIBLE);
+
 
 //                         Expand Button Animation
 //                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);

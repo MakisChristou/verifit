@@ -1,16 +1,15 @@
 package com.example.harderthanlasttime;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,8 +18,8 @@ import java.util.Date;
 
 public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.WorkoutDayViewHolder> {
 
-    ArrayList<WorkoutDay> Workout_Days;
-    static Context ct;
+    public ArrayList<WorkoutDay> Workout_Days;
+    public static Context ct;
 
     // Constructor
     public WorkoutDayAdapter(Context ct, ArrayList<WorkoutDay> Workout_Days)
@@ -46,6 +45,34 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
     public void onBindViewHolder(@NonNull WorkoutDayViewHolder holder, int position)
     {
         holder.setData(Workout_Days.get(position));
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                System.out.println("CardView Clicked!");
+            }
+        });
+
+        // Back Button
+        holder.imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                System.out.println("Back!");
+            }
+        });
+
+        // Forward Button
+        holder.imageButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                System.out.println("Forward!");
+            }
+        });
+
+
     }
 
     @Override
@@ -57,11 +84,19 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
     static class WorkoutDayViewHolder extends RecyclerView.ViewHolder
     {
         private TextView tv_date;
+        private RecyclerView recyclerView_Main;
+        private CardView cardView;
+        private ImageButton imageButton2;
+        private ImageButton imageButton3;
 
         public WorkoutDayViewHolder(@NonNull View itemView)
         {
             super(itemView);
             tv_date = itemView.findViewById(R.id.tv_date);
+            cardView = itemView.findViewById(R.id.cardview_main);
+            imageButton2 = itemView.findViewById(R.id.imageButton2);
+            imageButton3 = itemView.findViewById(R.id.imageButton3);
+            recyclerView_Main = itemView.findViewById(R.id.recyclerView_Main);
         }
 
         // Set All Data
@@ -69,7 +104,7 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
         {
             String Date_Str1 = today.getDate();
 
-            // Find which exercices were performed that given date
+            // Find which exercises were performed that given date
             ArrayList<WorkoutExercise> Today_Execrises = new ArrayList<WorkoutExercise>();
             for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
             {
@@ -79,30 +114,27 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
                 }
             }
 
+
+            // Set Recycler View
+            WorkoutExerciseAdapter2 workoutExerciseAdapter = new WorkoutExerciseAdapter2(ct, Today_Execrises);
+            recyclerView_Main.setAdapter(workoutExerciseAdapter);
+            recyclerView_Main.setLayoutManager(new LinearLayoutManager(ct));
+
+
+
             // Convert Date To Something Sensible
             try
             {
                 Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(Date_Str1); //potential exception
-                DateFormat date2 = new SimpleDateFormat("EEEE dd MMMM yyyy");
+                DateFormat date2 = new SimpleDateFormat("EEEE dd MMM yyyy");
                 String Date_Str2 = date2.format(date1);
                 tv_date.setText(Date_Str2);
-
             }
             catch (ParseException e)
             {
                 e.printStackTrace();
             }
 
-            // Set Recycler View
-            RecyclerView recyclerView = itemView.findViewById(R.id.recyclerView);
-            WorkoutExerciseAdapter2 workoutExerciseAdapter = new WorkoutExerciseAdapter2(ct, Today_Execrises);
-            recyclerView.setAdapter(workoutExerciseAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(ct));
-
         }
     }
-
-
-
-
 }
