@@ -16,15 +16,12 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:backgroundTint="@color/custom_row"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:backgroundTint="@color/custom_row">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/non_expandable_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
 
             <TextView

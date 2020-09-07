@@ -2,12 +2,13 @@ package com.example.harderthanlasttime;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -22,6 +23,7 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -169,23 +171,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
 
-        // Self Explanatory
-        initViewPager();
-
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
 
         // Get Known Exercises from shared preferences
         loadKnownExercisesData();
+
+        // After Loading Data Initialize ViewPager
+        initViewPager();
     }
 
     // Initialize View pager object
     public void initViewPager()
     {
         viewPager2 = findViewById(R.id.viewPager2);
-        viewPager2.setAdapter(new WorkoutDayAdapter(Workout_Days));
-
-
+        viewPager2.setAdapter(new WorkoutDayAdapter(getApplicationContext(),Workout_Days));
     }
 
     // Formats backup name in case of export
