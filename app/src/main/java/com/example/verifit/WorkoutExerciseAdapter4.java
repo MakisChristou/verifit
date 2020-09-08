@@ -70,17 +70,17 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
             @Override
             public void onClick(View view)
             {
-                showExerciseDialog(position);
+                showExerciseHistoryStatsDialog(position);
             }
         });
     }
 
     // Blatant copy of Fitnotes but ohh well ;)
-    public void showExerciseDialog(int position) {
+    public void showExerciseHistoryStatsDialog(int position) {
 
         // Prepare to show exercise dialog box
         LayoutInflater inflater = LayoutInflater.from(ct);
-        View view = inflater.inflate(R.layout.exercise_dialog,null);
+        View view = inflater.inflate(R.layout.exercise_history_stats_dialog,null);
         AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
 
         // Get TextViews
@@ -92,8 +92,6 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
         TextView name = view.findViewById(R.id.tv_date);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
-        Button bt_delete_exercise = view.findViewById(R.id.bt_delete_exercise);
-        Button bt_edit_exercise = view.findViewById(R.id.bt_edit_exercise);
 
         // Set Values
 
@@ -106,7 +104,7 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
         totalreps.setText(String.valueOf(reps));
         maxreps.setText(String.valueOf(max_reps));
 
-        // Double
+
         totalvolume.setText(Exercises.get(position).getVolume().toString());
         maxweight.setText(Exercises.get(position).getMaxWeight().toString());
         onerepmax.setText(Exercises.get(position).getEstimatedOneRepMax().toString());
@@ -114,27 +112,6 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
         maxsetvolume.setText(Exercises.get(position).getMaxSetVolume().toString());
 
 
-        // Navigate to AddExercise Activity
-        bt_edit_exercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent in = new Intent(ct,AddExerciseActivity.class);
-                in.putExtra("exercise",Exercises.get(position).getExercise());
-                MainActivity.date_selected = Exercises.get(position).getDate(); // this is required by AddExerciseActivity
-                System.out.println(Exercises.get(position).getExercise());
-                System.out.println(MainActivity.date_selected);
-                ct.startActivity(in);
-            }
-        });
-
-        bt_delete_exercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-
-            }
-        });
 
         // Show Exercise Dialog Box
         alertDialog.show();
