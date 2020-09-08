@@ -85,11 +85,12 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             }
         }
 
-        MainActivity.date_selected = Date_Str1;
 
+        MainActivity.date_selected = Date_Str1;
+        System.out.println(position + " : " + MainActivity.date_selected);
 
         // Set Recycler View
-        WorkoutExerciseAdapter2 workoutExerciseAdapter = new WorkoutExerciseAdapter2(ct, Today_Execrises);
+        WorkoutExerciseAdapter3 workoutExerciseAdapter = new WorkoutExerciseAdapter3(ct, Today_Execrises);
         holder.recyclerView_Main.setAdapter(workoutExerciseAdapter);
         holder.recyclerView_Main.setLayoutManager(new LinearLayoutManager(ct));
 

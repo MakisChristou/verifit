@@ -109,11 +109,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        onCreateStuff();
-    }
 
     // When choosing date from DatePicker
     @Override

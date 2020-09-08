@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FitApp-Harder_Than_Last_Time.iml" filepath="$PROJECT_DIR$/.idea/modules/FitApp-Harder_Than_Last_Time.iml" group="Harder_Than_Last_Time" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Harder Than Last Time-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Harder Than Last Time-app.iml" group="Harder Than Last Time/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Harder_Than_Last_Time.iml" filepath="$PROJECT_DIR$/.idea/modules/Harder_Than_Last_Time.iml" group="Harder_Than_Last_Time" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Harder Than Last Time/app" />
     </modules>
