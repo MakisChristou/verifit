@@ -29,6 +29,7 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
         LayoutInflater inflater = LayoutInflater.from(this.ct);
         View view = inflater.inflate(R.layout.workout_exercise_row4,parent,false);
         return new MyViewHolder(view);
+
     }
 
     @Override
@@ -42,7 +43,6 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
         WorkoutSetAdapter workoutSetAdapter = new WorkoutSetAdapter(ct, Exercises.get(position).getSets());
         holder.recyclerView.setAdapter(workoutSetAdapter);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
-
     }
 
 

@@ -374,12 +374,14 @@ public class AddExerciseActivity extends AppCompatActivity {
             }
 
 
-            // Crash Here
+
             // Set Exercise History Recycler View
-//            RecyclerView recyclerView = findViewById(R.id.recyclerView_Exercise_History);
-//            WorkoutExerciseAdapter4 workoutExerciseAdapter4 = new WorkoutExerciseAdapter4(getApplicationContext(),All_Performed_Sessions);
-//            recyclerView.setAdapter(workoutExerciseAdapter4);
-//            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Exercise_History);
+            WorkoutExerciseAdapter4 workoutExerciseAdapter4 = new WorkoutExerciseAdapter4(AddExerciseActivity.this,All_Performed_Sessions);
+
+            // Crash Here
+            recyclerView.setAdapter(workoutExerciseAdapter4);
+            recyclerView.setLayoutManager(new LinearLayoutManager(AddExerciseActivity.this));
 
 
 
