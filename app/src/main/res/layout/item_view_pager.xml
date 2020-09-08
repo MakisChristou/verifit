@@ -4,20 +4,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_main"
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardElevation="5dp"
+        android:background="@android:color/transparent"
         android:backgroundTint="@color/custom_row">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/non_expandable_layout"
             android:layout_width="match_parent"
+            android:background="@color/core_grey_05"
             android:layout_height="match_parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/date_bg"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/cardview_light_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_full_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="45dp"
+                    android:text="August 21 2020"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <TextView
@@ -26,12 +49,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
-                android:text="Friday, Aug 28 2020"
-                android:textColor="@color/colorPrimary"
-                android:textSize="24sp"
+                android:text="Friday"
+                android:textColor="@color/core_black"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -43,18 +66,18 @@
                 android:id="@+id/blue_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="0dp"
                 android:background="@color/colorPrimary"
-                app:layout_constraintTop_toBottomOf="@+id/tv_date"
+                app:layout_constraintTop_toBottomOf="@+id/date_bg"
                 tools:layout_editor_absoluteX="16dp" />
 
             <ImageButton
                 android:id="@+id/imageButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="50dp"
                 android:background="@android:color/transparent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_date"
                 app:layout_constraintTop_toTopOf="parent"
@@ -64,9 +87,9 @@
                 android:id="@+id/imageButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="30dp"
                 android:background="@android:color/transparent"
                 app:layout_constraintStart_toEndOf="@+id/tv_date"
                 app:layout_constraintTop_toTopOf="parent"
@@ -82,7 +105,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

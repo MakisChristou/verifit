@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -98,9 +101,12 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
         try
         {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(Date_Str1); //potential exception
-            DateFormat date2 = new SimpleDateFormat("EEEE dd MMM yyyy");
+            DateFormat date2 = new SimpleDateFormat("EEEE");
+            DateFormat date3 = new SimpleDateFormat("MMMM dd yyyy");
             String Date_Str2 = date2.format(date1);
+            String Date_Str3 = date3.format(date1);
             holder.tv_date.setText(Date_Str2);
+            holder.tv_full_date.setText(Date_Str3);
         }
         catch (ParseException e)
         {
@@ -120,6 +126,7 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
     static class WorkoutDayViewHolder extends RecyclerView.ViewHolder
     {
         private TextView tv_date;
+        private TextView tv_full_date;
         private RecyclerView recyclerView_Main;
         private CardView cardView;
         private ImageButton imageButton2;
@@ -133,6 +140,7 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             imageButton2 = itemView.findViewById(R.id.imageButton2);
             imageButton3 = itemView.findViewById(R.id.imageButton3);
             recyclerView_Main = itemView.findViewById(R.id.recyclerView_Main);
+            tv_full_date = itemView.findViewById(R.id.tv_full_date);
         }
     }
 }

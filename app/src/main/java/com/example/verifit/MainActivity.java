@@ -206,6 +206,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Initialize View pager object
     public void initViewPager()
     {
+
+        // "Infinite" Data Structure
+        ArrayList<WorkoutDay> Infinite_Workout_Days = new ArrayList<>();
+
+        // Construct 40 years worth of empty workout days
+
+
         viewPager2 = findViewById(R.id.viewPager2);
         viewPager2.setAdapter(new WorkoutDayAdapter(this,Workout_Days));
         viewPager2.setCurrentItem(Workout_Days.size()-1);
@@ -283,7 +290,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // When File explorer stops this function runs
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
         if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK)
         {
             if(data != null)
@@ -401,36 +407,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises.add(new Exercise("Hammer Strength Shoulder Press","Shoulders"));
     }
 
-
-    // Update Workouts on Calendar
-    public void updateCalendar()
-    {
-        // Selected Dates
-        List<Calendar> calendars = new ArrayList<>();
-
-        // For Date Parsing According to CSV Data
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-        // Parse Workout Days
-        for(int i = 0; i < Workout_Days.size(); i++)
-        {
-            try
-            {
-                Calendar calendar = Calendar.getInstance();
-                Date date = null;
-                date = format.parse(Workout_Days.get(i).getDate());
-                calendar.setTime(date);
-                calendars.add(calendar);
-            }
-            catch (ParseException e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        //calendarView.setEvents(events);
-        calendarView.setSelectedDates(calendars);
-    }
 
     // Calculate all Volume Personal Records from scratch
     public static void calculateVolumeRecords()
