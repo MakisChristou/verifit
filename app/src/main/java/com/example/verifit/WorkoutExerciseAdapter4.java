@@ -1,13 +1,22 @@
 package com.example.verifit;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 // Adapter for WorkoutExercise Class
@@ -35,14 +44,101 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
+
+
+        Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(Exercises.get(position).getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("EEEE, MMM dd");
+        String strDate = dateFormat.format(date1);
+
         // Change TextView text
-        holder.tv_date.setText(Exercises.get(position).getDate());
+        holder.tv_date.setText(strDate);
 
         // Recycler View Stuff
         // Change RecyclerView items
         WorkoutSetAdapter workoutSetAdapter = new WorkoutSetAdapter(ct, Exercises.get(position).getSets());
         holder.recyclerView.setAdapter(workoutSetAdapter);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
+
+
+        holder.cardview_exercise_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                showExerciseDialog(position);
+            }
+        });
+    }
+
+    // Blatant copy of Fitnotes but ohh well ;)
+    public void showExerciseDialog(int position) {
+
+        // Prepare to show exercise dialog box
+        LayoutInflater inflater = LayoutInflater.from(ct);
+        View view = inflater.inflate(R.layout.exercise_dialog,null);
+        AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
+
+        // Get TextViews
+        TextView totalsets = view.findViewById(R.id.volume);
+        TextView totalreps = view.findViewById(R.id.totalreps);
+        TextView totalvolume = view.findViewById(R.id.totalvolume);
+        TextView maxweight = view.findViewById(R.id.maxweight);
+        TextView maxreps = view.findViewById(R.id.maxreps);
+        TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
+        TextView name = view.findViewById(R.id.tv_date);
+        TextView onerepmax = view.findViewById(R.id.onerepmax);
+        Button bt_delete_exercise = view.findViewById(R.id.bt_delete_exercise);
+        Button bt_edit_exercise = view.findViewById(R.id.bt_edit_exercise);
+
+        // Set Values
+
+        // Double -> Integer
+        int sets = (int)Math.round(Exercises.get(position).getTotalSets());
+        int reps = (int)Math.round(Exercises.get(position).getTotalReps());
+        int max_reps = (int)Math.round(Exercises.get(position).getMaxReps());
+
+        totalsets.setText(String.valueOf(sets));
+        totalreps.setText(String.valueOf(reps));
+        maxreps.setText(String.valueOf(max_reps));
+
+        // Double
+        totalvolume.setText(Exercises.get(position).getVolume().toString());
+        maxweight.setText(Exercises.get(position).getMaxWeight().toString());
+        onerepmax.setText(Exercises.get(position).getEstimatedOneRepMax().toString());
+        name.setText(Exercises.get(position).getExercise());
+        maxsetvolume.setText(Exercises.get(position).getMaxSetVolume().toString());
+
+
+        // Navigate to AddExercise Activity
+        bt_edit_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Intent in = new Intent(ct,AddExerciseActivity.class);
+                in.putExtra("exercise",Exercises.get(position).getExercise());
+                MainActivity.date_selected = Exercises.get(position).getDate(); // this is required by AddExerciseActivity
+                System.out.println(Exercises.get(position).getExercise());
+                System.out.println(MainActivity.date_selected);
+                ct.startActivity(in);
+            }
+        });
+
+        bt_delete_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+
+            }
+        });
+
+        // Show Exercise Dialog Box
+        alertDialog.show();
+
     }
 
 
@@ -56,12 +152,14 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
     {
         TextView tv_date;
         RecyclerView recyclerView;
+        CardView cardview_exercise_history;
 
         public MyViewHolder(@NonNull View itemView)
         {
             super(itemView);
             tv_date = itemView.findViewById(R.id.tv_date);
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
+            cardview_exercise_history = itemView.findViewById(R.id.cardview_exercise_history);
         }
     }
 }

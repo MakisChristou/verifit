@@ -87,7 +87,7 @@ public class WorkoutExerciseAdapter3 extends RecyclerView.Adapter<WorkoutExercis
             tv_exercise_name = itemView.findViewById(R.id.tv_date);
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             blue_line = itemView.findViewById(R.id.blue_line);
-            cardview_exercise2 = itemView.findViewById(R.id.cardview_exercise2);
+            cardview_exercise2 = itemView.findViewById(R.id.cardview_exercise_history);
         }
     }
 }

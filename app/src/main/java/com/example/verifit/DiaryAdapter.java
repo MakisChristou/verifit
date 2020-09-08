@@ -65,12 +65,15 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
 
 
-        } catch (ParseException e) {
+        }
+        catch (ParseException e)
+        {
             e.printStackTrace();
         }
 
         // Day Dialog
-        holder.cardview_diary.setOnClickListener(new View.OnClickListener() {
+        holder.cardview_diary.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {

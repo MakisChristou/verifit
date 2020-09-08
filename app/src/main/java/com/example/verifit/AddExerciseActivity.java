@@ -362,7 +362,7 @@ public class AddExerciseActivity extends AppCompatActivity {
             ArrayList<WorkoutExercise> All_Performed_Sessions = new ArrayList<>();
 
             // Find all performed sessions of a specific exercise and add them to local data structure
-            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            for(int i = MainActivity.Workout_Days.size()-1; i >= 0; i--)
             {
                 for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
                 {
@@ -378,6 +378,7 @@ public class AddExerciseActivity extends AppCompatActivity {
             // Set Exercise History Recycler View
             RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Exercise_History);
             WorkoutExerciseAdapter4 workoutExerciseAdapter4 = new WorkoutExerciseAdapter4(AddExerciseActivity.this,All_Performed_Sessions);
+
 
             // Crash Here
             recyclerView.setAdapter(workoutExerciseAdapter4);

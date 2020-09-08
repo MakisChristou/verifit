@@ -130,7 +130,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             editButton = itemView.findViewById(R.id.editButton);
             blue_line = itemView.findViewById(R.id.blue_line);
-            cardview_exercise2 = itemView.findViewById(R.id.cardview_exercise2);
+            cardview_exercise2 = itemView.findViewById(R.id.cardview_exercise_history);
 
                 // Expand More/Less
                 cardview_exercise2.setOnClickListener(new View.OnClickListener() {
