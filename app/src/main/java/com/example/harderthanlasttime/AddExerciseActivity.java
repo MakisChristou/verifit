@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -347,6 +349,43 @@ public class AddExerciseActivity extends AppCompatActivity {
         {
             Toast bread = Toast.makeText(getApplicationContext(), "Timer Selected", Toast.LENGTH_SHORT);
             bread.show();
+        }
+        else if(item.getItemId() == R.id.history)
+        {
+            // Prepare to show exercise history dialog box
+            LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
+            View view = inflater.inflate(R.layout.exercise_history_dialog,null);
+            AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
+
+
+            // Declare local data structure
+            ArrayList<WorkoutExercise> All_Performed_Sessions = new ArrayList<>();
+
+            // Find all performed sessions of a specific exercise and add them to local data structure
+            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            {
+                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                {
+                    if(MainActivity.Workout_Days.get(i).getExercises().get(j).getExercise().equals(exercise_name))
+                    {
+                        All_Performed_Sessions.add(MainActivity.Workout_Days.get(i).getExercises().get(j));
+                    }
+                }
+            }
+
+
+            // Crash Here
+            // Set Exercise History Recycler View
+//            RecyclerView recyclerView = findViewById(R.id.recyclerView_Exercise_History);
+//            WorkoutExerciseAdapter4 workoutExerciseAdapter4 = new WorkoutExerciseAdapter4(getApplicationContext(),All_Performed_Sessions);
+//            recyclerView.setAdapter(workoutExerciseAdapter4);
+//            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+
+
+
+
+            alertDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
