@@ -142,14 +142,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void initActivity()
     {
 
-        // Spyware Intensifies
         askReadPermission();
+
         askWritePermission();
 
         setExportBackupName();
 
         // Rename top bar to something sensible
-        getSupportActionBar().setTitle("Calendar");
+        getSupportActionBar().setTitle("VeriFit");
 
         // From Settings Activity when importing CSV
         Intent in = getIntent();
@@ -172,8 +172,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         else
         {
-
-
             // Get WorkoutDays from shared preferences
             loadWorkoutData();
 

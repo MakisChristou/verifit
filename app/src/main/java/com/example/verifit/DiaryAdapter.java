@@ -43,6 +43,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
+
+        // Set view's data
         SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
 
         // Possible Error
@@ -67,7 +69,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             e.printStackTrace();
         }
 
-        holder.expand_button.setOnClickListener(new View.OnClickListener() {
+        // Day Dialog
+        holder.cardview_diary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -75,9 +78,19 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             }
 
         });
+
+        // More Button
+        holder.expand_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                System.out.println("More Button");
+            }
+        });
     }
 
-    // Shows Day's Stats when clicked
+    // Shows Day's Stats
     public void showDayDialog(int position)
     {
         // Prepare to show exercise dialog box
@@ -119,7 +132,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         }
 
         // Goto Day Activity
-        bt_viewDay.setOnClickListener(new View.OnClickListener() {
+        bt_viewDay.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ct,DayActivity.class);
@@ -173,40 +187,40 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             blue_line = itemView.findViewById(R.id.blue_line);
 
 
-            // Expand More/Less Button
-            cardview_diary.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(recyclerView.getVisibility() == View.GONE)
-                    {
-                        notifyItemChanged(getAdapterPosition());
-                        recyclerView.setVisibility(View.VISIBLE);
-                        blue_line.setVisibility(View.VISIBLE);
-
+            // Expand More/Less
+//            cardview_diary.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if(recyclerView.getVisibility() == View.GONE)
+//                    {
+//                        notifyItemChanged(getAdapterPosition());
+//                        recyclerView.setVisibility(View.VISIBLE);
+//                        blue_line.setVisibility(View.VISIBLE);
 //
-//                        // Expand Button Animation
-//                        RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
-//                        rotate.setDuration(200);
-//                        rotate.setInterpolator(new LinearInterpolator());
-//                        expand_button.startAnimation(rotate);
-//                        expand_button.setImageResource(R.drawable.ic_expand_less_24px);
-                    }
-                    else if(recyclerView.getVisibility() == View.VISIBLE)
-                    {
-                        // notifyItemChanged(getAdapterPosition());
-                        recyclerView.setVisibility(View.GONE);
-                        blue_line.setVisibility(View.INVISIBLE);
-
-
-//                        // Expand Button Animation
-//                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
-//                        rotate.setDuration(200);
-//                        rotate.setInterpolator(new LinearInterpolator());
-//                        expand_button.startAnimation(rotate);
-//                         expand_button.setImageResource(R.drawable.ic_expand_more_24px);
-                    }
-                }
-            });
+////
+////                        // Expand Button Animation
+////                        RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
+////                        rotate.setDuration(200);
+////                        rotate.setInterpolator(new LinearInterpolator());
+////                        expand_button.startAnimation(rotate);
+////                        expand_button.setImageResource(R.drawable.ic_expand_less_24px);
+//                    }
+//                    else if(recyclerView.getVisibility() == View.VISIBLE)
+//                    {
+//                        // notifyItemChanged(getAdapterPosition());
+//                        recyclerView.setVisibility(View.GONE);
+//                        blue_line.setVisibility(View.INVISIBLE);
+//
+//
+////                        // Expand Button Animation
+////                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
+////                        rotate.setDuration(200);
+////                        rotate.setInterpolator(new LinearInterpolator());
+////                        expand_button.startAnimation(rotate);
+////                         expand_button.setImageResource(R.drawable.ic_expand_more_24px);
+//                    }
+//                }
+//            });
 
         }
     }
