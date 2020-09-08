@@ -166,6 +166,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             else if(WhatToDO.equals("exportcsv"))
             {
                 writeFile();
+                // Or else nothing comes up
+                initViewPager();
             }
         }
         else
@@ -196,6 +198,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         // After Loading Data Initialize ViewPager
         initViewPager();
+
+        // Bottom Navigation Bar Intents
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     // Initialize View pager object
