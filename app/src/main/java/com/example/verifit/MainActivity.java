@@ -170,7 +170,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         else
         {
-            System.out.println("Loaded Data and init Viewpager");
+
+
             // Get WorkoutDays from shared preferences
             loadWorkoutData();
 
@@ -182,6 +183,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // Get WorkoutDays from shared preferences
+        loadWorkoutData();
+
+        // Get Known Exercises from shared preferences
+        loadKnownExercisesData();
+
+        // After Loading Data Initialize ViewPager
+        initViewPager();
     }
 
     // Initialize View pager object
