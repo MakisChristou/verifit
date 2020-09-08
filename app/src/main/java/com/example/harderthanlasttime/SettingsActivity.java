@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -176,22 +177,55 @@ public class SettingsActivity extends AppCompatActivity {
 
 
             Button bt_bitcoin = view.findViewById(R.id.bt_bitcoin);
-            Button bt_monero = view.findViewById(R.id.bt_ethereum);
+            Button bt_ethereum = view.findViewById(R.id.bt_ethereum);
+            Button bt_vericoin = view.findViewById(R.id.bt_vericoin);
+            Button bt_verium = view.findViewById(R.id.bt_verium);
 
-            bt_bitcoin.setOnClickListener(new View.OnClickListener() {
+            ImageView crypto_imageView = view.findViewById(R.id.crypto_imageView);
+
+            bt_bitcoin.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
-
+                public void onClick(View view)
+                {
+                    crypto_imageView.setImageResource(R.drawable.btc);
                 }
             });
 
 
-            bt_monero.setOnClickListener(new View.OnClickListener() {
+            bt_ethereum.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
-
+                public void onClick(View view)
+                {
+                    crypto_imageView.setImageResource(R.drawable.eth);
                 }
             });
+
+
+            bt_vericoin.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    crypto_imageView.setImageResource(R.drawable.vrc);
+                }
+            });
+
+            bt_verium.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    crypto_imageView.setImageResource(R.drawable.vrm);
+                }
+            });
+
+
+
+
+
+
 
 
             // Show Exercise Dialog Box
