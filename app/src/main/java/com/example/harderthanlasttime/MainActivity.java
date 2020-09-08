@@ -40,7 +40,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -168,15 +170,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 writeFile();
             }
         }
+        else
+        {
+            System.out.println("Loaded Data and init Viewpager");
+            // Get WorkoutDays from shared preferences
+            loadWorkoutData();
 
-        // Get WorkoutDays from shared preferences
-        loadWorkoutData();
+            // Get Known Exercises from shared preferences
+            loadKnownExercisesData();
 
-        // Get Known Exercises from shared preferences
-        loadKnownExercisesData();
+            // After Loading Data Initialize ViewPager
+            initViewPager();
+        }
 
-        // After Loading Data Initialize ViewPager
-        initViewPager();
+
     }
 
     // Initialize View pager object
@@ -510,9 +517,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             csvList = csvFile.read();
 
             // Here is where the magic happens
-            CSVtoSets(csvList);
-            SetsToEverything();
-            saveWorkoutData(this);
+            CSVtoSets(csvList); // Read File and Construct Local Objects
+            SetsToEverything(); // Convert Set Objects to Day Objects
+            System.out.println("csv to known...");
+            csvToKnownExercises(); // Find all Exercises in CSV and add them to known exercises
+            saveKnownExerciseData(this); // Save KnownExercises in CSV
+            saveWorkoutData(this); // Save WorkoutDays in Shared Preferences
+            initViewPager(); // Initialize View Pager
         }
         catch (IOException e)
         {
@@ -652,11 +663,43 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return "";
     }
 
+    // Add all exercises found in the csv to the Known Exercises local data structure
+    public static void csvToKnownExercises()
+    {
+        // Make new ArrayList which will hold duplicates
+        ArrayList<Exercise> DuplicateKnownExercises = new ArrayList<>();
+
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            {
+                String Name = MainActivity.Workout_Days.get(i).getSets().get(j).getExercise();
+                String Bodypart = MainActivity.Workout_Days.get(i).getSets().get(j).getCategory();
+                DuplicateKnownExercises.add(new Exercise(Name,Bodypart));
+            }
+        }
+
+
+        // Known Exercises is empty at this point but doesn't hurt to clear anyway
+        MainActivity.KnownExercises.clear();
+
+        // Manual Implementation "borrowed" from stack overflow
+        for (Exercise event : DuplicateKnownExercises) {
+            boolean isFound = false;
+            // check if the event name exists in noRepeat
+            for (Exercise e : MainActivity.KnownExercises) {
+                if (e.getName().equals(event.getName()) || (e.equals(event))) {
+                    isFound = true;
+                    break;
+                }
+            }
+            if (!isFound) KnownExercises.add(event);
+        }
+    }
 
     // Navigates to given activity based on the selected menu item
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
 
         if(item.getItemId() == R.id.home)
         {

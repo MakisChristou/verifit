@@ -99,7 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
             // General
             else if(key.equals("theme"))
             {
-
+                Toast.makeText(getContext(),"Dark Theme tot implemented yet",Toast.LENGTH_SHORT);
             }
             else if(key.equals("github"))
             {
@@ -141,16 +141,19 @@ public class SettingsActivity extends AppCompatActivity {
 
             bt_yes.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View view)
+                {
                     MainActivity.Workout_Days.clear();
                     MainActivity.saveWorkoutData(getContext());
                     alertDialog.dismiss();
+                    Toast.makeText(getContext(),"Data Deleted",Toast.LENGTH_SHORT).show();
                     Intent in = new Intent(getContext(),MainActivity.class);
                     startActivity(in);
                 }
             });
 
-            bt_no.setOnClickListener(new View.OnClickListener() {
+            bt_no.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
                 public void onClick(View view) {
                     alertDialog.dismiss();
