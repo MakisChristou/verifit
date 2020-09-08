@@ -109,6 +109,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        onCreateStuff();
+    }
+
     // When choosing date from DatePicker
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2)
@@ -123,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         day = String.format("%02d", i2);
 
         String date_clicked = year+"-"+month+"-"+day;
+        MainActivity.date_selected = date_clicked;
 
         // Start Intent
         Intent in = new Intent(getApplicationContext(), DayActivity.class);
@@ -182,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         viewPager2 = findViewById(R.id.viewPager2);
         viewPager2.setAdapter(new WorkoutDayAdapter(this,Workout_Days));
+        viewPager2.setCurrentItem(Workout_Days.size()-1);
     }
 
     // Formats backup name in case of export

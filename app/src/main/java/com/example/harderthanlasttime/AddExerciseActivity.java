@@ -56,6 +56,8 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Self Explanatory I guess
         initrecyclerView();
+
+        System.out.println(MainActivity.date_selected);
     }
 
     // Button On Click Methods
