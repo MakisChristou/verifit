@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         initActivity();
 
+
 //         Read csv file line by line
 //        InputStream inputStream = getResources().openRawResource(R.raw.fitnotes);
 //        CSVFile csvFile = new CSVFile(inputStream);
@@ -108,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Date date_clicked = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         date_selected = dateFormat.format(date_clicked);
-
     }
 
 

@@ -85,9 +85,9 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             }
         }
 
-
-        MainActivity.date_selected = Date_Str1;
-        System.out.println(position + " : " + MainActivity.date_selected);
+//        This causes too many issues
+//        MainActivity.date_selected = Date_Str1;
+//        System.out.println(position + " : " + MainActivity.date_selected);
 
         // Set Recycler View
         WorkoutExerciseAdapter3 workoutExerciseAdapter = new WorkoutExerciseAdapter3(ct, Today_Execrises);
