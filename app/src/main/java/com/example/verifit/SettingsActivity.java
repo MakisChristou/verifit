@@ -1,4 +1,4 @@
-package com.example.harderthanlasttime;
+package com.example.verifit;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -189,6 +189,9 @@ public class SettingsActivity extends AppCompatActivity {
                 public void onClick(View view)
                 {
                     crypto_imageView.setImageResource(R.drawable.btc);
+//                    ClipboardManager clipboard = (ClipboardManager) getSystemService(getContext().CLIPBOARD_SERVICE);
+//                    ClipData clip = ClipData.newPlainText("btc", "1Makis5hJTed3A68Nky9dsiXMwCJtg4vN3");
+//                    clipboard.setPrimaryClip(clip);
                 }
             });
 

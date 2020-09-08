@@ -1,4 +1,4 @@
-package com.example.harderthanlasttime;
+package com.example.verifit;
 
 import java.io.BufferedReader;
 import java.io.IOException;

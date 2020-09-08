@@ -1,4 +1,4 @@
-package com.example.harderthanlasttime;
+package com.example.verifit;
 
 import android.content.Context;
 import android.content.Intent;

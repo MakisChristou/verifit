@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.harderthanlasttime">
+    package="com.example.verifit">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,34 +15,34 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SplashScreenActivity"/>
         <activity
-            android:name=".ChartsActivity"
+            android:name="com.example.verifit.ChartsActivity"
             android:label="Charts"/>
         <activity
-            android:name=".CustomExerciseActivity"
+            android:name="com.example.verifit.CustomExerciseActivity"
             android:label="New Exercise"/>
         <activity
-            android:name=".ExercisesActivity"
+            android:name="com.example.verifit.ExercisesActivity"
             android:label="Exercises" />
         <activity
-            android:name=".DayActivity"
+            android:name="com.example.verifit.DayActivity"
             android:label="Day" />
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.example.verifit.SettingsActivity"
             android:label="Settings" />
         <activity
-            android:name=".CalculatorActivity"
+            android:name="com.example.verifit.CalculatorActivity"
             android:label="Plate Calculator" />
         <activity
-            android:name=".MeActivity"
+            android:name="com.example.verifit.MeActivity"
             android:label="Me" />
         <activity
-            android:name=".AddExerciseActivity"
+            android:name="com.example.verifit.AddExerciseActivity"
             android:label="Add Exercise" />
         <activity
-            android:name=".DiaryActivity"
+            android:name="com.example.verifit.DiaryActivity"
             android:label="Diary" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.verifit.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

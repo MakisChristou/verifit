@@ -1,4 +1,4 @@
-package com.example.harderthanlasttime;
+package com.example.verifit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-
-import java.util.Date;
 
 public class CustomExerciseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

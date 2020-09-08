@@ -1,4 +1,4 @@
-package com.example.harderthanlasttime;
+package com.example.verifit;
 
 import android.app.AlertDialog;
 import android.content.Context;

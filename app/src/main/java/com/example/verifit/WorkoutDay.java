@@ -1,4 +1,4 @@
-package com.example.harderthanlasttime;
+package com.example.verifit;
 
 import java.util.ArrayList;
 import java.util.Iterator;
