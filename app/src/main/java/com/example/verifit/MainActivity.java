@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
     public static final int PERMISSION_REQUEST_STORAGE = 1000;
-    public static String EXPORT_FILENAME = "FitBook_Backup";
+    public static String EXPORT_FILENAME = "VeriFit_Backup";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2)
     {
-
         i1++;
         String year = String.valueOf(i);
         String month;
@@ -181,13 +180,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // After Loading Data Initialize ViewPager
             initViewPager();
         }
-
-
     }
 
     @Override
     protected void onRestart() {
+
+        // This was already there so I am not deleting it
         super.onRestart();
+
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
 
@@ -210,12 +210,41 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // "Infinite" Data Structure
         ArrayList<WorkoutDay> Infinite_Workout_Days = new ArrayList<>();
 
+        // Find start and End Dates
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.YEAR, -25);
+        Date startDate = c.getTime();
+        c.add(Calendar.YEAR, +50);
+        Date endDate = c.getTime();
+
+
+        // Create Calendar Objects that represent start and end date
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
+
         // Construct 40 years worth of empty workout days
+        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime())
+        {
+            String date_str = new SimpleDateFormat("yyyy-MM-dd").format(date);
+
+            // Create new mostly empty object
+            WorkoutDay today = new WorkoutDay();
+            today.setDate(date_str);
+            Infinite_Workout_Days.add(today);
+        }
 
 
+        // Use View Pager with infinite days
         viewPager2 = findViewById(R.id.viewPager2);
-        viewPager2.setAdapter(new WorkoutDayAdapter(this,Workout_Days));
-        viewPager2.setCurrentItem(Workout_Days.size()-1);
+        viewPager2.setAdapter(new WorkoutDayAdapter(this,Infinite_Workout_Days));
+        viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
+
+        System.out.println(Infinite_Workout_Days.size()+1);
+        System.out.println((Infinite_Workout_Days.size()+1)/2);
+
     }
 
     // Formats backup name in case of export
