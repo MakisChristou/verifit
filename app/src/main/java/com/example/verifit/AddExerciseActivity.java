@@ -347,8 +347,12 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.timer)
         {
-            Toast bread = Toast.makeText(getApplicationContext(), "Timer Selected", Toast.LENGTH_SHORT);
-            bread.show();
+            // Prepare to show timer dialog box
+            LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
+            View view = inflater.inflate(R.layout.timer_dialog,null);
+            AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
+
+            alertDialog.show();
         }
         else if(item.getItemId() == R.id.history)
         {

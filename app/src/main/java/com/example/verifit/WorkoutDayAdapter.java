@@ -1,6 +1,7 @@
 package com.example.verifit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,33 +49,6 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
     public void onBindViewHolder(@NonNull WorkoutDayViewHolder holder, int position)
     {
 
-//        Makes Card View Clickable and it's visually ugly
-//        holder.cardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                System.out.println("CardView Clicked!");
-//            }
-//        });
-
-        // Back Button
-        holder.imageButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                System.out.println("Back!");
-            }
-        });
-
-        // Forward Button
-        holder.imageButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                System.out.println("Forward!");
-            }
-        });
-
         // Set Data Method used to be here :D
         String Date_Str1 = Workout_Days.get(position).getDate();
 
@@ -88,9 +62,6 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             }
         }
 
-//        This causes too many issues
-//        MainActivity.date_selected = Date_Str1;
-//        System.out.println(position + " : " + MainActivity.date_selected);
 
         // Set Recycler View
         WorkoutExerciseAdapter3 workoutExerciseAdapter = new WorkoutExerciseAdapter3(ct, Today_Execrises);
@@ -113,6 +84,17 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             e.printStackTrace();
         }
 
+        holder.tv_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Intent in = new Intent(ct,ExercisesActivity.class);
+                MainActivity.date_selected = Date_Str1;
+                ct.startActivity(in);
+            }
+        });
+
+
     }
 
 
@@ -129,16 +111,12 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
         private TextView tv_full_date;
         private RecyclerView recyclerView_Main;
         private CardView cardView;
-        private ImageButton imageButton2;
-        private ImageButton imageButton3;
 
         public WorkoutDayViewHolder(@NonNull View itemView)
         {
             super(itemView);
             tv_date = itemView.findViewById(R.id.tv_date);
             cardView = itemView.findViewById(R.id.cardview_main);
-            imageButton2 = itemView.findViewById(R.id.imageButton2);
-            imageButton3 = itemView.findViewById(R.id.imageButton3);
             recyclerView_Main = itemView.findViewById(R.id.recyclerView_Main);
             tv_full_date = itemView.findViewById(R.id.tv_full_date);
         }

@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static String date_selected;
     public static HashMap<String,Double> VolumePRs = new HashMap<String,Double>();
     public ViewPager2 viewPager2;
+    public ArrayList<WorkoutDay> Infinite_Workout_Days;
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -208,14 +209,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
 
         // "Infinite" Data Structure
-        ArrayList<WorkoutDay> Infinite_Workout_Days = new ArrayList<>();
+        Infinite_Workout_Days = new ArrayList<>();
 
         // Find start and End Dates
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-        c.add(Calendar.YEAR, -25);
+        c.add(Calendar.YEAR, -10);
         Date startDate = c.getTime();
-        c.add(Calendar.YEAR, +50);
+        c.add(Calendar.YEAR, +20);
         Date endDate = c.getTime();
 
 
@@ -241,10 +242,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         viewPager2 = findViewById(R.id.viewPager2);
         viewPager2.setAdapter(new WorkoutDayAdapter(this,Infinite_Workout_Days));
         viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
-
-        System.out.println(Infinite_Workout_Days.size()+1);
-        System.out.println((Infinite_Workout_Days.size()+1)/2);
-
     }
 
     // Formats backup name in case of export
@@ -770,8 +767,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         if(item.getItemId() == R.id.home)
         {
-            DialogFragment datePicker = new DatePickerFragment();
-            datePicker.show(getSupportFragmentManager(),"date picker");
+//            DialogFragment datePicker = new DatePickerFragment();
+//            datePicker.show(getSupportFragmentManager(),"date picker");
+            viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
         }
         else if(item.getItemId() == R.id.settings)
         {

@@ -40,6 +40,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -70,30 +71,6 @@
                 android:background="@color/colorPrimary"
                 app:layout_constraintTop_toBottomOf="@+id/date_bg"
                 tools:layout_editor_absoluteX="16dp" />
-
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="50dp"
-                android:layout_marginRight="50dp"
-                android:background="@android:color/transparent"
-                app:layout_constraintEnd_toStartOf="@+id/tv_date"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_keyboard_arrow_left_24px" />
-
-            <ImageButton
-                android:id="@+id/imageButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="30dp"
-                android:background="@android:color/transparent"
-                app:layout_constraintStart_toEndOf="@+id/tv_date"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_24px" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_Main"
