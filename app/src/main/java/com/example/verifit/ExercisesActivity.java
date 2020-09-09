@@ -36,6 +36,11 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        onCreateStuff();
+    }
 
     public void onCreateStuff()
     {

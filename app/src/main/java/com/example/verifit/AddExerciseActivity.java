@@ -353,14 +353,54 @@ public class AddExerciseActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.timer_dialog,null);
             AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
 
-            // Get Objects
-            EditText et_seconds = findViewById(R.id.et_seconds);
-            ImageButton minus_seconds = findViewById(R.id.minus_seconds);
-            ImageButton plus_seconds = findViewById(R.id.plus_seconds);
-            Button bt_start = findViewById(R.id.bt_start);
-            Button bt_reset = findViewById(R.id.bt_close);
+            // Get Objects (use view because dialog box from menu)
+            EditText et_seconds = view.findViewById(R.id.et_seconds);
+            ImageButton minus_seconds = view.findViewById(R.id.minus_seconds);
+            ImageButton plus_seconds = view.findViewById(R.id.plus_seconds);
+            Button bt_start = view.findViewById(R.id.bt_start);
+            Button bt_reset = view.findViewById(R.id.bt_close);
 
             // Timer code here
+            et_seconds.setText("180");
+
+            bt_reset.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    System.out.println("Resetting Timer");
+                }
+            });
+
+            bt_start.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    System.out.println("Starting Timer");
+                }
+            });
+
+            minus_seconds.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    System.out.println("Minus Seconds");
+                }
+            });
+
+            plus_seconds.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    System.out.println("Plus Seconds");
+                }
+            });
+
+
+
 
             alertDialog.show();
         }

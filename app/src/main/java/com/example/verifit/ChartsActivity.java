@@ -25,12 +25,19 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         setContentView(R.layout.activity_charts);
 
 
-         barChart();
-
+        // Basic Initialization
+        onCreateStuff();
     }
 
 
-    public void barChart()
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
+        onCreateStuff();
+    }
+
+    public void onCreateStuff()
     {
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);

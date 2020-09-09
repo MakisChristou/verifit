@@ -59,7 +59,6 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             }
         }
 
-
         // Set Recycler View
         ViewPagerExerciseAdapter workoutExerciseAdapter = new ViewPagerExerciseAdapter(ct, Today_Execrises);
         holder.recyclerView_Main.setAdapter(workoutExerciseAdapter);
@@ -93,7 +92,6 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
 
 
     }
-
 
 
     @Override

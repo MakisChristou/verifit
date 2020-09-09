@@ -18,12 +18,25 @@ public class MeActivity extends AppCompatActivity implements BottomNavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_me);
 
+
+        onCreateStuff();
+
+    }
+
+
+    public void onCreateStuff()
+    {
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setSelectedItemId(R.id.me);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        onCreateStuff();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

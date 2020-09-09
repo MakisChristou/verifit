@@ -184,7 +184,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    protected void onRestart() {
+    protected void onRestart()
+    {
 
         // This was already there so I am not deleting it
         super.onRestart();
@@ -218,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Date startDate = c.getTime();
         c.add(Calendar.YEAR, +20);
         Date endDate = c.getTime();
-
 
         // Create Calendar Objects that represent start and end date
         Calendar start = Calendar.getInstance();
