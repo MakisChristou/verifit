@@ -358,7 +358,7 @@ public class AddExerciseActivity extends AppCompatActivity {
             ImageButton minus_seconds = findViewById(R.id.minus_seconds);
             ImageButton plus_seconds = findViewById(R.id.plus_seconds);
             Button bt_start = findViewById(R.id.bt_start);
-            Button bt_reset = findViewById(R.id.bt_reset);
+            Button bt_reset = findViewById(R.id.bt_close);
 
             // Timer code here
 

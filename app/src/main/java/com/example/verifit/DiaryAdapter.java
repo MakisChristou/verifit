@@ -108,7 +108,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         TextView date = view.findViewById(R.id.tv_date);
         TextView totalexercises = view.findViewById(R.id.totalexercises);
         Button bt_viewDay = view.findViewById(R.id.bt_start);
-        Button bt_deleteDay = view.findViewById(R.id.bt_reset);
+        Button bt_close = view.findViewById(R.id.bt_close);
 
 
         // Crash Here
@@ -148,11 +148,20 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         });
 
         // Delete Day
-        bt_deleteDay.setOnClickListener(new View.OnClickListener() {
+        bt_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
                 System.out.println("Delete Day " + position);
+            }
+        });
+
+        bt_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                // Show Exercise Dialog Box
+                alertDialog.dismiss();
             }
         });
 

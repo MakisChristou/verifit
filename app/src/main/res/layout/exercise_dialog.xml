@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_delete_exercise"
+        android:id="@+id/bt_close"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -14,10 +14,10 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="100dp"
         android:layout_marginRight="100dp"
-        android:text="Delete"
+        android:text="Close"
         android:textAllCaps="false"
         app:cornerRadius="20dp"
-        app:icon="@drawable/ic_delete_24px"
+        app:icon="@drawable/ic_close_24px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_edit_exercise"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -311,7 +311,7 @@
         app:cornerRadius="20dp"
         app:icon="@drawable/ic_create_24px"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_delete_exercise"
+        app:layout_constraintEnd_toStartOf="@+id/bt_close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 

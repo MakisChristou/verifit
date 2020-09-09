@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_play_arrow_24px" />
-                            <entry key="sourceFile" value="$USER_HOME$/Icons/rounded/play_arrow-24px.svg" />
+                            <entry key="outputName" value="ic_close_24px" />
+                            <entry key="sourceFile" value="$USER_HOME$/Icons/rounded/close-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>

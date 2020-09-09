@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/history"
-        android:icon="@drawable/ic_history_24px"
+        android:icon="@drawable/ic_settings_backup_restore_24px"
         app:showAsAction="always"
         app:iconTint="@color/cardview_light_background">
     </item>

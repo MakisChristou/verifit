@@ -151,7 +151,7 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
         TextView name = view.findViewById(R.id.tv_date);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
-        Button bt_delete_exercise = view.findViewById(R.id.bt_delete_exercise);
+        Button bt_close = view.findViewById(R.id.bt_close);
         Button bt_edit_exercise = view.findViewById(R.id.bt_edit_exercise);
 
         // Set Values
@@ -187,11 +187,12 @@ public class WorkoutExerciseAdapter extends RecyclerView.Adapter<WorkoutExercise
             }
         });
 
-        bt_delete_exercise.setOnClickListener(new View.OnClickListener() {
+        bt_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-
+                // Dismiss Exercise Dialog Box
+                alertDialog.dismiss();
             }
         });
 
