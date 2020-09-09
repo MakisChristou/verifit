@@ -26,7 +26,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     public String exercise_name;
     public ArrayList<WorkoutSet> Todays_Exercise_Sets = new ArrayList<WorkoutSet>();
-    public WorkoutSetAdapter2  workoutSetAdapter2;
+    public AddExerciseWorkoutSetAdapter workoutSetAdapter2;
     public static int Clicked_Set = 0;
 
     // Add Exercise Activity Specifics
@@ -281,7 +281,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Find Recycler View Object
         recyclerView = findViewById(R.id.recycler_view);
-        workoutSetAdapter2 = new WorkoutSetAdapter2(this,Todays_Exercise_Sets);
+        workoutSetAdapter2 = new AddExerciseWorkoutSetAdapter(this,Todays_Exercise_Sets);
         recyclerView.setAdapter(workoutSetAdapter2);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -396,7 +396,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
             // Set Exercise History Recycler View
             RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Exercise_History);
-            WorkoutExerciseAdapter4 workoutExerciseAdapter4 = new WorkoutExerciseAdapter4(AddExerciseActivity.this,All_Performed_Sessions);
+            ExerciseHistoryExerciseAdapter workoutExerciseAdapter4 = new ExerciseHistoryExerciseAdapter(AddExerciseActivity.this,All_Performed_Sessions);
 
 
             // Crash Here

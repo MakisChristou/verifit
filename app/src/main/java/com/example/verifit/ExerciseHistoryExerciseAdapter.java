@@ -1,11 +1,9 @@
 package com.example.verifit;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,12 +18,12 @@ import java.util.Date;
 
 
 // Adapter for WorkoutExercise Class
-public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExerciseAdapter4.MyViewHolder> {
+public class ExerciseHistoryExerciseAdapter extends RecyclerView.Adapter<ExerciseHistoryExerciseAdapter.MyViewHolder> {
 
     Context ct;
     ArrayList<WorkoutExercise> Exercises;
 
-    public WorkoutExerciseAdapter4(Context ct, ArrayList<WorkoutExercise> Exercises)
+    public ExerciseHistoryExerciseAdapter(Context ct, ArrayList<WorkoutExercise> Exercises)
     {
         this.ct = ct;
         this.Exercises = new ArrayList<>(Exercises);
@@ -36,7 +34,7 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(this.ct);
-        View view = inflater.inflate(R.layout.workout_exercise_row4,parent,false);
+        View view = inflater.inflate(R.layout.exercise_history_exercise_row,parent,false);
         return new MyViewHolder(view);
 
     }
@@ -44,10 +42,7 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
-
-
         Date date1 = null;
-
 
         try {
             date1 = new SimpleDateFormat("yyyy-MM-dd").parse(Exercises.get(position).getDate());

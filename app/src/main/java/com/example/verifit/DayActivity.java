@@ -19,7 +19,7 @@ import java.util.Date;
 public class DayActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
-    public WorkoutExerciseAdapter2 workoutExerciseAdapter;
+    public DayExerciseAdapter workoutExerciseAdapter;
     String date_clicked;
 
     @Override
@@ -66,7 +66,7 @@ public class DayActivity extends AppCompatActivity {
 
 
             // Set Recycler View
-            workoutExerciseAdapter = new WorkoutExerciseAdapter2(this, Today_Execrises);
+            workoutExerciseAdapter = new DayExerciseAdapter(this, Today_Execrises);
             recyclerView.setAdapter(workoutExerciseAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

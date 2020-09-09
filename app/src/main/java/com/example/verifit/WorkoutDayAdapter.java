@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -64,7 +61,7 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
 
 
         // Set Recycler View
-        WorkoutExerciseAdapter3 workoutExerciseAdapter = new WorkoutExerciseAdapter3(ct, Today_Execrises);
+        ViewPagerExerciseAdapter workoutExerciseAdapter = new ViewPagerExerciseAdapter(ct, Today_Execrises);
         holder.recyclerView_Main.setAdapter(workoutExerciseAdapter);
         holder.recyclerView_Main.setLayoutManager(new LinearLayoutManager(ct));
 

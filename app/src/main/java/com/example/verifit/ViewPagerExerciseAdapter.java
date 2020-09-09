@@ -13,12 +13,12 @@ import java.util.ArrayList;
 
 
 // Adapter for WorkoutExercise Class
-public class WorkoutExerciseAdapter3 extends RecyclerView.Adapter<WorkoutExerciseAdapter3.MyViewHolder> {
+public class ViewPagerExerciseAdapter extends RecyclerView.Adapter<ViewPagerExerciseAdapter.MyViewHolder> {
 
     Context ct;
     ArrayList<WorkoutExercise> Exercises;
 
-    public WorkoutExerciseAdapter3(Context ct, ArrayList<WorkoutExercise> Exercises)
+    public ViewPagerExerciseAdapter(Context ct, ArrayList<WorkoutExercise> Exercises)
     {
         this.ct = ct;
         this.Exercises = new ArrayList<>(Exercises);
@@ -29,7 +29,7 @@ public class WorkoutExerciseAdapter3 extends RecyclerView.Adapter<WorkoutExercis
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(this.ct);
-        View view = inflater.inflate(R.layout.workout_exercise_row3,parent,false);
+        View view = inflater.inflate(R.layout.view_pager_exercise_row,parent,false);
         return new MyViewHolder(view);
     }
 

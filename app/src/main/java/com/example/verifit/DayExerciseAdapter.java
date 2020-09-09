@@ -1,6 +1,5 @@
 package com.example.verifit;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,12 +15,12 @@ import java.util.ArrayList;
 
 
 // Adapter for WorkoutExercise Class
-public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExerciseAdapter2.MyViewHolder> {
+public class DayExerciseAdapter extends RecyclerView.Adapter<DayExerciseAdapter.MyViewHolder> {
 
     Context ct;
     ArrayList<WorkoutExercise> Exercises;
 
-    public WorkoutExerciseAdapter2(Context ct, ArrayList<WorkoutExercise> Exercises)
+    public DayExerciseAdapter(Context ct, ArrayList<WorkoutExercise> Exercises)
     {
         this.ct = ct;
         this.Exercises = new ArrayList<>(Exercises);
@@ -32,7 +31,7 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(this.ct);
-        View view = inflater.inflate(R.layout.workout_exercise_row2,parent,false);
+        View view = inflater.inflate(R.layout.day_exercise_row,parent,false);
         return new MyViewHolder(view);
     }
 
@@ -53,60 +52,19 @@ public class WorkoutExerciseAdapter2 extends RecyclerView.Adapter<WorkoutExercis
             @Override
             public void onClick(View view)
             {
-                showExerciseDialog(position);
+                startIntent(position);
             }
         });
 
 
     }
 
-    // Blatant copy of Fitnotes but ohh well ;)
-    public void showExerciseDialog(int position) {
-
+    // Go to Add Exercise
+    public void startIntent(int position)
+    {
         Intent in = new Intent(ct,AddExerciseActivity.class);
         in.putExtra("exercise",Exercises.get(position).getExercise());
         ct.startActivity(in);
-
-        // Show Exercise Stats (Not used but decided to leave it there)
-        if(false)
-        {
-            // Prepare to show exercise dialog box
-            LayoutInflater inflater = LayoutInflater.from(ct);
-            View view = inflater.inflate(R.layout.exercise_dialog,null);
-            AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
-
-            // Get TextViews
-            TextView totalsets = view.findViewById(R.id.volume);
-            TextView totalreps = view.findViewById(R.id.totalreps);
-            TextView totalvolume = view.findViewById(R.id.totalvolume);
-            TextView maxweight = view.findViewById(R.id.maxweight);
-            TextView maxreps = view.findViewById(R.id.maxreps);
-            TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
-            TextView name = view.findViewById(R.id.tv_date);
-            TextView onerepmax = view.findViewById(R.id.onerepmax);
-
-            // Set Values
-
-            // Double -> Integer
-            int sets = (int)Math.round(Exercises.get(position).getTotalSets());
-            int reps = (int)Math.round(Exercises.get(position).getTotalReps());
-            int max_reps = (int)Math.round(Exercises.get(position).getMaxReps());
-
-            totalsets.setText(String.valueOf(sets));
-            totalreps.setText(String.valueOf(reps));
-            maxreps.setText(String.valueOf(max_reps));
-
-
-            totalvolume.setText(Exercises.get(position).getVolume().toString());
-            maxweight.setText(Exercises.get(position).getMaxWeight().toString());
-            onerepmax.setText(Exercises.get(position).getEstimatedOneRepMax().toString());
-            name.setText(Exercises.get(position).getExercise());
-            maxsetvolume.setText(Exercises.get(position).getMaxSetVolume().toString());
-
-            // Show Exercise Dialog Box
-            alertDialog.show();
-        }
-
     }
 
 

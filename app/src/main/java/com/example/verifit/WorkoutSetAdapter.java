@@ -22,7 +22,6 @@ public class WorkoutSetAdapter extends RecyclerView.Adapter<WorkoutSetAdapter.My
     {
         this.ct = ct;
         this.Workout_Sets = Workout_Sets;
-
     }
 
     @NonNull

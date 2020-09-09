@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 // Adapter for WorkoutSet Class
-public class WorkoutSetAdapter2 extends RecyclerView.Adapter<WorkoutSetAdapter2.MyViewHolder> {
+public class AddExerciseWorkoutSetAdapter extends RecyclerView.Adapter<AddExerciseWorkoutSetAdapter.MyViewHolder> {
 
     Context ct;
     ArrayList<WorkoutSet> Workout_Sets;
 
-    public WorkoutSetAdapter2(Context ct, ArrayList<WorkoutSet> Workout_Sets)
+    public AddExerciseWorkoutSetAdapter(Context ct, ArrayList<WorkoutSet> Workout_Sets)
     {
         this.ct = ct;
         this.Workout_Sets = Workout_Sets;
