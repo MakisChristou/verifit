@@ -47,6 +47,8 @@ public class WorkoutExerciseAdapter4 extends RecyclerView.Adapter<WorkoutExercis
 
 
         Date date1 = null;
+
+
         try {
             date1 = new SimpleDateFormat("yyyy-MM-dd").parse(Exercises.get(position).getDate());
         } catch (ParseException e) {

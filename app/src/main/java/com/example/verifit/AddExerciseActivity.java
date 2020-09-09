@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // find views
         et_reps = findViewById(R.id.et_reps);
-        et_weight = findViewById(R.id.et_weight);
+        et_weight = findViewById(R.id.et_seconds);
         plus_reps = findViewById(R.id.plus_reps);
         minus_reps = findViewById(R.id.minus_reps);
         plus_weight = findViewById(R.id.plus_weight);
@@ -352,8 +353,18 @@ public class AddExerciseActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.timer_dialog,null);
             AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
 
+            // Get Objects
+            EditText et_seconds = findViewById(R.id.et_seconds);
+            ImageButton minus_seconds = findViewById(R.id.minus_seconds);
+            ImageButton plus_seconds = findViewById(R.id.plus_seconds);
+            Button bt_start = findViewById(R.id.bt_start);
+            Button bt_reset = findViewById(R.id.bt_reset);
+
+            // Timer code here
+
             alertDialog.show();
         }
+
         else if(item.getItemId() == R.id.history)
         {
             // Prepare to show exercise history dialog box
@@ -377,6 +388,10 @@ public class AddExerciseActivity extends AppCompatActivity {
                 }
             }
 
+
+            // Set Exercise Name
+            TextView tv_exercise_name = view.findViewById(R.id.tv_exercise_name);
+            tv_exercise_name.setText(exercise_name);
 
 
             // Set Exercise History Recycler View

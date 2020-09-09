@@ -107,8 +107,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         TextView totalvolume = view.findViewById(R.id.totalvolume);
         TextView date = view.findViewById(R.id.tv_date);
         TextView totalexercises = view.findViewById(R.id.totalexercises);
-        Button bt_viewDay = view.findViewById(R.id.bt_viewDay);
-        Button bt_deleteDay = view.findViewById(R.id.bt_deleteDay);
+        Button bt_viewDay = view.findViewById(R.id.bt_start);
+        Button bt_deleteDay = view.findViewById(R.id.bt_reset);
 
 
         // Crash Here

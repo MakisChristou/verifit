@@ -179,7 +179,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_deleteDay"
+        android:id="@+id/bt_reset"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -193,11 +193,11 @@
         app:cornerRadius="20dp"
         app:icon="@drawable/ic_delete_24px"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_viewDay"
+        app:layout_constraintStart_toEndOf="@+id/bt_start"
         app:layout_constraintTop_toBottomOf="@+id/totalsets13" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_viewDay"
+        android:id="@+id/bt_start"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -211,7 +211,7 @@
         app:cornerRadius="20dp"
         app:icon="@drawable/ic_preview_24px"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_deleteDay"
+        app:layout_constraintEnd_toStartOf="@+id/bt_reset"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalsets13" />
 

@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
-        android:id="@+id/et_weight"
+        android:id="@+id/et_seconds"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -105,7 +105,7 @@
         android:backgroundTint="@color/custom_button3"
         android:onClick="clickMinusWeight"
         android:tint="@color/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/et_weight"
+        app:layout_constraintEnd_toStartOf="@+id/et_seconds"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blue_line"
         app:srcCompat="@drawable/ic_remove_24px" />
@@ -123,7 +123,7 @@
         android:onClick="clickPlusWeight"
         android:tint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/et_weight"
+        app:layout_constraintStart_toEndOf="@+id/et_seconds"
         app:layout_constraintTop_toBottomOf="@+id/blue_line"
         app:srcCompat="@drawable/ic_add_24px" />
 
@@ -138,7 +138,7 @@
         android:textColor="@color/core_black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_weight" />
+        app:layout_constraintTop_toBottomOf="@+id/et_seconds" />
 
     <EditText
         android:id="@+id/et_reps"

@@ -30,20 +30,8 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_date"
         tools:layout_editor_absoluteX="16dp" />
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:text="180"
-        android:textColor="@color/core_black"
-        android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blue_line" />
-
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_deleteDay"
+        android:id="@+id/bt_reset"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -57,9 +45,28 @@
         app:cornerRadius="20dp"
         app:icon="@drawable/ic_replay_24px"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_viewDay"
+        app:layout_constraintStart_toEndOf="@+id/bt_start"
         app:layout_constraintTop_toBottomOf="@+id/blue_line" />
 
+
+    <EditText
+        android:id="@+id/et_seconds"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:inputType="numberDecimal"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/plus_seconds"
+        app:layout_constraintStart_toEndOf="@+id/minus_seconds"
+        app:layout_constraintTop_toBottomOf="@+id/blue_line"
+        tools:text="60" />
 
     <ImageButton
         android:id="@+id/minus_seconds"
@@ -73,7 +80,7 @@
         android:backgroundTint="@color/custom_button3"
         android:onClick="clickPlusWeight"
         android:tint="@color/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/textView10"
+        app:layout_constraintEnd_toStartOf="@+id/et_seconds"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blue_line"
         app:srcCompat="@drawable/ic_remove_24px" />
@@ -91,12 +98,12 @@
         android:onClick="clickPlusWeight"
         android:tint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintStart_toEndOf="@+id/et_seconds"
         app:layout_constraintTop_toBottomOf="@+id/blue_line"
         app:srcCompat="@drawable/ic_add_24px" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_viewDay"
+        android:id="@+id/bt_start"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -110,7 +117,7 @@
         app:cornerRadius="20dp"
         app:icon="@drawable/ic_play_arrow_24px"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_deleteDay"
+        app:layout_constraintEnd_toStartOf="@+id/bt_reset"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blue_line" />
 
