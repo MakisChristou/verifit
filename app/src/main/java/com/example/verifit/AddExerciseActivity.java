@@ -18,7 +18,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class AddExerciseActivity extends AppCompatActivity {
 
@@ -400,8 +407,6 @@ public class AddExerciseActivity extends AppCompatActivity {
             });
 
 
-
-
             alertDialog.show();
         }
 
@@ -444,10 +449,52 @@ public class AddExerciseActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(new LinearLayoutManager(AddExerciseActivity.this));
 
 
+            alertDialog.show();
+        }
+        else if(item.getItemId() == R.id.graph)
+        {
+            // Prepare to show exercise history dialog box
+            LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
+            View view = inflater.inflate(R.layout.exercise_graph_dialog,null);
+            AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
+
+
+            // Get Chart Object
+            LineChart lineChart = (LineChart) view.findViewById(R.id.lineChart);
+
+            // Create Array List that will hold graph data
+            ArrayList<Entry> Volume_Values = new ArrayList<>();
+
+            int x = 0;
+
+            // Get Exercise Volume
+            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            {
+                for (int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                {
+                    WorkoutExercise current_exercise = MainActivity.Workout_Days.get(i).getExercises().get(j);
+
+                    if(current_exercise.getExercise().equals(exercise_name))
+                    {
+                        Volume_Values.add(new Entry(x,current_exercise.getVolume().floatValue()));
+                        x++;
+                    }
+                }
+            }
+
+            LineDataSet volumeSet = new LineDataSet(Volume_Values,"Volume");
+            LineData data = new LineData(volumeSet);
+
+            lineChart.setData(data);
+
+            lineChart.getDescription().setEnabled(false);
+
 
 
 
             alertDialog.show();
+
+
         }
         return super.onOptionsItemSelected(item);
     }

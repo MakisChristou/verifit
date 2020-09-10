@@ -17,8 +17,6 @@
     </item>
 
 
-
-
     <item
         android:id="@+id/home"
         android:icon="@drawable/ic_view_carousel_24px"
