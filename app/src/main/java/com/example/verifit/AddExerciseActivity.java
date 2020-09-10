@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -310,6 +311,9 @@ public class AddExerciseActivity extends AppCompatActivity {
             bt_clear.setText("Delete");
         }
 
+        // Initialize Integer position or else we get a crash
+        AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size() - 1;
+
     }
 
     // Set Edit Text values to max set volume if sets exist
@@ -356,6 +360,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+        // Timer
         if(item.getItemId() == R.id.timer)
         {
             // Prepare to show timer dialog box
@@ -413,6 +418,7 @@ public class AddExerciseActivity extends AppCompatActivity {
             alertDialog.show();
         }
 
+        // Exercise History
         else if(item.getItemId() == R.id.history)
         {
             // Prepare to show exercise history dialog box
@@ -454,6 +460,8 @@ public class AddExerciseActivity extends AppCompatActivity {
 
             alertDialog.show();
         }
+
+        // Exercise Stats Chart
         else if(item.getItemId() == R.id.graph)
         {
             // Prepare to show exercise history dialog box
@@ -488,17 +496,21 @@ public class AddExerciseActivity extends AppCompatActivity {
             LineDataSet volumeSet = new LineDataSet(Volume_Values,"Volume");
             LineData data = new LineData(volumeSet);
 
-            lineChart.setData(data);
 
+            volumeSet.setLineWidth(2f);
+            volumeSet.setValueTextSize(10f);
+            volumeSet.setValueTextColor(Color.BLACK);
+
+            lineChart.setData(data);
             lineChart.getDescription().setEnabled(false);
 
 
-
-
+            // Show Chart Dialog box
             alertDialog.show();
 
 
         }
+
         return super.onOptionsItemSelected(item);
     }
 

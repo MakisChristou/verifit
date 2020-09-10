@@ -37,7 +37,8 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
     }
 
     @Override
-    protected void onRestart() {
+    protected void onRestart()
+    {
         super.onRestart();
         onCreateStuff();
     }
@@ -98,6 +99,11 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
         if(item.getItemId() == R.id.add)
         {
             Intent in = new Intent(this,CustomExerciseActivity.class);
+            startActivity(in);
+        }
+        else if(item.getItemId() == R.id.settings)
+        {
+            Intent in = new Intent(getApplicationContext(),SettingsActivity.class);
             startActivity(in);
         }
         return super.onOptionsItemSelected(item);

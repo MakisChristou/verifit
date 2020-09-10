@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.view.MenuItem;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
@@ -128,9 +129,9 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5,10,5,5);
         pieChart.setDragDecelerationFrictionCoef(0.95f);
-        pieChart.setDrawHoleEnabled(true);
+        pieChart.setDrawHoleEnabled(false);
         pieChart.setHoleColor(Color.WHITE);
-        pieChart.setTransparentCircleRadius(61f);
+        pieChart.setTransparentCircleRadius(60f);
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
 
@@ -156,6 +157,9 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
         pieChart.setData(data);
 
+        pieChart.animateY(1000, Easing.EaseInOutCubic);
+
+        pieChart.setNoDataText("No Workouts");
 
 
 

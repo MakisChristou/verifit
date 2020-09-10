@@ -55,7 +55,7 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         setCategoryIconTint(holder, exercise_name);
 
         // Set Volume PR Icon if exercise was a Volume PR
-        if(Exercises.get(position).isPR())
+        if(Exercises.get(position).isVolumePR())
         {
             holder.pr_button.setVisibility(View.VISIBLE);
         }

@@ -10,14 +10,26 @@ public class WorkoutExercise {
     private String Exercise;
     private Double Volume;
     private Double EstimatedOneRepMax; // Epley formula
+    private Double ActualOneRepMax;
     private Double MaxWeight;
     private Double MaxReps;
     private Double TotalReps;
     private Double TotalSets;
     private Double MaxSetVolume;
-    private boolean PR;
+    private boolean VolumePR;
+
+
 
     // Methods
+    public Double getActualOneRepMax()
+    {
+        return ActualOneRepMax;
+    }
+
+    public void setActualOneRepMax(Double actualOneRepMax)
+    {
+        ActualOneRepMax = actualOneRepMax;
+    }
     public String getDate() {
         return Date;
     }
@@ -36,11 +48,11 @@ public class WorkoutExercise {
     public void setSets(ArrayList<WorkoutSet> sets) {
         Sets = sets;
     }
-    public boolean isPR() {
-        return PR;
+    public boolean isVolumePR() {
+        return VolumePR;
     }
-    public void setPR(boolean PR) {
-        this.PR = PR;
+    public void setVolumePR(boolean volumePR) {
+        this.VolumePR = volumePR;
     }
 
     public Double getTotalSets() {
@@ -55,7 +67,8 @@ public class WorkoutExercise {
         return EstimatedOneRepMax;
     }
 
-    public void setEstimatedOneRepMax(Double estimatedOneRepMax) {
+    public void setEstimatedOneRepMax(Double estimatedOneRepMax)
+    {
         EstimatedOneRepMax = estimatedOneRepMax;
     }
 

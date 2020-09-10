@@ -1,6 +1,8 @@
 package com.example.verifit;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -179,7 +181,7 @@ public class SettingsActivity extends AppCompatActivity {
             Button bt_bitcoin = view.findViewById(R.id.bt_bitcoin);
             Button bt_ethereum = view.findViewById(R.id.bt_ethereum);
             Button bt_vericoin = view.findViewById(R.id.bt_vericoin);
-            Button bt_verium = view.findViewById(R.id.bt_verium);
+            Button bt_monero = view.findViewById(R.id.bt_monero);
 
             ImageView crypto_imageView = view.findViewById(R.id.crypto_imageView);
 
@@ -189,8 +191,8 @@ public class SettingsActivity extends AppCompatActivity {
                 public void onClick(View view)
                 {
                     crypto_imageView.setImageResource(R.drawable.btc);
-//                    ClipboardManager clipboard = (ClipboardManager) getSystemService(getContext().CLIPBOARD_SERVICE);
-//                    ClipData clip = ClipData.newPlainText("btc", "1Makis5hJTed3A68Nky9dsiXMwCJtg4vN3");
+//                    ClipboardManager clipboard = (ClipboardManager) getSystemService(view.getContext().CLIPBOARD_SERVICE);
+//                    ClipData clip = ClipData.newPlainText("btc", "");
 //                    clipboard.setPrimaryClip(clip);
                 }
             });
@@ -215,12 +217,12 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            bt_verium.setOnClickListener(new View.OnClickListener()
+            bt_monero.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
                 {
-                    crypto_imageView.setImageResource(R.drawable.vrm);
+                    crypto_imageView.setImageResource(R.drawable.xmr);
                 }
             });
 

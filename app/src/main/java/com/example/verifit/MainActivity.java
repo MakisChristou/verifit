@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.viewpager2.widget.ViewPager2;
 import android.Manifest;
 import android.app.Activity;
@@ -24,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -94,8 +93,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
 //         To JSON (for debugging)
-//         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//         System.out.println(gson.toJson(Workout_Days));
+         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+         System.out.println(gson.toJson(Workout_Days));
 
 
         // Bottom Navigation Bar Intents
@@ -226,9 +225,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Calendar end = Calendar.getInstance();
         end.setTime(endDate);
 
-        // Construct 40 years worth of empty workout days
+        // Construct 20 years worth of empty workout days
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime())
         {
+            // Get Date in String format
             String date_str = new SimpleDateFormat("yyyy-MM-dd").format(date);
 
             // Create new mostly empty object
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
 
-        // Use View Pager with infinite days
+        // Use View Pager with Infinite Days
         viewPager2 = findViewById(R.id.viewPager2);
         viewPager2.setAdapter(new WorkoutDayAdapter(this,Infinite_Workout_Days));
         viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Formats backup name in case of export
     public void setExportBackupName()
     {
+        EXPORT_FILENAME = "VeriFit_Backup";
         Format formatter = new SimpleDateFormat("_yyyy-MM-dd_HH:mm:ss");
         String str_date = formatter.format(new Date());
         EXPORT_FILENAME = EXPORT_FILENAME + str_date+".csv";
@@ -273,7 +274,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // Get the results after user gives/denies permission
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
         if(requestCode == PERMISSION_REQUEST_STORAGE)
         {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
@@ -315,7 +317,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // When File explorer stops this function runs
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK)
         {
             if(data != null)
@@ -456,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     {
                         if(VolumePRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume()))
                         {
-                            MainActivity.Workout_Days.get(j).getExercises().get(k).setPR(true);
+                            MainActivity.Workout_Days.get(j).getExercises().get(k).setVolumePR(true);
                             VolumePRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
                         }
                     }
