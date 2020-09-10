@@ -155,6 +155,8 @@ public class AddExerciseActivity extends AppCompatActivity {
             updateTodaysExercises();
         }
 
+        AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
+
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
         System.out.println("Clear Data Button: " + timeElapsed);
@@ -171,6 +173,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Actually Save Changes in shared preferences
         MainActivity.saveWorkoutData(getApplicationContext());
     }
+
 
     // Do I even need to explain this?
     public void clickPlusWeight(View view)
