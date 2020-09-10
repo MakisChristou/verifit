@@ -83,6 +83,7 @@ public class WorkoutDay {
             Double exercise_max_weight = 0.0;
             Double exercise_total_reps = 0.0;
             Double exercise_total_sets = 0.0;
+            Double exercise_actual_one_rep_max = 0.0;
             String exercise_date = "";
             double exercise_max_set_volume = 0.0;
 
@@ -104,6 +105,10 @@ public class WorkoutDay {
                     if(temp_set.getEplayOneRepMax() > exercise_one_rep_max)
                     {
                         exercise_one_rep_max = temp_set.getEplayOneRepMax();
+                    }
+                    if(temp_set.getReps() == 1 && temp_set.getWeight() > exercise_actual_one_rep_max)
+                    {
+                        exercise_actual_one_rep_max = temp_set.getWeight();
                     }
                     if(temp_set.getReps() > exercise_max_reps)
                     {
@@ -129,6 +134,7 @@ public class WorkoutDay {
                 day_exercise.setSets(exercise_sets);
                 day_exercise.setDate(exercise_date);
                 day_exercise.setMaxSetVolume(exercise_max_set_volume);
+                day_exercise.setActualOneRepMax(exercise_actual_one_rep_max);
 
             }
             Day_Exercises.add(day_exercise);
@@ -138,7 +144,7 @@ public class WorkoutDay {
         DayVolume = Day_Volume;
         Reps = 0;
 
-        // Calculate Total Dayly Reps
+        // Calculate Total Daily Reps
         for(int i = 0; i < Exercises.size(); i++)
         {
             Reps = Reps + (int)Math.round(Exercises.get(i).getTotalReps());

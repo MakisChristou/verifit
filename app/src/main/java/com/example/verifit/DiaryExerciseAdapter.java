@@ -14,6 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 
@@ -151,8 +154,10 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
         TextView name = view.findViewById(R.id.tv_date);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
+        TextView actualonerepmax = view.findViewById(R.id.actualonerepmax);
         Button bt_close = view.findViewById(R.id.bt_close);
         Button bt_edit_exercise = view.findViewById(R.id.bt_edit_exercise);
+
 
         // Set Values
 
@@ -169,6 +174,7 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         totalvolume.setText(Exercises.get(position).getVolume().toString());
         maxweight.setText(Exercises.get(position).getMaxWeight().toString());
         onerepmax.setText(Exercises.get(position).getEstimatedOneRepMax().toString());
+        actualonerepmax.setText(Exercises.get(position).getActualOneRepMax().toString());
         name.setText(Exercises.get(position).getExercise());
         maxsetvolume.setText(Exercises.get(position).getMaxSetVolume().toString());
 
