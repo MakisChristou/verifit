@@ -157,11 +157,11 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         data.setValueTextSize(15f);
         data.setValueTextColor(Color.WHITE);
 
+        pieChart.animateY(1000, Easing.EaseInOutCubic);
+        pieChart.setNoDataText("No Workouts");
+        pieChart.getLegend().setEnabled(false);
         pieChart.setData(data);
 
-        pieChart.animateY(1000, Easing.EaseInOutCubic);
-
-        pieChart.setNoDataText("No Workouts");
 
 
 
@@ -236,11 +236,11 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         data.setValueTextSize(15f);
         data.setValueTextColor(Color.WHITE);
 
+        pieChart.getLegend().setEnabled(false);
+        pieChart.animateY(1000, Easing.EaseInOutCubic);
+        pieChart.setNoDataText("No Workouts");
         pieChart.setData(data);
 
-        pieChart.animateY(1000, Easing.EaseInOutCubic);
-
-        pieChart.setNoDataText("No Workouts");
     }
 
 
