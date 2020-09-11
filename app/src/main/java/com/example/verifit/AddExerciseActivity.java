@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,10 +28,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
-import java.sql.Time;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Timer;
 
 public class AddExerciseActivity extends AppCompatActivity {
 
@@ -51,10 +52,10 @@ public class AddExerciseActivity extends AppCompatActivity {
     public Button bt_clear;
 
     // For Alarm
-    public long START_TIME_IN_MILIS = 180000;
+    public long START_TIME_IN_MILLIS = 180000;
     public CountDownTimer countDownTimer;
     public boolean TimerRunning;
-    public long TimeLeftInMillis = START_TIME_IN_MILIS;
+    public long TimeLeftInMillis = START_TIME_IN_MILLIS;
 
     // Timer Dialog Components
     public EditText et_seconds;
@@ -230,6 +231,10 @@ public class AddExerciseActivity extends AppCompatActivity {
         {
             Double weight = Double.parseDouble(et_weight.getText().toString());
             weight = weight - 1;
+            if(weight < 0)
+            {
+                weight = 0.0;
+            }
             et_weight.setText(weight.toString());
         }
 
@@ -241,6 +246,10 @@ public class AddExerciseActivity extends AppCompatActivity {
         {
             int reps = Integer.parseInt(et_reps.getText().toString());
             reps = reps - 1;
+            if(reps < 0)
+            {
+                reps = 0;
+            }
             et_reps.setText(String.valueOf(reps));
         }
 
@@ -400,18 +409,18 @@ public class AddExerciseActivity extends AppCompatActivity {
             bt_start = view.findViewById(R.id.bt_start);
             bt_reset = view.findViewById(R.id.bt_close);
 
-
+            // Set default seconds value to 180 i.e 3 minutes
             if(!TimerRunning)
             {
                 // Derive String value from chosen start time
-                et_seconds.setText(String.valueOf((int)START_TIME_IN_MILIS/1000));
+                et_seconds.setText(String.valueOf((int) START_TIME_IN_MILLIS /1000));
             }
             else
             {
                 updateCountDownText();
             }
 
-
+            // Reset Timer Button
             bt_reset.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -421,6 +430,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                 }
             });
 
+            // Start Timer Button
             bt_start.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -442,7 +452,17 @@ public class AddExerciseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view)
                 {
-                    System.out.println("Minus Seconds");
+                    if(!et_seconds.getText().toString().isEmpty())
+                    {
+                        Double seconds  = Double.parseDouble(et_seconds.getText().toString());
+                        seconds = seconds - 1;
+                        if(seconds < 0)
+                        {
+                            seconds = 0.0;
+                        }
+                        int seconds_int = seconds.intValue();
+                        et_seconds.setText(String.valueOf(seconds_int));
+                    }
                 }
             });
 
@@ -451,11 +471,21 @@ public class AddExerciseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view)
                 {
-                    System.out.println("Plus Seconds");
+                    if(!et_seconds.getText().toString().isEmpty())
+                    {
+                        Double seconds  = Double.parseDouble(et_seconds.getText().toString());
+                        seconds = seconds + 1;
+                        if(seconds < 0)
+                        {
+                            seconds = 0.0;
+                        }
+                        int seconds_int = seconds.intValue();
+                        et_seconds.setText(String.valueOf(seconds_int));
+                    }
                 }
             });
 
-
+            // Show Timer Dialog Box
             alertDialog.show();
         }
 
@@ -590,7 +620,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     public void resetTimer()
     {
         pauseTimer();
-        TimeLeftInMillis = START_TIME_IN_MILIS;
+        TimeLeftInMillis = START_TIME_IN_MILLIS;
         updateCountDownText();
     }
 
