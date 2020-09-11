@@ -16,8 +16,54 @@ public class WorkoutExercise {
     private Double TotalReps;
     private Double TotalSets;
     private Double MaxSetVolume;
-    private boolean VolumePR;
+    private boolean VolumePR; //is Volume PR?
+    private boolean ActualOneRepMaxPR; // Is actual one rep max PR?
+    private boolean EstimatedOneRepMaxPR; // Is estimated one rep max PR?
+    private boolean MaxRepsPR; // Is reps PR?
+    private boolean MaxWeightPR; // Is wight PR?
+    private boolean HTLT; // Is HARDER THAN LAST TIME?
 
+
+
+    public boolean isActualOneRepMaxPR() {
+        return ActualOneRepMaxPR;
+    }
+
+    public void setActualOneRepMaxPR(boolean actualOneRepMaxPR) {
+        ActualOneRepMaxPR = actualOneRepMaxPR;
+    }
+
+    public boolean isEstimatedOneRepMaxPR() {
+        return EstimatedOneRepMaxPR;
+    }
+
+    public void setEstimatedOneRepMaxPR(boolean estimatedOneRepMaxPR) {
+        EstimatedOneRepMaxPR = estimatedOneRepMaxPR;
+    }
+
+    public boolean isMaxRepsPR() {
+        return MaxRepsPR;
+    }
+
+    public void setMaxRepsPR(boolean maxRepsPR) {
+        MaxRepsPR = maxRepsPR;
+    }
+
+    public boolean isMaxWeightPR() {
+        return MaxWeightPR;
+    }
+
+    public void setMaxWeightPR(boolean maxWeightPR) {
+        MaxWeightPR = maxWeightPR;
+    }
+
+    public boolean isHTLT() {
+        return HTLT;
+    }
+
+    public void setHTLT(boolean HTLT) {
+        this.HTLT = HTLT;
+    }
 
 
     // Methods
@@ -25,7 +71,6 @@ public class WorkoutExercise {
     {
         return ActualOneRepMax;
     }
-
     public void setActualOneRepMax(Double actualOneRepMax)
     {
         ActualOneRepMax = actualOneRepMax;
@@ -54,62 +99,43 @@ public class WorkoutExercise {
     public void setVolumePR(boolean volumePR) {
         this.VolumePR = volumePR;
     }
-
     public Double getTotalSets() {
         return TotalSets;
     }
-
     public void setTotalSets(Double totalSets) {
         TotalSets = totalSets;
     }
-
     public Double getEstimatedOneRepMax() {
         return EstimatedOneRepMax;
     }
-
-    public void setEstimatedOneRepMax(Double estimatedOneRepMax)
-    {
-        EstimatedOneRepMax = estimatedOneRepMax;
-    }
-
+    public void setEstimatedOneRepMax(Double estimatedOneRepMax) { EstimatedOneRepMax = estimatedOneRepMax; }
     public Double getMaxWeight() {
         return MaxWeight;
     }
-
     public void setMaxWeight(Double maxWeight) {
         MaxWeight = maxWeight;
     }
-
     public Double getMaxReps() {
         return MaxReps;
     }
-
     public void setMaxReps(Double maxReps) {
         MaxReps = maxReps;
     }
-
     public Double getTotalReps() {
         return TotalReps;
     }
-
     public void setTotalReps(Double totalReps) {
         TotalReps = totalReps;
     }
-
-    // Geters
     public String getExercise() {
         return Exercise;
     }
-
     public Double getVolume() {
         return Volume;
     }
-
-    // Setters
     public void setExercise(String exercise) {
         Exercise = exercise;
     }
-
     public void setVolume(Double volume) {
         Volume = volume;
     }

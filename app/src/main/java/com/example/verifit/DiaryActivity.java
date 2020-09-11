@@ -74,7 +74,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         else
         {
             // So the adapter has correct information
-            MainActivity.calculateVolumeRecords();
+            MainActivity.calculatePersonalRecords();
 
             // Crash Otherwise
             diaryAdapter = new DiaryAdapter(this, MainActivity.Workout_Days);

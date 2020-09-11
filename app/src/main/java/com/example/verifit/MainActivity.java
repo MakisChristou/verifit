@@ -23,7 +23,6 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,12 +49,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public Set<String> Days = new TreeSet<String>();
     public static ArrayList<WorkoutSet> Sets = new ArrayList<WorkoutSet>();
     public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
-    public com.applandeo.materialcalendarview.CalendarView calendarView;
     public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // Initialized with hardcoded exercises
-    public static String date_selected;
+    public static String date_selected; // Used for other activities to get the selected date, by default it's set to today
     public static HashMap<String,Double> VolumePRs = new HashMap<String,Double>();
-    public ViewPager2 viewPager2;
-    public ArrayList<WorkoutDay> Infinite_Workout_Days;
+    public static HashMap<String,Double> ActualOneRepMaxPRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> EstimatedOneRMPRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> MaxRepsPRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> MaxWeightPRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> LastTimeVolume = new HashMap<String,Double>(); // Holds last workout's volume for each exercise
+    public ViewPager2 viewPager2; // View Pager that is used in main activity
+    public ArrayList<WorkoutDay> Infinite_Workout_Days; // Used to populate the viewPager object in MainActivity with "infinite" days
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -93,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
 //         To JSON (for debugging)
-         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-         System.out.println(gson.toJson(Workout_Days));
+//         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//         System.out.println(gson.toJson(Workout_Days));
 
 
         // Bottom Navigation Bar Intents
@@ -438,14 +441,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     // Calculate all Volume Personal Records from scratch
-    public static void calculateVolumeRecords()
+    public static void calculatePersonalRecords()
     {
         MainActivity.VolumePRs.clear();
+        MainActivity.ActualOneRepMaxPRs.clear();
+        MainActivity.EstimatedOneRMPRs.clear();
+        MainActivity.MaxRepsPRs.clear();
+        MainActivity.MaxWeightPRs.clear();
+        MainActivity.LastTimeVolume.clear();
 
         // Initialize Volume Record Hashmap
         for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
         {
             MainActivity.VolumePRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
+            MainActivity.ActualOneRepMaxPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
+            MainActivity.EstimatedOneRMPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
+            MainActivity.MaxRepsPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
+            MainActivity.MaxWeightPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
+            MainActivity.LastTimeVolume.put((MainActivity.KnownExercises.get(i).getName()),0.0);
         }
 
         // Calculate Volume PRs
@@ -457,11 +470,55 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 {
                     if(MainActivity.Workout_Days.get(j).getExercises().get(k).getExercise().equals(MainActivity.KnownExercises.get(i).getName()))
                     {
+                        // Volume Personal Records
                         if(VolumePRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume()))
                         {
                             MainActivity.Workout_Days.get(j).getExercises().get(k).setVolumePR(true);
                             VolumePRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
                         }
+
+                        // Actual One Repetition Maximum
+                        if(ActualOneRepMaxPRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getActualOneRepMax()))
+                        {
+                            MainActivity.Workout_Days.get(j).getExercises().get(k).setActualOneRepMaxPR(true);
+                            ActualOneRepMaxPRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getActualOneRepMax());
+                        }
+
+                        // Estimated One Repetition Maximum
+                        if(EstimatedOneRMPRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getEstimatedOneRepMax()))
+                        {
+                            MainActivity.Workout_Days.get(j).getExercises().get(k).setEstimatedOneRepMaxPR(true);
+                            EstimatedOneRMPRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getEstimatedOneRepMax());
+                        }
+
+                        // Max Repetitions Personal Records
+                        if(MaxRepsPRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxReps()))
+                        {
+                            MainActivity.Workout_Days.get(j).getExercises().get(k).setMaxRepsPR(true);
+                            MaxRepsPRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxReps());
+                        }
+
+                        // Max Weight Personal Records
+                        if(MaxWeightPRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxWeight()))
+                        {
+                            MainActivity.Workout_Days.get(j).getExercises().get(k).setMaxWeightPR(true);
+                            MaxWeightPRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxWeight());
+                        }
+
+                        // Harder Than Last Time!
+                        if(LastTimeVolume.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume()))
+                        {
+                            MainActivity.Workout_Days.get(j).getExercises().get(k).setHTLT(true);
+                            LastTimeVolume.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
+                        }
+                        // This needs to be updates since we are dealing with last time and not overall maximums
+                        else
+                        {
+                            LastTimeVolume.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
+                        }
+
+
+
                     }
                 }
             }

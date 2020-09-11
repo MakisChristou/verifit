@@ -1,5 +1,4 @@
 package com.example.verifit;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -197,43 +196,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             expand_button = itemView.findViewById(R.id.expand_button);
             cardview_diary = itemView.findViewById(R.id.cardview_main);
             blue_line = itemView.findViewById(R.id.blue_line);
-
-
-            // Expand More/Less
-//            cardview_diary.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if(recyclerView.getVisibility() == View.GONE)
-//                    {
-//                        notifyItemChanged(getAdapterPosition());
-//                        recyclerView.setVisibility(View.VISIBLE);
-//                        blue_line.setVisibility(View.VISIBLE);
-//
-////
-////                        // Expand Button Animation
-////                        RotateAnimation rotate = new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
-////                        rotate.setDuration(200);
-////                        rotate.setInterpolator(new LinearInterpolator());
-////                        expand_button.startAnimation(rotate);
-////                        expand_button.setImageResource(R.drawable.ic_expand_less_24px);
-//                    }
-//                    else if(recyclerView.getVisibility() == View.VISIBLE)
-//                    {
-//                        // notifyItemChanged(getAdapterPosition());
-//                        recyclerView.setVisibility(View.GONE);
-//                        blue_line.setVisibility(View.INVISIBLE);
-//
-//
-////                        // Expand Button Animation
-////                        RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f,          Animation.RELATIVE_TO_SELF, 0.5f);
-////                        rotate.setDuration(200);
-////                        rotate.setInterpolator(new LinearInterpolator());
-////                        expand_button.startAnimation(rotate);
-////                         expand_button.setImageResource(R.drawable.ic_expand_more_24px);
-//                    }
-//                }
-//            });
-
         }
     }
 }

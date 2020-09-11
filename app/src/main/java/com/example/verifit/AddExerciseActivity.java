@@ -87,23 +87,32 @@ public class AddExerciseActivity extends AppCompatActivity {
             Double weight = Double.parseDouble(et_weight.getText().toString());
             WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getExerciseCategory(exercise_name),reps,weight);
 
-
-            int position = MainActivity.getDayPosition(MainActivity.date_selected);
-
-            if(position >= 0)
+            if(reps == 0 || weight == 0 || reps < 0 || weight < 0)
             {
-                MainActivity.Workout_Days.get(position).addSet(workoutSet);
+                Toast.makeText(getApplicationContext(),"Please write correct Weight and Reps",Toast.LENGTH_SHORT).show();
             }
             else
             {
-                WorkoutDay workoutDay = new WorkoutDay();
-                workoutDay.addSet(workoutSet);
-                MainActivity.Workout_Days.add(workoutDay);
-            }
+                // Find if workout day already exists
+                int position = MainActivity.getDayPosition(MainActivity.date_selected);
 
-            // Update Local Data Structure
-            updateTodaysExercises();
-            Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
+                // If workout day exists
+                if(position >= 0)
+                {
+                    MainActivity.Workout_Days.get(position).addSet(workoutSet);
+                }
+                // If not construct new workout day
+                else
+                {
+                    WorkoutDay workoutDay = new WorkoutDay();
+                    workoutDay.addSet(workoutSet);
+                    MainActivity.Workout_Days.add(workoutDay);
+                }
+
+                // Update Local Data Structure
+                updateTodaysExercises();
+                Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
+            }
         }
 
         long finish = System.currentTimeMillis();

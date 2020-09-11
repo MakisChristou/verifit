@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,39 +46,33 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
+        // Get exercise name
         String exercise_name = Exercises.get(position).getExercise();
 
         // Change TextView text
         holder.tv_exercise_name.setText(exercise_name);
-
         int sets = (int)Math.round(Exercises.get(position).getTotalSets());
-
         holder.sets.setText(String.valueOf(sets));
 
-        // Set icon tint based on exercise category
+        // Set bubble icon tint based on exercise category
         setCategoryIconTint(holder, exercise_name);
 
-        // Set Volume PR Icon if exercise was a Volume PR
-        if(Exercises.get(position).isVolumePR())
-        {
-            holder.pr_button.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            holder.pr_button.setVisibility(View.GONE);
-        }
+        // Set PR icon tint
+        String records = initializePersonalRecordIcon(holder,position);
 
 
-        holder.pr_button.setOnClickListener(new View.OnClickListener() {
+        holder.pr_button.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {
-                showVolumePRDialog();
+                showVolumePRDialog(records);
             }
         });
 
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {
@@ -86,13 +81,85 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         });
     }
 
+    // Sets the PR icon color accordingly
+    public String initializePersonalRecordIcon(MyViewHolder holder, int position)
+    {
+        // Count the number of PRs
+        int records = 0;
 
-    public void showVolumePRDialog()
+        // Records
+        String records_txt = "\n";
+
+        // Set Volume PR Icon if exercise was a Volume PR
+        if(Exercises.get(position).isVolumePR())
+        {
+            holder.pr_button.setVisibility(View.VISIBLE);
+            // holder.pr_button.setColorFilter(Color.argb(255, 	255, 153, 171));
+            records++;
+            records_txt = records_txt + "Volume PR!\n\n";
+        }
+        if(Exercises.get(position).isActualOneRepMaxPR())
+        {
+            holder.pr_button.setVisibility(View.VISIBLE);
+            // holder.pr_button.setColorFilter(Color.argb(255,    204, 154, 0));
+            records++;
+            records_txt = records_txt + "One Rep Max PR!\n\n";
+        }
+        if(Exercises.get(position).isEstimatedOneRepMaxPR())
+        {
+            holder.pr_button.setVisibility(View.VISIBLE);
+            // holder.pr_button.setColorFilter(Color.argb(255, 	255, 50, 50));
+            records++;
+            records_txt = records_txt + "Estimated One Rep Max PR!\n\n";
+        }
+        if(Exercises.get(position).isMaxRepsPR())
+        {
+            holder.pr_button.setVisibility(View.VISIBLE);
+            // holder.pr_button.setColorFilter(Color.argb(255, 	92, 88, 157));
+            records++;
+            records_txt = records_txt + "Maximum Repetitions PR!\n\n";
+        }
+        if(Exercises.get(position).isMaxWeightPR())
+        {
+            holder.pr_button.setVisibility(View.VISIBLE);
+            // holder.pr_button.setColorFilter(Color.argb(255, 40, 176, 192));
+            records++;
+            records_txt = records_txt + "Maximum Weight PR!\n\n";
+        }
+        if(Exercises.get(position).isHTLT())
+        {
+            holder.pr_button.setVisibility(View.VISIBLE);
+            // holder.pr_button.setColorFilter(Color.argb(255, 	0, 116, 189)); // Primary Color
+            records++;
+            records_txt = records_txt + "Harder Than Last Time!\n\n";
+        }
+        else
+        {
+            holder.pr_button.setVisibility(View.GONE);
+        }
+
+        // When having multiple PRs
+        if(records > 1)
+        {
+            holder.pr_button.setImageResource(R.drawable.ic_whatshot_24px);
+            holder.pr_button.setVisibility(View.VISIBLE);
+            holder.pr_button.setColorFilter(Color.argb(255, 	255, 	0, 0));
+        }
+
+        return records_txt;
+    }
+
+
+    public void showVolumePRDialog(String records)
     {
         // Prepare to show exercise dialog box
         LayoutInflater inflater = LayoutInflater.from(ct);
         View view = inflater.inflate(R.layout.personal_record_dialog,null);
         AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
+
+        TextView tv_records = view.findViewById(R.id.tv_records);
+
+        tv_records.setText(records);
 
         // Show Exercise Dialog Box
         alertDialog.show();
@@ -105,7 +172,7 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
 
         if(exercise_category.equals("Shoulders"))
         {
-            holder.imageView.setColorFilter(Color.argb(255, 37, 90, 160)); // Primary Color
+            holder.imageView.setColorFilter(Color.argb(255, 	0, 116, 189)); // Primary Color
         }
         else if(exercise_category.equals("Back"))
         {
