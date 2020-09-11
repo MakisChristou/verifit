@@ -11,7 +11,7 @@ This app is a simple minimalist fitness tracker that I made mainly for myself. T
 
 ## Screenshots
 
-![Screenshot1](/metadata/screenshots/Screenshot1.jpg | width=100)
+![Screenshot1](/metadata/screenshots/Screenshot1.jpg)
 ![Screenshot2](/metadata/screenshots/Screenshot2.jpg?raw=true "Screenshot2")
 ![Screenshot3](/metadata/screenshots/Screenshot3.jpg?raw=true "Screenshot3")
 ![Screenshot4](/metadata/screenshots/Screenshot4.jpg?raw=true "Screenshot4")
