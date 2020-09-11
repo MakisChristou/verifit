@@ -575,7 +575,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises = gson.fromJson(json,type);
 
         // If there are no previously saved entries make a new object
-        if(KnownExercises == null)
+        if(KnownExercises == null || KnownExercises.isEmpty())
         {
             KnownExercises = new ArrayList<Exercise>();
             initKnownExercises();
@@ -589,8 +589,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         List csvList = new ArrayList();
 
         try {
-            System.out.println("Reading file from: " + Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+ filename);
-            File textFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename);
+            System.out.println(Environment.getExternalStorageDirectory());
+            File textFile = new File(Environment.getExternalStorageDirectory(), filename);
             FileInputStream inputStream = new FileInputStream(textFile);
             CSVFile csvFile = new CSVFile(inputStream);
             csvList = csvFile.read();
@@ -645,6 +645,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         if(isExternalStorageWritable() && checkWritePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
         {
+            System.out.println(Environment.getExternalStorageDirectory());
             File textfile = new File(Environment.getExternalStorageDirectory(),EXPORT_FILENAME);
             try
             {
@@ -684,11 +685,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         // Clear everything just in case
         this.Workout_Days.clear();
-        // this.KnownExercises.clear(); // This removes all known exercises
+        this.KnownExercises.clear(); // This removes all known exercises
         this.Sets.clear();
         this.Days.clear();
         saveWorkoutData(this);
-        // saveKnownExerciseData(this);
+        saveKnownExerciseData(this);
     }
 
     // Inefficient bubble sort but does the job

@@ -67,17 +67,20 @@
 
             <TextView
                 android:id="@+id/day"
-                android:layout_width="280dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
                 android:clickable="false"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Decline Hammer Strength Chest Press"
                 android:textColor="@color/core_black"
                 android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/pr_button"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
