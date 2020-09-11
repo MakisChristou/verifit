@@ -241,7 +241,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="2dp"
-                    android:text="See which exercises you perform the most"
+                    android:text="See which bodyparts you focus on the most"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/exercises2" />
 

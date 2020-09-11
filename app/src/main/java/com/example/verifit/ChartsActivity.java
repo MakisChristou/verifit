@@ -59,6 +59,8 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
         pieChartWorkouts();
 
+        pieChartExercises();
+
 
     }
 
@@ -165,78 +167,81 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
     }
 
-//    public void pieChartExercises()
-//    {
-//        // Find Workout Years
-//        HashSet<String> Exercises = new HashSet<>();
-//
-//        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
-//        {
-//            for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
-//            {
-//                String Exercise = MainActivity.Workout_Days.get(i).getExercises().get(j).getExercise();
-//                Exercises.add(Exercise);
-//            }
-//        }
-//
-//        // Workout years and number of workouts per year
-//        HashMap<String,Integer> Number_Exercises = new HashMap<String, Integer>();
-//
-//        // Iterate set years
-//        Years.forEach(year ->
-//        {
-//            Years_Workouts.put(year,0);
-//        });
-//
-//        // Calculate number of workouts per year
-//        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
-//        {
-//            String date = MainActivity.Workout_Days.get(i).getDate();
-//            String year = date.substring(0,4);
-//
-//            int workouts = Years_Workouts.get(year);
-//            Years_Workouts.put(year,workouts+1);
-//        }
-//
-//        // Initialize Pie Chart
-//        PieChart pieChart = findViewById(R.id.pieChart);
-//
-//        pieChart.setUsePercentValues(false);
-//        pieChart.getDescription().setEnabled(false);
-//        pieChart.setExtraOffsets(5,10,5,5);
-//        pieChart.setDragDecelerationFrictionCoef(0.95f);
-//        pieChart.setDrawHoleEnabled(false);
-//        pieChart.setHoleColor(Color.WHITE);
-//        pieChart.setTransparentCircleRadius(60f);
-//
-//        ArrayList<PieEntry> yValues = new ArrayList<>();
-//
-//        for (Map.Entry<String, Integer> stringIntegerEntry : Years_Workouts.entrySet())
-//        {
-//            Map.Entry pair = (Map.Entry) stringIntegerEntry;
-//
-//            Integer workouts = (Integer) pair.getValue();
-//            String year = (String) pair.getKey();
-//
-//            yValues.add(new PieEntry(workouts,year));
-//        }
-//
-//        PieDataSet pieDataSet = new PieDataSet(yValues,"");
-//
-//        pieDataSet.setSliceSpace(3f);
-//        pieDataSet.setSelectionShift(5f);
-//        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-//
-//        PieData data = new PieData(pieDataSet);
-//        data.setValueTextSize(15f);
-//        data.setValueTextColor(Color.WHITE);
-//
-//        pieChart.setData(data);
-//
-//        pieChart.animateY(1000, Easing.EaseInOutCubic);
-//
-//        pieChart.setNoDataText("No Workouts");
-//    }
+    public void pieChartExercises()
+    {
+        // Find Workout Years
+        HashSet<String> Exercises = new HashSet<>();
+
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            {
+                String Exercise = MainActivity.Workout_Days.get(i).getSets().get(j).getCategory();
+                Exercises.add(Exercise);
+            }
+        }
+
+        // Workout years and number of workouts per year
+        HashMap<String,Integer> Number_Exercises = new HashMap<String, Integer>();
+
+        // Iterate set years
+        Exercises.forEach(exercise ->
+        {
+            Number_Exercises.put(exercise,0);
+        });
+
+        // Calculate number of workouts per year
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            {
+                String Exercise = MainActivity.Workout_Days.get(i).getSets().get(j).getCategory();
+
+                int Exercise_Workouts = Number_Exercises.get(Exercise);
+                Number_Exercises.put(Exercise,Exercise_Workouts+1);
+            }
+        }
+
+
+        // Initialize Pie Chart
+        PieChart pieChart = findViewById(R.id.pieChartExercises);
+
+        pieChart.setUsePercentValues(false);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5,10,5,5);
+        pieChart.setDragDecelerationFrictionCoef(0.95f);
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.setHoleColor(Color.WHITE);
+        pieChart.setTransparentCircleRadius(60f);
+
+        ArrayList<PieEntry> yValues = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> stringIntegerEntry : Number_Exercises.entrySet())
+        {
+            Map.Entry pair = (Map.Entry) stringIntegerEntry;
+
+            Integer workouts = (Integer) pair.getValue();
+            String year = (String) pair.getKey();
+
+            yValues.add(new PieEntry(workouts,year));
+        }
+
+        PieDataSet pieDataSet = new PieDataSet(yValues,"");
+
+        pieDataSet.setSliceSpace(3f);
+        pieDataSet.setSelectionShift(5f);
+        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData(pieDataSet);
+        data.setValueTextSize(15f);
+        data.setValueTextColor(Color.WHITE);
+
+        pieChart.setData(data);
+
+        pieChart.animateY(1000, Easing.EaseInOutCubic);
+
+        pieChart.setNoDataText("No Workouts");
+    }
 
 
     // Navigates to given activity based on the selected menu item
