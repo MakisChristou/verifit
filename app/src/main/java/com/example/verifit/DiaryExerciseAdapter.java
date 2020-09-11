@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
@@ -58,7 +59,7 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         setCategoryIconTint(holder, exercise_name);
 
         // Set PR icon tint
-        String records = initializePersonalRecordIcon(holder,position);
+        ArrayList<String> Records = initializePersonalRecordIcon(holder,position);
 
 
         holder.pr_button.setOnClickListener(new View.OnClickListener()
@@ -66,7 +67,7 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
             @Override
             public void onClick(View view)
             {
-                showVolumePRDialog(records);
+                showVolumePRDialog(Records);
             }
         });
 
@@ -82,13 +83,13 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
     }
 
     // Sets the PR icon color accordingly
-    public String initializePersonalRecordIcon(MyViewHolder holder, int position)
+    public ArrayList<String> initializePersonalRecordIcon(MyViewHolder holder, int position)
     {
         // Count the number of PRs
         int records = 0;
 
         // Records
-        String records_txt = "\n";
+        ArrayList<String> Records = new ArrayList<>();
 
         // Set Volume PR Icon if exercise was a Volume PR
         if(Exercises.get(position).isVolumePR())
@@ -96,42 +97,42 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
             holder.pr_button.setVisibility(View.VISIBLE);
             // holder.pr_button.setColorFilter(Color.argb(255, 	255, 153, 171));
             records++;
-            records_txt = records_txt + "Volume PR!\n\n";
+            Records.add("Volume PR");
         }
         if(Exercises.get(position).isActualOneRepMaxPR())
         {
             holder.pr_button.setVisibility(View.VISIBLE);
             // holder.pr_button.setColorFilter(Color.argb(255,    204, 154, 0));
             records++;
-            records_txt = records_txt + "One Rep Max PR!\n\n";
+            Records.add("One Rep Max PR");
         }
         if(Exercises.get(position).isEstimatedOneRepMaxPR())
         {
             holder.pr_button.setVisibility(View.VISIBLE);
             // holder.pr_button.setColorFilter(Color.argb(255, 	255, 50, 50));
             records++;
-            records_txt = records_txt + "Estimated One Rep Max PR!\n\n";
+            Records.add("Estimated One Rep Max PR");
         }
         if(Exercises.get(position).isMaxRepsPR())
         {
             holder.pr_button.setVisibility(View.VISIBLE);
             // holder.pr_button.setColorFilter(Color.argb(255, 	92, 88, 157));
             records++;
-            records_txt = records_txt + "Maximum Repetitions PR!\n\n";
+            Records.add("Maximum Repetitions PR");
         }
         if(Exercises.get(position).isMaxWeightPR())
         {
             holder.pr_button.setVisibility(View.VISIBLE);
             // holder.pr_button.setColorFilter(Color.argb(255, 40, 176, 192));
             records++;
-            records_txt = records_txt + "Maximum Weight PR!\n\n";
+            Records.add("Maximum Weight PR");
         }
         if(Exercises.get(position).isHTLT())
         {
             holder.pr_button.setVisibility(View.VISIBLE);
             // holder.pr_button.setColorFilter(Color.argb(255, 	0, 116, 189)); // Primary Color
             records++;
-            records_txt = records_txt + "Harder Than Last Time!\n\n";
+            Records.add("Harder Than Last Time");
         }
         else
         {
@@ -146,20 +147,23 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
             holder.pr_button.setColorFilter(Color.argb(255, 	255, 	0, 0));
         }
 
-        return records_txt;
+        return Records;
     }
 
 
-    public void showVolumePRDialog(String records)
+    public void showVolumePRDialog(ArrayList<String> Records)
     {
         // Prepare to show exercise dialog box
         LayoutInflater inflater = LayoutInflater.from(ct);
         View view = inflater.inflate(R.layout.personal_record_dialog,null);
         AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
 
-        TextView tv_records = view.findViewById(R.id.tv_records);
 
-        tv_records.setText(records);
+        RecyclerView recyclerViewPR = view.findViewById(R.id.recyclerViewPR);
+        StringAdapter stringAdapter = new StringAdapter(ct,Records);
+        recyclerViewPR.setAdapter(stringAdapter);
+        recyclerViewPR.setLayoutManager(new LinearLayoutManager(ct));
+
 
         // Show Exercise Dialog Box
         alertDialog.show();

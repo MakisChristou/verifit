@@ -37,6 +37,7 @@
         android:text="Volume PR\n\nEstimated One Rep Max PR!\n\nMaximum Repetitions PR!\n\nMaximum Weight PR!\n\nHarder Than Last Time!\n\n"
         android:textColor="@color/core_black"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,5 +51,16 @@
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toBottomOf="@+id/tv_date"
         tools:layout_editor_absoluteX="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPR"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
