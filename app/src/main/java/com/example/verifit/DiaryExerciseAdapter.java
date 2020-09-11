@@ -158,7 +158,19 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         View view = inflater.inflate(R.layout.personal_record_dialog,null);
         AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
 
+        // Set TextView text accordingly
+        TextView tv_record = view.findViewById(R.id.tv_record);
 
+        if(Records.size() > 1)
+        {
+            tv_record.setText("Multiple Records");
+        }
+        else
+        {
+            tv_record.setText("Record");
+        }
+
+        // Initialize personal record recyclerview
         RecyclerView recyclerViewPR = view.findViewById(R.id.recyclerViewPR);
         StringAdapter stringAdapter = new StringAdapter(ct,Records);
         recyclerViewPR.setAdapter(stringAdapter);
@@ -208,7 +220,7 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         }
     }
 
-    // Blatant copy of Fitnotes but ohh well ;)
+    // Blatant copy of FitNotes but ohh well ;)
     public void showExerciseDialog(int position) {
 
         // Prepare to show exercise dialog box
