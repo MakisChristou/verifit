@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,7 +25,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 
 public class ChartsActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -57,14 +55,14 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
 
-        barChart();
+        barChartVolumes();
 
-        pieChart();
+        pieChartWorkouts();
 
 
     }
 
-    public void barChart()
+    public void barChartVolumes()
     {
         // Bar Chart Example
         BarChart barChart = findViewById(R.id.barChart);
@@ -80,9 +78,9 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
         // ???
         BarDataSet barDataSet = new BarDataSet(workouts,"Workouts");
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(16f);
+        barDataSet.setValueTextSize(15f);
 
         // Profit
         BarData barData = new BarData(barDataSet);
@@ -93,7 +91,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         barChart.animateY(500);
     }
 
-    public void pieChart()
+    public void pieChartWorkouts()
     {
         // Find Workout Years
         HashSet<String> Years = new HashSet<>();
@@ -166,6 +164,79 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
 
     }
+
+//    public void pieChartExercises()
+//    {
+//        // Find Workout Years
+//        HashSet<String> Exercises = new HashSet<>();
+//
+//        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+//        {
+//            for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+//            {
+//                String Exercise = MainActivity.Workout_Days.get(i).getExercises().get(j).getExercise();
+//                Exercises.add(Exercise);
+//            }
+//        }
+//
+//        // Workout years and number of workouts per year
+//        HashMap<String,Integer> Number_Exercises = new HashMap<String, Integer>();
+//
+//        // Iterate set years
+//        Years.forEach(year ->
+//        {
+//            Years_Workouts.put(year,0);
+//        });
+//
+//        // Calculate number of workouts per year
+//        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+//        {
+//            String date = MainActivity.Workout_Days.get(i).getDate();
+//            String year = date.substring(0,4);
+//
+//            int workouts = Years_Workouts.get(year);
+//            Years_Workouts.put(year,workouts+1);
+//        }
+//
+//        // Initialize Pie Chart
+//        PieChart pieChart = findViewById(R.id.pieChart);
+//
+//        pieChart.setUsePercentValues(false);
+//        pieChart.getDescription().setEnabled(false);
+//        pieChart.setExtraOffsets(5,10,5,5);
+//        pieChart.setDragDecelerationFrictionCoef(0.95f);
+//        pieChart.setDrawHoleEnabled(false);
+//        pieChart.setHoleColor(Color.WHITE);
+//        pieChart.setTransparentCircleRadius(60f);
+//
+//        ArrayList<PieEntry> yValues = new ArrayList<>();
+//
+//        for (Map.Entry<String, Integer> stringIntegerEntry : Years_Workouts.entrySet())
+//        {
+//            Map.Entry pair = (Map.Entry) stringIntegerEntry;
+//
+//            Integer workouts = (Integer) pair.getValue();
+//            String year = (String) pair.getKey();
+//
+//            yValues.add(new PieEntry(workouts,year));
+//        }
+//
+//        PieDataSet pieDataSet = new PieDataSet(yValues,"");
+//
+//        pieDataSet.setSliceSpace(3f);
+//        pieDataSet.setSelectionShift(5f);
+//        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+//
+//        PieData data = new PieData(pieDataSet);
+//        data.setValueTextSize(15f);
+//        data.setValueTextColor(Color.WHITE);
+//
+//        pieChart.setData(data);
+//
+//        pieChart.animateY(1000, Easing.EaseInOutCubic);
+//
+//        pieChart.setNoDataText("No Workouts");
+//    }
 
 
     // Navigates to given activity based on the selected menu item

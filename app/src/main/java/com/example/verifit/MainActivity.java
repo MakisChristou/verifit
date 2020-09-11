@@ -684,11 +684,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         // Clear everything just in case
         this.Workout_Days.clear();
-        this.KnownExercises.clear();
+        // this.KnownExercises.clear(); // This removes all known exercises
         this.Sets.clear();
         this.Days.clear();
         saveWorkoutData(this);
-        saveKnownExerciseData(this);
+        // saveKnownExerciseData(this);
     }
 
     // Inefficient bubble sort but does the job
