@@ -10,15 +10,6 @@ This app is a simple minimalist fitness tracker that I made mainly for myself. T
 * Tracks Volume, 1RM and other personal records
 
 ## Screenshots
+<img width="400" src="/metadata/screenshots/Screenshot1.jpg">
 
-![Screenshot1](/metadata/screenshots/Screenshot1.jpg)
-![Screenshot2](/metadata/screenshots/Screenshot2.jpg?raw=true "Screenshot2")
-![Screenshot3](/metadata/screenshots/Screenshot3.jpg?raw=true "Screenshot3")
-![Screenshot4](/metadata/screenshots/Screenshot4.jpg?raw=true "Screenshot4")
-![Screenshot5](/metadata/screenshots/Screenshot5.jpg?raw=true "Screenshot5")
-![Screenshot6](/metadata/screenshots/Screenshot6.jpg?raw=true "Screenshot6")
-![Screenshot7](/metadata/screenshots/Screenshot7.jpg?raw=true "Screenshot7")
-![Screenshot8](/metadata/screenshots/Screenshot8.jpg?raw=true "Screenshot8")
-![Screenshot9](/metadata/screenshots/Screenshot9.jpg?raw=true "Screenshot9")
-![Screenshot10](/metadata/screenshots/Screenshot10.jpg?raw=true "Screenshot10")
 
