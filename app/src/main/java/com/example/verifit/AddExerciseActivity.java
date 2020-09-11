@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +26,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Timer;
 
 public class AddExerciseActivity extends AppCompatActivity {
 
@@ -46,6 +49,19 @@ public class AddExerciseActivity extends AppCompatActivity {
     public ImageButton minus_weight;
     public Button bt_save;
     public Button bt_clear;
+
+    // For Alarm
+    public long START_TIME_IN_MILIS = 180000;
+    public CountDownTimer countDownTimer;
+    public boolean TimerRunning;
+    public long TimeLeftInMillis = START_TIME_IN_MILIS;
+
+    // Timer Dialog Components
+    public EditText et_seconds;
+    public ImageButton minus_seconds;
+    public ImageButton plus_seconds;
+    public Button bt_start;
+    public Button bt_reset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -378,21 +394,30 @@ public class AddExerciseActivity extends AppCompatActivity {
             AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
 
             // Get Objects (use view because dialog box from menu)
-            EditText et_seconds = view.findViewById(R.id.et_seconds);
-            ImageButton minus_seconds = view.findViewById(R.id.minus_seconds);
-            ImageButton plus_seconds = view.findViewById(R.id.plus_seconds);
-            Button bt_start = view.findViewById(R.id.bt_start);
-            Button bt_reset = view.findViewById(R.id.bt_close);
+            et_seconds = view.findViewById(R.id.et_seconds);
+            minus_seconds = view.findViewById(R.id.minus_seconds);
+            plus_seconds = view.findViewById(R.id.plus_seconds);
+            bt_start = view.findViewById(R.id.bt_start);
+            bt_reset = view.findViewById(R.id.bt_close);
 
-            // Timer code here
-            et_seconds.setText("180");
+
+            if(!TimerRunning)
+            {
+                // Derive String value from chosen start time
+                et_seconds.setText(String.valueOf((int)START_TIME_IN_MILIS/1000));
+            }
+            else
+            {
+                updateCountDownText();
+            }
+
 
             bt_reset.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
                 {
-                    System.out.println("Resetting Timer");
+                    resetTimer();
                 }
             });
 
@@ -401,7 +426,14 @@ public class AddExerciseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view)
                 {
-                    System.out.println("Starting Timer");
+                    if(TimerRunning)
+                    {
+                        pauseTimer();
+                    }
+                    else
+                    {
+                        startTimer();
+                    }
                 }
             });
 
@@ -521,6 +553,52 @@ public class AddExerciseActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void startTimer()
+    {
+        countDownTimer = new CountDownTimer(TimeLeftInMillis, 1000)
+        {
+            @Override
+            public void onTick(long MillisUntilFinish)
+            {
+                TimeLeftInMillis = MillisUntilFinish;
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish()
+            {
+                TimerRunning = false;
+                bt_start.setText("Start");
+            }
+        }.start();
+
+        TimerRunning = true;
+        bt_start.setText("Pause");
+        // bt_start.setTextCursorDrawable(R.drawable.ic_pause_24px); // This is not working :(
+    }
+
+    public void pauseTimer()
+    {
+        countDownTimer.cancel();
+        TimerRunning = false;
+        bt_start.setText("Start");
+    }
+
+    public void resetTimer()
+    {
+        pauseTimer();
+        TimeLeftInMillis = START_TIME_IN_MILIS;
+        updateCountDownText();
+    }
+
+    public void updateCountDownText()
+    {
+        int seconds = (int) TimeLeftInMillis / 1000;
+        int minutes = (int) seconds / 60;
+        et_seconds.setText(String.valueOf(seconds));
     }
 
 }

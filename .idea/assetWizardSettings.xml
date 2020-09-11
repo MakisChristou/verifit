@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_whatshot_24px" />
-                            <entry key="sourceFile" value="$USER_HOME$/Icons/rounded/whatshot-24px.svg" />
+                            <entry key="outputName" value="ic_pause_24px" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Icons/rounded/pause-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>
