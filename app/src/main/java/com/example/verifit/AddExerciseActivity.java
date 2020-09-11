@@ -447,6 +447,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                 }
             });
 
+            // Minus Button
             minus_seconds.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -466,6 +467,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                 }
             });
 
+            // Plus Button
             plus_seconds.setOnClickListener(new View.OnClickListener()
             {
                 @Override

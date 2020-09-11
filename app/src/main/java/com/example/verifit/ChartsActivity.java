@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -30,7 +32,8 @@ import java.util.Map;
 public class ChartsActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charts);
 
@@ -89,7 +92,6 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         barChart.invalidate();
         barChart.animateY(500);
     }
-
 
     public void pieChart()
     {
@@ -202,6 +204,25 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
             overridePendingTransition(0,0);
         }
         return true;
+    }
+
+    // Menu Stuff
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.charts_activity_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.settings)
+        {
+            Intent in = new Intent(this,SettingsActivity.class);
+            startActivity(in);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
