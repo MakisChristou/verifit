@@ -194,7 +194,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             // Find Recycler View Object
             recyclerView = itemView.findViewById(R.id.recycler_view_diary);
             expand_button = itemView.findViewById(R.id.expand_button);
-            cardview_diary = itemView.findViewById(R.id.cardview_main);
+            cardview_diary = itemView.findViewById(R.id.cardview_viewpager);
             blue_line = itemView.findViewById(R.id.blue_line);
         }
     }

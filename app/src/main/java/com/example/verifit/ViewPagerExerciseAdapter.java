@@ -46,7 +46,6 @@ public class ViewPagerExerciseAdapter extends RecyclerView.Adapter<ViewPagerExer
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
 
 
-
         holder.cardview_exercise2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)

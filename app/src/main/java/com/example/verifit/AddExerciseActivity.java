@@ -132,6 +132,9 @@ public class AddExerciseActivity extends AppCompatActivity {
             }
         }
 
+        // Fixed Myria induced bug
+        AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
+
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
         System.out.println("Save Data Button: " + timeElapsed);
@@ -211,6 +214,10 @@ public class AddExerciseActivity extends AppCompatActivity {
             weight = weight + 1;
             et_weight.setText(weight.toString());
         }
+        else
+        {
+            et_weight.setText("1");
+        }
 
     }
 
@@ -221,6 +228,10 @@ public class AddExerciseActivity extends AppCompatActivity {
             int reps = Integer.parseInt(et_reps.getText().toString());
             reps = reps + 1;
             et_reps.setText(String.valueOf(reps));
+        }
+        else
+        {
+            et_reps.setText("1");
         }
 
     }
@@ -237,7 +248,6 @@ public class AddExerciseActivity extends AppCompatActivity {
             }
             et_weight.setText(weight.toString());
         }
-
     }
 
     public void clickMinusReps(View view)

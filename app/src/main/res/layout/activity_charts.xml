@@ -22,7 +22,7 @@
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_main"
+                android:id="@+id/cardview_viewpager"
                 style="@style/CardView.Light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -201,7 +201,7 @@
                 android:backgroundTint="@color/custom_row"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/cardview_main">
+                app:layout_constraintTop_toTopOf="@id/cardview_viewpager">
 
 
 

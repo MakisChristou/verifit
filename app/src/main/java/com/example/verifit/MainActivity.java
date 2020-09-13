@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         // Use View Pager with Infinite Days
         viewPager2 = findViewById(R.id.viewPager2);
-        viewPager2.setAdapter(new WorkoutDayAdapter(this,Infinite_Workout_Days));
+        viewPager2.setAdapter(new ViewPagerWorkoutDayAdapter(this,Infinite_Workout_Days));
         viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
     }
 

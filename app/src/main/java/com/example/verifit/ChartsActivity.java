@@ -91,6 +91,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         barChart.getDescription().setText("");
         barChart.invalidate();
         barChart.animateY(500);
+        barChart.zoomIn();
     }
 
     public void pieChartWorkouts()

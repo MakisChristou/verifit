@@ -1,5 +1,4 @@
 package com.example.verifit;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,22 +7,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.WorkoutDayViewHolder> {
+public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWorkoutDayAdapter.WorkoutDayViewHolder> {
 
     ArrayList<WorkoutDay> Workout_Days;
     Context ct;
 
     // Constructor
-    public WorkoutDayAdapter(Context ct, ArrayList<WorkoutDay> Workout_Days)
+    public ViewPagerWorkoutDayAdapter(Context ct, ArrayList<WorkoutDay> Workout_Days)
     {
         this.Workout_Days = new ArrayList<>(Workout_Days);
         this.ct = ct;
@@ -80,7 +79,8 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
             e.printStackTrace();
         }
 
-        holder.tv_date.setOnClickListener(new View.OnClickListener() {
+        // Navigate to Exercises Activity with specific date
+        holder.date_bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -105,15 +105,17 @@ public class WorkoutDayAdapter extends RecyclerView.Adapter<WorkoutDayAdapter.Wo
         private TextView tv_date;
         private TextView tv_full_date;
         private RecyclerView recyclerView_Main;
-        private CardView cardView;
+        private CardView cardview_viewpager;
+        private ConstraintLayout date_bg; // Used for navigating to AddExerciseActivity with date
 
         public WorkoutDayViewHolder(@NonNull View itemView)
         {
             super(itemView);
             tv_date = itemView.findViewById(R.id.tv_date);
-            cardView = itemView.findViewById(R.id.cardview_main);
+            cardview_viewpager = itemView.findViewById(R.id.cardview_viewpager);
             recyclerView_Main = itemView.findViewById(R.id.recyclerView_Main);
             tv_full_date = itemView.findViewById(R.id.tv_full_date);
+            date_bg = itemView.findViewById(R.id.date_bg);
         }
     }
 }

@@ -8,7 +8,7 @@
     android:background="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardview_main"
+        android:id="@+id/cardview_viewpager"
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,6 +26,7 @@
                 android:id="@+id/date_bg"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:backgroundTint="@color/custom_row"
                 android:background="@color/cardview_light_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
