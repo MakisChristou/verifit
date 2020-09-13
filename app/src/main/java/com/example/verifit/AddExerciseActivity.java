@@ -152,39 +152,73 @@ public class AddExerciseActivity extends AppCompatActivity {
         }
         else
         {
-            // Get soon to be deleted set attributes
-            WorkoutSet to_be_removed_set = Todays_Exercise_Sets.get(Clicked_Set);
+            // Show confirmation dialog  box
+            // Prepare to show exercise dialog box
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View view1 = inflater.inflate(R.layout.delete_set_dialog,null);
+            AlertDialog alertDialog = new AlertDialog.Builder(this).setView(view1).create();
 
-            // Find the set in main data structure and delete it
-            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            Button bt_yes = view1.findViewById(R.id.bt_yes3);
+            Button bt_no = view1.findViewById(R.id.bt_no3);
+
+            // Dismiss dialog box
+            bt_no.setOnClickListener(new View.OnClickListener()
             {
-                if(MainActivity.Workout_Days.get(i).getSets().contains(to_be_removed_set))
+                @Override
+                public void onClick(View view)
                 {
-                    // If last set the delete the whole object
-                    if(MainActivity.Workout_Days.get(i).getSets().size() == 1)
-                    {
-                        MainActivity.Workout_Days.remove(MainActivity.Workout_Days.get(i));
-                    }
-                    // Just delete the set
-                    else
-                    {
-                        MainActivity.Workout_Days.get(i).removeSet(to_be_removed_set);
-                        break;
-                    }
-
+                    alertDialog.dismiss();
                 }
-            }
+            });
 
-            Toast.makeText(getApplicationContext(),"Set Deleted",Toast.LENGTH_SHORT).show();
+            // Actually Delete set and update local data structure
+            bt_yes.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    // Get soon to be deleted set
+                    WorkoutSet to_be_removed_set = Todays_Exercise_Sets.get(Clicked_Set);
 
-            // Inefficient
-            // Actually Save Changes in shared preferences
-//            MainActivity.saveData(getApplicationContext());
+                    // Find the set in main data structure and delete it
+                    for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+                    {
+                        if(MainActivity.Workout_Days.get(i).getSets().contains(to_be_removed_set))
+                        {
+                            // If last set the delete the whole object
+                            if(MainActivity.Workout_Days.get(i).getSets().size() == 1)
+                            {
+                                MainActivity.Workout_Days.remove(MainActivity.Workout_Days.get(i));
+                            }
+                            // Just delete the set
+                            else
+                            {
+                                MainActivity.Workout_Days.get(i).removeSet(to_be_removed_set);
+                                break;
+                            }
 
-            // Update Local Data Structure
-            updateTodaysExercises();
+                        }
+                    }
+
+
+                    Toast.makeText(getApplicationContext(),"Set Deleted",Toast.LENGTH_SHORT).show();
+
+
+                    // Update Local Data Structure
+                    updateTodaysExercises();
+
+
+                    alertDialog.dismiss();
+                }
+            });
+
+            // Show delete confirmation dialog box
+            alertDialog.show();
+
+
         }
 
+        // Update Clicked set to avoid crash
         AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
 
         long finish = System.currentTimeMillis();
@@ -216,7 +250,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         }
         else
         {
-            et_weight.setText("1");
+            et_weight.setText("1.0");
         }
 
     }
