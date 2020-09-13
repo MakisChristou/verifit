@@ -66,15 +66,15 @@
 
             <ImageButton
                 android:id="@+id/expand_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@android:color/transparent"
                 android:clickable="true"
                 android:onClick="hideExercises"
                 android:tint="@color/colorAccent"
+                android:background="@drawable/background_transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_more_vert_24px" />

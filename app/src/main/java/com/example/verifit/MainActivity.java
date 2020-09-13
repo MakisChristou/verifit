@@ -791,6 +791,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    // Changes exercise name and bodypart
+    public static void editExercise(String exercise_name, String new_exercise_name, String new_exercise_bodypart)
+    {
+
+    }
+
     // Add all exercises found in the csv to the Known Exercises local data structure
     public static void csvToKnownExercises()
     {

@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_home_24px" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../Icons/rounded/home-24px.svg" />
+                            <entry key="outputName" value="ic_menu_24px" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Icons/rounded/menu-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>

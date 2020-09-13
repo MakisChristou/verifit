@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -91,6 +92,25 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
         });
 
 
+        holder.img_bt_next.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                System.out.println("Next!");
+            }
+        });
+
+        holder.img_bt_back.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                System.out.println("Back!");
+            }
+        });
+
+
     }
 
 
@@ -107,6 +127,8 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
         private RecyclerView recyclerView_Main;
         private CardView cardview_viewpager;
         private ConstraintLayout date_bg; // Used for navigating to AddExerciseActivity with date
+        private ImageButton img_bt_back;
+        private ImageButton img_bt_next;
 
         public WorkoutDayViewHolder(@NonNull View itemView)
         {
@@ -116,6 +138,8 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
             recyclerView_Main = itemView.findViewById(R.id.recyclerView_Main);
             tv_full_date = itemView.findViewById(R.id.tv_full_date);
             date_bg = itemView.findViewById(R.id.date_bg);
+            img_bt_back = itemView.findViewById(R.id.img_bt_back);
+            img_bt_next = itemView.findViewById(R.id.img_bt_next);
         }
     }
 }
