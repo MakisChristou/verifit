@@ -145,6 +145,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     {
         long start = System.currentTimeMillis();
 
+        // If no set was found for today just clear the ets
         if(Todays_Exercise_Sets.isEmpty())
         {
             et_reps.setText("");
@@ -200,13 +201,11 @@ public class AddExerciseActivity extends AppCompatActivity {
                         }
                     }
 
-
+                    // Let the user know I guess
                     Toast.makeText(getApplicationContext(),"Set Deleted",Toast.LENGTH_SHORT).show();
-
 
                     // Update Local Data Structure
                     updateTodaysExercises();
-
 
                     alertDialog.dismiss();
                 }
@@ -214,7 +213,6 @@ public class AddExerciseActivity extends AppCompatActivity {
 
             // Show delete confirmation dialog box
             alertDialog.show();
-
 
         }
 
@@ -237,7 +235,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Actually Save Changes in shared preferences
         MainActivity.saveWorkoutData(getApplicationContext());
     }
-
 
     // Do I even need to explain this?
     public void clickPlusWeight(View view)

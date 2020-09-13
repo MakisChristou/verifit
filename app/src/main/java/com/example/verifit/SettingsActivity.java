@@ -191,7 +191,8 @@ public class SettingsActivity extends AppCompatActivity {
                 public void onClick(View view)
                 {
                     crypto_imageView.setImageResource(R.drawable.btc);
-//                    ClipboardManager clipboard = (ClipboardManager) getSystemService(view.getContext().CLIPBOARD_SERVICE);
+
+//                    ClipboardManager clipboard = (ClipboardManager) getSystemService(getContext().CLIPBOARD_SERVICE);
 //                    ClipData clip = ClipData.newPlainText("btc", "");
 //                    clipboard.setPrimaryClip(clip);
                 }

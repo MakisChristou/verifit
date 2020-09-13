@@ -1,17 +1,24 @@
 package com.example.verifit;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 // Adapter for Exercise Class
@@ -25,7 +32,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     public ExerciseAdapter(Context ct, ArrayList<Exercise> Exercises)
     {
         this.ct = ct;
-        this.Exercises = new ArrayList<>(Exercises);
+        this.Exercises = new ArrayList<>(Exercises); // If you this is changed to: this.Exercises = Exercises; then on search diary activity will not recognize known exercises
         this.Exercises_Full = new ArrayList<>(Exercises);
     }
 
@@ -35,7 +42,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
     {
         LayoutInflater inflater = LayoutInflater.from(this.ct);
         View view = inflater.inflate(R.layout.exercise_row,parent,false);
-
         return new MyViewHolder(view);
     }
 
@@ -58,19 +64,45 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
         });
 
 
-        holder.cardview_exercise_1.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View view)
-            {
-                System.out.println("Long Click");
-                return true;
-            }
-        });
-
-
+//        // Open Contextual Action Mode Menu
+//        holder.cardview_exercise_1.setOnLongClickListener(new View.OnLongClickListener()
+//        {
+//            @Override
+//            public boolean onLongClick(View view)
+//            {
+//                // Delete Exercise from MainActivity Data Structures
+//                MainActivity.deleteExercise(Exercises.get(position).getName());
+//
+//                // Delete Exercise from Adapter's local data structure
+//                deleteExercise(Exercises.get(position).getName());
+//
+//
+//                // Save Results
+//                MainActivity.saveKnownExerciseData(ct);
+//                MainActivity.saveWorkoutData(ct);
+//
+//
+//                return true;
+//            }
+//        });
 
     }
+
+
+    public void deleteExercise(String exercise_name)
+    {
+        for (Iterator<Exercise> exerciseIterator = this.Exercises.iterator(); exerciseIterator.hasNext(); )
+        {
+            Exercise current_exercise = exerciseIterator.next();
+
+            if(current_exercise.getName().equals(exercise_name))
+            {
+                exerciseIterator.remove();
+                notifyDataSetChanged();
+            }
+        }
+    }
+
 
     @Override
     public int getItemCount()
@@ -129,19 +161,103 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
         }
     };
 
-    public class MyViewHolder extends  RecyclerView.ViewHolder
-    {
+    public class MyViewHolder extends  RecyclerView.ViewHolder implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
         TextView tv_exercise_name;
         TextView tv_exercise_bodypart;
         CardView cardview_exercise_1;
 
-
-
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView)
+        {
             super(itemView);
             tv_exercise_name = itemView.findViewById(R.id.tv_date);
             tv_exercise_bodypart = itemView.findViewById(R.id.exercise_bodypart);
             cardview_exercise_1 = itemView.findViewById(R.id.cardview_exercise_1);
+
+            // For PopUp Menu
+            cardview_exercise_1.setOnLongClickListener(this);
+        }
+
+
+        // Triggered when someone long presses on cardview_exercise_1
+        @Override
+        public boolean onLongClick(View view)
+        {
+            showPopupMenu(view);
+            return true;
+        }
+
+
+        private void showPopupMenu(View view)
+        {
+            PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+            popupMenu.inflate(R.menu.exercises_activity_floating_context_menu);
+
+            popupMenu.setOnMenuItemClickListener(this);
+
+            popupMenu.show();
+        }
+
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item)
+        {
+            // Edit Exercise
+            if(item.getItemId() == R.id.edit)
+            {
+                int position = getAdapterPosition();
+                System.out.println("Edit");
+                return true;
+            }
+
+            // Delete Exercise
+            else if(item.getItemId() == R.id.delete)
+            {
+                int position = getAdapterPosition();
+
+                // Prepare to show exercise dialog box
+                LayoutInflater inflater = LayoutInflater.from(ct);
+                View view = inflater.inflate(R.layout.delete_exercise_dialog,null);
+                AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
+
+
+                Button bt_yes = view.findViewById(R.id.bt_yes3);
+                Button bt_no = view.findViewById(R.id.bt_no3);
+
+
+                bt_no.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                bt_yes.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        // Delete Exercise from MainActivity Data Structures
+                        MainActivity.deleteExercise(Exercises.get(position).getName());
+
+                        // Delete Exercise from Adapter's local data structure
+                        deleteExercise(Exercises.get(position).getName());
+
+                        // Save Results
+                        MainActivity.saveKnownExerciseData(ct);
+                        MainActivity.saveWorkoutData(ct);
+
+                        alertDialog.dismiss();
+                    }
+                });
+
+
+                alertDialog.show();
+                return true;
+            }
+
+            return false;
         }
     }
 }

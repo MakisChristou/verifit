@@ -743,6 +743,54 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return "";
     }
 
+    // Deletes exercise from KnownExercises and from WorkoutDays
+    public static void deleteExercise(String exercise_name)
+    {
+        // Iterate Workout Days
+        for (Iterator<WorkoutDay> dayIterator = MainActivity.Workout_Days.iterator(); dayIterator.hasNext(); )
+        {
+
+            WorkoutDay currentDay = dayIterator.next();
+
+            // Iterate Workout Exercises
+            for(Iterator<WorkoutExercise> exerciseIterator = currentDay.getExercises().iterator(); exerciseIterator.hasNext();)
+            {
+                WorkoutExercise current_exercise = exerciseIterator.next();
+                if(current_exercise.getExercise().equals(exercise_name))
+                {
+                    exerciseIterator.remove();
+                }
+            }
+
+            // Iterate Workout Sets
+            for(Iterator<WorkoutSet> setIterator = currentDay.getSets().iterator(); setIterator.hasNext();)
+            {
+                WorkoutSet current_set = setIterator.next();
+                if(current_set.getExercise().equals(exercise_name))
+                {
+                    setIterator.remove();
+                }
+            }
+
+
+            if(currentDay.getSets().isEmpty())
+            {
+                dayIterator.remove();
+            }
+        }
+
+        // Iterate Known Exercises data structure
+        for(Iterator<Exercise> exerciseIterator = MainActivity.KnownExercises.iterator(); exerciseIterator.hasNext();)
+        {
+            Exercise current_exercise = exerciseIterator.next();
+
+            if(current_exercise.getName().equals(exercise_name))
+            {
+                exerciseIterator.remove();
+            }
+        }
+    }
+
     // Add all exercises found in the csv to the Known Exercises local data structure
     public static void csvToKnownExercises()
     {
