@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         long timeElapsed = finish - start;
         System.out.println("Main Activity onCreate() " + timeElapsed + " ms");
 
+        System.out.println("Workout_Days.size() = " + Workout_Days.size());
+        System.out.println("Known_Exercises.size() = " + KnownExercises.size());
+
+
     }
 
 
@@ -200,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Start Timer
         long start = System.currentTimeMillis();
 
-
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
 
@@ -234,9 +237,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // Find start and End Dates
             Calendar c = Calendar.getInstance();
             c.setTime(new Date());
-            c.add(Calendar.YEAR, -10);
+            c.add(Calendar.YEAR, -5);
             Date startDate = c.getTime();
-            c.add(Calendar.YEAR, +20);
+            c.add(Calendar.YEAR, +10);
             Date endDate = c.getTime();
 
             // Create Calendar Objects that represent start and end date
@@ -262,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         viewPager2 = findViewById(R.id.viewPager2);
         viewPager2.setAdapter(new ViewPagerWorkoutDayAdapter(this,Infinite_Workout_Days));
         viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
-
     }
 
     // Formats backup name in case of export
