@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static HashMap<String,Double> MaxWeightPRs = new HashMap<String,Double>();
     public static HashMap<String,Double> LastTimeVolume = new HashMap<String,Double>(); // Holds last workout's volume for each exercise
     public ViewPager2 viewPager2; // View Pager that is used in main activity
-    public ArrayList<WorkoutDay> Infinite_Workout_Days; // Used to populate the viewPager object in MainActivity with "infinite" days
+    public static ArrayList<WorkoutDay> Infinite_Workout_Days = new ArrayList<WorkoutDay>(); // Used to populate the viewPager object in MainActivity with "infinite" days
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        System.out.println("On Create");
+
         long start = System.currentTimeMillis();
 
         // Hacky way to have the same code run in onRestart() as well
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
-        System.out.println("Main Activity " + timeElapsed + " ms");
+        System.out.println("Main Activity onCreate() " + timeElapsed + " ms");
 
     }
 
@@ -143,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // You guessed it!
     public void initActivity()
     {
-
         askReadPermission();
 
         askWritePermission();
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String WhatToDO = null;
         WhatToDO = in.getStringExtra("doit");
 
+        // If Intent coming from settings activity
         if(WhatToDO != null)
         {
             if(WhatToDO.equals("importcsv"))
@@ -172,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 initViewPager();
             }
         }
+        // No intent
         else
         {
             // Get WorkoutDays from shared preferences
@@ -185,12 +188,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+
     @Override
     protected void onRestart()
     {
+        System.out.println("On Restart");
 
         // This was already there so I am not deleting it
         super.onRestart();
+
+        // Start Timer
+        long start = System.currentTimeMillis();
+
 
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
@@ -205,46 +214,55 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("Main Activity on Restart " + timeElapsed + " ms");
     }
+
 
     // Initialize View pager object
     public void initViewPager()
     {
-
-        // "Infinite" Data Structure
-        Infinite_Workout_Days = new ArrayList<>();
-
-        // Find start and End Dates
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        c.add(Calendar.YEAR, -10);
-        Date startDate = c.getTime();
-        c.add(Calendar.YEAR, +20);
-        Date endDate = c.getTime();
-
-        // Create Calendar Objects that represent start and end date
-        Calendar start = Calendar.getInstance();
-        start.setTime(startDate);
-        Calendar end = Calendar.getInstance();
-        end.setTime(endDate);
-
-        // Construct 20 years worth of empty workout days
-        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime())
+        // Skip creation of empty workouts if you don't have to
+        if(Infinite_Workout_Days.isEmpty())
         {
-            // Get Date in String format
-            String date_str = new SimpleDateFormat("yyyy-MM-dd").format(date);
+            // "Infinite" Data Structure
+            Infinite_Workout_Days.clear();
 
-            // Create new mostly empty object
-            WorkoutDay today = new WorkoutDay();
-            today.setDate(date_str);
-            Infinite_Workout_Days.add(today);
+            // Find start and End Dates
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.YEAR, -10);
+            Date startDate = c.getTime();
+            c.add(Calendar.YEAR, +20);
+            Date endDate = c.getTime();
+
+            // Create Calendar Objects that represent start and end date
+            Calendar start = Calendar.getInstance();
+            start.setTime(startDate);
+            Calendar end = Calendar.getInstance();
+            end.setTime(endDate);
+
+            // Construct 20 years worth of empty workout days
+            for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime())
+            {
+                // Get Date in String format
+                String date_str = new SimpleDateFormat("yyyy-MM-dd").format(date);
+
+                // Create new mostly empty object
+                WorkoutDay today = new WorkoutDay();
+                today.setDate(date_str);
+                Infinite_Workout_Days.add(today);
+            }
         }
-
 
         // Use View Pager with Infinite Days
         viewPager2 = findViewById(R.id.viewPager2);
         viewPager2.setAdapter(new ViewPagerWorkoutDayAdapter(this,Infinite_Workout_Days));
         viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
+
     }
 
     // Formats backup name in case of export
@@ -320,12 +338,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // When File explorer stops this function runs
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK)
-        {
-            if(data != null)
-            {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
                 Uri uri = data.getData();
                 String filename = uri.getPath();
                 filename = filename.substring(filename.indexOf(":") + 1);
@@ -540,17 +556,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Loads Workout_Days Array List from shared preferences
     public void loadWorkoutData()
     {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("workouts",null);
-        Type type = new TypeToken<ArrayList<WorkoutDay>>(){}.getType();
-        Workout_Days = gson.fromJson(json,type);
-
-        // If there are no previously saved entries make a new object
-        if(Workout_Days == null)
+        if(Workout_Days.isEmpty())
         {
-            Workout_Days = new ArrayList<WorkoutDay>();
+            SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = sharedPreferences.getString("workouts",null);
+            Type type = new TypeToken<ArrayList<WorkoutDay>>(){}.getType();
+            Workout_Days = gson.fromJson(json,type);
+
+            // If there are no previously saved entries make a new object
+            if(Workout_Days == null)
+            {
+                Workout_Days = new ArrayList<WorkoutDay>();
+            }
         }
+
+
     }
 
     // Saves Workout_Days Array List in shared preferences
@@ -568,17 +589,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Loads Workout_Days Array List from shared preferences
     public void loadKnownExercisesData()
     {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("known_exercises",null);
-        Type type = new TypeToken<ArrayList<Exercise>>(){}.getType();
-        KnownExercises = gson.fromJson(json,type);
-
-        // If there are no previously saved entries make a new object
-        if(KnownExercises == null || KnownExercises.isEmpty())
+        if(KnownExercises.isEmpty())
         {
-            KnownExercises = new ArrayList<Exercise>();
-            initKnownExercises();
+            SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = sharedPreferences.getString("known_exercises",null);
+            Type type = new TypeToken<ArrayList<Exercise>>(){}.getType();
+            KnownExercises = gson.fromJson(json,type);
+
+            // If there are no previously saved entries make a new object
+            if(KnownExercises == null || KnownExercises.isEmpty())
+            {
+                KnownExercises = new ArrayList<Exercise>();
+                initKnownExercises();
+            }
         }
     }
 
@@ -791,7 +815,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    // Changes exercise name and bodypart
+    // Changes exercise name and body part
     public static void editExercise(String exercise_name, String new_exercise_name, String new_exercise_bodypart)
     {
 
