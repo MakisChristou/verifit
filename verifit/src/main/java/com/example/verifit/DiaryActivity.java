@@ -21,23 +21,18 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
     public DiaryAdapter diaryAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
 
-        long start = System.currentTimeMillis();
-
         initActivity();
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-        System.out.println("Diary Activity " + timeElapsed+" ms");
-
     }
 
 
     @Override
-    protected void onRestart() {
+    protected void onRestart()
+    {
         super.onRestart();
         initActivity();
     }

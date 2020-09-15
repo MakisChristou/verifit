@@ -21,18 +21,12 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
     public String date_clicked;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
 
-
-        long start = System.currentTimeMillis();
-
         onCreateStuff();
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-        System.out.println("Exercises Activity " + timeElapsed+" ms");
 
     }
 
@@ -75,7 +69,6 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

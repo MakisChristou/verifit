@@ -9,7 +9,8 @@ VeriFit is a simple minimalist fitness tracker that I made mainly for myself. Th
 * Easily import & export in csv format
 * Analysis of workout data
 * Visualization of workout data
-* Volume, actual 1RM, estimated 1RM, tracking
+* Volume, actual 1RM, estimated 1RM, and other stats tracking
+* Includes simple timer
 
 ## Screenshots
 <img width="200" src="/metadata/screenshots/Screenshot2.jpg"> <img width="200" src="/metadata/screenshots/Screenshot1.jpg"> <img width="200" src="/metadata/screenshots/Screenshot3.jpg"> <img width="200" src="/metadata/screenshots/Screenshot4.jpg">
@@ -18,3 +19,9 @@ VeriFit is a simple minimalist fitness tracker that I made mainly for myself. Th
 
 ## Libraries Used
 * MPAndroid Chart
+
+## Donations
+* Bitcoin = 3MMsuEGz7LcAt3u7djuheUpCWFWCWPfHKG
+* Monero = 48MakisiDP1W9VLPPHv3a47fAU4bKt13T4X6rpghVFx88KM3jRY3BNK1xw2Sq26rb4JDhKf8iQa7cU7PkbBZoyKmMi8s8W7
+* Ethereum = 0x6AA6fdB6FEc26DeEBF6571d3dabA16c15AE36F98
+* Vericoin = VEPR4c1AC6dJARs7oAEhwqDMwowuAU2yWV

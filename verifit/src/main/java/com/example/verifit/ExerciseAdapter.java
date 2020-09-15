@@ -16,7 +16,6 @@ import android.widget.Filterable;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
@@ -274,6 +273,10 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
                         {
                             System.out.println(new_exercise_category + " " + et_exercise_name.getText().toString());
                             MainActivity.editExercise(exercise_name,new_exercise_name,new_exercise_category);
+                            MainActivity.saveWorkoutData(ct);
+                            MainActivity.saveKnownExerciseData(ct);
+                            notifyDataSetChanged();
+                            alertDialog.dismiss();
                         }
 
                         // Tell user to stop fucking around

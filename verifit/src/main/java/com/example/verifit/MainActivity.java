@@ -21,8 +21,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.Toast;
+
+import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileInputStream;
@@ -71,21 +74,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        System.out.println("On Create");
-
-        long start = System.currentTimeMillis();
-
         // Hacky way to have the same code run in onRestart() as well
         onCreateStuff();
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-        System.out.println("Main Activity onCreate() " + timeElapsed + " ms");
-
-        System.out.println("Workout_Days.size() = " + Workout_Days.size());
-        System.out.println("Known_Exercises.size() = " + KnownExercises.size());
-
-
     }
 
 
@@ -196,13 +186,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onRestart()
     {
-        System.out.println("On Restart");
-
         // This was already there so I am not deleting it
         super.onRestart();
-
-        // Start Timer
-        long start = System.currentTimeMillis();
 
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
@@ -217,11 +202,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-        System.out.println("Main Activity on Restart " + timeElapsed + " ms");
     }
 
 
@@ -820,6 +800,45 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Changes exercise name and body part
     public static void editExercise(String exercise_name, String new_exercise_name, String new_exercise_bodypart)
     {
+        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        {
+            if(KnownExercises.get(i).getName().equals(exercise_name))
+            {
+                KnownExercises.get(i).setName(new_exercise_name);
+                KnownExercises.get(i).setBodyPart(new_exercise_bodypart);
+            }
+        }
+
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            {
+                if(MainActivity.Workout_Days.get(i).getSets().get(j).getExercise().equals(exercise_name))
+                {
+                    MainActivity.Workout_Days.get(i).getSets().get(j).setExercise(new_exercise_name);
+                    MainActivity.Workout_Days.get(i).getSets().get(j).setCategory(new_exercise_bodypart);
+                }
+            }
+
+            for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+            {
+                if(MainActivity.Workout_Days.get(i).getExercises().get(j).getExercise().equals(exercise_name))
+                {
+                    MainActivity.Workout_Days.get(i).getExercises().get(j).setExercise(new_exercise_name);
+
+                    for(int k = 0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                    {
+                        if(MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise().equals(exercise_name))
+                        {
+                            MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).setExercise(new_exercise_name);
+                            MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).setCategory(new_exercise_bodypart);
+                        }
+                    }
+
+
+                }
+            }
+        }
 
     }
 
