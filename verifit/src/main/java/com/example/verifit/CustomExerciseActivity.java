@@ -70,7 +70,7 @@ public class CustomExerciseActivity extends AppCompatActivity implements Adapter
         return super.onOptionsItemSelected(item);
     }
 
-    // On Seleted Stuff
+    // On Seleted Stuff (spinner)
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
     {

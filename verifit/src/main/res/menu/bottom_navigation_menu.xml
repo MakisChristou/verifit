@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/diary"
-        android:icon="@drawable/ic_menu_24px"
+        android:icon="@drawable/ic_ballot_24px"
         android:visible="true">
     </item>
 

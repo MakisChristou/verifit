@@ -4,10 +4,12 @@ VeriFit is a simple minimalist fitness tracker that I made mainly for myself. Th
 
 ## Features
 * Exercise tracking
-* Custom exercise option
+* Create custom exercises
+* Edit, delete exercises
 * Easily import & export in csv format
-* Analysis of workout data with visualization
-* Tracks Volume, 1RM and other personal records
+* Analysis of workout data
+* Visualization of workout data
+* Volume, actual 1RM, estimated 1RM, tracking
 
 ## Screenshots
 <img width="200" src="/metadata/screenshots/Screenshot2.jpg"> <img width="200" src="/metadata/screenshots/Screenshot1.jpg"> <img width="200" src="/metadata/screenshots/Screenshot3.jpg"> <img width="200" src="/metadata/screenshots/Screenshot4.jpg">
