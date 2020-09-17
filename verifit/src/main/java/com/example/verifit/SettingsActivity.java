@@ -97,12 +97,12 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("nextsync"))
             {
-                Toast.makeText(getContext(),"Not implemented yet",Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(),"Not implemented yet",Toast.LENGTH_SHORT).show();
             }
             // General
             else if(key.equals("theme"))
             {
-                Toast.makeText(getContext(),"Dark Theme tot implemented yet",Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(),"Dark Theme not implemented yet",Toast.LENGTH_SHORT).show();
             }
             else if(key.equals("github"))
             {
@@ -111,7 +111,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("version"))
             {
-                Toast.makeText(getContext(),"Nothing to see here",Toast.LENGTH_SHORT);
+                // Toast.makeText(getContext(),"Nothing to see here",Toast.LENGTH_SHORT).show();
             }
             else if(key.equals("donate"))
             {
@@ -124,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("help"))
             {
-                Toast.makeText(getContext(),"Not implemented yet",Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(),"Not implemented yet",Toast.LENGTH_SHORT).show();
             }
             return true;
         }
@@ -192,9 +192,11 @@ public class SettingsActivity extends AppCompatActivity {
                 {
                     crypto_imageView.setImageResource(R.drawable.btc);
 
-//                    ClipboardManager clipboard = (ClipboardManager) getSystemService(getContext().CLIPBOARD_SERVICE);
-//                    ClipData clip = ClipData.newPlainText("btc", "");
-//                    clipboard.setPrimaryClip(clip);
+                    // Copy Corresponding Address to Clipboard
+                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("btc", "3MMsuEGz7LcAt3u7djuheUpCWFWCWPfHKG");
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getContext(),"BTC Address Copied",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -205,6 +207,12 @@ public class SettingsActivity extends AppCompatActivity {
                 public void onClick(View view)
                 {
                     crypto_imageView.setImageResource(R.drawable.eth);
+
+                    // Copy Corresponding Address to Clipboard
+                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("btc", "0x6AA6fdB6FEc26DeEBF6571d3dabA16c15AE36F98");
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getContext(),"ETH Address Copied",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -215,6 +223,11 @@ public class SettingsActivity extends AppCompatActivity {
                 public void onClick(View view)
                 {
                     crypto_imageView.setImageResource(R.drawable.vrc);
+                    // Copy Corresponding Address to Clipboard
+                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("btc", "VEPR5c1AC6dJARs7oAEhwqDMwowuAU2yWV");
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getContext(),"VRC Address Copied",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -224,6 +237,12 @@ public class SettingsActivity extends AppCompatActivity {
                 public void onClick(View view)
                 {
                     crypto_imageView.setImageResource(R.drawable.xmr);
+                    // Copy Corresponding Address to Clipboard
+                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("btc", "48MakisiDP1W9VLPPHv3a47fAU4bKt13T4X6rpghVFx88KM3jRY3BNK1xw2Sq26rb4JDhKf8iQa7cU7PkbBZoyKmMi8s8W7");
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getContext(),"XMR Address Copied",Toast.LENGTH_SHORT).show();
+
                 }
             });
 
