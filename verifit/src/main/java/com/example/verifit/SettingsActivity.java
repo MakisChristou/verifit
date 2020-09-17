@@ -126,6 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 Toast.makeText(getContext(),"Not implemented yet",Toast.LENGTH_SHORT).show();
             }
+
             return true;
         }
 
@@ -245,13 +246,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                 }
             });
-
-
-
-
-
-
-
 
             // Show Exercise Dialog Box
             alertDialog.show();

@@ -59,9 +59,8 @@ public class DayExerciseAdapter extends RecyclerView.Adapter<DayExerciseAdapter.
             }
         });
 
+        // Colorize exercise icon accordingly
         setCategoryIconTint(holder,Exercises.get(position).getExercise());
-
-
     }
 
     // Simple

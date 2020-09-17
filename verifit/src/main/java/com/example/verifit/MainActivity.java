@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
     public static final int PERMISSION_REQUEST_STORAGE = 1000;
-    public static String EXPORT_FILENAME = "VeriFit_Backup";
+    public static String EXPORT_FILENAME = "verifit_backup";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

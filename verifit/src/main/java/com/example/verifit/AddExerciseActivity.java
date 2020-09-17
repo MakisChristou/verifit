@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -91,23 +92,25 @@ public class AddExerciseActivity extends AppCompatActivity {
     // Button On Click Methods
     public void clickSave(View view)
     {
-        long start = System.currentTimeMillis();
-
         if(et_weight.getText().toString().isEmpty() || et_reps.getText().toString().isEmpty())
         {
             Toast.makeText(getApplicationContext(),"Please write Weight and Reps",Toast.LENGTH_SHORT).show();
         }
-        else{
-
-            // Create New Set Object
+        else
+        {
+            // Get user sets && reps
             Double reps = Double.parseDouble(et_reps.getText().toString());
             Double weight = Double.parseDouble(et_weight.getText().toString());
+
+            // Create New Set Object
             WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getExerciseCategory(exercise_name),reps,weight);
 
+            // Ignore wrong input
             if(reps == 0 || weight == 0 || reps < 0 || weight < 0)
             {
                 Toast.makeText(getApplicationContext(),"Please write correct Weight and Reps",Toast.LENGTH_SHORT).show();
             }
+            // Save set
             else
             {
                 // Find if workout day already exists
@@ -134,23 +137,19 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Fixed Myria induced bug
         AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-        System.out.println("Save Data Button: " + timeElapsed);
     }
 
     // Clear / Delete
     public void clickClear(View view)
     {
-        long start = System.currentTimeMillis();
-
-        // If no set was found for today just clear the ets
+        // Clear Function
         if(Todays_Exercise_Sets.isEmpty())
         {
+            bt_clear.setText("Clear");
             et_reps.setText("");
             et_weight.setText("");
         }
+        // Delete Function
         else
         {
             // Show confirmation dialog  box
@@ -218,10 +217,6 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Update Clicked set to avoid crash
         AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
-
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-        System.out.println("Clear Data Button: " + timeElapsed);
     }
 
     // Save Changes in main data structure, save data structure in shared preferences
@@ -426,15 +421,16 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     // Menu Stuff
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_exercise_activity_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
         // Timer
         if(item.getItemId() == R.id.timer)
         {
@@ -454,7 +450,8 @@ public class AddExerciseActivity extends AppCompatActivity {
             if(!TimerRunning)
             {
                 // Derive String value from chosen start time
-                et_seconds.setText(String.valueOf((int) START_TIME_IN_MILLIS /1000));
+                // et_seconds.setText(String.valueOf((int) START_TIME_IN_MILLIS /1000));
+                loadSeconds();
             }
             else
             {
@@ -628,9 +625,14 @@ public class AddExerciseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     public void startTimer()
     {
+
+        if(!et_seconds.getText().toString().isEmpty())
+        {
+            loadSeconds();
+        }
+
         countDownTimer = new CountDownTimer(TimeLeftInMillis, 1000)
         {
             @Override
@@ -650,7 +652,26 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         TimerRunning = true;
         bt_start.setText("Pause");
-        // bt_start.setTextCursorDrawable(R.drawable.ic_pause_24px); // This is not working :(
+
+        // Save User Selected Seconds
+        saveSeconds();
+    }
+
+    public void loadSeconds()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+        et_seconds.setText(sharedPreferences.getString("seconds",""));
+    }
+
+    public void saveSeconds()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if(!et_seconds.getText().toString().isEmpty())
+        {
+            editor.putString("seconds",et_seconds.getText().toString());
+        }
     }
 
     public void pauseTimer()
@@ -662,9 +683,13 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     public void resetTimer()
     {
-        pauseTimer();
-        TimeLeftInMillis = START_TIME_IN_MILLIS;
-        updateCountDownText();
+        if(TimerRunning)
+        {
+            pauseTimer();
+            TimeLeftInMillis = START_TIME_IN_MILLIS;
+            updateCountDownText();
+        }
+
     }
 
     public void updateCountDownText()
