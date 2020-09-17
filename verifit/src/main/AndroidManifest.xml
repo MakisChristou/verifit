@@ -28,7 +28,8 @@
             android:label="Day" />
         <activity
             android:name="com.example.verifit.SettingsActivity"
-            android:label="Settings" />
+            android:label="Settings"
+            android:parentActivityName=".MeActivity"/>
         <activity
             android:name="com.example.verifit.CalculatorActivity"
             android:label="Plate Calculator" />

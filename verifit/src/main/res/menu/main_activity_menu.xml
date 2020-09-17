@@ -9,11 +9,4 @@
         app:iconTint="@color/cardview_light_background">
     </item>
 
-    <item
-        android:id="@+id/settings"
-        app:showAsAction="never"
-        android:title="Settings">
-
-    </item>
-
 </menu>

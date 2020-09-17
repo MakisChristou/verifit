@@ -87,6 +87,10 @@ public class ViewPagerExerciseAdapter extends RecyclerView.Adapter<ViewPagerExer
             recyclerView = itemView.findViewById(R.id.recycler_view_day);
             blue_line = itemView.findViewById(R.id.blue_line);
             cardview_exercise2 = itemView.findViewById(R.id.cardview_exercise_history);
+
+            // Do not show sets in this view
+            recyclerView.setVisibility(View.GONE);
+            blue_line.setVisibility(View.INVISIBLE);
         }
     }
 }

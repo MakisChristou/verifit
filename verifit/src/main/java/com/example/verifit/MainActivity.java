@@ -320,7 +320,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // When File explorer stops this function runs
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
@@ -587,7 +588,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
     }
-
 
     // Read CSV from internal storage
     public void readFile(String filename)
@@ -878,8 +878,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // Navigates to given activity based on the selected menu item
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
+    {
         if(item.getItemId() == R.id.home)
         {
             Intent in = new Intent(this,MainActivity.class);
