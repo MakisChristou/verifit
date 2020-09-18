@@ -221,7 +221,8 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     // Save Changes in main data structure, save data structure in shared preferences
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         super.onBackPressed();
 
         // Sort Before Saving
@@ -480,8 +481,10 @@ public class AddExerciseActivity extends AppCompatActivity {
                     }
                     else
                     {
+                        saveSeconds();
                         startTimer();
                     }
+
                 }
             });
 
@@ -627,12 +630,6 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     public void startTimer()
     {
-
-        if(!et_seconds.getText().toString().isEmpty())
-        {
-            loadSeconds();
-        }
-
         countDownTimer = new CountDownTimer(TimeLeftInMillis, 1000)
         {
             @Override
@@ -653,14 +650,18 @@ public class AddExerciseActivity extends AppCompatActivity {
         TimerRunning = true;
         bt_start.setText("Pause");
 
-        // Save User Selected Seconds
-        saveSeconds();
     }
 
     public void loadSeconds()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
-        et_seconds.setText(sharedPreferences.getString("seconds",""));
+        String seconds = sharedPreferences.getString("seconds","180");
+
+        // Change actual values that timer uses
+        START_TIME_IN_MILLIS = Integer.parseInt(seconds) * 1000;
+        TimeLeftInMillis = START_TIME_IN_MILLIS;
+
+        et_seconds.setText(seconds);
     }
 
     public void saveSeconds()
@@ -670,7 +671,15 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         if(!et_seconds.getText().toString().isEmpty())
         {
+            String seconds = et_seconds.getText().toString();
+
+            // Change actual values that timer uses
+            START_TIME_IN_MILLIS = Integer.parseInt(seconds) * 1000;
+            TimeLeftInMillis = START_TIME_IN_MILLIS;
+
+            // Save to shared preferences
             editor.putString("seconds",et_seconds.getText().toString());
+            editor.apply();
         }
     }
 

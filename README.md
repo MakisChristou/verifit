@@ -1,16 +1,16 @@
 ## Verifit
 <img width="100" src="/metadata/logo/icon.svg">
-VeriFit is a simple minimalist fitness tracker that I made mainly for myself. The UI is heavily inspired by FitNotes. It's purpose is to replace the traditional paper and pencil method for tracking progressive overload. It's primarily aimed for bodybuilding workout tracking. Since I made this with the primary user in mind being myself, it is not fully featured yet, but I do have future plans for adding extra features over time. It's probably full of bugs and bad code design since this is my first attempt and I made it from scratch but any suggestions are always welcome.
+Verifit is a simple minimalist fitness tracker that I made mainly for myself. The UI is heavily inspired by FitNotes. It's purpose is to replace the traditional paper and pencil method for tracking progressive overload. Since I made this with the primary user in mind being myself, it is not fully featured yet, but I do have future plans for adding extra features over time. This is my first attempt so suggestions and code improvements are always welcome.
 
 ## Features
 * Exercise tracking
 * Create custom exercises
 * Edit, delete exercises
 * Easily import & export in csv format
-* Analysis of workout data
+* Basic analysis of workout data
 * Visualization of workout data
 * Volume, actual 1RM, estimated 1RM, and other stats tracking
-* Includes simple timer
+* Includes simple rest timer
 
 ## Screenshots
 <img width="200" src="/metadata/screenshots/Screenshot2.jpg"> <img width="200" src="/metadata/screenshots/Screenshot1.jpg"> <img width="200" src="/metadata/screenshots/Screenshot3.jpg"> <img width="200" src="/metadata/screenshots/Screenshot4.jpg">
