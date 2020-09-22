@@ -21,7 +21,8 @@ import androidx.preference.PreferenceManager;
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
         getSupportFragmentManager()
@@ -106,7 +107,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("github"))
             {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MakisChristou "));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MakisChristou/verifit"));
                 startActivity(browserIntent);
             }
             else if(key.equals("version"))

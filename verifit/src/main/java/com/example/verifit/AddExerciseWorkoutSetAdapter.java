@@ -21,7 +21,6 @@ public class AddExerciseWorkoutSetAdapter extends RecyclerView.Adapter<AddExerci
     {
         this.ct = ct;
         this.Workout_Sets = Workout_Sets;
-
     }
 
     @NonNull
@@ -36,15 +35,15 @@ public class AddExerciseWorkoutSetAdapter extends RecyclerView.Adapter<AddExerci
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
-
-        // Double is fine
+        // Double -> String
         holder.tv_weight.setText(Workout_Sets.get(position).getWeight().toString());
-        // Double -> Integer
-        int reps = (int)Math.round(Workout_Sets.get(position).getReps());
-        holder.tv_reps.setText(String.valueOf(reps));
+
+        // Double -> Integer -> String
+        holder.tv_reps.setText(String.valueOf(Workout_Sets.get(position).getReps().intValue()));
 
         // Updates Edit Texts and Buttons when clicked
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 updateView(position);
@@ -55,7 +54,11 @@ public class AddExerciseWorkoutSetAdapter extends RecyclerView.Adapter<AddExerci
     // Notify AddExerciseActivity of the clicked position
     public void updateView(int position)
     {
+        // Updates the position of the user selected set in AddExerciseActivity
         AddExerciseActivity.Clicked_Set = position;
+
+        // Updates ets buttons and sets in AddExerciseActivity
+        AddExerciseActivity.UpdateViewOnClick();
     }
 
 
@@ -71,7 +74,8 @@ public class AddExerciseWorkoutSetAdapter extends RecyclerView.Adapter<AddExerci
         TextView tv_weight;
         CardView cardView;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView)
+        {
             super(itemView);
 
             tv_reps = itemView.findViewById(R.id.set_reps);

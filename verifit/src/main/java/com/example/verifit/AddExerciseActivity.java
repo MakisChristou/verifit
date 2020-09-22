@@ -38,13 +38,13 @@ public class AddExerciseActivity extends AppCompatActivity {
     // Helper Data Structures
     public RecyclerView recyclerView;
     public String exercise_name;
-    public ArrayList<WorkoutSet> Todays_Exercise_Sets = new ArrayList<WorkoutSet>();
+    public static ArrayList<WorkoutSet> Todays_Exercise_Sets = new ArrayList<WorkoutSet>();
     public AddExerciseWorkoutSetAdapter workoutSetAdapter2;
     public static int Clicked_Set = 0;
 
     // Add Exercise Activity Specifics
-    public EditText et_reps;
-    public EditText et_weight;
+    public static EditText et_reps;
+    public static EditText et_weight;
     public ImageButton plus_reps;
     public ImageButton minus_reps;
     public ImageButton plus_weight;
@@ -66,7 +66,8 @@ public class AddExerciseActivity extends AppCompatActivity {
     public Button bt_reset;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exercise);
 
@@ -149,6 +150,7 @@ public class AddExerciseActivity extends AppCompatActivity {
             et_reps.setText("");
             et_weight.setText("");
         }
+
         // Delete Function
         else
         {
@@ -207,23 +209,34 @@ public class AddExerciseActivity extends AppCompatActivity {
                     updateTodaysExercises();
 
                     alertDialog.dismiss();
+
+                    // Update Clicked set to avoid crash
+                    AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
                 }
             });
 
             // Show delete confirmation dialog box
             alertDialog.show();
-
         }
+    }
 
-        // Update Clicked set to avoid crash
-        AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
+    // Update this activity when a set is clicked
+    public static void UpdateViewOnClick()
+    {
+        // Get selected set
+        WorkoutSet clicked_set = Todays_Exercise_Sets.get(AddExerciseActivity.Clicked_Set);
+
+        // Update Edit Texts
+        et_weight.setText(clicked_set.getWeight().toString());
+        et_reps.setText(String.valueOf(clicked_set.getReps().intValue()));
+
+
     }
 
     // Save Changes in main data structure, save data structure in shared preferences
     @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
+    protected void onStop() {
+        super.onStop();
 
         // Sort Before Saving
         MainActivity.sortWorkoutDaysDate();
