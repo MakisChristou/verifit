@@ -181,8 +181,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 
             Button bt_bitcoin = view.findViewById(R.id.bt_bitcoin);
-            Button bt_ethereum = view.findViewById(R.id.bt_ethereum);
-            Button bt_vericoin = view.findViewById(R.id.bt_vericoin);
             Button bt_monero = view.findViewById(R.id.bt_monero);
 
             ImageView crypto_imageView = view.findViewById(R.id.crypto_imageView);
@@ -196,40 +194,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                     // Copy Corresponding Address to Clipboard
                     ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("btc", "3MMsuEGz7LcAt3u7djuheUpCWFWCWPfHKG");
+                    ClipData clip = ClipData.newPlainText("btc", "3QdfqBxpLdasMfihYxBKjdoHGEy9YbPcWP");
                     clipboard.setPrimaryClip(clip);
                     Toast.makeText(getContext(),"BTC Address Copied",Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-            bt_ethereum.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    crypto_imageView.setImageResource(R.drawable.eth);
-
-                    // Copy Corresponding Address to Clipboard
-                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("btc", "0x6AA6fdB6FEc26DeEBF6571d3dabA16c15AE36F98");
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(getContext(),"ETH Address Copied",Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-            bt_vericoin.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    crypto_imageView.setImageResource(R.drawable.vrc);
-                    // Copy Corresponding Address to Clipboard
-                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("btc", "VEPR5c1AC6dJARs7oAEhwqDMwowuAU2yWV");
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(getContext(),"VRC Address Copied",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -241,7 +208,7 @@ public class SettingsActivity extends AppCompatActivity {
                     crypto_imageView.setImageResource(R.drawable.xmr);
                     // Copy Corresponding Address to Clipboard
                     ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("btc", "48MakisiDP1W9VLPPHv3a47fAU4bKt13T4X6rpghVFx88KM3jRY3BNK1xw2Sq26rb4JDhKf8iQa7cU7PkbBZoyKmMi8s8W7");
+                    ClipData clip = ClipData.newPlainText("xmr", "42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is");
                     clipboard.setPrimaryClip(clip);
                     Toast.makeText(getContext(),"XMR Address Copied",Toast.LENGTH_SHORT).show();
 
