@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -77,6 +78,13 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         {
             workouts.add(new BarEntry(i,MainActivity.Workout_Days.get(i).getDayVolume().floatValue()));
         }
+
+        // Make it invisible because otherwise it looks like shit
+        if(workouts.size() == 0)
+        {
+            barChart.setVisibility(View.INVISIBLE);
+        }
+
 
         // ???
         BarDataSet barDataSet = new BarDataSet(workouts,"Workouts");
