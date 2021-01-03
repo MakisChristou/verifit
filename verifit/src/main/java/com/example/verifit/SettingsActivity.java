@@ -218,6 +218,5 @@ public class SettingsActivity extends AppCompatActivity {
             // Show Exercise Dialog Box
             alertDialog.show();
         }
-
     }
 }

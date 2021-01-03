@@ -24,8 +24,14 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class ChartsActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -60,7 +66,9 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
         pieChartWorkouts();
 
-        pieChartExercises();
+        pieChartBodyparts();
+
+        piChartExercises();
 
 
     }
@@ -176,27 +184,27 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
     }
 
-    public void pieChartExercises()
+    public void pieChartBodyparts()
     {
         // Find Workout Years
-        HashSet<String> Exercises = new HashSet<>();
+        HashSet<String> Bodyparts = new HashSet<>();
 
         for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
         {
             for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
             {
                 String Exercise = MainActivity.Workout_Days.get(i).getSets().get(j).getCategory();
-                Exercises.add(Exercise);
+                Bodyparts.add(Exercise);
             }
         }
 
         // Workout years and number of workouts per year
-        HashMap<String,Integer> Number_Exercises = new HashMap<String, Integer>();
+        HashMap<String,Integer> Number_Bodyparts = new HashMap<String, Integer>();
 
         // Iterate set years
-        Exercises.forEach(exercise ->
+        Bodyparts.forEach(exercise ->
         {
-            Number_Exercises.put(exercise,0);
+            Number_Bodyparts.put(exercise,0);
         });
 
         // Calculate number of workouts per year
@@ -206,14 +214,14 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
             {
                 String Exercise = MainActivity.Workout_Days.get(i).getSets().get(j).getCategory();
 
-                int Exercise_Workouts = Number_Exercises.get(Exercise);
-                Number_Exercises.put(Exercise,Exercise_Workouts+1);
+                int Exercise_Workouts = Number_Bodyparts.get(Exercise);
+                Number_Bodyparts.put(Exercise,Exercise_Workouts+1);
             }
         }
 
 
         // Initialize Pie Chart
-        PieChart pieChart = findViewById(R.id.pieChartExercises);
+        PieChart pieChart = findViewById(R.id.pieChartBodyparts);
 
         pieChart.setUsePercentValues(false);
         pieChart.getDescription().setEnabled(false);
@@ -225,7 +233,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
 
-        for (Map.Entry<String, Integer> stringIntegerEntry : Number_Exercises.entrySet())
+        for (Map.Entry<String, Integer> stringIntegerEntry : Number_Bodyparts.entrySet())
         {
             Map.Entry pair = (Map.Entry) stringIntegerEntry;
 
@@ -252,6 +260,128 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
 
     }
 
+    public void piChartExercises()
+    {
+        // Find Workout Years
+        HashSet<String> Exercises = new HashSet<>();
+
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            {
+                String Exercise = MainActivity.Workout_Days.get(i).getSets().get(j).getExercise();
+                Exercises.add(Exercise);
+            }
+        }
+
+        // Workout years and number of workouts per year
+        HashMap<String,Integer> Number_Exercises = new HashMap<String, Integer>();
+
+        // Iterate set years
+        Exercises.forEach(exercise ->
+        {
+            Number_Exercises.put(exercise,0);
+        });
+
+        // Calculate number of workouts per year
+        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        {
+            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            {
+                String Exercise = MainActivity.Workout_Days.get(i).getSets().get(j).getExercise();
+
+                //System.out.println(Exercise);
+
+                int Exercise_Workouts = Number_Exercises.get(Exercise);
+                Number_Exercises.put(Exercise,Exercise_Workouts+1);
+            }
+        }
+
+
+        HashMap<String,Integer> Number_Exercises_Sorted = sortValues(Number_Exercises);
+
+
+        System.out.println(Number_Exercises_Sorted.size());
+
+        HashMap<String,Integer> Number_Exercises_Sorted_Pruned = new HashMap<String, Integer>();;
+
+        int top_exercises = 5;
+        int counter = 0;
+
+        for (Map.Entry<String, Integer> entry : Number_Exercises_Sorted.entrySet()) {
+
+            counter++;
+            if(counter > Number_Exercises_Sorted.size()-top_exercises)
+            {
+                Number_Exercises_Sorted_Pruned.put(entry.getKey(),entry.getValue());
+                System.out.println(entry.getKey() + " = " + entry.getValue());
+            }
+
+        }
+
+
+        // Initialize Pie Chart
+        PieChart pieChart = findViewById(R.id.pieChartExercises);
+
+        pieChart.setUsePercentValues(false);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5,10,5,5);
+        pieChart.setDragDecelerationFrictionCoef(0.95f);
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.setHoleColor(Color.WHITE);
+        pieChart.setTransparentCircleRadius(60f);
+
+        ArrayList<PieEntry> yValues = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> stringIntegerEntry : Number_Exercises_Sorted_Pruned.entrySet())
+        {
+            Map.Entry pair = (Map.Entry) stringIntegerEntry;
+
+            Integer workouts = (Integer) pair.getValue();
+            String year = (String) pair.getKey();
+
+            yValues.add(new PieEntry(workouts,year));
+        }
+
+        PieDataSet pieDataSet = new PieDataSet(yValues,"");
+
+        pieDataSet.setSliceSpace(3f);
+        pieDataSet.setSelectionShift(5f);
+        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData(pieDataSet);
+        data.setValueTextSize(15f);
+        data.setValueTextColor(Color.WHITE);
+
+        pieChart.getLegend().setEnabled(false);
+        pieChart.animateY(1000, Easing.EaseInOutCubic);
+        pieChart.setNoDataText("No Workouts");
+        pieChart.setData(data);
+
+    }
+
+
+
+    private static HashMap sortValues(HashMap map)
+    {
+        List list = new LinkedList(map.entrySet());
+        //Custom Comparator
+        Collections.sort(list, new Comparator()
+        {
+            public int compare(Object o1, Object o2)
+            {
+                return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
+            }
+        });
+        //copying the sorted list in HashMap to preserve the iteration order
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();)
+        {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
+    }
 
     // Navigates to given activity based on the selected menu item
     @Override
@@ -309,5 +439,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
