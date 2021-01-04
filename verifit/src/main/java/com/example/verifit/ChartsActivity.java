@@ -14,12 +14,14 @@ import android.view.View;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -87,6 +89,16 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
             workouts.add(new BarEntry(i,MainActivity.Workout_Days.get(i).getDayVolume().floatValue()));
         }
 
+        // Add Date Labels to workout
+        ArrayList<String> workoutDates = new ArrayList<String>();
+
+//        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+//        {
+//            workoutDates.add(MainActivity.Workout_Days.get(i).getDate());
+//        }
+
+
+
         // Make it invisible because otherwise it looks like shit
         if(workouts.size() == 0)
         {
@@ -94,11 +106,36 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         }
 
 
+        // Remove Legend
+        Legend l = barChart.getLegend();
+        l.setEnabled(false);
+
+
+        // Show last X workouts only
+        int last_workouts = 5;
+        int counter = 0;
+        ArrayList<BarEntry> workouts_pruned = new ArrayList<BarEntry>();
+
+
+        for(int i = 0; i < workouts.size(); i++)
+        {
+            counter++;
+            if(counter > workouts.size()-last_workouts)
+            {
+                workouts_pruned.add(workouts.get(i));
+            }
+        }
+
+
+
+
         // ???
-        BarDataSet barDataSet = new BarDataSet(workouts,"Workouts");
+        BarDataSet barDataSet = new BarDataSet(workouts_pruned,"Workouts");
         barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(15f);
+//        barDataSet.setValueTextColor(Color.BLACK);
+//        barDataSet.setValueTextSize(15f);
+
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(workoutDates));
 
         // Profit
         BarData barData = new BarData(barDataSet);
