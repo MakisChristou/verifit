@@ -105,7 +105,6 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-
         if(item.getItemId() == R.id.home)
         {
             Intent in = new Intent(this,MainActivity.class);

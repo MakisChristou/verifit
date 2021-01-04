@@ -20,11 +20,11 @@
             app:title="Delete Data"
             app:useSimpleSummaryProvider="false" />
 
-        <SwitchPreferenceCompat
-            app:key="nextsync"
-            app:summaryOff="Automatic Backup is currently turned off"
-            app:summaryOn="Automatic Backup is currently turned on"
-            app:title="Nextcloud Sync" />
+<!--        <SwitchPreferenceCompat-->
+<!--            app:key="nextsync"-->
+<!--            app:summaryOff="Automatic Backup is currently turned off"-->
+<!--            app:summaryOn="Automatic Backup is currently turned on"-->
+<!--            app:title="Nextcloud Sync" />-->
 
 
 
@@ -33,11 +33,11 @@
 
     <PreferenceCategory app:title="General">
 
-        <Preference
-            app:key="theme"
-            app:summary="Light"
-            app:title="Theme"
-            app:useSimpleSummaryProvider="false" />
+<!--        <Preference-->
+<!--            app:key="theme"-->
+<!--            app:summary="Light"-->
+<!--            app:title="Theme"-->
+<!--            app:useSimpleSummaryProvider="false" />-->
 
         <Preference
             app:key="github"
@@ -45,11 +45,11 @@
             app:title="Source Code"
             app:useSimpleSummaryProvider="false" />
 
-        <Preference
-            app:key="version"
-            app:summary="0.0.1"
-            app:title="Version"
-            app:useSimpleSummaryProvider="false" />
+<!--        <Preference-->
+<!--            app:key="version"-->
+<!--            app:summary="0.0.1"-->
+<!--            app:title="Version"-->
+<!--            app:useSimpleSummaryProvider="false" />-->
 
         <Preference
             app:key="donate"
@@ -64,11 +64,11 @@
             app:title="Licence"
             app:useSimpleSummaryProvider="false" />
 
-        <Preference
-            app:key="help"
-            app:summary=""
-            app:title="Help"
-            app:useSimpleSummaryProvider="false" />
+<!--        <Preference-->
+<!--            app:key="help"-->
+<!--            app:summary=""-->
+<!--            app:title="Help"-->
+<!--            app:useSimpleSummaryProvider="false" />-->
 
     </PreferenceCategory>
 
