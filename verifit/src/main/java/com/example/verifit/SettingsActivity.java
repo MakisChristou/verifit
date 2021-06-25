@@ -180,40 +180,61 @@ public class SettingsActivity extends AppCompatActivity {
             AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
 
-            Button bt_bitcoin = view.findViewById(R.id.bt_bitcoin);
-            Button bt_monero = view.findViewById(R.id.bt_monero);
+//            Button bt_bitcoin = view.findViewById(R.id.bt_bitcoin);
+//            Button bt_monero = view.findViewById(R.id.bt_monero);
 
             ImageView crypto_imageView = view.findViewById(R.id.crypto_imageView);
 
-            bt_bitcoin.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    crypto_imageView.setImageResource(R.drawable.btc);
 
-                    // Copy Corresponding Address to Clipboard
-                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("btc", "3QdfqBxpLdasMfihYxBKjdoHGEy9YbPcWP");
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(getContext(),"BTC Address Copied",Toast.LENGTH_SHORT).show();
+            crypto_imageView.setImageResource(R.drawable.xmr);
+            // Copy Corresponding Address to Clipboard
+            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("xmr", "42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is");
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(getContext(),"XMR Address Copied",Toast.LENGTH_SHORT).show();
+
+
+            Button monero_button = view.findViewById(R.id.monero_button);
+
+
+            monero_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.getmonero.org/"));
+                    startActivity(browserIntent);
                 }
             });
 
-            bt_monero.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    crypto_imageView.setImageResource(R.drawable.xmr);
-                    // Copy Corresponding Address to Clipboard
-                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("xmr", "42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is");
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(getContext(),"XMR Address Copied",Toast.LENGTH_SHORT).show();
 
-                }
-            });
+//            bt_bitcoin.setOnClickListener(new View.OnClickListener()
+//            {
+//                @Override
+//                public void onClick(View view)
+//                {
+//                    crypto_imageView.setImageResource(R.drawable.btc);
+//
+//                    // Copy Corresponding Address to Clipboard
+//                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+//                    ClipData clip = ClipData.newPlainText("btc", "3QdfqBxpLdasMfihYxBKjdoHGEy9YbPcWP");
+//                    clipboard.setPrimaryClip(clip);
+//                    Toast.makeText(getContext(),"BTC Address Copied",Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//
+//            bt_monero.setOnClickListener(new View.OnClickListener()
+//            {
+//                @Override
+//                public void onClick(View view)
+//                {
+//                    crypto_imageView.setImageResource(R.drawable.xmr);
+//                    // Copy Corresponding Address to Clipboard
+//                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+//                    ClipData clip = ClipData.newPlainText("xmr", "42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is");
+//                    clipboard.setPrimaryClip(clip);
+//                    Toast.makeText(getContext(),"XMR Address Copied",Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
 
             // Show Exercise Dialog Box
             alertDialog.show();

@@ -5,22 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_monero"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:text="XMR"
-        android:textAllCaps="false"
-        app:cornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_bitcoin"
-        app:layout_constraintTop_toBottomOf="@+id/blue_line" />
-
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
@@ -30,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Donate"
+        android:text="Donate Monero"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,30 +32,30 @@
         tools:layout_editor_absoluteX="16dp" />
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_bitcoin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:text="BTC"
-        android:textAllCaps="false"
-        app:cornerRadius="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/bt_monero"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blue_line" />
-
     <ImageView
         android:id="@+id/crypto_imageView"
         android:layout_width="249dp"
-        android:layout_height="474dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="249dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blue_line" />
+        app:layout_constraintTop_toBottomOf="@+id/blue_line"
+        app:layout_constraintVertical_bias="0.262"
+        app:srcCompat="@drawable/xmr" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/monero_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="50dp"
+        android:text="Learn more"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crypto_imageView"
+        app:layout_constraintVertical_bias="1.0">
+
+    </com.google.android.material.button.MaterialButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

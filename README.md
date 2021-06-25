@@ -21,9 +21,6 @@ Verifit is a simple minimalist fitness tracker that I made mainly for myself. Th
 * MPAndroid Chart
 
 ## Donations
-* Bitcoin = 3QdfqBxpLdasMfihYxBKjdoHGEy9YbPcWP
 * Monero = 42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is
-
-
-<img width="200" src="/verifit/src/main/res/drawable/btc.png"> <img width="200" src="/verifit/src/main/res/drawable/xmr.png">
+ <img width="200" src="/verifit/src/main/res/drawable/xmr.png">
 
