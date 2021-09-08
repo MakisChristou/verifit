@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VeriFit</string>
+    <string name="app_name">Verifit</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->
