@@ -65,6 +65,12 @@ public class AddExerciseActivity extends AppCompatActivity {
     public Button bt_start;
     public Button bt_reset;
 
+
+    // Comment Items
+    Button bt_save_comment;
+    Button bt_clear_comment;
+    EditText et_exercise_comment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -261,6 +267,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     }
 
+    // Do I even need to explain this?
     public void clickPlusReps(View view)
     {
         if(!et_reps.getText().toString().isEmpty())
@@ -276,6 +283,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     }
 
+    // Do I even need to explain this?
     public void clickMinusWeight(View view)
     {
         if(!et_weight.getText().toString().isEmpty())
@@ -290,6 +298,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         }
     }
 
+    // Do I even need to explain this?
     public void clickMinusReps(View view)
     {
         if(!et_reps.getText().toString().isEmpty())
@@ -638,7 +647,139 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         }
 
+        // Exercise Comments
+        else if(item.getItemId() == R.id.comment)
+        {
+            // Prepare to show exercise history dialog box
+            LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
+            View view = inflater.inflate(R.layout.add_exercise_comment_dialog,null);
+            AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
+
+
+            bt_save_comment = view.findViewById(R.id.bt_save_comment);
+            bt_clear_comment = view.findViewById(R.id.bt_clear_comment);
+            et_exercise_comment = view.findViewById(R.id.et_exercise_comment);
+
+            // Check if exercise exists (to show the comment if it has one)
+            // Find if workout day already exists
+            int exercise_position = MainActivity.getExercisePosition(MainActivity.date_selected,exercise_name);
+
+            // Exists, then show the comment
+            if(exercise_position >= 0)
+            {
+                System.out.println("We can comment, exercise exists");
+
+                int day_position = MainActivity.getDayPosition(MainActivity.date_selected);
+
+                String comment = MainActivity.Workout_Days.get(day_position).getExercises().get(exercise_position).getComment();
+
+                et_exercise_comment.setText(comment);
+            }
+
+
+
+            bt_clear_comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    clearComment();
+                }
+            });
+
+            bt_save_comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveComment();
+                }
+            });
+
+            // Show Chart Dialog box
+            alertDialog.show();
+
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    // Makes necesary checks and saves comment
+    public void saveComment()
+    {
+        // Check for empty input
+        if(et_exercise_comment.getText().toString().isEmpty())
+        {
+            Toast.makeText(getApplicationContext(),"Please write a comment",Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        // Check if exercise exists (cannot comment on non-existant exercise)
+        // Find if workout day already exists
+        int exercise_position = MainActivity.getExercisePosition(MainActivity.date_selected,exercise_name);
+
+        if(exercise_position >= 0)
+        {
+            System.out.println("We can comment, exercise exists");
+        }
+        else
+        {
+            System.out.println("We can't comment, exercise doesn't exist");
+            Toast.makeText(getApplicationContext(),"Can't comment without sets",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
+        // Get user comment
+        String comment = et_exercise_comment.getText().toString();
+
+        // Print it for sanity check
+        System.out.println(comment);
+
+        // Get the date for today
+        int day_position = MainActivity.getDayPosition(MainActivity.date_selected);
+
+        // Modify the data structure to add the comment
+        MainActivity.Workout_Days.get(day_position).getExercises().get(exercise_position).setComment(comment);
+
+
+        Toast.makeText(getApplicationContext(),"Comment Logged",Toast.LENGTH_SHORT).show();
+
+    }
+
+    // Makes necesary checks and clears comment
+    public void clearComment()
+    {
+        et_exercise_comment.setText("");
+
+        // Check if exercise exists (cannot comment on non-existant exercise)
+        // Find if workout day already exists
+        int exercise_position = MainActivity.getExercisePosition(MainActivity.date_selected,exercise_name);
+
+        if(exercise_position >= 0)
+        {
+            System.out.println("We can comment, exercise exists");
+        }
+        else
+        {
+            System.out.println("We can't comment, exercise doesn't exist");
+            Toast.makeText(getApplicationContext(),"Can't comment without sets",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Get user comment
+        String comment = et_exercise_comment.getText().toString();
+
+        // Print it for sanity check
+        System.out.println(comment);
+
+        // Get the date for today
+        int day_position = MainActivity.getDayPosition(MainActivity.date_selected);
+
+        // Modify the data structure to add the comment
+        MainActivity.Workout_Days.get(day_position).getExercises().get(exercise_position).setComment(comment);
+
+
+        Toast.makeText(getApplicationContext(),"Comment Cleared",Toast.LENGTH_SHORT).show();
     }
 
     public void startTimer()

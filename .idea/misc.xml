@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="verifit/src/main/res/drawable/currency_eur.xml" value="0.228125" />
+        <entry key="verifit/src/main/res/drawable/ic_add_24px.xml" value="0.228125" />
+        <entry key="verifit/src/main/res/drawable/ic_create_24px.xml" value="0.228125" />
+        <entry key="verifit/src/main/res/drawable/ic_dashboard_24px.xml" value="0.228125" />
+        <entry key="verifit/src/main/res/drawable/ic_fitness_center_24px.xml" value="0.228125" />
+        <entry key="verifit/src/main/res/drawable/ic_splashscreenv1_480x800.xml" value="0.228125" />
+        <entry key="verifit/src/main/res/drawable/notebook.xml" value="0.228125" />
+        <entry key="verifit/src/main/res/layout/activity_add_exercise.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/add_exercise_comment_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/day_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/day_exercise_row.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/diary_exercise_row.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/edit_exercise_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/exercise_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/exercise_graph_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/exercise_history_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/exercise_history_exercise_row.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/exercise_history_stats_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/exercise_row.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/import_warning_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/set_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/menu/add_exercise_activity_menu.xml" value="0.27708333333333335" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

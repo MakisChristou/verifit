@@ -26,6 +26,14 @@
 
     </item>
 
+    <item
+        android:id="@+id/comment"
+        android:icon="@drawable/ic_comment_24px"
+        app:showAsAction="always"
+        app:iconTint="@color/cardview_light_background">
+
+    </item>
+
 
 
 

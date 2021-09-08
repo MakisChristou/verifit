@@ -312,6 +312,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
+    // Returns index of exercise
+    public static int getExercisePosition(String Date, String exerciseName)
+    {
+
+        int day_position = getDayPosition(Date);
+
+        // The day doesn't even have an exercise
+        if (day_position == -1)
+        {
+            return -1;
+        }
+
+
+
+        ArrayList<WorkoutExercise> Exercises = MainActivity.Workout_Days.get(day_position).getExercises();
+
+        for(int i = 0; i < Exercises.size(); i++)
+        {
+            if(Exercises.get(i).getExercise().equals(exerciseName))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+
     // Select a file using the build in file manager
     public void fileSearch()
     {
@@ -348,14 +376,31 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // i = 1 since first row is only Strings
         for(int i = 1; i < csvList.size(); i++)
         {
+
+
+
             String[] row = (String[]) csvList.get(i);
+
+//            System.out.println(row.length);
+
             String Date = row[0];
             String Exercise = row[1];
             String Category = row[2];
             String Reps = row[3];
             String Weight = row[4];
 
-            WorkoutSet workoutSet = new WorkoutSet(Date,Exercise,Category,Double.parseDouble(Weight),Double.parseDouble(Reps));
+//            System.out.println(row[5]);
+
+            String Comment = "";
+
+            if(row.length == 6)
+            {
+                Comment = row[5];
+            }
+
+            // String Comment = row[]
+
+            WorkoutSet workoutSet = new WorkoutSet(Date,Exercise,Category,Double.parseDouble(Weight),Double.parseDouble(Reps),Comment);
             Sets.add(workoutSet);
         }
     }
@@ -693,14 +738,35 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             try
             {
                 FileOutputStream fos = new FileOutputStream(textfile);
-                fos.write("Date,Exercise,Category,Weight (kg),Reps\n".getBytes());
+                fos.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
 
                 for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
                 {
-                    for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+                    for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
                     {
-                        fos.write((MainActivity.Workout_Days.get(i).getSets().get(j).getDate() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getExercise() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getCategory() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getWeight() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getReps() + "\n").getBytes());
+                        String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
+
+                        for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                        {
+
+                            String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
+                            String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                            String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                            Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                            Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+
+//                            System.out.println(Date + ", " + exerciseName+ ", " + exerciseCategory + ", " + Weight + ", " + Reps + "," + exerciseComment);
+
+                            fos.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
+
+                        }
                     }
+
+                    // Deprecated
+//                    for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+//                    {
+//                        fos.write((MainActivity.Workout_Days.get(i).getSets().get(j).getDate() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getExercise() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getCategory() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getWeight() + "," + MainActivity.Workout_Days.get(i).getSets().get(j).getReps() + "\n").getBytes());
+//                    }
                 }
                 fos.close();
                 Toast.makeText(getApplicationContext(), "File Written in " + Environment.getExternalStorageDirectory(), Toast.LENGTH_SHORT).show();

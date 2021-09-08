@@ -8,6 +8,7 @@ public class WorkoutSet {
     private String Category;
     private Double Reps;
     private Double Weight;
+    private String Comment;
 
 
     public WorkoutSet()
@@ -22,6 +23,15 @@ public class WorkoutSet {
         this.Category = Category;
         this.Reps = Reps;
         this.Weight = Weight;
+    }
+    public WorkoutSet(String Date, String Exercise, String Category, Double Reps, Double Weight,String Comment)
+    {
+        this.Date = Date;
+        this.Exercise = Exercise;
+        this.Category = Category;
+        this.Reps = Reps;
+        this.Weight = Weight;
+        this.Comment = Comment;
     }
 
 
@@ -46,6 +56,7 @@ public class WorkoutSet {
     {
         this.Weight = Weight;
     }
+    public void setComment(String Comment){this.Comment = Comment;}
 
     // Getters
     public String getDate()
@@ -68,6 +79,7 @@ public class WorkoutSet {
     {
         return this.Weight;
     }
+    public String getComment() {return this.Comment;}
 
     // Other
     public Double getVolume()
