@@ -2,6 +2,7 @@ package com.example.verifit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
@@ -32,6 +33,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -647,12 +651,45 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     // Stevdza-San Tutorial
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void writeFile()
     {
         if(isExternalStorageWritable() && checkWritePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
         {
+            // The folder where everything is stored
+            String verifit_folder = "verifit";
+
+            // Print Root Directory (sanity check)
             System.out.println(Environment.getExternalStorageDirectory());
-            File textfile = new File(Environment.getExternalStorageDirectory(),EXPORT_FILENAME);
+
+            // Create verifit path
+            Path path = Environment.getExternalStorageDirectory().toPath();
+            path = Paths.get(path + verifit_folder);
+
+            // If verifit path doesn't exist create it
+            if (Files.exists(path))
+            {
+                System.out.println("This path exists");
+            }
+            else
+            {
+                System.out.println("This path does not exist");
+
+                File folder = new File(Environment.getExternalStorageDirectory() + File.separator + verifit_folder);
+                boolean success = true;
+                if (!folder.exists()) {
+                    success = folder.mkdirs();
+                }
+                if (success) {
+                    System.out.println("Verifit folder has been created");
+                } else {
+                    System.out.println("Verifit folder has not been created");
+                }
+
+            }
+
+            // Write file in the verifit path
+            File textfile = new File(Environment.getExternalStorageDirectory()+ File.separator + verifit_folder,EXPORT_FILENAME);
             try
             {
                 FileOutputStream fos = new FileOutputStream(textfile);
