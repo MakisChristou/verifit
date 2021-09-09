@@ -193,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // This was already there so I am not deleting it
         super.onRestart();
 
+//        System.out.println("MainActivity::OnRestart()");
+
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
 
@@ -998,6 +1000,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         else if(item.getItemId() == R.id.diary)
         {
             Intent in = new Intent(this,DiaryActivity.class);
+            in.putExtra("date", date_selected);
             startActivity(in);
             overridePendingTransition(0,0);
         }

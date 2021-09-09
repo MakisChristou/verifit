@@ -11,11 +11,13 @@
         <entry key="verifit/src/main/res/drawable/ic_splashscreenv1_480x800.xml" value="0.228125" />
         <entry key="verifit/src/main/res/drawable/notebook.xml" value="0.228125" />
         <entry key="verifit/src/main/res/layout/activity_add_exercise.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/activity_diary.xml" value="0.24479166666666666" />
         <entry key="verifit/src/main/res/layout/add_exercise_comment_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/day_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/day_exercise_row.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/delete_day_dialog.xml" value="0.21197916666666666" />
         <entry key="verifit/src/main/res/layout/diary_exercise_row.xml" value="0.335" />
+        <entry key="verifit/src/main/res/layout/diary_row.xml" value="0.16510416666666666" />
         <entry key="verifit/src/main/res/layout/edit_exercise_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/exercise_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/exercise_graph_dialog.xml" value="0.27708333333333335" />

@@ -93,7 +93,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Self Explanatory I guess
         initrecyclerView();
 
-        System.out.println(MainActivity.date_selected);
+        System.out.println("date_selected: " + MainActivity.date_selected);
     }
 
     // Button On Click Methods
@@ -244,11 +244,17 @@ public class AddExerciseActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+        System.out.println("On Stop1");
+
         // Sort Before Saving
         MainActivity.sortWorkoutDaysDate();
 
+        System.out.println("On Stop2");
+
         // Actually Save Changes in shared preferences
         MainActivity.saveWorkoutData(getApplicationContext());
+
+        System.out.println("On Stop3");
     }
 
     // Do I even need to explain this?

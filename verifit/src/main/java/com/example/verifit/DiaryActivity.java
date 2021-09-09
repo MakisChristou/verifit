@@ -26,6 +26,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
 
+        System.out.println("DiaryActivity::OnCreate()");
         initActivity();
     }
 
@@ -34,15 +35,20 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
     protected void onRestart()
     {
         super.onRestart();
+
+        System.out.println("DiaryActivity::OnRestart()");
         initActivity();
     }
 
 
     public void initActivity()
     {
+        System.out.println("DiaryActivity::initActivity()");
+
         // From Day Activity
         Intent in = getIntent();
         String date_clicked = in.getStringExtra("date");
+        // String date_clicked = MainActivity.date_selected;
 
         // If day exists scroll to it otherwise scroll to the last day
         int position = -1;
@@ -52,6 +58,8 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
             position = MainActivity.getDayPosition(date_clicked);
         }
 
+        System.out.println("Date is " + date_clicked + " and position is: " + position);
+        System.out.println("MainActivity.Workout_Days.size(): " + MainActivity.Workout_Days.size());
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -74,18 +82,27 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
             // Crash Otherwise
             diaryAdapter = new DiaryAdapter(this, MainActivity.Workout_Days);
             recyclerView.setAdapter(diaryAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+            LinearLayoutManager lm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true); // last argument (true) is flag for reverse layout
+            lm.setReverseLayout(true);
+            lm.setStackFromEnd(true);
+            recyclerView.setLayoutManager(lm);
 
-            if(position > 0)
+//            recyclerView.scrollToPosition();
+
+            // BUG HERE FIX IT SER
+            if(position >= 0)
             {
                 // Scroll to the selected date
-                recyclerView.scrollToPosition(position);
+                System.out.println("Scroll to position");
+//                recyclerView.scrollToPosition(position);
             }
             else
             {
                 // Scroll to the bottom
-                recyclerView.scrollToPosition(MainActivity.Workout_Days.size()-1);
+                System.out.println("Scroll to the bottom");
+//                recyclerView.scrollToPosition(MainActivity.Workout_Days.size()-1);
             }
         }
     }
