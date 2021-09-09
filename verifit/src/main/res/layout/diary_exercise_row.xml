@@ -72,15 +72,15 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:clickable="false"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Decline Hammer Strength Chest Press"
                 android:textColor="@color/core_black"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/pr_button"
+                app:layout_constraintEnd_toStartOf="@+id/comment_button"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -117,9 +117,24 @@
                 android:layout_marginRight="15dp"
                 android:background="@android:color/transparent"
                 android:tint="@color/colorPrimary"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_emoji_events_24px" />
+
+            <ImageButton
+                android:id="@+id/comment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/transparent"
+                android:tint="@color/colorPrimary"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/pr_button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_comment_24px" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

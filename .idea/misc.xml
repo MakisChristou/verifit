@@ -14,7 +14,8 @@
         <entry key="verifit/src/main/res/layout/add_exercise_comment_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/day_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/day_exercise_row.xml" value="0.27708333333333335" />
-        <entry key="verifit/src/main/res/layout/diary_exercise_row.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/delete_day_dialog.xml" value="0.21197916666666666" />
+        <entry key="verifit/src/main/res/layout/diary_exercise_row.xml" value="0.335" />
         <entry key="verifit/src/main/res/layout/edit_exercise_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/exercise_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/exercise_graph_dialog.xml" value="0.27708333333333335" />
@@ -23,7 +24,10 @@
         <entry key="verifit/src/main/res/layout/exercise_history_stats_dialog.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/exercise_row.xml" value="0.27708333333333335" />
         <entry key="verifit/src/main/res/layout/import_warning_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/personal_record_dialog.xml" value="0.22083333333333333" />
+        <entry key="verifit/src/main/res/layout/personal_record_row.xml" value="0.22083333333333333" />
         <entry key="verifit/src/main/res/layout/set_dialog.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/show_exercise_comment_dialog.xml" value="0.22083333333333333" />
         <entry key="verifit/src/main/res/menu/add_exercise_activity_menu.xml" value="0.27708333333333335" />
       </map>
     </option>
