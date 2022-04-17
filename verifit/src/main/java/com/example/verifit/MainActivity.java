@@ -1,5 +1,7 @@
 package com.example.verifit;
 
+import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.contract.ActivityResultContract;
@@ -15,20 +17,28 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Instrumentation;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -38,13 +48,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -61,6 +74,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import androidx.activity.result.ActivityResultLauncher;
@@ -91,8 +105,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     ActivityResultLauncher<Intent> activityResultLauncher;
 
-    // Other
-    ActivityResultLauncher<String> getContent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -150,43 +163,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-
-    public static File commonDocumentDirPath(String FolderName)
-    {
-        File dir = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-        {
-            dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + FolderName);
-        }
-        else
-        {
-            dir = new File(Environment.getExternalStorageDirectory() + "/" + FolderName);
-        }
-
-        // Make sure the path directory exists.
-        if (!dir.exists())
-        {
-            // Make it, if it doesn't exit
-            boolean success = dir.mkdirs();
-            if (!success)
-            {
-                dir = null;
-            }
-        }
-        return dir;
-    }
-
-
     // You guessed it!
     public void initActivity()
     {
-//        askReadPermission();
-//        askWritePermission();
 
-
-        System.out.println("InitActivity()");
-        System.out.println("Before activityResultLauncher");
-
+        // Write permissions required only for <= Android 10
+        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q))
+        {
+            askWritePermission();
+        }
         // Dr Vipin Classes
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -215,15 +200,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         });
 
-        // Dr Vipin Classes
-        if(!checkPermission())
-        {
-            Toast.makeText(getApplicationContext(), "Extrernal Storage Permission is required for backups", Toast.LENGTH_LONG).show();
-            System.out.println("Asking for permission");
-            askPermission();
-        }
-
-        //System.out.println(commonDocumentDirPath("test_folder"))
 
 
         setExportBackupName();
@@ -246,22 +222,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
             else if(WhatToDO.equals("exportcsv"))
             {
-                // Dr Vipin Classes
-                if(!checkPermission())
-                {
-                    askPermission();
-                }
                 // Android 11 and above
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 {
-                    saveFile();
+                    //saveFile();
+                    writeFileSAF();
                 }
-                // All else
+                // Android 10 and below
                 else
                 {
                     writeFile();
                 }
-
 
                 // Or else nothing comes up
                 initViewPager();
@@ -281,6 +252,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    // Ask/Check Write Permission
+    public boolean checkWritePermission(String permission)
+    {
+        int check = ContextCompat.checkSelfPermission(this,permission);
+        return (check == PackageManager.PERMISSION_GRANTED);
+    }
 
     @Override
     protected void onRestart()
@@ -357,74 +334,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         EXPORT_FILENAME = EXPORT_FILENAME + str_date+".csv";
     }
 
-    // Ask For File I/O Permissions
-    public void askReadPermission()
-    {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-        {
-            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
-        }
-    }
-
-    // Ask For File I/O Permissions
-    public void askWritePermission()
-    {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-        {
-            requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
-        }
-    }
-
-    // Dr Vipin Classes
-    public boolean checkPermission()
-    {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if(Environment.isExternalStorageLegacy())
-            {
-                System.out.println("isExternalStorageLegacy()");
-            }
-        }
-
-        System.out.println("checkPermission()");
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-        {
-            System.out.println("Is Android 11");
-            return Environment.isExternalStorageManager();
-        }
-        else
-        {
-            System.out.println("Is not Android 11");
-            int readcheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
-            int writecheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            return readcheck == PackageManager.PERMISSION_GRANTED && writecheck == PackageManager.PERMISSION_GRANTED;
-        }
-    }
-
-    // Dr Vipin Classes
-    public void askPermission()
-    {
-        System.out.println("askPermission()");
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-        {
-            try{
-                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                intent.addCategory("android.intent.category.DEFAULT");
-                intent.setData(Uri.parse(String.format("package:%s", new Object[]{getApplicationContext().getPackageName()})));
-                activityResultLauncher.launch(intent);
-            }
-            catch(Exception e)
-            {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                activityResultLauncher.launch(intent);
-            }
-        }
-        else
-        {
-            ActivityCompat.requestPermissions(MainActivity.this, permission, 30);
-        }
-    }
 
 
     // Get the results after user gives/denies permission
@@ -465,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             if(MainActivity.Workout_Days.get(i).getDate().equals(Date))
             {
-               return i;
+                return i;
             }
         }
         return -1;
@@ -515,15 +424,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+
+        if (resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 Uri uri = data.getData();
-                String filename = uri.getPath();
-                filename = filename.substring(filename.indexOf(":") + 1);
-                readFile(filename);
-                saveWorkoutData(this);
+                System.out.println("Makis uri: " + uri.toString());
+                if (requestCode == READ_REQUEST_CODE) {
+
+                    readFileSAF(uri);
+                    System.out.println("Makis READ_REQUEST_CODE");
+
+                }
             }
         }
+
+// Old stuff
+//        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//            if (data != null) {
+//                Uri uri = data.getData();
+//                String filename = uri.getPath();
+//                filename = filename.substring(filename.indexOf(":") + 1);
+//                readFile(filename);
+//                saveWorkoutData(this);
+//            }
+//        }
     }
 
 
@@ -576,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // i = 1 since first row is only Strings
         for(int i = 0; i < Sets.size(); i++)
         {
-           Days.add(Sets.get(i).getDate());
+            Days.add(Sets.get(i).getDate());
         }
 
 
@@ -830,23 +754,40 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    // Read CSV from internal storage
+    public void readFileSAF(Uri uri)
+    {
+        List csvList = new ArrayList();
+
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            CSVFile csvFile = new CSVFile(inputStream);
+            csvList = csvFile.read();
+
+            // Here is where the magic happens
+            CSVtoSets(csvList); // Read File and Construct Local Objects
+            SetsToEverything(); // Convert Set Objects to Day Objects
+            System.out.println("csv to known...");
+            csvToKnownExercises(); // Find all Exercises in CSV and add them to known exercises
+            saveKnownExerciseData(this); // Save KnownExercises in CSV
+            saveWorkoutData(this); // Save WorkoutDays in Shared Preferences
+            initViewPager(); // Initialize View Pager
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Could not locate file " + uri.getPath(),Toast.LENGTH_SHORT).show();
+            // Avoid Errors
+            clearDataStructures();
+        }
+
+    }
+
     // Stevdza-San Tutorial
     private boolean isExternalStorageWritable()
     {
         if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    // Stevdza-San Tutorial
-    private boolean isExternalStorageReadable()
-    {
-        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(Environment.getExternalStorageState()))
         {
             return true;
         }
@@ -918,12 +859,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    // Ask For File I/O Permissions
+    public void askWritePermission()
+    {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
+        }
+    }
+
     // Stevdza-San Tutorial
     @RequiresApi(api = Build.VERSION_CODES.O)
     // Android 10 and below
     public void writeFile()
     {
-        if(isExternalStorageWritable())
+        if(isExternalStorageWritable() && checkWritePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
         {
             // The folder where everything is stored
             String verifit_folder = "verifit";
@@ -992,15 +942,59 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         else
         {
-            Toast.makeText(getApplicationContext(), "External Storage Not Readable", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "External Storage Not Writable", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Ask/Check Write Permission
-    public boolean checkWritePermission(String permission)
+    // Export backup function using Storage Access Framework
+    public void writeFileSAF()
     {
-        int check = ContextCompat.checkSelfPermission(this,permission);
-        return (check == PackageManager.PERMISSION_GRANTED);
+        String fileName = EXPORT_FILENAME.substring(0,EXPORT_FILENAME.length()-4);
+
+        try
+        {
+            OutputStream outputStream;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName); // file name required to contain extestion file mime
+                values.put(MediaStore.MediaColumns.MIME_TYPE, "text/plain");
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS+"/Verifit"); //DIRECTORY
+                Uri extVolumeUri = MediaStore.Files.getContentUri("external");
+                Uri fileUri = getApplicationContext().getContentResolver().insert(extVolumeUri, values);
+                outputStream = getApplicationContext().getContentResolver().openOutputStream(fileUri);
+            }
+            else {
+                File root = new File(Environment.getExternalStorageDirectory()+File.separator+"DIRECTORY_NAME", "images");
+                File file = new File(root, fileName );
+                Log.d(TAG, "saveFile: file path - " + file.getAbsolutePath());
+                outputStream = new FileOutputStream(file);
+            }
+            outputStream.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
+
+            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            {
+                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                {
+                    String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
+                    for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                    {
+                        String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
+                        String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                        Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                        Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+                        outputStream.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
+                    }
+                }
+            }
+            outputStream.close();
+            Toast.makeText(getApplicationContext(), "Backup Saved at Documents/Verifit", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     // Clears all locally used data structures
