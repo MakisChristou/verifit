@@ -30,6 +30,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -47,9 +48,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.thegrizzlylabs.sardineandroid.DavResource;
+import com.thegrizzlylabs.sardineandroid.Sardine;
+import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -101,9 +106,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static final int READ_REQUEST_CODE = 42;
     public static final int PERMISSION_REQUEST_STORAGE = 1000;
     public static String EXPORT_FILENAME = "verifit_backup";
-    // Dr Vipin Classes
-    public static String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    ActivityResultLauncher<Intent> activityResultLauncher;
 
 
 
@@ -172,35 +174,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             askWritePermission();
         }
-        // Dr Vipin Classes
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == Activity.RESULT_OK)
-                {
-                    System.out.println("Result OK");
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                    {
-                        if(Environment.isExternalStorageManager())
-                        {
-                            Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
-                            System.out.println("Permission Granted");
-                        }
-                        else
-                        {
-                            Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                            System.out.println("Permission Denied");
-                        }
-                    }
-                }
-                else
-                {
-                    System.out.println("Result Not OK:" + result.getResultCode());
-                }
-            }
-        });
-
-
 
         setExportBackupName();
 
@@ -326,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     // Formats backup name in case of export
-    public void setExportBackupName()
+    public static void setExportBackupName()
     {
         EXPORT_FILENAME = "VeriFit_Backup";
         Format formatter = new SimpleDateFormat("_yyyy-MM-dd_HH:mm:ss");
@@ -1184,6 +1157,58 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             }
             if (!isFound) KnownExercises.add(event);
+        }
+    }
+
+    public static void exportWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    {
+        // Enable networking on main thread
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
+
+        Sardine sardine = new OkHttpSardine();
+        sardine.setCredentials(webdavusername, webdavpassword);
+
+        try {
+            List<DavResource> resources = sardine.list(webdavurl);
+
+//                        for (DavResource res : resources)
+//                        {
+//                            System.out.println("Resources: " + res.getName());
+//                        }
+
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+            output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
+            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            {
+                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                {
+                    String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
+                    for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                    {
+                        String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
+                        String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                        Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                        Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+                        output.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
+                    }
+                }
+            }
+            output.close();
+
+            byte[] data = output.toByteArray();
+            setExportBackupName();
+            sardine.put(webdavurl+ EXPORT_FILENAME, data);
+            Toast.makeText(context, "File exported to " + webdavurl + EXPORT_FILENAME , Toast.LENGTH_SHORT).show();
+            System.out.println("Test Final");
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
