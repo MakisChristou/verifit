@@ -23,7 +23,8 @@ Verifit is a simple minimalist fitness tracker that I made mainly for myself. Th
 <img width="200" src="/metadata/screenshots/Screenshot9.jpg"> <img width="200" src="/metadata/screenshots/Screenshot10.jpg"> <img width="200" src="/metadata/screenshots/Screenshot11.jpg"> <img width="200" src="/metadata/screenshots/Screenshot12.jpg">
 
 ## Libraries Used
-* MPAndroid Chart
+* [MPAndroid Chart](https://github.com/PhilJay/MPAndroidChart)
+* [Sardine](https://github.com/lookfirst/sardine)
 
 ## Donations
 42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is
