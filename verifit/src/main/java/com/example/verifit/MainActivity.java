@@ -1160,6 +1160,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+
     public static void exportWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword)
     {
         // Enable networking on main thread
@@ -1210,6 +1211,35 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             System.out.println(e.toString());
             Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    public static void checkWebdav(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    {
+        // Enable networking on main thread
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
+
+        Sardine sardine = new OkHttpSardine();
+        sardine.setCredentials(webdavusername, webdavpassword);
+
+        try
+        {
+            List<DavResource> resources = sardine.list(webdavurl);
+
+            for (DavResource res : resources)
+            {
+                System.out.println("Resources: " + res.getName());
+            }
+
+            Toast.makeText(context, "Connection Succesful", Toast.LENGTH_SHORT).show();
+
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(context, "Connection Unsuccesful", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     // Navigates to given activity based on the selected menu item

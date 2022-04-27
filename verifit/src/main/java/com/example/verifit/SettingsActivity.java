@@ -255,6 +255,20 @@ public class SettingsActivity extends AppCompatActivity {
             else if (key.equals("webdavcheckconnection"))
             {
                 System.out.println("Webdav Check Connection");
+
+                // Load Shared Preferences if they exist
+                String webdav_url = loadSharedPreferences("webdav_url");
+                String webdav_username = loadSharedPreferences("webdav_username");
+                String webdav_password = loadSharedPreferences("webdav_password");
+
+                if(webdav_url.isEmpty() || webdav_username.isEmpty() || webdav_password.isEmpty())
+                {
+                    Toast.makeText(getContext(), "Some fields are empty, cannot export", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    MainActivity.checkWebdav(getContext(), webdav_url, webdav_username, webdav_password);
+                }
             }
 
 
