@@ -1213,6 +1213,47 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    public static void importWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    {
+        // Enable networking on main thread
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
+
+        Sardine sardine = new OkHttpSardine();
+        sardine.setCredentials(webdavusername, webdavpassword);
+
+        InputStream inputStream;
+
+
+        try {
+
+            List<DavResource> resources = sardine.list(webdavurl);
+
+            for (DavResource res : resources)
+            {
+                //System.out.println("Resources: " + res.getName());
+                if(res.getName().equals("VeriFit_Backup_2022-04-29_21:31:25.txt"))
+                {
+
+                    // Import Backup
+                    System.out.println("Found it!");
+
+                    inputStream = sardine.get(webdavurl+res.getName());
+
+
+
+                }
+
+            }
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     public static void checkWebdav(Context context, String webdavurl, String webdavusername, String webdavpassword)
     {
