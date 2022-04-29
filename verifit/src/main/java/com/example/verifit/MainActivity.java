@@ -88,7 +88,7 @@ import androidx.activity.*;
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , DatePickerDialog.OnDateSetListener{
 
     // "Data Structures"
-    public Set<String> Days = new TreeSet<String>();
+    public static Set<String> Days = new TreeSet<String>();
     public static ArrayList<WorkoutSet> Sets = new ArrayList<WorkoutSet>();
     public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
     public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // Initialized with hardcoded exercises
@@ -208,6 +208,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
 
                 // Or else nothing comes up
+                initViewPager();
+            }
+            else if(WhatToDO.equals("exportwebdav"))
+            {
+                // After Loading Data Initialize ViewPager
+                initViewPager();
+            }
+            // Data already saved, just init view pager
+            else if(WhatToDO.equals("importwebdav"))
+            {
+                // After Loading Data Initialize ViewPager
                 initViewPager();
             }
         }
@@ -425,10 +436,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     // Converts CSV file to Internally used Dat Structure
-    public void CSVtoSets(List csvList)
+    public static void CSVtoSets(List csvList)
     {
         // Remove potential Duplicates
-        Sets.clear();
+        MainActivity.Sets.clear();
 
         // i = 1 since first row is only Strings
         for(int i = 1; i < csvList.size(); i++)
@@ -464,20 +475,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     // Updates All other Data Structures
-    public void SetsToEverything()
+    public static void SetsToEverything()
     {
         // Clear Data Structures
-        Days.clear();
+        MainActivity.Days.clear();
         Workout_Days.clear();
 
         // i = 1 since first row is only Strings
         for(int i = 0; i < Sets.size(); i++)
         {
-            Days.add(Sets.get(i).getDate());
+            MainActivity.Days.add(Sets.get(i).getDate());
         }
 
 
-        Iterator<String> it = Days.iterator();
+        Iterator<String> it = MainActivity.Days.iterator();
 
         // Construct Workout_Days Array List
         while (it.hasNext())
@@ -496,7 +507,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     temp_day.addSet(Sets.get(i));
                 }
             }
-            Workout_Days.add(temp_day);
+            MainActivity.Workout_Days.add(temp_day);
         }
     }
 
@@ -810,7 +821,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     }
                 }
 
-                Toast.makeText(getApplicationContext(), "Backup Saved in " + path, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Backup saved in " + path, Toast.LENGTH_LONG).show();
                 System.out.println("Backup saved in " + path);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -961,7 +972,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             }
             outputStream.close();
-            Toast.makeText(getApplicationContext(), "Backup Saved at Documents/Verifit", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Backup saved in " + Environment.DIRECTORY_DOCUMENTS+"/Verifit" , Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {
@@ -1167,17 +1178,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
 
+        // Sardine Stuff
         Sardine sardine = new OkHttpSardine();
         sardine.setCredentials(webdavusername, webdavpassword);
 
         try {
-            List<DavResource> resources = sardine.list(webdavurl);
-
-//                        for (DavResource res : resources)
-//                        {
-//                            System.out.println("Resources: " + res.getName());
-//                        }
-
             ByteArrayOutputStream output = new ByteArrayOutputStream();
 
             output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
@@ -1202,8 +1207,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             byte[] data = output.toByteArray();
             setExportBackupName();
             sardine.put(webdavurl+ EXPORT_FILENAME, data);
-            Toast.makeText(context, "File exported to " + webdavurl + EXPORT_FILENAME , Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Backup saved in " + webdavurl + EXPORT_FILENAME , Toast.LENGTH_SHORT).show();
             System.out.println("Test Final");
+
+
+            // This is done to somehow run initViewPager()
+            Intent in = new Intent(context, MainActivity.class);
+            in.putExtra("doit", "exportwebdav");
+            context.startActivity(in);
+
+
 
         }
         catch (Exception e)
@@ -1219,11 +1232,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
 
+        // Sardine Stuff
         Sardine sardine = new OkHttpSardine();
         sardine.setCredentials(webdavusername, webdavpassword);
 
+        // Initalize for file I/O
         InputStream inputStream;
-
+        List csvList = new ArrayList();
 
         try {
 
@@ -1234,18 +1249,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 //System.out.println("Resources: " + res.getName());
                 if(res.getName().equals("VeriFit_Backup_2022-04-29_21:31:25.txt"))
                 {
-
-                    // Import Backup
                     System.out.println("Found it!");
 
                     inputStream = sardine.get(webdavurl+res.getName());
 
+                    CSVFile csvFile = new CSVFile(inputStream);
+                    csvList = csvFile.read();
 
+                    // Here is where the magic happens
+                    CSVtoSets(csvList); // Read File and Construct Local Objects
+                    SetsToEverything(); // Convert Set Objects to Day Objects
+                    System.out.println("csv to known...");
+                    csvToKnownExercises(); // Find all Exercises in CSV and add them to known exercises
+                    saveKnownExerciseData(context); // Save KnownExercises in CSV
+                    saveWorkoutData(context); // Save WorkoutDays in Shared Preferences
+                    //initViewPager(); // Commenting out because it's run after intent
 
+                    // This is done to somehow run initViewPager()
+                    Intent in = new Intent(context, MainActivity.class);
+                    in.putExtra("doit", "importwebdav");
+                    context.startActivity(in);
                 }
-
             }
-
         }
         catch (Exception e)
         {

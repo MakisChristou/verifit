@@ -253,9 +253,6 @@ public class SettingsActivity extends AppCompatActivity {
             else if (key.equals("webdavurl"))
             {
                 System.out.println("Webdav Url");
-
-
-
             }
             else if (key.equals("webdavusername"))
             {
