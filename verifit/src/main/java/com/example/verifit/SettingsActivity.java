@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -21,6 +22,14 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.thegrizzlylabs.sardineandroid.DavResource;
+import com.thegrizzlylabs.sardineandroid.Sardine;
+import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
+
+import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -231,8 +240,58 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    MainActivity.importWebDav(getContext(), webdav_url, webdav_username, webdav_password);
+                    // Prepare to show exercise dialog box
+                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                    View view = inflater.inflate(R.layout.choose_webdav_file_dialog,null);
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
+
+
+                    RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Webdav);
+                    WebdavAdapter webdavAdapter;
+
+
+
+                    // Enable networking on main thread
+                    StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(gfgPolicy);
+
+                    // Sardine Stuff
+                    Sardine sardine = new OkHttpSardine();
+                    sardine.setCredentials(webdav_username, webdav_password);
+                    List<DavResource> Resources;
+
+                    try
+                    {
+                        Resources = sardine.list(webdav_url);
+
+                        // Remove unwanted files
+                        for(DavResource res : Resources)
+                        {
+                            if(res.getName().substring(res.getName().length() - 4).equals(".txt"))
+                            {
+
+                            }
+                        }
+
+                        // Set Webdav Recycler View
+                        webdavAdapter = new WebdavAdapter(getContext(), Resources);
+                        recyclerView.setAdapter(webdavAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                        alertDialog.show();
+
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println(e.toString());
+                        Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
+
+
+
+
+
             }
             else if (key.equals("exportwebdav"))
             {
@@ -280,7 +339,6 @@ public class SettingsActivity extends AppCompatActivity {
                     MainActivity.checkWebdav(getContext(), webdav_url, webdav_username, webdav_password);
                 }
             }
-
 
             // General
             else if (key.equals("theme"))

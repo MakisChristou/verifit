@@ -12,9 +12,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Instrumentation;
 import android.content.ContentResolver;
@@ -36,11 +39,13 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -312,10 +317,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Formats backup name in case of export
     public static void setExportBackupName()
     {
-        EXPORT_FILENAME = "VeriFit_Backup";
+        EXPORT_FILENAME = "verifit";
         Format formatter = new SimpleDateFormat("_yyyy-MM-dd_HH:mm:ss");
         String str_date = formatter.format(new Date());
-        EXPORT_FILENAME = EXPORT_FILENAME + str_date+".csv";
+        EXPORT_FILENAME = EXPORT_FILENAME + str_date;
     }
 
 
@@ -933,7 +938,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Export backup function using Storage Access Framework
     public void writeFileSAF()
     {
-        String fileName = EXPORT_FILENAME.substring(0,EXPORT_FILENAME.length()-4);
+        String fileName = EXPORT_FILENAME;
 
         try
         {
@@ -1206,8 +1211,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             byte[] data = output.toByteArray();
             setExportBackupName();
-            sardine.put(webdavurl+ EXPORT_FILENAME, data);
-            Toast.makeText(context, "Backup saved in " + webdavurl + EXPORT_FILENAME , Toast.LENGTH_SHORT).show();
+            sardine.put(webdavurl+ EXPORT_FILENAME+".txt", data);
+            Toast.makeText(context, "Backup saved in " + webdavurl + EXPORT_FILENAME+".txt" , Toast.LENGTH_SHORT).show();
             System.out.println("Test Final");
 
 
@@ -1226,7 +1231,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    public static void importWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    public static void importWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword, String webdavresourcename)
     {
         // Enable networking on main thread
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -1244,10 +1249,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             List<DavResource> resources = sardine.list(webdavurl);
 
+
             for (DavResource res : resources)
             {
                 //System.out.println("Resources: " + res.getName());
-                if(res.getName().equals("VeriFit_Backup_2022-04-29_21:31:25.txt"))
+                if(res.getName().equals(webdavresourcename))
                 {
                     System.out.println("Found it!");
 
