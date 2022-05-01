@@ -10,12 +10,15 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
@@ -123,8 +126,27 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
+
             // To Do: Make password not shown
+
+//            EditTextPreference pref = (EditTextPreference) findPreference("webdav_password");
+//            EditText prefEditText = pref.getEditText();
+//            prefEditText.setInputType(InputType.TYPE_CLASS_TEXT); // set properties here
+//            prefEditText.setSingleLine(true);
+
+            EditTextPreference preference = findPreference("webdavpassword");
+
+            if (preference!= null) {
+                preference.setOnBindEditTextListener(
+                        new EditTextPreference.OnBindEditTextListener() {
+                            @Override
+                            public void onBindEditText(@NonNull EditText editText) {
+                                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            }
+                        });
+            }
         }
+
 
 
         public void saveSharedPreferences(String value, String key)

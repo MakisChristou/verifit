@@ -53,6 +53,7 @@
             app:summary="user" />
         <EditTextPreference
             android:key="webdavpassword"
+            android:inputType="textPassword"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Password" />
