@@ -1160,7 +1160,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         // Known Exercises is empty at this point but doesn't hurt to clear anyway
-        MainActivity.KnownExercises.clear();
+        // MainActivity.KnownExercises.clear();
 
         // Manual Implementation "borrowed" from stack overflow
         for (Exercise event : DuplicateKnownExercises) {

@@ -127,13 +127,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
 
-            // To Do: Make password not shown
-
-//            EditTextPreference pref = (EditTextPreference) findPreference("webdav_password");
-//            EditText prefEditText = pref.getEditText();
-//            prefEditText.setInputType(InputType.TYPE_CLASS_TEXT); // set properties here
-//            prefEditText.setSingleLine(true);
-
+            // Make password not shown when typing
             EditTextPreference preference = findPreference("webdavpassword");
 
             if (preference!= null) {
