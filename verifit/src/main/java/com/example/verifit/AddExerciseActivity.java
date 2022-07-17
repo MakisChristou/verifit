@@ -112,6 +112,8 @@ public class AddExerciseActivity extends AppCompatActivity {
             // Create New Set Object
             WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getExerciseCategory(exercise_name),reps,weight);
 
+//            workoutSet.setComment();
+
             // Ignore wrong input
             if(reps == 0 || weight == 0 || reps < 0 || weight < 0)
             {
@@ -126,6 +128,22 @@ public class AddExerciseActivity extends AppCompatActivity {
                 // If workout day exists
                 if(position >= 0)
                 {
+                    // Find comment of that workout day/exercise
+                    WorkoutDay workoutDay = MainActivity.Workout_Days.get(position);
+
+                    for(int i = 0; i < workoutDay.getSets().size(); i++)
+                    {
+                        WorkoutSet workoutSet1 = workoutDay.getSets().get(i);
+
+                        if(workoutSet1.getExercise().equals(exercise_name))
+                        {
+                            String exerciseComment = workoutSet1.getComment();
+                            System.out.println("Exercise Name: " + exercise_name);
+                            System.out.println("Exercise Comment: " + exerciseComment);
+                            workoutSet.setComment(exerciseComment);
+                        }
+                    }
+
                     MainActivity.Workout_Days.get(position).addSet(workoutSet);
                 }
                 // If not construct new workout day
@@ -746,6 +764,14 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Modify the data structure to add the comment
         MainActivity.Workout_Days.get(day_position).getExercises().get(exercise_position).setComment(comment);
+
+//        // Also modifiy individual sets
+        for(int i = 0; i < MainActivity.Workout_Days.get(day_position).getSets().size(); i++)
+        {
+            MainActivity.Workout_Days.get(day_position).getSets().get(i).setComment(comment);
+        }
+
+        updateTodaysExercises();
 
 
         Toast.makeText(getApplicationContext(),"Comment Logged",Toast.LENGTH_SHORT).show();
