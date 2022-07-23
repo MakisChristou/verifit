@@ -314,6 +314,10 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 System.out.println("Webdav Check Connection");
 
+                // Show network loading popup
+                final LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                loadingDialog.loadingAlertDialog();
+
                 // Load Shared Preferences if they exist
                 String webdav_url = loadSharedPreferences("webdav_url");
                 String webdav_username = loadSharedPreferences("webdav_username");
@@ -325,7 +329,10 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    MainActivity.checkWebdav(getContext(), webdav_url, webdav_username, webdav_password);
+//                    MainActivity.checkWebdav(getContext(), webdav_url, webdav_username, webdav_password, loadingDialog);
+
+                    CheckWebdavThread checkWebdavThread = new CheckWebdavThread((Activity) getContext(), webdav_url, webdav_username, webdav_password, loadingDialog);
+                    checkWebdavThread.start();
                 }
             }
 

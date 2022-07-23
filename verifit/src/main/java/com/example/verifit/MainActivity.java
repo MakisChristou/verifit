@@ -1308,7 +1308,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    public static void checkWebdav(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    public static void checkWebdav(Context context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog)
     {
         // Enable networking on main thread
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -1347,6 +1347,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             });
         }
+
+        loadingDialog.dismissDialog();
 
     }
 
@@ -1548,5 +1550,28 @@ class ClickedOnWebdavThread extends Thread{
     @Override
     public void run() {
         MainActivity.clickedOnImportWebdav(context, webdavurl, webdavusername, webdavpassword, loadingDialog, alertDialog, view);
+    }
+}
+
+class CheckWebdavThread extends Thread{
+
+    String webdavurl;
+    String webdavusername;
+    String webdavpassword;
+    Activity context;
+    LoadingDialog loadingDialog;
+
+    CheckWebdavThread(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog)
+    {
+        this.context = context;
+        this.webdavurl = webdavurl;
+        this.webdavusername = webdavusername;
+        this.webdavpassword = webdavpassword;
+        this.loadingDialog = loadingDialog;
+    }
+
+    @Override
+    public void run() {
+        MainActivity.checkWebdav(context, webdavurl, webdavusername, webdavpassword, loadingDialog);
     }
 }
