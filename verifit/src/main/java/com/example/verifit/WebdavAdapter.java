@@ -50,8 +50,8 @@ public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHold
 
         holder.tv_name.setText(Resources.get(position).getName());
 
-        Long kilobytes =  Resources.get(position).getContentLength() / 1000;
-        holder.tv_size.setText(kilobytes.toString());
+        Long bytes =  Resources.get(position).getContentLength();
+        holder.tv_size.setText(bytes.toString());
         holder.tv_date.setText(Resources.get(position).getCreation().toString());
 
         holder.cardview_webdav.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +67,11 @@ public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHold
                 String webdav_resource = Resources.get(position).getName();
 
                 // Import remote file
-                MainActivity.importWebDav(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
+                //MainActivity.importWebDav(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
+                ImportWebdavThread importWebdavThread = new ImportWebdavThread(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
+                importWebdavThread.start();
+
+                // To Do: Put loading screen here
             }
         });
 
@@ -126,11 +130,8 @@ public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHold
             tv_size = itemView.findViewById(R.id.tv_size);
 
             recyclerView = itemView.findViewById(R.id.recyclerView_Webdav);
-
             blue_line = itemView.findViewById(R.id.blue_line_webdav);
-
             cardview_webdav = itemView.findViewById(R.id.cardview_webdav);
-
         }
     }
 }

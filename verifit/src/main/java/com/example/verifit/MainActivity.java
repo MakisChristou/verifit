@@ -32,6 +32,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.os.StrictMode;
 import android.provider.DocumentsContract;
@@ -675,8 +677,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Workout_Days = new ArrayList<WorkoutDay>();
             }
         }
-
-
     }
 
     // Saves Workout_Days Array List in shared preferences
@@ -1189,7 +1189,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         try {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-
             output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
             for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
             {
@@ -1212,22 +1211,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             byte[] data = output.toByteArray();
             setExportBackupName();
             sardine.put(webdavurl+ EXPORT_FILENAME+".txt", data);
-            Toast.makeText(context, "Backup saved in " + webdavurl + EXPORT_FILENAME+".txt" , Toast.LENGTH_SHORT).show();
-            System.out.println("Test Final");
 
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, "Backup saved in " + webdavurl + EXPORT_FILENAME+".txt", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
 
             // This is done to somehow run initViewPager()
             Intent in = new Intent(context, MainActivity.class);
             in.putExtra("doit", "exportwebdav");
             context.startActivity(in);
 
-
-
         }
         catch (Exception e)
         {
             System.out.println(e.toString());
-            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
         }
     }
 
@@ -1246,17 +1257,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         List csvList = new ArrayList();
 
         try {
-
             List<DavResource> resources = sardine.list(webdavurl);
-
 
             for (DavResource res : resources)
             {
-                //System.out.println("Resources: " + res.getName());
                 if(res.getName().equals(webdavresourcename))
                 {
-                    System.out.println("Found it!");
-
                     inputStream = sardine.get(webdavurl+res.getName());
 
                     CSVFile csvFile = new CSVFile(inputStream);
@@ -1265,7 +1271,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     // Here is where the magic happens
                     CSVtoSets(csvList); // Read File and Construct Local Objects
                     SetsToEverything(); // Convert Set Objects to Day Objects
-                    System.out.println("csv to known...");
                     csvToKnownExercises(); // Find all Exercises in CSV and add them to known exercises
                     saveKnownExerciseData(context); // Save KnownExercises in CSV
                     saveWorkoutData(context); // Save WorkoutDays in Shared Preferences
@@ -1277,14 +1282,32 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     context.startActivity(in);
                 }
             }
+
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, "Import Sucessful", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+
         }
         catch (Exception e)
         {
             System.out.println(e.toString());
-            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
         }
     }
-
 
     public static void checkWebdav(Context context, String webdavurl, String webdavusername, String webdavpassword)
     {
@@ -1309,9 +1332,63 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         catch(Exception e)
         {
-            Toast.makeText(context, "Connection Unsuccesful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public static void clickedOnImportWebdav(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    {
+        System.out.println("Debug1");
+
+        // Prepare to show exercise dialog box
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.choose_webdav_file_dialog,null);
+        AlertDialog alertDialog = new AlertDialog.Builder(context).setView(view).create();
+
+
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Webdav);
+        WebdavAdapter webdavAdapter;
+
+
+
+        // Enable networking on main thread
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
+
+
+        // Sardine Stuff
+        Sardine sardine = new OkHttpSardine();
+        sardine.setCredentials(webdavusername, webdavpassword);
+        List<DavResource> Resources;
+
+
+        try
+        {
+            Resources = sardine.list(webdavurl);
+
+            // To Do: Don't show unwanted files
+            for(DavResource res : Resources)
+            {
+                if(res.getName().substring(res.getName().length() - 4).equals(".txt"))
+                {
+
+                }
+            }
+
+            // Set Webdav Recycler View
+            webdavAdapter = new WebdavAdapter(context, Resources);
+            recyclerView.setAdapter(webdavAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            alertDialog.show();
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            //Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Navigates to given activity based on the selected menu item
@@ -1376,5 +1453,70 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             startActivity(in);
         }
         return super.onOptionsItemSelected(item);
+    }
+}
+
+class ImportWebdavThread extends Thread{
+
+    String webdavurl;
+    String webdavusername;
+    String webdavpassword;
+    String webdavresourcename;
+    Context context;
+
+    ImportWebdavThread(Context context, String webdavurl, String webdavusername, String webdavpassword, String webdavresourcename)
+    {
+        this.context = context;
+        this.webdavurl = webdavurl;
+        this.webdavusername = webdavusername;
+        this.webdavpassword = webdavpassword;
+        this.webdavresourcename = webdavresourcename;
+    }
+
+    @Override
+    public void run() {
+        MainActivity.importWebDav(context, webdavurl, webdavusername, webdavpassword, webdavresourcename);
+    }
+}
+
+class ExportWebdavThread extends Thread{
+
+    String webdavurl;
+    String webdavusername;
+    String webdavpassword;
+    Context context;
+
+    ExportWebdavThread(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    {
+        this.context = context;
+        this.webdavurl = webdavurl;
+        this.webdavusername = webdavusername;
+        this.webdavpassword = webdavpassword;
+    }
+
+    @Override
+    public void run() {
+        MainActivity.exportWebDav(context, webdavurl, webdavusername, webdavpassword);
+    }
+}
+
+class ClickedOnWebdavThread extends Thread{
+
+    String webdavurl;
+    String webdavusername;
+    String webdavpassword;
+    Context context;
+
+    ClickedOnWebdavThread(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    {
+        this.context = context;
+        this.webdavurl = webdavurl;
+        this.webdavusername = webdavusername;
+        this.webdavpassword = webdavpassword;
+    }
+
+    @Override
+    public void run() {
+        MainActivity.clickedOnImportWebdav(context, webdavurl, webdavusername, webdavpassword);
     }
 }

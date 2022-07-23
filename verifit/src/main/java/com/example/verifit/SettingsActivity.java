@@ -244,7 +244,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if (key.equals("importwebdav"))
             {
-                System.out.println("Import Webdav");
+                System.out.println("Clicked on Import Webdav");
                 // Load Shared Preferences if they exist
                 String webdav_url = loadSharedPreferences("webdav_url");
                 String webdav_username = loadSharedPreferences("webdav_username");
@@ -256,58 +256,15 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    // Prepare to show exercise dialog box
-                    LayoutInflater inflater = LayoutInflater.from(getContext());
-                    View view = inflater.inflate(R.layout.choose_webdav_file_dialog,null);
-                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
+                    // To Do: Show loading layout here
 
-                    RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Webdav);
-                    WebdavAdapter webdavAdapter;
+                    // To Do: Why is this crashing?
+                    MainActivity.clickedOnImportWebdav(getContext(), webdav_url, webdav_username,webdav_password);
+//                    ClickedOnWebdavThread clickedOnWebdavThread = new ClickedOnWebdavThread(getContext(), webdav_url, webdav_username,webdav_password);
+//                    clickedOnWebdavThread.start();
 
-
-
-                    // Enable networking on main thread
-                    StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(gfgPolicy);
-
-                    // Sardine Stuff
-                    Sardine sardine = new OkHttpSardine();
-                    sardine.setCredentials(webdav_username, webdav_password);
-                    List<DavResource> Resources;
-
-                    try
-                    {
-                        Resources = sardine.list(webdav_url);
-
-                        // Remove unwanted files
-                        for(DavResource res : Resources)
-                        {
-                            if(res.getName().substring(res.getName().length() - 4).equals(".txt"))
-                            {
-
-                            }
-                        }
-
-                        // Set Webdav Recycler View
-                        webdavAdapter = new WebdavAdapter(getContext(), Resources);
-                        recyclerView.setAdapter(webdavAdapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                        alertDialog.show();
-
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println(e.toString());
-                        Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                    }
                 }
-
-
-
-
-
             }
             else if (key.equals("exportwebdav"))
             {
@@ -322,7 +279,11 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    MainActivity.exportWebDav(getContext(), webdav_url, webdav_username, webdav_password);
+//                    MainActivity.exportWebDav(getContext(), webdav_url, webdav_username, webdav_password);
+                    ExportWebdavThread exportWebdavThread = new ExportWebdavThread(getContext(), webdav_url, webdav_username, webdav_password);
+                    exportWebdavThread.start();
+
+                    // To Do: Show loading popup here
                 }
             }
             else if (key.equals("webdavurl"))

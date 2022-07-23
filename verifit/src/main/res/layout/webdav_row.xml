@@ -44,13 +44,10 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="68dp"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="10dp"
-                android:text="KB"
+                android:text="B"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_size"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
             <TextView
                 android:id="@+id/tv_date"
@@ -59,10 +56,8 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="10dp"
                 android:text="2022-04-29 21:26"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
@@ -99,7 +94,7 @@
                 android:id="@+id/blue_line_webdav"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="35dp"
                 android:background="@color/core_grey_02"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -253,8 +253,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Update Edit Texts
         et_weight.setText(clicked_set.getWeight().toString());
         et_reps.setText(String.valueOf(clicked_set.getReps().intValue()));
-
-
     }
 
     // Save Changes in main data structure, save data structure in shared preferences
@@ -381,7 +379,6 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Update Recycler View
         workoutSetAdapter2.notifyDataSetChanged();
-
     }
 
     // Initialize Recycler View Object
