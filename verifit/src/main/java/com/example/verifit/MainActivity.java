@@ -1176,10 +1176,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-
     public static void exportWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword)
     {
-        // Enable networking on main thread
+        // Enable networking on main thread  (this is not needed anymore)
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
 
@@ -1244,7 +1243,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public static void importWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword, String webdavresourcename)
     {
-        // Enable networking on main thread
+        // Enable networking on main thread  (this is not needed anymore)
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
 
@@ -1327,36 +1326,39 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 System.out.println("Resources: " + res.getName());
             }
 
-            Toast.makeText(context, "Connection Succesful", Toast.LENGTH_SHORT).show();
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, "Connection Successful", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
 
         }
         catch(Exception e)
         {
-            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
         }
 
     }
 
-    public static void clickedOnImportWebdav(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    public static void clickedOnImportWebdav(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog, AlertDialog alertDialog, View view)
     {
-        System.out.println("Debug1");
-
-        // Prepare to show exercise dialog box
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.choose_webdav_file_dialog,null);
-        AlertDialog alertDialog = new AlertDialog.Builder(context).setView(view).create();
-
-
-
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Webdav);
         WebdavAdapter webdavAdapter;
 
 
-
-        // Enable networking on main thread
+        // Enable networking on main thread (this is not needed anymore)
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
-
 
         // Sardine Stuff
         Sardine sardine = new OkHttpSardine();
@@ -1381,13 +1383,35 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             webdavAdapter = new WebdavAdapter(context, Resources);
             recyclerView.setAdapter(webdavAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            alertDialog.show();
 
+
+            // Dismiss loading dialog
+            loadingDialog.dismissDialog();
+
+
+            // Show Alert Dialog from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    alertDialog.show();
+                }
+            });
         }
         catch (Exception e)
         {
             System.out.println(e.toString());
-            //Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+            // Dismiss loading dialog
+            loadingDialog.dismissDialog();
         }
     }
 
@@ -1505,18 +1529,24 @@ class ClickedOnWebdavThread extends Thread{
     String webdavurl;
     String webdavusername;
     String webdavpassword;
-    Context context;
+    Activity context;
+    LoadingDialog loadingDialog;
+    AlertDialog alertDialog;
+    View view;
 
-    ClickedOnWebdavThread(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    ClickedOnWebdavThread(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog, AlertDialog alertDialog, View view)
     {
         this.context = context;
         this.webdavurl = webdavurl;
         this.webdavusername = webdavusername;
         this.webdavpassword = webdavpassword;
+        this.loadingDialog = loadingDialog;
+        this.alertDialog = alertDialog;
+        this.view = view;
     }
 
     @Override
     public void run() {
-        MainActivity.clickedOnImportWebdav(context, webdavurl, webdavusername, webdavpassword);
+        MainActivity.clickedOnImportWebdav(context, webdavurl, webdavusername, webdavpassword, loadingDialog, alertDialog, view);
     }
 }

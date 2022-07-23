@@ -1,5 +1,6 @@
 package com.example.verifit;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -256,14 +257,21 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    // Show network loading popup
+                    final LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                    loadingDialog.loadingAlertDialog();
 
-                    // To Do: Show loading layout here
+
+                    // Prepare to show remote files dialog box
+                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                    View view = inflater.inflate(R.layout.choose_webdav_file_dialog,null);
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create(); //crash here
+
 
                     // To Do: Why is this crashing?
-                    MainActivity.clickedOnImportWebdav(getContext(), webdav_url, webdav_username,webdav_password);
-//                    ClickedOnWebdavThread clickedOnWebdavThread = new ClickedOnWebdavThread(getContext(), webdav_url, webdav_username,webdav_password);
-//                    clickedOnWebdavThread.start();
-
+                    //MainActivity.clickedOnImportWebdav(getContext(), webdav_url, webdav_username,webdav_password);
+                    ClickedOnWebdavThread clickedOnWebdavThread = new ClickedOnWebdavThread(getActivity(), webdav_url, webdav_username, webdav_password, loadingDialog, alertDialog, view);
+                    clickedOnWebdavThread.start();
                 }
             }
             else if (key.equals("exportwebdav"))
@@ -279,6 +287,10 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    // Show loading popup
+                    final LoadingDialog loadingDialog = new LoadingDialog((Activity) getContext());
+                    loadingDialog.loadingAlertDialog();
+
 //                    MainActivity.exportWebDav(getContext(), webdav_url, webdav_username, webdav_password);
                     ExportWebdavThread exportWebdavThread = new ExportWebdavThread(getContext(), webdav_url, webdav_username, webdav_password);
                     exportWebdavThread.start();

@@ -1,5 +1,6 @@
 package com.example.verifit;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -66,12 +67,18 @@ public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHold
                 String webdav_password = sharedPreferences.getString("webdav_password", "");
                 String webdav_resource = Resources.get(position).getName();
 
+                // To Do: Put loading screen here
+                // Show network loading popup
+                final LoadingDialog loadingDialog = new LoadingDialog((Activity) ct);
+                loadingDialog.loadingAlertDialog();
+
+
                 // Import remote file
                 //MainActivity.importWebDav(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
                 ImportWebdavThread importWebdavThread = new ImportWebdavThread(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
                 importWebdavThread.start();
 
-                // To Do: Put loading screen here
+
             }
         });
 
