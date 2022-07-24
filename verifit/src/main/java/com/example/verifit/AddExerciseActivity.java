@@ -140,7 +140,17 @@ public class AddExerciseActivity extends AppCompatActivity {
                             String exerciseComment = workoutSet1.getComment();
                             System.out.println("Exercise Name: " + exercise_name);
                             System.out.println("Exercise Comment: " + exerciseComment);
-                            workoutSet.setComment(exerciseComment);
+
+
+                            if(exerciseComment == "null" || exerciseComment == null)
+                            {
+                                workoutSet.setComment("");
+                            }
+                            else
+                            {
+                                workoutSet.setComment(exerciseComment);
+                            }
+
                         }
                     }
 
@@ -269,6 +279,9 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Actually Save Changes in shared preferences
         MainActivity.saveWorkoutData(getApplicationContext());
+
+        // Enable flag for auto webdav backup to trigger
+        MainActivity.autoBackup = true;
 
         System.out.println("On Stop3");
     }

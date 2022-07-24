@@ -23,6 +23,7 @@ public class WorkoutSet {
         this.Category = Category;
         this.Reps = Reps;
         this.Weight = Weight;
+        this.Comment = "";
     }
     public WorkoutSet(String Date, String Exercise, String Category, Double Reps, Double Weight,String Comment)
     {

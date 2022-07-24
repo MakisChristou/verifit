@@ -2,74 +2,55 @@ package com.example.verifit;
 
 import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Instrumentation;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.ParcelFileDescriptor;
 import android.os.StrictMode;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.provider.Settings;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.thegrizzlylabs.sardineandroid.DavResource;
 import com.thegrizzlylabs.sardineandroid.Sardine;
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -78,6 +59,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -86,11 +68,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.*;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , DatePickerDialog.OnDateSetListener{
 
@@ -108,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static HashMap<String,Double> LastTimeVolume = new HashMap<String,Double>(); // Holds last workout's volume for each exercise
     public ViewPager2 viewPager2; // View Pager that is used in main activity
     public static ArrayList<WorkoutDay> Infinite_Workout_Days = new ArrayList<WorkoutDay>(); // Used to populate the viewPager object in MainActivity with "infinite" days
+    public static Boolean autoBackup = false;
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -127,10 +107,35 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
+    private boolean isMyServiceRunning(Class<?> serviceClass)
+    {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
+        {
+            if (serviceClass.getName().equals(service.service.getClassName()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // General Initialization Stuff
     public void onCreateStuff()
     {
         initActivity();
+
+
+        // If backup background service has not started, start it
+        if(!isMyServiceRunning(WebdavBackupService.class))
+        {
+            System.out.println("Starting Service");
+            // Start background service, allegedly
+            Intent intent = new Intent(this, WebdavBackupService.class);
+            startService(intent);
+        }
+
+
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -324,8 +329,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String str_date = formatter.format(new Date());
         EXPORT_FILENAME = EXPORT_FILENAME + str_date;
     }
-
-
 
     // Get the results after user gives/denies permission
     @Override
@@ -1182,6 +1185,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
 
+
+
         // Sardine Stuff
         Sardine sardine = new OkHttpSardine();
         sardine.setCredentials(webdavusername, webdavpassword);
@@ -1224,6 +1229,69 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Intent in = new Intent(context, MainActivity.class);
             in.putExtra("doit", "exportwebdav");
             context.startActivity(in);
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        }
+    }
+
+    public static void exportWebDavService(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    {
+        // Enable networking on main thread  (this is not needed anymore)
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
+
+
+
+        // Sardine Stuff
+        Sardine sardine = new OkHttpSardine();
+        sardine.setCredentials(webdavusername, webdavpassword);
+
+        try {
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
+            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            {
+                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                {
+                    String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
+                    for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                    {
+                        String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
+                        String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                        Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                        Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+                        output.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
+                    }
+                }
+            }
+            output.close();
+
+            byte[] data = output.toByteArray();
+            setExportBackupName();
+            sardine.put(webdavurl+ EXPORT_FILENAME+".txt", data);
+
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, "Backup saved in " + webdavurl + EXPORT_FILENAME+".txt", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
 
         }
         catch (Exception e)

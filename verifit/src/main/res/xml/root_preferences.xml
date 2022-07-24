@@ -63,6 +63,12 @@
             android:summary="Test webdav configuration"
             android:title="Check Connection" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="autowebdavbackup"
+            android:summary="Auto sync workouts to your webdav server once a day"
+            android:title="Automatic Backup" />
+
     </PreferenceCategory>
     </PreferenceCategory>
 

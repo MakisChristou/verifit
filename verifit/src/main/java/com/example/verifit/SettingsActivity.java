@@ -66,6 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference webdavusername = findPreference("webdavusername");
             Preference webdavpassword = findPreference("webdavpassword");
             Preference webdavcheckconnection = findPreference("webdavcheckconnection");
+            Preference autowebdavbackup = findPreference("autowebdavbackup");
 
             PreferenceManager preferenceManager = getPreferenceManager();
             if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true))
@@ -77,6 +78,10 @@ public class SettingsActivity extends AppCompatActivity {
                 webdavusername.setVisible(true);
                 webdavpassword.setVisible(true);
                 webdavcheckconnection.setVisible(true);
+                autowebdavbackup.setVisible(true);
+
+                saveSharedPreferences("true", "togglewebdav");
+
             }
             else
             {
@@ -87,6 +92,9 @@ public class SettingsActivity extends AppCompatActivity {
                 webdavusername.setVisible(false);
                 webdavpassword.setVisible(false);
                 webdavcheckconnection.setVisible(false);
+                autowebdavbackup.setVisible(false);
+
+                saveSharedPreferences("false", "togglewebdav");
             }
 
             // Set summary to user config
@@ -94,6 +102,14 @@ public class SettingsActivity extends AppCompatActivity {
             webdavusername.setSummary(loadSharedPreferences("webdav_username"));
             webdavpassword.setSummary(getPasswordStarred());
 
+            if (preferenceManager.getSharedPreferences().getBoolean("autowebdavbackup", true))
+            {
+                saveSharedPreferences("true", "autowebdavbackup");
+            }
+            else
+            {
+                saveSharedPreferences("false", "autowebdavbackup");
+            }
 
             // On user update save Webdav config in shared preferences
 
@@ -127,15 +143,25 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
+//            autowebdavbackup.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//                @Override
+//                public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                    saveSharedPreferences(newValue.toString(), "autowebdavbackup");
+//                    return false;
+//                }
+//            });
 
             // Make password not shown when typing
             EditTextPreference preference = findPreference("webdavpassword");
 
-            if (preference!= null) {
+            if (preference!= null)
+            {
                 preference.setOnBindEditTextListener(
-                        new EditTextPreference.OnBindEditTextListener() {
+                        new EditTextPreference.OnBindEditTextListener()
+                        {
                             @Override
-                            public void onBindEditText(@NonNull EditText editText) {
+                            public void onBindEditText(@NonNull EditText editText)
+                            {
                                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                             }
                         });
@@ -212,6 +238,9 @@ public class SettingsActivity extends AppCompatActivity {
                 if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true)) {
                     // Your switch is on
                     System.out.println("Toggle is on");
+                    saveSharedPreferences("true", "togglewebdav");
+
+
                     Toast.makeText(getContext(), "Webdav is on", Toast.LENGTH_SHORT).show();
                     Preference importwebdav = findPreference("importwebdav");
                     importwebdav.setVisible(true);
@@ -225,10 +254,15 @@ public class SettingsActivity extends AppCompatActivity {
                     webdavpassword.setVisible(true);
                     Preference webdavcheckconnection = findPreference("webdavcheckconnection");
                     webdavcheckconnection.setVisible(true);
+                    Preference autowebdavbackup = findPreference("autowebdavbackup");
+                    autowebdavbackup.setVisible(true);
                 } else {
                     // Your switch is off
                     System.out.println("Toggle is off");
                     Toast.makeText(getContext(), "Webdav is off", Toast.LENGTH_SHORT).show();
+                    saveSharedPreferences("false", "togglewebdav");
+
+
                     Preference importwebdav = findPreference("importwebdav");
                     importwebdav.setVisible(false);
                     Preference excportwebdav = findPreference("exportwebdav");
@@ -241,6 +275,8 @@ public class SettingsActivity extends AppCompatActivity {
                     webdavpassword.setVisible(false);
                     Preference webdavcheckconnection = findPreference("webdavcheckconnection");
                     webdavcheckconnection.setVisible(false);
+                    Preference autowebdavbackup = findPreference("autowebdavbackup");
+                    autowebdavbackup.setVisible(false);
                 }
             }
             else if (key.equals("importwebdav"))
@@ -314,10 +350,6 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 System.out.println("Webdav Check Connection");
 
-                // Show network loading popup
-                final LoadingDialog loadingDialog = new LoadingDialog(getActivity());
-                loadingDialog.loadingAlertDialog();
-
                 // Load Shared Preferences if they exist
                 String webdav_url = loadSharedPreferences("webdav_url");
                 String webdav_username = loadSharedPreferences("webdav_username");
@@ -329,10 +361,30 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
-//                    MainActivity.checkWebdav(getContext(), webdav_url, webdav_username, webdav_password, loadingDialog);
+                    // Show network loading popup
+                    final LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                    loadingDialog.loadingAlertDialog();
+
 
                     CheckWebdavThread checkWebdavThread = new CheckWebdavThread((Activity) getContext(), webdav_url, webdav_username, webdav_password, loadingDialog);
                     checkWebdavThread.start();
+                }
+            }
+
+            else if(key.equals("autowebdavbackup"))
+            {
+                PreferenceManager preferenceManager = getPreferenceManager();
+                if (preferenceManager.getSharedPreferences().getBoolean("autowebdavbackup", true))
+                {
+                    System.out.println("Auto backup is on");
+                    Toast.makeText(getContext(), "Auto backup is on", Toast.LENGTH_SHORT).show();
+                    saveSharedPreferences("true", "autowebdavbackup");
+                }
+                else
+                {
+                    System.out.println("Auto backup is off");
+                    Toast.makeText(getContext(), "Auto backup is off", Toast.LENGTH_SHORT).show();
+                    saveSharedPreferences("false", "autowebdavbackup");
                 }
             }
 

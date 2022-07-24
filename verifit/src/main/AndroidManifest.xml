@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name=".WebdavBackupService" />
+
         <activity android:name=".SplashScreenActivity"/>
         <activity
             android:name="com.example.verifit.ChartsActivity"
