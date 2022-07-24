@@ -1440,6 +1440,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             Resources = sardine.list(webdavurl);
 
+            // Add list sorting so user can make sense of their backups
+            Resources.sort((o2, o1) -> o1.getName().compareTo(o2.getName()));
+
             // To Do: Don't show unwanted files
             for(DavResource res : Resources)
             {
