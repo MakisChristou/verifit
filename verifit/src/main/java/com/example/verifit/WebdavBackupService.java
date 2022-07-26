@@ -1,7 +1,6 @@
 package com.example.verifit;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -11,10 +10,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 import android.os.Process;
-
-import androidx.preference.PreferenceManager;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class WebdavBackupService extends Service {
@@ -39,25 +34,28 @@ public class WebdavBackupService extends Service {
                     String togglewebdav = loadSharedPreferences("togglewebdav");
                     Date now = new Date();
 
-                    // Automatic webdav backup is on and a new workout is saved
-                    if(autowebdavbackup.equals("true") && togglewebdav.equals("true") && MainActivity.autoBackup)
-                    {
-                        String webdavurl = loadSharedPreferences("webdav_url");
-                        String webdavusername = loadSharedPreferences("webdav_username");
-                        String webdavpassword = loadSharedPreferences("webdav_password");
 
+                    String webdavurl = loadSharedPreferences("webdav_url");
+                    String webdavusername = loadSharedPreferences("webdav_username");
+                    String webdavpassword = loadSharedPreferences("webdav_password");
+
+
+                    // Automatic webdav backup is on and a new workout is saved
+                    if(autowebdavbackup.equals("true") && togglewebdav.equals("true") && MainActivity.autoBackup && !webdavurl.equals("") && !webdavusername.equals("") && !webdavpassword.equals(""))
+                    {
                         System.out.println("Exporting silently in the background");
                         MainActivity.exportWebDavService(getApplicationContext(), webdavurl, webdavusername, webdavpassword);
                         MainActivity.autoBackup = false;
+
                     }
                     // Check if we should backup every 1 hour
                     Thread.sleep(3600000);
                 }
-
             } catch (InterruptedException e)
             {
                 // Restore interrupt status.
                 Thread.currentThread().interrupt();
+                System.out.println(e.toString());
             }
             // Stop the service using the startId, so that we don't stop
             // the service in the middle of handling another job
@@ -80,6 +78,8 @@ public class WebdavBackupService extends Service {
         // background priority so CPU-intensive work doesn't disrupt our UI.
         HandlerThread thread = new HandlerThread("ServiceStartArguments", Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
+
+        Toast.makeText(this, "Backup Service started", Toast.LENGTH_SHORT).show();
 
 
         // Get the HandlerThread's Looper and use it for our Handler
@@ -109,6 +109,6 @@ public class WebdavBackupService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Backup Service stopped", Toast.LENGTH_SHORT).show();
     }
 }
