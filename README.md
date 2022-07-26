@@ -19,6 +19,10 @@ Verifit is a simple minimalist fitness tracker that I made mainly for myself. Th
 * Volume, actual 1RM, estimated 1RM, and other stats tracking
 * Includes simple rest timer
 
+## Planned features
+* Dark Mode
+* More detailed stats (e.g. customized per exercise graphs)
+
 ## Screenshots
 <img width="200" src="/metadata/screenshots/Screenshot2.jpg"> <img width="200" src="/metadata/screenshots/Screenshot1.jpg"> <img width="200" src="/metadata/screenshots/Screenshot3.jpg"> <img width="200" src="/metadata/screenshots/Screenshot4.jpg">
 <img width="200" src="/metadata/screenshots/Screenshot5.jpg"> <img width="200" src="/metadata/screenshots/Screenshot6.jpg"> <img width="200" src="/metadata/screenshots/Screenshot7.jpg"> <img width="200" src="/metadata/screenshots/Screenshot8.jpg">
@@ -28,6 +32,13 @@ Verifit is a simple minimalist fitness tracker that I made mainly for myself. Th
 ## Libraries Used
 * [MPAndroid Chart](https://github.com/PhilJay/MPAndroidChart)
 * [Sardine](https://github.com/lookfirst/sardine)
+
+## Setting up a backup server
+For running a backup server there are two main routes you can take
+- Selfhost it (i.e. run it on hardware you physically own)
+- Rent a VPS and run it there
+
+If you decide to run it on a VPS I recommend and use [Vultr](https://www.vultr.com/?ref=9014908). As for the actual steps, you can find many [guides](https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-20-04) on how to setup an Apache Webdav server on Ubuntu.
 
 ## Donations
 42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is
