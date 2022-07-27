@@ -11,8 +11,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,8 +26,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -94,11 +90,18 @@ public class AddExerciseActivity extends AppCompatActivity {
         initrecyclerView();
 
         System.out.println("date_selected: " + MainActivity.date_selected);
+
+        // User can modify data structures, possible race condition, thus temporary disable autobackup
+        MainActivity.inAddExerciseActivity = true;
     }
 
     // Button On Click Methods
     public void clickSave(View view)
     {
+        // Let backup service know that something has changed
+        MainActivity.autoBackupRequired = true;
+
+
         if(et_weight.getText().toString().isEmpty() || et_reps.getText().toString().isEmpty())
         {
             Toast.makeText(getApplicationContext(),"Please write Weight and Reps",Toast.LENGTH_SHORT).show();
@@ -111,8 +114,6 @@ public class AddExerciseActivity extends AppCompatActivity {
 
             // Create New Set Object
             WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getExerciseCategory(exercise_name),reps,weight);
-
-//            workoutSet.setComment();
 
             // Ignore wrong input
             if(reps == 0 || weight == 0 || reps < 0 || weight < 0)
@@ -150,10 +151,10 @@ public class AddExerciseActivity extends AppCompatActivity {
                             {
                                 workoutSet.setComment(exerciseComment);
                             }
-
                         }
                     }
-
+                    // To Do: Use mutex here
+                    // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
                     MainActivity.Workout_Days.get(position).addSet(workoutSet);
                 }
                 // If not construct new workout day
@@ -161,6 +162,9 @@ public class AddExerciseActivity extends AppCompatActivity {
                 {
                     WorkoutDay workoutDay = new WorkoutDay();
                     workoutDay.addSet(workoutSet);
+
+                    // To Do: Use mutex here
+                    // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
                     MainActivity.Workout_Days.add(workoutDay);
                 }
 
@@ -188,6 +192,9 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Delete Function
         else
         {
+            // Let backup service know that something has changed
+            MainActivity.autoBackupRequired = true;
+
             // Show confirmation dialog  box
             // Prepare to show exercise dialog box
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -280,10 +287,10 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Actually Save Changes in shared preferences
         MainActivity.saveWorkoutData(getApplicationContext());
 
-        // Enable flag for auto webdav backup to trigger
-        MainActivity.autoBackup = true;
-
         System.out.println("On Stop3");
+
+        // User cannot modify data structures, thus we can let service auto backup without race conditions
+        MainActivity.inAddExerciseActivity = false;
     }
 
     // Do I even need to explain this?
@@ -736,9 +743,12 @@ public class AddExerciseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Makes necesary checks and saves comment
+    // Makes necessary checks and saves comment
     public void saveComment()
     {
+        // Let backup service know that something has changed
+        MainActivity.autoBackupRequired = true;
+
         // Check for empty input
         if(et_exercise_comment.getText().toString().isEmpty())
         {
@@ -788,9 +798,12 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     }
 
-    // Makes necesary checks and clears comment
+    // Makes necessary checks and clears comment
     public void clearComment()
     {
+        // Let backup service know that something has changed
+        MainActivity.autoBackupRequired = true;
+
         et_exercise_comment.setText("");
 
         // Check if exercise exists (cannot comment on non-existant exercise)

@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static HashMap<String,Double> LastTimeVolume = new HashMap<String,Double>(); // Holds last workout's volume for each exercise
     public ViewPager2 viewPager2; // View Pager that is used in main activity
     public static ArrayList<WorkoutDay> Infinite_Workout_Days = new ArrayList<WorkoutDay>(); // Used to populate the viewPager object in MainActivity with "infinite" days
-    public static Boolean autoBackup = false;
-    public static Mutex SharedPreferencesMutex;
+    public static Boolean autoBackupRequired = false;
+    public static Boolean inAddExerciseActivity = false;
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -1254,7 +1254,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Enable networking on main thread  (this is not needed anymore)
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
-        
+
         // Sardine Stuff
         Sardine sardine = new OkHttpSardine();
         sardine.setCredentials(webdavusername, webdavpassword);

@@ -39,17 +39,19 @@ public class WebdavBackupService extends Service {
                     String webdavusername = loadSharedPreferences("webdav_username");
                     String webdavpassword = loadSharedPreferences("webdav_password");
 
+                    System.out.println("MainActivity.autoBackup = " + MainActivity.autoBackupRequired);
+                    System.out.println("MainActivity.inAddExerciseActivity = " + MainActivity.inAddExerciseActivity);
+
 
                     // Automatic webdav backup is on and a new workout is saved
-                    if(autowebdavbackup.equals("true") && togglewebdav.equals("true") && MainActivity.autoBackup && !webdavurl.equals("") && !webdavusername.equals("") && !webdavpassword.equals(""))
+                    if(autowebdavbackup.equals("true") && togglewebdav.equals("true") && MainActivity.autoBackupRequired && !MainActivity.inAddExerciseActivity &&  !webdavurl.equals("") && !webdavusername.equals("") && !webdavpassword.equals(""))
                     {
                         System.out.println("Exporting silently in the background");
                         MainActivity.exportWebDavService(getApplicationContext(), webdavurl, webdavusername, webdavpassword);
-                        MainActivity.autoBackup = false;
-
+                        MainActivity.autoBackupRequired = false;
                     }
-                    // Check if we should backup every 1 hour
-                    Thread.sleep(3600000);
+                    // Check if we should backup every 10 min
+                    Thread.sleep(1000*60*10);
                 }
             } catch (InterruptedException e)
             {
