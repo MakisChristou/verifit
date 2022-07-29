@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static ArrayList<WorkoutDay> Infinite_Workout_Days = new ArrayList<WorkoutDay>(); // Used to populate the viewPager object in MainActivity with "infinite" days
     public static Boolean autoBackupRequired = false;
     public static Boolean inAddExerciseActivity = false;
+    public static WebdavAdapter webdavAdapter;
 
     // For File I/O permissions
     public static final int READ_REQUEST_CODE = 42;
@@ -1424,7 +1425,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static void clickedOnImportWebdav(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog, AlertDialog alertDialog, View view)
     {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Webdav);
-        WebdavAdapter webdavAdapter;
+        //WebdavAdapter webdavAdapter;
 
 
         // Enable networking on main thread (this is not needed anymore)
@@ -1459,7 +1460,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
 
-            // Dismiss loading dialog
+            // Dismiss loading dialog on normal functionality
             loadingDialog.dismissDialog();
 
 
@@ -1484,8 +1485,50 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             });
 
-            // Dismiss loading dialog
+            // Dismiss loading dialog on exception
             loadingDialog.dismissDialog();
+        }
+    }
+
+    public static void DeleteWebdavThread(Activity context, String webdavurl, String webdavusername, String webdavpassword, String webdavresource, LoadingDialog loadingDialog)
+    {
+        // Enable networking on main thread
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
+
+        // Sardine Stuff
+        Sardine sardine = new OkHttpSardine();
+        sardine.setCredentials(webdavusername, webdavpassword);
+
+
+        try
+        {
+            // Delete remote file and notify adapter that data has changed
+            sardine.delete(webdavurl+webdavresource);
+            System.out.println("Hello");
+            MainActivity.webdavAdapter.Resources = sardine.list(webdavurl);
+            System.out.println("Hello1");
+
+            // UI Stuff from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    MainActivity.webdavAdapter.notifyDataSetChanged();
+                }
+            });
+
+
+
+            System.out.println("Hello2");
+
+            //notifyDataSetChanged();
+            loadingDialog.dismissDialog();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            System.out.println(e.toString());
+            //Toast.makeText(ct, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1645,5 +1688,30 @@ class CheckWebdavThread extends Thread{
     @Override
     public void run() {
         MainActivity.checkWebdav(context, webdavurl, webdavusername, webdavpassword, loadingDialog);
+    }
+}
+
+class DeleteWebdavThread extends Thread{
+
+    String webdavurl;
+    String webdavusername;
+    String webdavpassword;
+    String webdavresource;
+    Activity context;
+    LoadingDialog loadingDialog;
+
+    DeleteWebdavThread(Activity context, String webdavurl, String webdavusername, String webdavpassword, String webdavresource, LoadingDialog loadingDialog)
+    {
+        this.context = context;
+        this.webdavurl = webdavurl;
+        this.webdavusername = webdavusername;
+        this.webdavpassword = webdavpassword;
+        this.loadingDialog = loadingDialog;
+        this.webdavresource = webdavresource;
+    }
+
+    @Override
+    public void run() {
+        MainActivity.DeleteWebdavThread(context, webdavurl, webdavusername, webdavpassword, webdavresource, loadingDialog);
     }
 }

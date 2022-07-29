@@ -1,25 +1,36 @@
 package com.example.verifit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thegrizzlylabs.sardineandroid.DavResource;
+import com.thegrizzlylabs.sardineandroid.Sardine;
+import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +54,46 @@ public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHold
         LayoutInflater inflater = LayoutInflater.from(this.ct);
         View view = inflater.inflate(R.layout.webdav_row,parent,false);
         return new MyViewHolder(view);
+    }
+
+    private void showPopupMenu(View view, int position)
+    {
+        PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+        popupMenu.inflate(R.menu.webdav_floating_context_menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item)
+            {
+                // Load Webdav url and credentials
+                SharedPreferences sharedPreferences = ct.getSharedPreferences("shared preferences", 0); // MODE_PRIVATE = 0
+                String webdav_url = sharedPreferences.getString("webdav_url", "");
+                String webdav_username = sharedPreferences.getString("webdav_username", "");
+                String webdav_password = sharedPreferences.getString("webdav_password", "");
+                String webdav_resource = Resources.get(position).getName();
+
+
+                // To Do: Edit Remote Webdav Resource
+                if(item.getItemId() == R.id.edit)
+                {
+                    System.out.println("Sardine Edit Clicked");
+                }
+
+                // Delete Remote Webdav Resource
+                else if(item.getItemId() == R.id.delete)
+                {
+                    System.out.println("Sardine Delete Clicked");
+
+                    // Show network loading popup and run stuff on background thread
+                    final LoadingDialog loadingDialog = new LoadingDialog((Activity) ct);
+                    loadingDialog.loadingAlertDialog();
+
+                    DeleteWebdavThread deleteWebdavThread = new DeleteWebdavThread((Activity) ct, webdav_url, webdav_username, webdav_password, webdav_resource, loadingDialog);
+                    deleteWebdavThread.start();
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
     }
 
     @Override
@@ -77,43 +128,20 @@ public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHold
                 //MainActivity.importWebDav(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
                 ImportWebdavThread importWebdavThread = new ImportWebdavThread(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
                 importWebdavThread.start();
-
-
             }
         });
 
-//        // Change TextView text
-//        holder.tv_exercise_name.setText(Exercises.get(position).getExercise());
-//
-//        // Recycler View Stuff
-//        // Change RecyclerView items
-//        WorkoutSetAdapter workoutSetAdapter = new WorkoutSetAdapter(ct, Exercises.get(position).getSets());
-//        holder.recyclerView.setAdapter(workoutSetAdapter);
-//        holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
-//
-//
-//        holder.editButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                startIntent(position);
-//            }
-//        });
-//
-//        // Colorize exercise icon accordingly
-//        setCategoryIconTint(holder,Exercises.get(position).getExercise());
+
+        holder.cardview_webdav.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view)
+            {
+                // Show Popup Menu Edit, Delete options just like in the exercises Activity
+                showPopupMenu(view, position);
+                return true;
+            }
+        });
     }
-
-
-//    // Go to Add Exercise
-//    public void startIntent(int position)
-//    {
-//        Intent in = new Intent(ct,AddExerciseActivity.class);
-//        in.putExtra("exercise",Resources.get(position).getName());
-//        ct.startActivity(in);
-//    }
-
 
     @Override
     public int getItemCount()

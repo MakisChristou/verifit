@@ -26,14 +26,6 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.thegrizzlylabs.sardineandroid.DavResource;
-import com.thegrizzlylabs.sardineandroid.Sardine;
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
-
-import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -256,7 +248,9 @@ public class SettingsActivity extends AppCompatActivity {
                     webdavcheckconnection.setVisible(true);
                     Preference autowebdavbackup = findPreference("autowebdavbackup");
                     autowebdavbackup.setVisible(true);
-                } else {
+                }
+                else
+                {
                     // Your switch is off
                     System.out.println("Toggle is off");
                     Toast.makeText(getContext(), "Webdav is off", Toast.LENGTH_SHORT).show();
@@ -301,11 +295,8 @@ public class SettingsActivity extends AppCompatActivity {
                     // Prepare to show remote files dialog box
                     LayoutInflater inflater = LayoutInflater.from(getContext());
                     View view = inflater.inflate(R.layout.choose_webdav_file_dialog,null);
-                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create(); //crash here
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
-
-                    // To Do: Why is this crashing?
-                    //MainActivity.clickedOnImportWebdav(getContext(), webdav_url, webdav_username,webdav_password);
                     ClickedOnWebdavThread clickedOnWebdavThread = new ClickedOnWebdavThread(getActivity(), webdav_url, webdav_username, webdav_password, loadingDialog, alertDialog, view);
                     clickedOnWebdavThread.start();
                 }
@@ -327,11 +318,8 @@ public class SettingsActivity extends AppCompatActivity {
                     final LoadingDialog loadingDialog = new LoadingDialog((Activity) getContext());
                     loadingDialog.loadingAlertDialog();
 
-//                    MainActivity.exportWebDav(getContext(), webdav_url, webdav_username, webdav_password);
                     ExportWebdavThread exportWebdavThread = new ExportWebdavThread(getContext(), webdav_url, webdav_username, webdav_password);
                     exportWebdavThread.start();
-
-                    // To Do: Show loading popup here
                 }
             }
             else if (key.equals("webdavurl"))
