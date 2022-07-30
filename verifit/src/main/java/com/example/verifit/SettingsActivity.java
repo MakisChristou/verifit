@@ -59,6 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference webdavpassword = findPreference("webdavpassword");
             Preference webdavcheckconnection = findPreference("webdavcheckconnection");
             Preference autowebdavbackup = findPreference("autowebdavbackup");
+            Preference autobackup = findPreference("autobackup");
 
             PreferenceManager preferenceManager = getPreferenceManager();
             if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true))
@@ -103,6 +104,15 @@ public class SettingsActivity extends AppCompatActivity {
                 saveSharedPreferences("false", "autowebdavbackup");
             }
 
+            if (preferenceManager.getSharedPreferences().getBoolean("autobackup", true))
+            {
+                saveSharedPreferences("true", "autobackup");
+            }
+            else
+            {
+                saveSharedPreferences("false", "autobackup");
+            }
+
             // On user update save Webdav config in shared preferences
 
             webdavurl.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -134,14 +144,6 @@ public class SettingsActivity extends AppCompatActivity {
                     return false;
                 }
             });
-
-//            autowebdavbackup.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-//                @Override
-//                public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                    saveSharedPreferences(newValue.toString(), "autowebdavbackup");
-//                    return false;
-//                }
-//            });
 
             // Make password not shown when typing
             EditTextPreference preference = findPreference("webdavpassword");
@@ -364,15 +366,33 @@ public class SettingsActivity extends AppCompatActivity {
                 PreferenceManager preferenceManager = getPreferenceManager();
                 if (preferenceManager.getSharedPreferences().getBoolean("autowebdavbackup", true))
                 {
+                    System.out.println("Auto Webdav backup is on");
+                    Toast.makeText(getContext(), "Auto Webdav backup is on", Toast.LENGTH_SHORT).show();
+                    saveSharedPreferences("true", "autowebdavbackup");
+                }
+                else
+                {
+                    System.out.println("Auto Webdav backup is off");
+                    Toast.makeText(getContext(), "Auto Webdav backup is off", Toast.LENGTH_SHORT).show();
+                    saveSharedPreferences("false", "autowebdavbackup");
+                }
+            }
+
+            // Not being used currently
+            else if(key.equals("autobackup"))
+            {
+                PreferenceManager preferenceManager = getPreferenceManager();
+                if (preferenceManager.getSharedPreferences().getBoolean("autobackup", true))
+                {
                     System.out.println("Auto backup is on");
                     Toast.makeText(getContext(), "Auto backup is on", Toast.LENGTH_SHORT).show();
-                    saveSharedPreferences("true", "autowebdavbackup");
+                    saveSharedPreferences("true", "autobackup");
                 }
                 else
                 {
                     System.out.println("Auto backup is off");
                     Toast.makeText(getContext(), "Auto backup is off", Toast.LENGTH_SHORT).show();
-                    saveSharedPreferences("false", "autowebdavbackup");
+                    saveSharedPreferences("false", "autobackup");
                 }
             }
 

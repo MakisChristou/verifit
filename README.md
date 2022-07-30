@@ -6,6 +6,10 @@ Verifit is a simple minimalist fitness tracker that I made mainly for myself. Th
       alt="Download from Google Play"
       height="80">](https://play.google.com/store/apps/details?id=com.whatever.verifit)
 
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+alt="Download from Izzy Droid"
+height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.whatever.verifit)
+
 ## Features
 * Exercise tracking
 * Create custom exercises

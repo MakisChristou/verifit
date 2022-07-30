@@ -59,7 +59,6 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -70,8 +69,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import kotlinx.coroutines.sync.Mutex;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , DatePickerDialog.OnDateSetListener{
 
@@ -131,11 +128,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         // If backup background service has not started, start it
-        if(!isMyServiceRunning(WebdavBackupService.class))
+        if(!isMyServiceRunning(BackupService.class))
         {
             System.out.println("Starting Service");
             // Start background service, allegedly
-            Intent intent = new Intent(this, WebdavBackupService.class);
+            Intent intent = new Intent(this, BackupService.class);
             startService(intent);
         }
 

@@ -22,6 +22,7 @@
             app:title="Clear Data"
             app:useSimpleSummaryProvider="false" />
 
+
     <PreferenceCategory app:title="Backup: Webdav">
 
         <SwitchPreference
@@ -66,8 +67,8 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="autowebdavbackup"
-            android:summary="Auto sync workouts to your webdav server"
-            android:title="Automatic Backup" />
+            android:summary="Auto export workouts to your webdav server"
+            android:title="Automatic Export" />
 
     </PreferenceCategory>
     </PreferenceCategory>

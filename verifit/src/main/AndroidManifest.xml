@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".WebdavBackupService" />
+        <service android:name=".BackupService" />
 
         <activity android:name=".SplashScreenActivity"/>
         <activity
