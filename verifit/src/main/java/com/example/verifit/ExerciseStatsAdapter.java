@@ -81,12 +81,30 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
         }
 
 
+        // By default cards are expanded
+        holder.moreButton.setImageResource(R.drawable.ic_expand_more_24px);
+        holder.cardview_stats.setVisibility(View.VISIBLE);
+        holder.blue_line.setVisibility(View.VISIBLE);
+
 
         holder.cardview_viewpager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                System.out.println("Clicked on " + exercise_name);
+                // Shrink Card
+                if(holder.cardview_stats.getVisibility() == View.VISIBLE)
+                {
+                    holder.moreButton.setImageResource(R.drawable.ic_expand_less_24px);
+                    holder.cardview_stats.setVisibility(View.GONE);
+                    holder.blue_line.setVisibility(View.INVISIBLE);
+                }
+                // Expand Card
+                else
+                {
+                    holder.moreButton.setImageResource(R.drawable.ic_expand_more_24px);
+                    holder.cardview_stats.setVisibility(View.VISIBLE);
+                    holder.blue_line.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -96,7 +114,7 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
             public boolean onLongClick(View view)
             {
                 System.out.println("Long Clicked on " + exercise_name);
-                return false;
+                return true;
             }
         });
 
@@ -182,8 +200,10 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
         TextView tv_estimated_1rm;
         TextView tv_actual_1rm;
         CardView cardview_viewpager;
+        CardView cardview_stats;
         ImageButton favoriteButton;
         ImageButton moreButton;
+        View blue_line;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -196,8 +216,10 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
             tv_estimated_1rm = itemView.findViewById(R.id.tv_estimated_1rm);
             tv_actual_1rm = itemView.findViewById(R.id.tv_actual_1rm);
             cardview_viewpager = itemView.findViewById(R.id.cardview_viewpager);
+            cardview_stats = itemView.findViewById(R.id.cardview_stats);
             favoriteButton  = itemView.findViewById(R.id.favoriteButton);
             moreButton = itemView.findViewById(R.id.moreButton);
+            blue_line = itemView.findViewById(R.id.blue_line);
         }
     }
 }
