@@ -5,6 +5,17 @@ public class Exercise {
     // Attributes
     private String Name;
     private String BodyPart;
+    private Boolean favorite;
+
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
+    }
+
+
 
 
     // Methods
@@ -12,6 +23,7 @@ public class Exercise {
     {
         this.Name = name;
         this.BodyPart = bodypart;
+        this.favorite = false;
     }
 
     public String getBodyPart() {

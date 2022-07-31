@@ -34,13 +34,13 @@
         <activity
             android:name="com.example.verifit.SettingsActivity"
             android:label="Settings"
-            android:parentActivityName=".MeActivity"/>
+            android:parentActivityName=".PersonalRecordsActivity"/>
         <activity
             android:name="com.example.verifit.CalculatorActivity"
             android:label="Plate Calculator" />
         <activity
-            android:name="com.example.verifit.MeActivity"
-            android:label="Me" />
+            android:name="com.example.verifit.PersonalRecordsActivity"
+            android:label="Personal Records" />
         <activity
             android:name="com.example.verifit.AddExerciseActivity"
             android:label="Add Exercise" />

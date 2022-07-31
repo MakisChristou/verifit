@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -308,7 +304,7 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         TextView maxsetvolume = view.findViewById(R.id.maxsetvolume);
         TextView name = view.findViewById(R.id.tv_date);
         TextView onerepmax = view.findViewById(R.id.onerepmax);
-        TextView actualonerepmax = view.findViewById(R.id.actualonerepmax);
+        TextView actualonerepmax = view.findViewById(R.id.tv_maxweight);
         Button bt_close = view.findViewById(R.id.bt_close);
         Button bt_edit_exercise = view.findViewById(R.id.bt_edit_exercise);
 

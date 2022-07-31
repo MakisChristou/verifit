@@ -29,6 +29,7 @@ import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // Initialized with hardcoded exercises
     public static String date_selected; // Used for other activities to get the selected date, by default it's set to today
     public static HashMap<String,Double> VolumePRs = new HashMap<String,Double>();
+    public static HashMap<String, Pair<Double,Double>> SetVolumePRs = new HashMap<String, Pair<Double,Double>>(); // first = reps, second = weight
     public static HashMap<String,Double> ActualOneRepMaxPRs = new HashMap<String,Double>();
     public static HashMap<String,Double> EstimatedOneRMPRs = new HashMap<String,Double>();
     public static HashMap<String,Double> MaxRepsPRs = new HashMap<String,Double>();
@@ -571,6 +573,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static void calculatePersonalRecords()
     {
         MainActivity.VolumePRs.clear();
+        MainActivity.SetVolumePRs.clear();
         MainActivity.ActualOneRepMaxPRs.clear();
         MainActivity.EstimatedOneRMPRs.clear();
         MainActivity.MaxRepsPRs.clear();
@@ -581,6 +584,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
         {
             MainActivity.VolumePRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
+            MainActivity.SetVolumePRs.put((MainActivity.KnownExercises.get(i).getName()),new Pair(0.0, 0.0));
             MainActivity.ActualOneRepMaxPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
             MainActivity.EstimatedOneRMPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
             MainActivity.MaxRepsPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
@@ -597,11 +601,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 {
                     if(MainActivity.Workout_Days.get(j).getExercises().get(k).getExercise().equals(MainActivity.KnownExercises.get(i).getName()))
                     {
-                        // Volume Personal Records
+                        // Per Exercise Volume Personal Records
                         if(VolumePRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume()))
                         {
                             MainActivity.Workout_Days.get(j).getExercises().get(k).setVolumePR(true);
                             VolumePRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
+                        }
+
+                        Double setVolume = SetVolumePRs.get(MainActivity.KnownExercises.get(i).getName()).first * SetVolumePRs.get(MainActivity.KnownExercises.get(i).getName()).second;
+
+                        // Per Set Volume Personal Records
+                        if(setVolume  < (MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxSetVolume()))
+                        {
+                            Double maxReps = MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxReps();
+                            Double maxWeight = MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxWeight();
+
+                            Pair pair = new Pair(maxReps, maxWeight);
+
+                            SetVolumePRs.put(MainActivity.KnownExercises.get(i).getName(), pair);
                         }
 
                         // Actual One Repetition Maximum
@@ -643,9 +660,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         {
                             LastTimeVolume.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
                         }
-
-
-
                     }
                 }
             }
@@ -711,6 +725,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             {
                 KnownExercises = new ArrayList<Exercise>();
                 initKnownExercises();
+            }
+        }
+
+        // Those who have previously saved entries will have null in this case
+        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        {
+            if(MainActivity.KnownExercises.get(i).getFavorite() == null)
+            {
+                MainActivity.KnownExercises.get(i).setFavorite(false);
             }
         }
     }
@@ -1051,6 +1074,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
         return "";
+    }
+
+    // Returns the exercise category if exists, else it returns an empty string
+    public static Boolean isExerciseFavorite(String Exercise)
+    {
+        for(int i = 0; i < KnownExercises.size(); i++)
+        {
+            if(KnownExercises.get(i).getName().equals(Exercise))
+            {
+                System.out.println(Exercise + " " + KnownExercises.get(i).getFavorite());
+                return KnownExercises.get(i).getFavorite();
+            }
+        }
+        return false;
     }
 
     // Deletes exercise from KnownExercises and from WorkoutDays
@@ -1560,7 +1597,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         else if(item.getItemId() == R.id.me)
         {
-            Intent in = new Intent(this,MeActivity.class);
+            Intent in = new Intent(this, PersonalRecordsActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
