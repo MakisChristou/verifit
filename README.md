@@ -31,7 +31,7 @@ height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.whatever.verifit)
 <img width="200" src="/metadata/screenshots/Screenshot2.jpg"> <img width="200" src="/metadata/screenshots/Screenshot1.jpg"> <img width="200" src="/metadata/screenshots/Screenshot3.jpg"> <img width="200" src="/metadata/screenshots/Screenshot4.jpg">
 <img width="200" src="/metadata/screenshots/Screenshot5.jpg"> <img width="200" src="/metadata/screenshots/Screenshot6.jpg"> <img width="200" src="/metadata/screenshots/Screenshot7.jpg"> <img width="200" src="/metadata/screenshots/Screenshot8.jpg">
 <img width="200" src="/metadata/screenshots/Screenshot9.jpg"> <img width="200" src="/metadata/screenshots/Screenshot10.jpg"> <img width="200" src="/metadata/screenshots/Screenshot11.jpg"> <img width="200" src="/metadata/screenshots/Screenshot12.jpg">
-<img width="200" src="/metadata/screenshots/Screenshot13.jpg"> <img width="200" src="/metadata/screenshots/Screenshot14.jpg"> 
+<img width="200" src="/metadata/screenshots/Screenshot13.jpg"> <img width="200" src="/metadata/screenshots/Screenshot14.jpg"> <img width="200" src="/metadata/screenshots/Screenshot15.jpg"> <img width="200" src="/metadata/screenshots/Screenshot16.jpg"> 
 
 ## Libraries Used
 * [MPAndroid Chart](https://github.com/PhilJay/MPAndroidChart)
