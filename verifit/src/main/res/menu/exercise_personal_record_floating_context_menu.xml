@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/favorite"
+        android:title="Toggle Favorite"
+        android:icon="@drawable/ic_create_24px">
+    </item>
+
+    <item
+        android:id="@+id/charts"
+        android:title="Charts"
+        android:icon="@drawable/ic_create_24px">
+    </item>
+
+
+
+</menu>

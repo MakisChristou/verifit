@@ -54,9 +54,11 @@
         <entry key="verifit/src/main/res/layout/webdav_row.xml" value="0.4354166666666667" />
         <entry key="verifit/src/main/res/layout/workout_set_row.xml" value="0.3233695652173913" />
         <entry key="verifit/src/main/res/menu/add_exercise_activity_menu.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/menu/exercise_personal_record_floating_context_menu.xml" value="0.20625" />
         <entry key="verifit/src/main/res/menu/exercises_activity_floating_context_menu.xml" value="0.23854166666666668" />
         <entry key="verifit/src/main/res/menu/exercises_activity_menu.xml" value="0.246875" />
         <entry key="verifit/src/main/res/menu/me_activity_menu.xml" value="0.246875" />
+        <entry key="verifit/src/main/res/menu/personal_records_activity_menu.xml" value="0.20625" />
         <entry key="verifit/src/main/res/menu/webdav_floating_context_menu.xml" value="0.23854166666666668" />
         <entry key="verifit/src/main/res/xml/root_preferences.xml" value="0.26367781155015196" />
       </map>

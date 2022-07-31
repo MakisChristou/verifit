@@ -15,12 +15,16 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 
 public class PersonalRecordsActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
-    ArrayList<ExercisePersonalStats> exerciseStats = new ArrayList();
+    public static ArrayList<ExercisePersonalStats> exerciseStats = new ArrayList();
+    public static RecyclerView recyclerView;
+    public static ExerciseStatsAdapter exerciseStatsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +35,13 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
 
         calculatePersonalRecords();
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        ExerciseStatsAdapter exerciseStatsAdapter = new ExerciseStatsAdapter(this, exerciseStats);
+        exerciseStatsAdapter = new ExerciseStatsAdapter(this, PersonalRecordsActivity.exerciseStats);
         recyclerView.setAdapter(exerciseStatsAdapter);
 
     }
@@ -52,10 +56,19 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
     }
 
 
-    public void calculatePersonalRecords()
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MainActivity.saveKnownExerciseData(this);
+
+    }
+
+    public static void calculatePersonalRecords()
     {
         // Calculate PRs before parsing Hashmaps
         MainActivity.calculatePersonalRecords();
+
+        PersonalRecordsActivity.exerciseStats.clear();
 
         for (HashMap.Entry<String,Double> entry : MainActivity.VolumePRs.entrySet())
         {
@@ -82,11 +95,62 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
             }
             else
             {
-                exerciseStats.add(exercisePersonalStats);
+                PersonalRecordsActivity.exerciseStats.add(exercisePersonalStats);
             }
+//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 
+            // Show favorites first
+            Collections.sort(PersonalRecordsActivity.exerciseStats, new Comparator<ExercisePersonalStats>() {
+                @Override
+                public int compare(ExercisePersonalStats exerciseStats1, ExercisePersonalStats exerciseStats2) {
+                    return Boolean.compare(exerciseStats2.getFavorite(), exerciseStats1.getFavorite());
+                }
+            });
+
+        }
+    }
+
+
+    public static void showFavorites()
+    {
+        // Calculate PRs before parsing Hashmaps
+        MainActivity.calculatePersonalRecords();
+
+        PersonalRecordsActivity.exerciseStats.clear();
+
+        for (HashMap.Entry<String,Double> entry : MainActivity.VolumePRs.entrySet())
+        {
+            String currentExerciseName = entry.getKey();
+            String exerciseCategory = MainActivity.getExerciseCategory(currentExerciseName);
+
+            ExercisePersonalStats exercisePersonalStats = new ExercisePersonalStats();
+            exercisePersonalStats.exerciseName = currentExerciseName;
+            exercisePersonalStats.exerciseCategory = exerciseCategory;
+            exercisePersonalStats.maxVolume = MainActivity.VolumePRs.get(currentExerciseName);
+            exercisePersonalStats.maxSetVolume = MainActivity.SetVolumePRs.get(currentExerciseName).first * MainActivity.SetVolumePRs.get(currentExerciseName).second;
+            exercisePersonalStats.maxSetVolumeReps = MainActivity.SetVolumePRs.get(currentExerciseName).first; // First = Reps
+            exercisePersonalStats.MaxSetVolumeWeight = MainActivity.SetVolumePRs.get(currentExerciseName).second; // Second = Weight
+            exercisePersonalStats.maxReps = MainActivity.MaxRepsPRs.get(currentExerciseName);
+            exercisePersonalStats.maxWeight = MainActivity.MaxWeightPRs.get(currentExerciseName);
+            exercisePersonalStats.actual1RM = MainActivity.ActualOneRepMaxPRs.get(currentExerciseName);
+            exercisePersonalStats.estimated1RM = MainActivity.EstimatedOneRMPRs.get(currentExerciseName);
+            exercisePersonalStats.isFavorite = MainActivity.isExerciseFavorite(currentExerciseName);
+
+
+            if(MainActivity.VolumePRs.get(currentExerciseName) == 0.0 || !exercisePersonalStats.isFavorite)
+            {
+                // Skip this exercise, it was not even performed
+
+            }
+            else
+            {
+                PersonalRecordsActivity.exerciseStats.add(exercisePersonalStats);
+            }
 //            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
         }
+
+        // To Do: Finish show only favorites
+        PersonalRecordsActivity.exerciseStatsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -109,6 +173,12 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
         {
             Intent in = new Intent(this,SettingsActivity.class);
             startActivity(in);
+        }
+
+        if(item.getItemId() == R.id.favorites)
+        {
+            System.out.println("Show favorites");
+            //showFavorites();
         }
         return super.onOptionsItemSelected(item);
     }

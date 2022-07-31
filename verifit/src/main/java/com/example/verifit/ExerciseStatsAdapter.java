@@ -1,12 +1,16 @@
 package com.example.verifit;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -114,23 +119,60 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
             public boolean onLongClick(View view)
             {
                 System.out.println("Long Clicked on " + exercise_name);
+                showPopupMenu(holder, view, position);
                 return true;
             }
         });
 
-        setCategoryIconTint(holder, exercise_name, isFavorite,position);
+        setCategoryIconTint(holder, exercise_name, isFavorite, position);
 
 
+    }
 
-        holder.moreButton.setOnClickListener(new View.OnClickListener() {
+    private void showPopupMenu(ExerciseStatsAdapter.MyViewHolder holder, View view, int position)
+    {
+        PopupMenu popupMenu = new PopupMenu(view.getContext(), view, Gravity.NO_GRAVITY, R.attr.actionOverflowMenuStyle, 0);
+
+        popupMenu.inflate(R.menu.exercise_personal_record_floating_context_menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onClick(View view)
+            public boolean onMenuItemClick(MenuItem item)
             {
-                System.out.println("Long Clicked on Exercise " + exercise_name);
+
+                // To Do: Edit Remote Webdav Resource
+                if(item.getItemId() == R.id.charts)
+                {
+                    System.out.println("Charts Clicked");
+                }
+
+                // Delete Remote Webdav Resource
+                else if(item.getItemId() == R.id.favorite)
+                {
+                    System.out.println("Favorite Clicked");
+
+                    String exercise_name = exercisePersonalStats.get(position).getExerciseName();
+
+                    Boolean isFavorite = MainActivity.isExerciseFavorite(exercise_name);
+
+
+                    MainActivity.setFavoriteExercise(exercise_name, !isFavorite);
+
+
+                    isFavorite = MainActivity.isExerciseFavorite(exercise_name);
+
+
+                    PersonalRecordsActivity.calculatePersonalRecords();
+
+
+                    setCategoryIconTint(holder, exercise_name, isFavorite, position);
+
+
+
+                }
+                return false;
             }
         });
-
-
+        popupMenu.show();
     }
 
     // Simple

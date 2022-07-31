@@ -569,6 +569,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
+    public static void setFavoriteExercise(String exerciseName, Boolean isFavorite)
+    {
+        // Initialize Volume Record Hashmap
+        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        {
+            if(MainActivity.KnownExercises.get(i).getName().equals(exerciseName))
+            {
+                System.out.println("Setting exercise " + exerciseName + " as favorite: " + isFavorite);
+                MainActivity.KnownExercises.get(i).setFavorite(isFavorite);
+            }
+        }
+
+
+    }
+
     // Calculate all Volume Personal Records from scratch
     public static void calculatePersonalRecords()
     {
@@ -1083,7 +1098,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             if(KnownExercises.get(i).getName().equals(Exercise))
             {
-                System.out.println(Exercise + " " + KnownExercises.get(i).getFavorite());
+                //System.out.println(Exercise + " " + KnownExercises.get(i).getFavorite());
                 return KnownExercises.get(i).getFavorite();
             }
         }
