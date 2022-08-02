@@ -45,7 +45,16 @@ For running a backup server there are two main routes you can take
 If you decide to run it on a VPS I recommend and use [Vultr](https://www.vultr.com/?ref=9014908). As for the actual steps, you can find many [guides](https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-20-04) on how to setup an Apache Webdav server on Ubuntu.
 
 ## Donations
+
+### Donate with Monero
+
 42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is
 
  <img width="200" src="/verifit/src/main/res/drawable/xmr.png">
+
+
+### Donate with Paypal
+[<img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png"
+alt="Donate with paypal"
+height="80">](https://www.paypal.com/donate/?hosted_button_id=YFZX88G8XDSN4)
 
