@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -111,48 +112,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
     }
 
 
-    public static void showFavorites()
-    {
-        // Calculate PRs before parsing Hashmaps
-        MainActivity.calculatePersonalRecords();
-
-        PersonalRecordsActivity.exerciseStats.clear();
-
-        for (HashMap.Entry<String,Double> entry : MainActivity.VolumePRs.entrySet())
-        {
-            String currentExerciseName = entry.getKey();
-            String exerciseCategory = MainActivity.getExerciseCategory(currentExerciseName);
-
-            ExercisePersonalStats exercisePersonalStats = new ExercisePersonalStats();
-            exercisePersonalStats.exerciseName = currentExerciseName;
-            exercisePersonalStats.exerciseCategory = exerciseCategory;
-            exercisePersonalStats.maxVolume = MainActivity.VolumePRs.get(currentExerciseName);
-            exercisePersonalStats.maxSetVolume = MainActivity.SetVolumePRs.get(currentExerciseName).first * MainActivity.SetVolumePRs.get(currentExerciseName).second;
-            exercisePersonalStats.maxSetVolumeReps = MainActivity.SetVolumePRs.get(currentExerciseName).first; // First = Reps
-            exercisePersonalStats.MaxSetVolumeWeight = MainActivity.SetVolumePRs.get(currentExerciseName).second; // Second = Weight
-            exercisePersonalStats.maxReps = MainActivity.MaxRepsPRs.get(currentExerciseName);
-            exercisePersonalStats.maxWeight = MainActivity.MaxWeightPRs.get(currentExerciseName);
-            exercisePersonalStats.actual1RM = MainActivity.ActualOneRepMaxPRs.get(currentExerciseName);
-            exercisePersonalStats.estimated1RM = MainActivity.EstimatedOneRMPRs.get(currentExerciseName);
-            exercisePersonalStats.isFavorite = MainActivity.isExerciseFavorite(currentExerciseName);
-
-
-            if(MainActivity.VolumePRs.get(currentExerciseName) == 0.0 || !exercisePersonalStats.isFavorite)
-            {
-                // Skip this exercise, it was not even performed
-
-            }
-            else
-            {
-                PersonalRecordsActivity.exerciseStats.add(exercisePersonalStats);
-            }
-//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-        }
-
-        // To Do: Finish show only favorites
-        PersonalRecordsActivity.exerciseStatsAdapter.notifyDataSetChanged();
-    }
-
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -163,7 +122,31 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.personal_records_activity_menu,menu);
-        return super.onCreateOptionsMenu(menu);
+
+
+        // Search Stuff
+        MenuItem searchItem = menu.findItem(R.id.search);
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s)
+            {
+                exerciseStatsAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
+
+
+        return true;
+//        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -175,11 +158,8 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
             startActivity(in);
         }
 
-        if(item.getItemId() == R.id.favorites)
-        {
-            System.out.println("Show favorites");
-            //showFavorites();
-        }
+
+
         return super.onOptionsItemSelected(item);
     }
 

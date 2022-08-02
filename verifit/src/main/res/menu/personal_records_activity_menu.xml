@@ -6,6 +6,7 @@
         android:id="@+id/search"
         android:title="Search"
         app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:icon="@drawable/ic_search_24px"
         app:iconTint="@color/cardview_light_background">
     </item>
@@ -13,12 +14,6 @@
     <item
         android:id="@+id/settings"
         android:title="Settings"
-        app:showAsAction="never">
-    </item>
-
-    <item
-        android:id="@+id/favorites"
-        android:title="Show Favorites"
         app:showAsAction="never">
     </item>
 

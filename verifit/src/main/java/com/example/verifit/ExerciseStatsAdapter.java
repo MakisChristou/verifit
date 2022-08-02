@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,20 +31,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-
+import java.util.Iterator;
 
 
 // Adapter for WorkoutExercise Class
-public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdapter.MyViewHolder> {
+public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdapter.MyViewHolder> implements Filterable {
 
     Context ct;
     ArrayList<ExercisePersonalStats> exercisePersonalStats;
+    ArrayList<ExercisePersonalStats> exercisePersonalStatsFull;
 
 
     public ExerciseStatsAdapter(Context ct, ArrayList<ExercisePersonalStats> exercisePersonalStats)
     {
         this.ct = ct;
         this.exercisePersonalStats = new ArrayList<ExercisePersonalStats>(exercisePersonalStats);
+        this.exercisePersonalStatsFull = new ArrayList<ExercisePersonalStats>(exercisePersonalStats);
     }
 
     @NonNull
@@ -127,6 +131,21 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
         setCategoryIconTint(holder, exercise_name, isFavorite, position);
 
 
+    }
+
+
+    public void deleteExercise(String exercise_name)
+    {
+        for (Iterator<ExercisePersonalStats> exerciseIterator = this.exercisePersonalStats.iterator(); exerciseIterator.hasNext(); )
+        {
+            ExercisePersonalStats current_exercise = exerciseIterator.next();
+
+            if(current_exercise.getExerciseName().equals(exercise_name))
+            {
+                exerciseIterator.remove();
+                notifyDataSetChanged();
+            }
+        }
     }
 
     private void showPopupMenu(ExerciseStatsAdapter.MyViewHolder holder, View view, int position)
@@ -230,6 +249,54 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
     {
         return this.exercisePersonalStats.size();
     }
+
+    // Implement Filterable Methods
+    @Override
+    public Filter getFilter()
+    {
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+
+        // Return our filtered results
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<ExercisePersonalStats> Exercises_Filtered = new ArrayList<ExercisePersonalStats>();
+
+            // Don't filter anything
+            if (charSequence == null || charSequence.length() == 0) {
+                Exercises_Filtered.addAll(exercisePersonalStatsFull);
+            }
+            // Something was typed so filter results
+            else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for (int i = 0; i < exercisePersonalStats.size(); i++) {
+                    // If search patterns is contained in exercise name then show it
+                    if (exercisePersonalStats.get(i).getExerciseName().toLowerCase().contains(filterPattern)) {
+                        Exercises_Filtered.add(exercisePersonalStats.get(i));
+                    }
+                }
+            }
+
+            // Return results object to the publishResults method below
+            FilterResults results = new FilterResults();
+            results.values = Exercises_Filtered;
+            return results;
+        }
+
+        // Publish Results to the UI thread
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            exercisePersonalStats.clear();
+            exercisePersonalStats.addAll((ArrayList) filterResults.values); // Add only the filtered items
+            notifyDataSetChanged(); // Update Recycler View
+
+        }
+
+
+    };
 
     public class MyViewHolder extends  RecyclerView.ViewHolder
     {
