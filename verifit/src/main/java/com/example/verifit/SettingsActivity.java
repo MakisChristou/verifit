@@ -412,7 +412,19 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if (key.equals("donate"))
             {
-                donate();
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.com/donate/?hosted_button_id=YFZX88G8XDSN4"));
+                startActivity(browserIntent);
+//                donate();
+            }
+            else if(key.equals("privacy_policy"))
+            {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://verifit.xyz/policy/"));
+                startActivity(browserIntent);
+            }
+            else if(key.equals("reddit"))
+            {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.reddit.com/r/verifitApp/"));
+                startActivity(browserIntent);
             }
             else if (key.equals("licence"))
             {

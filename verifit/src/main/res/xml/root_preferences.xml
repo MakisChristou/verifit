@@ -106,6 +106,18 @@
             app:title="Licence"
             app:useSimpleSummaryProvider="false" />
 
+        <Preference
+            app:key="privacy_policy"
+            app:summary="Learn more about our privacy policy"
+            app:title="Privacy Policy"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            app:key="reddit"
+            app:summary="Join our reddit community"
+            app:title="Reddit"
+            app:useSimpleSummaryProvider="false" />
+
 <!--        <Preference-->
 <!--            app:key="help"-->
 <!--            app:summary=""-->
