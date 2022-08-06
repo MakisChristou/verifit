@@ -95,6 +95,14 @@ public class AddExerciseActivity extends AppCompatActivity {
         MainActivity.inAddExerciseActivity = true;
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // User can modify data structures, possible race condition, thus temporary disable autobackup
+        MainActivity.inAddExerciseActivity = true;
+    }
+
     // Button On Click Methods
     public void clickSave(View view)
     {
