@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -104,6 +105,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // The fuck
+        System.out.println("Night Mode Before");
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        System.out.println("Night Mode After");
 
         // Hacky way to have the same code run in onRestart() as well
         onCreateStuff();

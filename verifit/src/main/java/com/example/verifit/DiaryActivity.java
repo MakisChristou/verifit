@@ -27,6 +27,8 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         setContentView(R.layout.activity_diary);
 
         System.out.println("DiaryActivity::OnCreate()");
+        System.out.println("Size: " + MainActivity.Workout_Days.size());
+
         initActivity();
     }
 

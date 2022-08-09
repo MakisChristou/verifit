@@ -19,7 +19,7 @@
         <entry key="verifit/src/main/res/drawable/ic_splashscreenv1_480x800.xml" value="0.228125" />
         <entry key="verifit/src/main/res/drawable/ic_star_fill0_wght400_grad0_opsz48.xml" value="0.2525" />
         <entry key="verifit/src/main/res/drawable/notebook.xml" value="0.228125" />
-        <entry key="verifit/src/main/res/layout/activity_add_exercise.xml" value="0.27708333333333335" />
+        <entry key="verifit/src/main/res/layout/activity_add_exercise.xml" value="0.1" />
         <entry key="verifit/src/main/res/layout/activity_calculator.xml" value="0.26367781155015196" />
         <entry key="verifit/src/main/res/layout/activity_day.xml" value="0.26614583333333336" />
         <entry key="verifit/src/main/res/layout/activity_diary.xml" value="0.24479166666666666" />
@@ -59,6 +59,7 @@
         <entry key="verifit/src/main/res/menu/exercises_activity_menu.xml" value="0.246875" />
         <entry key="verifit/src/main/res/menu/me_activity_menu.xml" value="0.246875" />
         <entry key="verifit/src/main/res/menu/personal_records_activity_menu.xml" value="0.20625" />
+        <entry key="verifit/src/main/res/menu/set_add_exercise_activity_menu.xml" value="0.246875" />
         <entry key="verifit/src/main/res/menu/webdav_floating_context_menu.xml" value="0.23854166666666668" />
         <entry key="verifit/src/main/res/xml/root_preferences.xml" value="0.26367781155015196" />
       </map>

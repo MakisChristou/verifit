@@ -2,10 +2,12 @@ package com.example.verifit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -33,10 +35,11 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     // Helper Data Structures
     public RecyclerView recyclerView;
-    public String exercise_name;
+    public static String exercise_name;
     public static ArrayList<WorkoutSet> Todays_Exercise_Sets = new ArrayList<WorkoutSet>();
-    public AddExerciseWorkoutSetAdapter workoutSetAdapter2;
+    public static AddExerciseWorkoutSetAdapter workoutSetAdapter2;
     public static int Clicked_Set = 0;
+    public static Boolean isEditMode = false;
 
     // Add Exercise Activity Specifics
     public static EditText et_reps;
@@ -45,8 +48,8 @@ public class AddExerciseActivity extends AppCompatActivity {
     public ImageButton minus_reps;
     public ImageButton plus_weight;
     public ImageButton minus_weight;
-    public Button bt_save;
-    public Button bt_clear;
+    public static Button bt_save;
+    public static Button bt_clear;
 
     // For Alarm
     public long START_TIME_IN_MILLIS = 180000;
@@ -103,170 +106,230 @@ public class AddExerciseActivity extends AppCompatActivity {
         MainActivity.inAddExerciseActivity = true;
     }
 
-    // Button On Click Methods
+    // Save / Update
     public void clickSave(View view)
     {
         // Let backup service know that something has changed
         MainActivity.autoBackupRequired = true;
 
-
-        if(et_weight.getText().toString().isEmpty() || et_reps.getText().toString().isEmpty())
+        // Save Functionality
+        if(!isEditMode)
         {
-            Toast.makeText(getApplicationContext(),"Please write Weight and Reps",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            // Get user sets && reps
-            Double reps = Double.parseDouble(et_reps.getText().toString());
-            Double weight = Double.parseDouble(et_weight.getText().toString());
-
-            // Create New Set Object
-            WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getExerciseCategory(exercise_name),reps,weight);
-
-            // Ignore wrong input
-            if(reps == 0 || weight == 0 || reps < 0 || weight < 0)
+            if(et_weight.getText().toString().isEmpty() || et_reps.getText().toString().isEmpty())
             {
-                Toast.makeText(getApplicationContext(),"Please write correct Weight and Reps",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Please write Weight and Reps",Toast.LENGTH_SHORT).show();
             }
-            // Save set
             else
             {
-                // Find if workout day already exists
-                int position = MainActivity.getDayPosition(MainActivity.date_selected);
+                // Get user sets && reps
+                Double reps = Double.parseDouble(et_reps.getText().toString());
+                Double weight = Double.parseDouble(et_weight.getText().toString());
 
-                // If workout day exists
-                if(position >= 0)
+                // Create New Set Object
+                WorkoutSet workoutSet = new WorkoutSet(MainActivity.date_selected,exercise_name, MainActivity.getExerciseCategory(exercise_name),reps,weight);
+
+                // Ignore wrong input
+                if(reps == 0 || weight == 0 || reps < 0 || weight < 0)
                 {
-                    // Find comment of that workout day/exercise
-                    WorkoutDay workoutDay = MainActivity.Workout_Days.get(position);
-
-                    for(int i = 0; i < workoutDay.getSets().size(); i++)
-                    {
-                        WorkoutSet workoutSet1 = workoutDay.getSets().get(i);
-
-                        if(workoutSet1.getExercise().equals(exercise_name))
-                        {
-                            String exerciseComment = workoutSet1.getComment();
-                            System.out.println("Exercise Name: " + exercise_name);
-                            System.out.println("Exercise Comment: " + exerciseComment);
-
-
-                            if(exerciseComment == "null" || exerciseComment == null)
-                            {
-                                workoutSet.setComment("");
-                            }
-                            else
-                            {
-                                workoutSet.setComment(exerciseComment);
-                            }
-                        }
-                    }
-                    // To Do: Use mutex here
-                    // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
-                    MainActivity.Workout_Days.get(position).addSet(workoutSet);
+                    Toast.makeText(getApplicationContext(),"Please write correct Weight and Reps",Toast.LENGTH_SHORT).show();
                 }
-                // If not construct new workout day
+                // Save set
                 else
                 {
-                    WorkoutDay workoutDay = new WorkoutDay();
-                    workoutDay.addSet(workoutSet);
+                    // Find if workout day already exists
+                    int position = MainActivity.getDayPosition(MainActivity.date_selected);
 
-                    // To Do: Use mutex here
-                    // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
-                    MainActivity.Workout_Days.add(workoutDay);
-                }
-
-                // Update Local Data Structure
-                updateTodaysExercises();
-                Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        // Fixed Myria induced bug
-        AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
-    }
-
-    // Clear / Delete
-    public void clickClear(View view)
-    {
-        // Clear Function
-        if(Todays_Exercise_Sets.isEmpty())
-        {
-            bt_clear.setText("Clear");
-            et_reps.setText("");
-            et_weight.setText("");
-        }
-
-        // Delete Function
-        else
-        {
-            // Let backup service know that something has changed
-            MainActivity.autoBackupRequired = true;
-
-            // Show confirmation dialog  box
-            // Prepare to show exercise dialog box
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View view1 = inflater.inflate(R.layout.delete_set_dialog,null);
-            AlertDialog alertDialog = new AlertDialog.Builder(this).setView(view1).create();
-
-            Button bt_yes = view1.findViewById(R.id.bt_yes3);
-            Button bt_no = view1.findViewById(R.id.bt_no3);
-
-            // Dismiss dialog box
-            bt_no.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    alertDialog.dismiss();
-                }
-            });
-
-            // Actually Delete set and update local data structure
-            bt_yes.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    // Get soon to be deleted set
-                    WorkoutSet to_be_removed_set = Todays_Exercise_Sets.get(Clicked_Set);
-
-                    // Find the set in main data structure and delete it
-                    for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+                    // If workout day exists
+                    if(position >= 0)
                     {
-                        if(MainActivity.Workout_Days.get(i).getSets().contains(to_be_removed_set))
+                        // Find comment of that workout day/exercise
+                        WorkoutDay workoutDay = MainActivity.Workout_Days.get(position);
+
+                        for(int i = 0; i < workoutDay.getSets().size(); i++)
                         {
-                            // If last set the delete the whole object
-                            if(MainActivity.Workout_Days.get(i).getSets().size() == 1)
-                            {
-                                MainActivity.Workout_Days.remove(MainActivity.Workout_Days.get(i));
-                            }
-                            // Just delete the set
-                            else
-                            {
-                                MainActivity.Workout_Days.get(i).removeSet(to_be_removed_set);
-                                break;
-                            }
+                            WorkoutSet workoutSet1 = workoutDay.getSets().get(i);
 
+                            if(workoutSet1.getExercise().equals(exercise_name))
+                            {
+                                String exerciseComment = workoutSet1.getComment();
+                                System.out.println("Exercise Name: " + exercise_name);
+                                System.out.println("Exercise Comment: " + exerciseComment);
+
+
+                                if(exerciseComment == "null" || exerciseComment == null)
+                                {
+                                    workoutSet.setComment("");
+                                }
+                                else
+                                {
+                                    workoutSet.setComment(exerciseComment);
+                                }
+                            }
                         }
+                        // To Do: Use mutex here
+                        // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
+                        MainActivity.Workout_Days.get(position).addSet(workoutSet);
                     }
+                    // If not construct new workout day
+                    else
+                    {
+                        WorkoutDay workoutDay = new WorkoutDay();
+                        workoutDay.addSet(workoutSet);
 
-                    // Let the user know I guess
-                    Toast.makeText(getApplicationContext(),"Set Deleted",Toast.LENGTH_SHORT).show();
+                        // To Do: Use mutex here
+                        // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
+                        MainActivity.Workout_Days.add(workoutDay);
+                    }
 
                     // Update Local Data Structure
                     updateTodaysExercises();
-
-                    alertDialog.dismiss();
-
-                    // Update Clicked set to avoid crash
-                    AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
+                    Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
 
-            // Show delete confirmation dialog box
-            alertDialog.show();
+            // Fixed Myria induced bug
+            AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
         }
+        // Update Functionality
+        else
+        {
+
+            WorkoutSet to_be_updated_set = Todays_Exercise_Sets.get(Clicked_Set);
+
+            to_be_updated_set.getDate();
+            to_be_updated_set.getExercise();
+
+            // Find the set in main data structure and delete it
+            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            {
+                for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+                {
+                    if(MainActivity.Workout_Days.get(i).getSets().get(j).equals(to_be_updated_set))
+                    {
+                        System.out.println("MAKIS");
+                        Double reps = Double.parseDouble(String.valueOf(et_reps.getText()));
+                        Double weight = Double.parseDouble(String.valueOf(et_weight.getText()));
+
+                        MainActivity.Workout_Days.get(i).getSets().get(j).setReps(reps);
+                        MainActivity.Workout_Days.get(i).getSets().get(j).setWeight(weight);
+
+                        // Manually update data because of bad design choices
+                        MainActivity.Workout_Days.get(i).UpdateData();
+                        break;
+                    }
+                }
+            }
+
+            // Let the user know I guess
+            Toast.makeText(getApplicationContext(),"Set Updated",Toast.LENGTH_SHORT).show();
+
+
+
+
+            // Update Local Data Structure
+            updateTodaysExercises();
+
+
+            bt_save.setText("Save");
+            bt_clear.setText("Clear");
+
+            AddExerciseActivity.isEditMode = false;
+        }
+    }
+
+    // Clear
+    public void clickClear(View view)
+    {
+        bt_clear.setText("Clear");
+        et_reps.setText("");
+        et_weight.setText("");
+    }
+
+    public static void deleteSet(Context ct)
+    {
+        // Let backup service know that something has changed
+        MainActivity.autoBackupRequired = true;
+
+        // Show confirmation dialog  box
+        // Prepare to show exercise dialog box
+        LayoutInflater inflater = LayoutInflater.from(ct);
+        View view1 = inflater.inflate(R.layout.delete_set_dialog,null);
+        AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view1).create();
+
+        Button bt_yes = view1.findViewById(R.id.bt_yes3);
+        Button bt_no = view1.findViewById(R.id.bt_no3);
+
+        // Dismiss dialog box
+        bt_no.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                alertDialog.dismiss();
+            }
+        });
+
+        // Actually Delete set and update local data structure
+        bt_yes.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                // Get soon to be deleted set
+                WorkoutSet to_be_removed_set = Todays_Exercise_Sets.get(Clicked_Set);
+
+                System.out.println(Clicked_Set);
+
+                // Find the set in main data structure and delete it
+                for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+                {
+                    if(MainActivity.Workout_Days.get(i).getSets().contains(to_be_removed_set))
+                    {
+                        MainActivity.Workout_Days.get(i).removeSet(to_be_removed_set);
+                        break;
+                    }
+                }
+
+                // Cleanup days with 0 sets
+                for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+                {
+                    if(MainActivity.Workout_Days.get(i).getSets().size() == 0)
+                    {
+                        System.out.println("Deleting day with 0 sets");
+                        MainActivity.Workout_Days.remove(i);
+                    }
+                }
+
+
+                // Let the user know I guess
+                Toast.makeText(ct,"Set Deleted",Toast.LENGTH_SHORT).show();
+
+                // Update Local Data Structure
+                updateTodaysExercises();
+
+                alertDialog.dismiss();
+
+                // Update Clicked set to avoid crash
+//                AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
+            }
+        });
+
+        // Show delete confirmation dialog box
+        alertDialog.show();
+    }
+
+    public static void editSet(AddExerciseWorkoutSetAdapter.MyViewHolder holder, View view, int position)
+    {
+        System.out.println("Edit Set on position " + position + " clicked");
+
+        AddExerciseActivity.bt_clear.setText("Delete");
+        AddExerciseActivity.bt_save.setText("Update");
+
+        // Populate Edit Texts
+        AddExerciseActivity.Clicked_Set = position;
+        UpdateViewOnClick();
+
+        AddExerciseActivity.isEditMode = true;
     }
 
     // Update this activity when a set is clicked
@@ -373,7 +436,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     }
 
     // Updates Local Data Structure
-    public void updateTodaysExercises()
+    public static void updateTodaysExercises()
     {
         // Clear since we don't want duplicates
         Todays_Exercise_Sets.clear();
@@ -387,7 +450,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                 for(int j  = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
                 {
                     // If exercise matches
-                    if(exercise_name.equals(MainActivity.Workout_Days.get(i).getSets().get(j).getExercise()))
+                    if(AddExerciseActivity.exercise_name.equals(MainActivity.Workout_Days.get(i).getSets().get(j).getExercise()))
                     {
                         Todays_Exercise_Sets.add(MainActivity.Workout_Days.get(i).getSets().get(j));
                     }
@@ -395,18 +458,10 @@ public class AddExerciseActivity extends AppCompatActivity {
             }
         }
 
-        // Change Button Functionality
-        if(Todays_Exercise_Sets.isEmpty())
-        {
-            bt_clear.setText("Clear");
-        }
-        else
-        {
-            bt_clear.setText("Delete");
-        }
+        bt_clear.setText("Clear");
 
         // Update Recycler View
-        workoutSetAdapter2.notifyDataSetChanged();
+        AddExerciseActivity.workoutSetAdapter2.notifyDataSetChanged();
     }
 
     // Initialize Recycler View Object
@@ -443,15 +498,9 @@ public class AddExerciseActivity extends AppCompatActivity {
         initEditTexts();
 
 
-        // Change Button Functionality
-        if(Todays_Exercise_Sets.isEmpty())
-        {
-            bt_clear.setText("Clear");
-        }
-        else
-        {
-            bt_clear.setText("Delete");
-        }
+
+        bt_clear.setText("Clear");
+
 
         // Initialize Integer position or else we get a crash
         AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size() - 1;
