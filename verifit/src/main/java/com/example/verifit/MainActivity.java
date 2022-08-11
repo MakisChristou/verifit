@@ -106,14 +106,53 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // The fuck
-        System.out.println("Night Mode Before");
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        // Enable Dark Mode
+//        System.out.println("Night Mode Before");
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        System.out.println("Night Mode After");
 
-        System.out.println("Night Mode After");
+
+        // No need for backup, not adding exercises
+        if(!doesSharedPreferenceExist("autoBackupRequired"))
+        {
+            saveSharedPreferences("false", "autoBackupRequired");
+        }
+
+        if(!doesSharedPreferenceExist("inAddExerciseActivity"))
+        {
+            saveSharedPreferences("false", "inAddExerciseActivity");
+        }
 
         // Hacky way to have the same code run in onRestart() as well
         onCreateStuff();
+    }
+
+
+    public Boolean doesSharedPreferenceExist(String key)
+    {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
+
+        if(sharedPreferences.contains(key))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void saveSharedPreferences(String value, String key)
+    {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public String loadSharedPreferences(String key)
+    {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
+        String text = sharedPreferences.getString(key, "");
+        return text;
     }
 
 

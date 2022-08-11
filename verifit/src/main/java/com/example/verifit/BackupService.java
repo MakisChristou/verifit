@@ -45,19 +45,22 @@ public class BackupService extends Service {
                     System.out.println("MainActivity.inAddExerciseActivity = " + MainActivity.inAddExerciseActivity);
 
 
+                    String autoBackupRequired = loadSharedPreferences("autoBackupRequired");
+                    String inAddExerciseActivity = loadSharedPreferences("inAddExerciseActivity");
+
+                    
                     // Automatic webdav export
-                    if(autowebdavbackup.equals("true") && togglewebdav.equals("true") && MainActivity.autoBackupRequired && !MainActivity.inAddExerciseActivity &&  !webdavurl.equals("") && !webdavusername.equals("") && !webdavpassword.equals(""))
+                    if(autowebdavbackup.equals("true") && togglewebdav.equals("true") && autoBackupRequired.equals("true") && inAddExerciseActivity.equals("false") &&  !webdavurl.equals("") && !webdavusername.equals("") && !webdavpassword.equals(""))
                     {
                         System.out.println("Webdav Exporting silently in the background");
                         MainActivity.exportWebDavService(getApplicationContext(), webdavurl, webdavusername, webdavpassword);
+
+
                         MainActivity.autoBackupRequired = false;
+                        saveSharedPreferences("false", "autoBackupRequired");
+
                     }
 
-//                    // Automatic local storage export
-//                    if(autobackup.equals("true") && MainActivity.autoBackupRequired && !MainActivity.inAddExerciseActivity)
-//                    {
-//                        System.out.println("Local Storage Exporting silently in the background");
-//                    }
 
                     // Check if we should backup every 10 min
                     Thread.sleep(1000*60*10);
@@ -71,6 +74,14 @@ public class BackupService extends Service {
             // Stop the service using the startId, so that we don't stop
             // the service in the middle of handling another job
             stopSelf(msg.arg1);
+        }
+
+        public void saveSharedPreferences(String value, String key)
+        {
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(key, value);
+            editor.apply();
         }
 
         public String loadSharedPreferences(String key)

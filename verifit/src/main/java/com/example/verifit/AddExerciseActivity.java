@@ -94,16 +94,29 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         System.out.println("date_selected: " + MainActivity.date_selected);
 
+
+
+
         // User can modify data structures, possible race condition, thus temporary disable autobackup
         MainActivity.inAddExerciseActivity = true;
+        saveSharedPreferences(getApplicationContext(), "true", "inAddExerciseActivity");
     }
 
+
+    public static void saveSharedPreferences(Context ct, String value, String key)
+    {
+        SharedPreferences sharedPreferences = ct.getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         // User can modify data structures, possible race condition, thus temporary disable autobackup
         MainActivity.inAddExerciseActivity = true;
+        saveSharedPreferences(getApplicationContext(), "true", "inAddExerciseActivity");
     }
 
     // Save / Update
@@ -111,6 +124,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     {
         // Let backup service know that something has changed
         MainActivity.autoBackupRequired = true;
+        saveSharedPreferences(getApplicationContext(), "true", "autoBackupRequired");
 
         // Save Functionality
         if(!isEditMode)
@@ -249,6 +263,9 @@ public class AddExerciseActivity extends AppCompatActivity {
     {
         // Let backup service know that something has changed
         MainActivity.autoBackupRequired = true;
+        saveSharedPreferences(ct, "true", "autoBackupRequired");
+
+
 
         // Show confirmation dialog  box
         // Prepare to show exercise dialog box
@@ -362,6 +379,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // User cannot modify data structures, thus we can let service auto backup without race conditions
         MainActivity.inAddExerciseActivity = false;
+        saveSharedPreferences(getApplicationContext(), "false", "inAddExerciseActivity");
     }
 
     // Do I even need to explain this?
@@ -805,6 +823,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     {
         // Let backup service know that something has changed
         MainActivity.autoBackupRequired = true;
+        saveSharedPreferences(getApplicationContext(), "true", "autoBackupRequired");
 
         // Check for empty input
         if(et_exercise_comment.getText().toString().isEmpty())
@@ -860,6 +879,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     {
         // Let backup service know that something has changed
         MainActivity.autoBackupRequired = true;
+        saveSharedPreferences(getApplicationContext(), "true", "autoBackupRequired");
 
         et_exercise_comment.setText("");
 
