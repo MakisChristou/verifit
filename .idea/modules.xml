@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Harder_Than_Last_Time.iml" filepath="$PROJECT_DIR$/.idea/modules/Harder_Than_Last_Time.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/verifit/Harder_Than_Last_Time.verifit.iml" filepath="$PROJECT_DIR$/.idea/modules/verifit/Harder_Than_Last_Time.verifit.iml" />
-    </modules>
-  </component>
-</project>
