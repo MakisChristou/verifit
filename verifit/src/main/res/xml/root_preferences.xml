@@ -51,7 +51,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Username"
-            app:summary="user" />
+            app:summary="" />
         <EditTextPreference
             android:key="webdavpassword"
             android:inputType="textPassword"
@@ -106,11 +106,11 @@
             app:title="Licence"
             app:useSimpleSummaryProvider="false" />
 
-        <Preference
-            app:key="privacy_policy"
-            app:summary="Learn more about our privacy policy"
-            app:title="Privacy Policy"
-            app:useSimpleSummaryProvider="false" />
+<!--        <Preference-->
+<!--            app:key="privacy_policy"-->
+<!--            app:summary="Learn more about our privacy policy"-->
+<!--            app:title="Privacy Policy"-->
+<!--            app:useSimpleSummaryProvider="false" />-->
 
         <Preference
             app:key="reddit"
