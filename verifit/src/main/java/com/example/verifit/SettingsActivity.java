@@ -300,7 +300,7 @@ public class SettingsActivity extends AppCompatActivity {
                     View view = inflater.inflate(R.layout.choose_webdav_file_dialog,null);
                     AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
-                    ClickedOnWebdavThread clickedOnWebdavThread = new ClickedOnWebdavThread(getActivity(), webdav_url, webdav_username, webdav_password, loadingDialog, alertDialog, view);
+                    ClickedOnWebdavThread clickedOnWebdavThread = new ClickedOnWebdavThread(getActivity(), webdav_url, webdav_username, webdav_password, loadingDialog, alertDialog, view, MainActivity.webdavAdapter);
                     clickedOnWebdavThread.start();
                 }
             }

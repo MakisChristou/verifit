@@ -98,19 +98,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static final int PERMISSION_REQUEST_STORAGE = 1000;
     public static String EXPORT_FILENAME = "verifit_backup";
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Enable Dark Mode
-//        System.out.println("Night Mode Before");
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//        System.out.println("Night Mode After");
-
 
         // No need for backup, not adding exercises
         if(!doesSharedPreferenceExist("autoBackupRequired"))
@@ -183,8 +175,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Intent intent = new Intent(this, BackupService.class);
             startService(intent);
         }
-
-
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -1274,71 +1264,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    public static void exportWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog)
-    {
-        // Enable networking on main thread  (this is not needed anymore)
-        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(gfgPolicy);
-
-        // Sardine Stuff
-        Sardine sardine = new OkHttpSardine();
-        sardine.setCredentials(webdavusername, webdavpassword);
-
-        try {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
-            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
-            {
-                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
-                {
-                    String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
-                    for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
-                    {
-                        String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
-                        String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
-                        String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
-                        Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
-                        Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
-                        output.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
-                    }
-                }
-            }
-            output.close();
-
-            byte[] data = output.toByteArray();
-            setExportBackupName();
-            sardine.put(webdavurl+ EXPORT_FILENAME+".txt", data);
-
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, "Backup saved in " + webdavurl + EXPORT_FILENAME+".txt", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-
-            // This is done to somehow run initViewPager()
-            Intent in = new Intent(context, MainActivity.class);
-            in.putExtra("doit", "exportwebdav");
-            context.startActivity(in);
-
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.toString());
-
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-            loadingDialog.dismissDialog();
-        }
-    }
 
     public static void exportWebDavService(Context context, String webdavurl, String webdavusername, String webdavpassword)
     {
@@ -1401,204 +1326,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    public static void importWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword, String webdavresourcename, LoadingDialog loadingDialog)
-    {
-        // Enable networking on main thread  (this is not needed anymore)
-        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(gfgPolicy);
 
-        // Sardine Stuff
-        Sardine sardine = new OkHttpSardine();
-        sardine.setCredentials(webdavusername, webdavpassword);
-
-        // Initalize for file I/O
-        InputStream inputStream;
-        List csvList = new ArrayList();
-
-        try {
-            List<DavResource> resources = sardine.list(webdavurl);
-
-            for (DavResource res : resources)
-            {
-                if(res.getName().equals(webdavresourcename))
-                {
-                    inputStream = sardine.get(webdavurl+res.getName());
-
-                    CSVFile csvFile = new CSVFile(inputStream);
-                    csvList = csvFile.read();
-
-                    // Here is where the magic happens
-                    CSVtoSets(csvList); // Read File and Construct Local Objects
-                    SetsToEverything(); // Convert Set Objects to Day Objects
-                    csvToKnownExercises(); // Find all Exercises in CSV and add them to known exercises
-                    saveKnownExerciseData(context); // Save KnownExercises in CSV
-                    saveWorkoutData(context); // Save WorkoutDays in Shared Preferences
-                    //initViewPager(); // Commenting out because it's run after intent
-
-                    // This is done to somehow run initViewPager()
-                    Intent in = new Intent(context, MainActivity.class);
-                    in.putExtra("doit", "importwebdav");
-                    context.startActivity(in);
-                }
-            }
-
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, "Import Sucessful", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.toString());
-
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-            loadingDialog.dismissDialog();
-        }
-    }
-
-    public static void checkWebdav(Context context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog)
-    {
-        // Enable networking on main thread
-        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(gfgPolicy);
-
-        Sardine sardine = new OkHttpSardine();
-        sardine.setCredentials(webdavusername, webdavpassword);
-
-        try
-        {
-            List<DavResource> resources = sardine.list(webdavurl);
-
-            for (DavResource res : resources)
-            {
-                System.out.println("Resources: " + res.getName());
-            }
-
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, "Connection Successful", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-
-        }
-        catch(Exception e)
-        {
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-        }
-        loadingDialog.dismissDialog();
-    }
-
-    public static void clickedOnImportWebdav(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog, AlertDialog alertDialog, View view)
-    {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Webdav);
-
-        // Enable networking on main thread (this is not needed anymore)
-        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(gfgPolicy);
-
-        // Sardine Stuff
-        Sardine sardine = new OkHttpSardine();
-        sardine.setCredentials(webdavusername, webdavpassword);
-        List<DavResource> Resources;
-
-
-        try
-        {
-            Resources = sardine.list(webdavurl);
-
-            // Add list sorting so user can make sense of their backups
-            Resources.sort((o2, o1) -> o1.getName().compareTo(o2.getName()));
-
-            // To Do: Don't show unwanted files
-
-            // Set Webdav Recycler View
-            webdavAdapter = new WebdavAdapter(context, Resources);
-            recyclerView.setAdapter(webdavAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-
-            // Dismiss loading dialog on normal functionality
-            loadingDialog.dismissDialog();
-
-
-            // Show Alert Dialog from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    alertDialog.show();
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.toString());
-
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-
-            // Dismiss loading dialog on exception
-            loadingDialog.dismissDialog();
-        }
-    }
-
-    public static void DeleteWebdavThread(Activity context, String webdavurl, String webdavusername, String webdavpassword, String webdavresource, LoadingDialog loadingDialog)
-    {
-        // Enable networking on main thread
-        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(gfgPolicy);
-
-        // Sardine Stuff
-        Sardine sardine = new OkHttpSardine();
-        sardine.setCredentials(webdavusername, webdavpassword);
-
-        try
-        {
-            // Delete remote file and notify adapter that data has changed
-            sardine.delete(webdavurl+webdavresource);
-            MainActivity.webdavAdapter.Resources = sardine.list(webdavurl);
-
-            // UI Stuff from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    MainActivity.webdavAdapter.notifyDataSetChanged();
-                }
-            });
-            loadingDialog.dismissDialog();
-        }
-        catch (IOException e)
-        {
-            System.out.println(e.toString());
-            loadingDialog.dismissDialog();
-        }
-    }
 
     // Navigates to given activity based on the selected menu item
     @Override

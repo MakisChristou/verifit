@@ -25,7 +25,7 @@ import java.util.List;
 public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHolder> {
 
     Context ct;
-    List<DavResource> Resources;
+    public List<DavResource> Resources;
 
     public WebdavAdapter(Context ct, List<DavResource> Resources)
     {
@@ -73,7 +73,7 @@ public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHold
                     final LoadingDialog loadingDialog = new LoadingDialog((Activity) ct);
                     loadingDialog.loadingAlertDialog();
 
-                    DeleteWebdavThread deleteWebdavThread = new DeleteWebdavThread((Activity) ct, webdav_url, webdav_username, webdav_password, webdav_resource, loadingDialog);
+                    DeleteWebdavThread deleteWebdavThread = new DeleteWebdavThread((Activity) ct, webdav_url, webdav_username, webdav_password, webdav_resource, loadingDialog, MainActivity.webdavAdapter);
                     deleteWebdavThread.start();
                 }
                 return false;
