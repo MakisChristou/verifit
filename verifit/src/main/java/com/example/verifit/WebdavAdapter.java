@@ -1,37 +1,23 @@
 package com.example.verifit;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.verifit.webdav.DeleteWebdavThread;
+import com.example.verifit.webdav.ImportWebdavThread;
 import com.thegrizzlylabs.sardineandroid.DavResource;
-import com.thegrizzlylabs.sardineandroid.Sardine;
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -126,7 +112,7 @@ public class WebdavAdapter extends RecyclerView.Adapter<WebdavAdapter.MyViewHold
 
                 // Import remote file
                 //MainActivity.importWebDav(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
-                ImportWebdavThread importWebdavThread = new ImportWebdavThread(ct, webdav_url, webdav_username, webdav_password, webdav_resource);
+                ImportWebdavThread importWebdavThread = new ImportWebdavThread(ct, webdav_url, webdav_username, webdav_password, webdav_resource, loadingDialog);
                 importWebdavThread.start();
             }
         });

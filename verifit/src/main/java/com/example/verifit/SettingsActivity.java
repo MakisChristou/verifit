@@ -8,10 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.text.InputFilter;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +23,10 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+
+import com.example.verifit.webdav.CheckWebdavThread;
+import com.example.verifit.webdav.ClickedOnWebdavThread;
+import com.example.verifit.webdav.ExportWebdavThread;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -320,7 +321,7 @@ public class SettingsActivity extends AppCompatActivity {
                     final LoadingDialog loadingDialog = new LoadingDialog((Activity) getContext());
                     loadingDialog.loadingAlertDialog();
 
-                    ExportWebdavThread exportWebdavThread = new ExportWebdavThread(getContext(), webdav_url, webdav_username, webdav_password);
+                    ExportWebdavThread exportWebdavThread = new ExportWebdavThread(getContext(), webdav_url, webdav_username, webdav_password, loadingDialog);
                     exportWebdavThread.start();
                 }
             }

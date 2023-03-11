@@ -1278,13 +1278,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    public static void exportWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    public static void exportWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog)
     {
         // Enable networking on main thread  (this is not needed anymore)
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(gfgPolicy);
-
-
 
         // Sardine Stuff
         Sardine sardine = new OkHttpSardine();
@@ -1332,6 +1330,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         catch (Exception e)
         {
+            System.out.println("MAKIS");
             System.out.println(e.toString());
 
             // Toast from a non UI thread
@@ -1342,6 +1341,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     toast.show();
                 }
             });
+
+            loadingDialog.dismissDialog();
+
         }
     }
 
@@ -1406,7 +1408,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    public static void importWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword, String webdavresourcename)
+    public static void importWebDav(Context context, String webdavurl, String webdavusername, String webdavpassword, String webdavresourcename, LoadingDialog loadingDialog)
     {
         // Enable networking on main thread  (this is not needed anymore)
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -1470,6 +1472,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     toast.show();
                 }
             });
+
+            loadingDialog.dismissDialog();
+
         }
     }
 
@@ -1520,8 +1525,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static void clickedOnImportWebdav(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog, AlertDialog alertDialog, View view)
     {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Webdav);
-        //WebdavAdapter webdavAdapter;
-
 
         // Enable networking on main thread (this is not needed anymore)
         StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -1541,13 +1544,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Resources.sort((o2, o1) -> o1.getName().compareTo(o2.getName()));
 
             // To Do: Don't show unwanted files
-            for(DavResource res : Resources)
-            {
-                if(res.getName().substring(res.getName().length() - 4).equals(".txt"))
-                {
-
-                }
-            }
 
             // Set Webdav Recycler View
             webdavAdapter = new WebdavAdapter(context, Resources);
@@ -1692,121 +1688,3 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 }
 
-class ImportWebdavThread extends Thread{
-
-    String webdavurl;
-    String webdavusername;
-    String webdavpassword;
-    String webdavresourcename;
-    Context context;
-
-    ImportWebdavThread(Context context, String webdavurl, String webdavusername, String webdavpassword, String webdavresourcename)
-    {
-        this.context = context;
-        this.webdavurl = webdavurl;
-        this.webdavusername = webdavusername;
-        this.webdavpassword = webdavpassword;
-        this.webdavresourcename = webdavresourcename;
-    }
-
-    @Override
-    public void run() {
-        MainActivity.importWebDav(context, webdavurl, webdavusername, webdavpassword, webdavresourcename);
-    }
-}
-
-class ExportWebdavThread extends Thread{
-
-    String webdavurl;
-    String webdavusername;
-    String webdavpassword;
-    Context context;
-
-    ExportWebdavThread(Context context, String webdavurl, String webdavusername, String webdavpassword)
-    {
-        this.context = context;
-        this.webdavurl = webdavurl;
-        this.webdavusername = webdavusername;
-        this.webdavpassword = webdavpassword;
-    }
-
-    @Override
-    public void run() {
-        MainActivity.exportWebDav(context, webdavurl, webdavusername, webdavpassword);
-    }
-}
-
-class ClickedOnWebdavThread extends Thread{
-
-    String webdavurl;
-    String webdavusername;
-    String webdavpassword;
-    Activity context;
-    LoadingDialog loadingDialog;
-    AlertDialog alertDialog;
-    View view;
-
-    ClickedOnWebdavThread(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog, AlertDialog alertDialog, View view)
-    {
-        this.context = context;
-        this.webdavurl = webdavurl;
-        this.webdavusername = webdavusername;
-        this.webdavpassword = webdavpassword;
-        this.loadingDialog = loadingDialog;
-        this.alertDialog = alertDialog;
-        this.view = view;
-    }
-
-    @Override
-    public void run() {
-        MainActivity.clickedOnImportWebdav(context, webdavurl, webdavusername, webdavpassword, loadingDialog, alertDialog, view);
-    }
-}
-
-class CheckWebdavThread extends Thread{
-
-    String webdavurl;
-    String webdavusername;
-    String webdavpassword;
-    Activity context;
-    LoadingDialog loadingDialog;
-
-    CheckWebdavThread(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog)
-    {
-        this.context = context;
-        this.webdavurl = webdavurl;
-        this.webdavusername = webdavusername;
-        this.webdavpassword = webdavpassword;
-        this.loadingDialog = loadingDialog;
-    }
-
-    @Override
-    public void run() {
-        MainActivity.checkWebdav(context, webdavurl, webdavusername, webdavpassword, loadingDialog);
-    }
-}
-
-class DeleteWebdavThread extends Thread{
-
-    String webdavurl;
-    String webdavusername;
-    String webdavpassword;
-    String webdavresource;
-    Activity context;
-    LoadingDialog loadingDialog;
-
-    DeleteWebdavThread(Activity context, String webdavurl, String webdavusername, String webdavpassword, String webdavresource, LoadingDialog loadingDialog)
-    {
-        this.context = context;
-        this.webdavurl = webdavurl;
-        this.webdavusername = webdavusername;
-        this.webdavpassword = webdavpassword;
-        this.loadingDialog = loadingDialog;
-        this.webdavresource = webdavresource;
-    }
-
-    @Override
-    public void run() {
-        MainActivity.DeleteWebdavThread(context, webdavurl, webdavusername, webdavpassword, webdavresource, loadingDialog);
-    }
-}
