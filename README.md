@@ -37,15 +37,15 @@ height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.whatever.verifit)
 * [MPAndroid Chart](https://github.com/PhilJay/MPAndroidChart)
 * [Sardine](https://github.com/lookfirst/sardine)
 
-## Setting up a backup server
-For running a backup server there are two main routes you can take
-- Selfhost it (i.e. run it on hardware you physically own)
-- Rent a VPS and run it there
+## Setting up a webdav server
+```bash
+sudo apt install docker
+docker run -d -p 80:80 -v /data/webdav:/var/lib/dav -e USERNAME=user -e PASSWORD=password bytemark/webdav
+```
 
-If you decide to run it on a VPS I recommend and use [Vultr](https://www.vultr.com/?ref=9014908). As for the actual steps, you can find many [guides](https://www.digitalocean.com/community/tutorials/how-to-configure-webdav-access-with-apache-on-ubuntu-20-04) on how to setup an Apache Webdav server on Ubuntu.
+
 
 ## Donations
-
 ### Donate with Monero
 
 42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is
