@@ -92,13 +92,6 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         // Add Date Labels to workout
         ArrayList<String> workoutDates = new ArrayList<String>();
 
-//        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
-//        {
-//            workoutDates.add(MainActivity.Workout_Days.get(i).getDate());
-//        }
-
-
-
         // Make it invisible because otherwise it looks like shit
         if(workouts.size() == 0)
         {
@@ -126,14 +119,8 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
             }
         }
 
-
-
-
-        // ???
         BarDataSet barDataSet = new BarDataSet(workouts_pruned,"Workouts");
         barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-//        barDataSet.setValueTextColor(Color.BLACK);
-//        barDataSet.setValueTextSize(15f);
 
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(workoutDates));
 
@@ -145,7 +132,6 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         barChart.invalidate();
         barChart.animateY(500);
         barChart.setScaleMinima(1f, 1f);
-        //barChart.zoomIn();
     }
 
     public void pieChartWorkouts()
@@ -216,10 +202,6 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         pieChart.setNoDataText("No Workouts");
         pieChart.getLegend().setEnabled(false);
         pieChart.setData(data);
-
-
-
-
     }
 
     public void pieChartBodyparts()
@@ -477,7 +459,4 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
 }

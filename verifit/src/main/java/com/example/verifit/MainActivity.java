@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         onCreateStuff();
     }
 
-
     public Boolean doesSharedPreferenceExist(String key)
     {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
@@ -128,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             return true;
         }
-
         return false;
     }
 
@@ -147,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return text;
     }
 
-
     private boolean isMyServiceRunning(Class<?> serviceClass)
     {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -165,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void onCreateStuff()
     {
         initActivity();
-
 
         // If backup background service has not started, start it
         if(!isMyServiceRunning(BackupService.class))
@@ -187,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         date_selected = dateFormat.format(date_clicked);
     }
-
 
     // When choosing date from DatePicker
     @Override
@@ -213,13 +208,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mBundle.putString("date", date_clicked);
         in.putExtras(mBundle);
         startActivity(in);
-
     }
 
     // You guessed it!
     public void initActivity()
     {
-
         // Write permissions required only for <= Android 10
         if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q))
         {
@@ -300,8 +293,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // This was already there so I am not deleting it
         super.onRestart();
 
-//        System.out.println("MainActivity::OnRestart()");
-
         // Get WorkoutDays from shared preferences
         loadWorkoutData();
 
@@ -316,7 +307,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
-
 
     // Initialize View pager object
     public void initViewPager()
@@ -399,7 +389,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-
     // Returns index of day
     public static int getDayPosition(String Date)
     {
@@ -413,11 +402,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return -1;
     }
 
-
     // Returns index of exercise
     public static int getExercisePosition(String Date, String exerciseName)
     {
-
         int day_position = getDayPosition(Date);
 
         // The day doesn't even have an exercise
@@ -425,8 +412,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             return -1;
         }
-
-
 
         ArrayList<WorkoutExercise> Exercises = MainActivity.Workout_Days.get(day_position).getExercises();
 
@@ -441,7 +426,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return -1;
     }
 
-
     // Select a file using the build in file manager
     public void fileSearch()
     {
@@ -450,7 +434,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         intent.setType("text/*");
         startActivityForResult(intent,READ_REQUEST_CODE);
     }
-
 
     // When File explorer stops this function runs
     @Override
@@ -462,24 +445,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             if (data != null) {
                 Uri uri = data.getData();
                 if (requestCode == READ_REQUEST_CODE) {
-
                     readFileSAF(uri);
                 }
             }
         }
-
-// Old stuff
-//        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//            if (data != null) {
-//                Uri uri = data.getData();
-//                String filename = uri.getPath();
-//                filename = filename.substring(filename.indexOf(":") + 1);
-//                readFile(filename);
-//                saveWorkoutData(this);
-//            }
-//        }
     }
-
 
     // Converts CSV file to Internally used Dat Structure
     public static void CSVtoSets(List csvList)
@@ -490,20 +460,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // i = 1 since first row is only Strings
         for(int i = 1; i < csvList.size(); i++)
         {
-
-
-
             String[] row = (String[]) csvList.get(i);
-
-//            System.out.println(row.length);
 
             String Date = row[0];
             String Exercise = row[1];
             String Category = row[2];
             String Reps = row[3];
             String Weight = row[4];
-
-//            System.out.println(row[5]);
 
             String Comment = "";
 
@@ -512,13 +475,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 Comment = row[5];
             }
 
-            // String Comment = row[]
-
             WorkoutSet workoutSet = new WorkoutSet(Date,Exercise,Category,Double.parseDouble(Weight),Double.parseDouble(Reps),Comment);
             Sets.add(workoutSet);
         }
     }
-
 
     // Updates All other Data Structures
     public static void SetsToEverything()
@@ -556,7 +516,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             MainActivity.Workout_Days.add(temp_day);
         }
     }
-
 
     // Initialized KnownExercises ArrayList with some hardcoded exercises
     public void initKnownExercises()
@@ -601,7 +560,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         KnownExercises.add(new Exercise("Hammer Strength Shoulder Press","Shoulders"));
     }
 
-
     public static void setFavoriteExercise(String exerciseName, Boolean isFavorite)
     {
         // Initialize Volume Record Hashmap
@@ -613,8 +571,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 MainActivity.KnownExercises.get(i).setFavorite(isFavorite);
             }
         }
-
-
     }
 
     // Calculate all Volume Personal Records from scratch
@@ -861,12 +817,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     // Android 11 and above
     public void saveFile()
     {
-
         String FolderName = "Verifit";
 
         // Test
@@ -1261,68 +1215,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             }
             if (!isFound) KnownExercises.add(event);
-        }
-    }
-
-
-    public static void exportWebDavService(Context context, String webdavurl, String webdavusername, String webdavpassword)
-    {
-        // Enable networking on main thread  (this is not needed anymore)
-        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(gfgPolicy);
-
-        // Sardine Stuff
-        Sardine sardine = new OkHttpSardine();
-        sardine.setCredentials(webdavusername, webdavpassword);
-
-        try {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
-            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
-            {
-                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
-                {
-                    String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
-                    for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
-                    {
-                        String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
-                        String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
-                        String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
-                        Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
-                        Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
-                        output.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
-                    }
-                }
-            }
-            output.close();
-
-            byte[] data = output.toByteArray();
-            setExportBackupName();
-            sardine.put(webdavurl+ EXPORT_FILENAME+".txt", data);
-
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, "Backup saved in " + webdavurl + EXPORT_FILENAME+".txt", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-
-
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.toString());
-
-            // Toast from a non UI thread
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
         }
     }
 

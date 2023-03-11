@@ -1,6 +1,7 @@
 package com.example.verifit;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -9,8 +10,14 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.StrictMode;
 import android.widget.Toast;
 import android.os.Process;
+
+import com.thegrizzlylabs.sardineandroid.Sardine;
+import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
+
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 
 public class BackupService extends Service {
@@ -24,9 +31,6 @@ public class BackupService extends Service {
         }
         @Override
         public void handleMessage(Message msg) {
-            // Normally we would do some work here, like download a file.
-            // For our sample, we just sleep for 5 seconds.
-
             try
             {
                 while(true)
@@ -35,7 +39,6 @@ public class BackupService extends Service {
                     String togglewebdav = loadSharedPreferences("togglewebdav");
                     String autobackup = loadSharedPreferences("autobackup");
                     Date now = new Date();
-
 
                     String webdavurl = loadSharedPreferences("webdav_url");
                     String webdavusername = loadSharedPreferences("webdav_username");
@@ -48,7 +51,7 @@ public class BackupService extends Service {
                     // Automatic webdav export
                     if(autowebdavbackup.equals("true") && togglewebdav.equals("true") && autoBackupRequired.equals("true") && inAddExerciseActivity.equals("false") &&  !webdavurl.equals("") && !webdavusername.equals("") && !webdavpassword.equals(""))
                     {
-                        MainActivity.exportWebDavService(getApplicationContext(), webdavurl, webdavusername, webdavpassword);
+                        exportWebDavService(getApplicationContext(), webdavurl, webdavusername, webdavpassword);
                         MainActivity.autoBackupRequired = false;
                         saveSharedPreferences("false", "autoBackupRequired");
                     }
@@ -118,4 +121,66 @@ public class BackupService extends Service {
     @Override
     public void onDestroy() {
     }
+
+    void exportWebDavService(Context context, String webdavurl, String webdavusername, String webdavpassword)
+    {
+        // Enable networking on main thread  (this is not needed anymore)
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
+
+        // Sardine Stuff
+        Sardine sardine = new OkHttpSardine();
+        sardine.setCredentials(webdavusername, webdavpassword);
+
+        try {
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
+            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            {
+                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                {
+                    String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
+                    for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                    {
+                        String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
+                        String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                        Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                        Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+                        output.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
+                    }
+                }
+            }
+            output.close();
+
+            byte[] data = output.toByteArray();
+            MainActivity.setExportBackupName();
+            sardine.put(webdavurl+ MainActivity.EXPORT_FILENAME+".txt", data);
+
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, "Backup saved in " + webdavurl + MainActivity.EXPORT_FILENAME+".txt", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+
+            // Toast from a non UI thread
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        }
+    }
+
 }
