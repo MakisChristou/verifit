@@ -92,11 +92,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Self Explanatory I guess
         initrecyclerView();
 
-        System.out.println("date_selected: " + MainActivity.date_selected);
-
-
-
-
         // User can modify data structures, possible race condition, thus temporary disable autobackup
         MainActivity.inAddExerciseActivity = true;
         saveSharedPreferences(getApplicationContext(), "true", "inAddExerciseActivity");
@@ -220,7 +215,6 @@ public class AddExerciseActivity extends AppCompatActivity {
                 {
                     if(MainActivity.Workout_Days.get(i).getSets().get(j).equals(to_be_updated_set))
                     {
-                        System.out.println("MAKIS");
                         Double reps = Double.parseDouble(String.valueOf(et_reps.getText()));
                         Double weight = Double.parseDouble(String.valueOf(et_weight.getText()));
 

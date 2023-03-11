@@ -44,7 +44,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
 
         exerciseStatsAdapter = new ExerciseStatsAdapter(this, PersonalRecordsActivity.exerciseStats);
         recyclerView.setAdapter(exerciseStatsAdapter);
-
     }
 
 
@@ -61,7 +60,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
     protected void onStop() {
         super.onStop();
         MainActivity.saveKnownExerciseData(this);
-
     }
 
     public static void calculatePersonalRecords()
@@ -98,7 +96,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
             {
                 PersonalRecordsActivity.exerciseStats.add(exercisePersonalStats);
             }
-//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 
             // Show favorites first
             Collections.sort(PersonalRecordsActivity.exerciseStats, new Comparator<ExercisePersonalStats>() {
@@ -107,7 +104,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
                     return Boolean.compare(exerciseStats2.getFavorite(), exerciseStats1.getFavorite());
                 }
             });
-
         }
     }
 

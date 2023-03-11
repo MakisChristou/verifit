@@ -471,12 +471,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 Uri uri = data.getData();
-                System.out.println("Makis uri: " + uri.toString());
                 if (requestCode == READ_REQUEST_CODE) {
 
                     readFileSAF(uri);
-                    System.out.println("Makis READ_REQUEST_CODE");
-
                 }
             }
         }
@@ -1157,7 +1154,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Iterate Workout Days
         for (Iterator<WorkoutDay> dayIterator = MainActivity.Workout_Days.iterator(); dayIterator.hasNext(); )
         {
-
             WorkoutDay currentDay = dayIterator.next();
 
             // Iterate Workout Exercises
@@ -1330,7 +1326,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         catch (Exception e)
         {
-            System.out.println("MAKIS");
             System.out.println(e.toString());
 
             // Toast from a non UI thread
@@ -1341,9 +1336,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     toast.show();
                 }
             });
-
             loadingDialog.dismissDialog();
-
         }
     }
 
@@ -1457,8 +1450,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     toast.show();
                 }
             });
-
-
         }
         catch (Exception e)
         {
@@ -1472,9 +1463,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     toast.show();
                 }
             });
-
             loadingDialog.dismissDialog();
-
         }
     }
 
@@ -1517,9 +1506,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             });
         }
-
         loadingDialog.dismissDialog();
-
     }
 
     public static void clickedOnImportWebdav(Activity context, String webdavurl, String webdavusername, String webdavpassword, LoadingDialog loadingDialog, AlertDialog alertDialog, View view)
@@ -1591,14 +1578,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Sardine sardine = new OkHttpSardine();
         sardine.setCredentials(webdavusername, webdavpassword);
 
-
         try
         {
             // Delete remote file and notify adapter that data has changed
             sardine.delete(webdavurl+webdavresource);
-            System.out.println("Hello");
             MainActivity.webdavAdapter.Resources = sardine.list(webdavurl);
-            System.out.println("Hello1");
 
             // UI Stuff from a non UI thread
             new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -1607,19 +1591,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     MainActivity.webdavAdapter.notifyDataSetChanged();
                 }
             });
-
-
-
-            System.out.println("Hello2");
-
-            //notifyDataSetChanged();
             loadingDialog.dismissDialog();
         }
         catch (IOException e)
         {
-            e.printStackTrace();
             System.out.println(e.toString());
-            //Toast.makeText(ct, e.toString(), Toast.LENGTH_SHORT).show();
+            loadingDialog.dismissDialog();
         }
     }
 
@@ -1675,8 +1652,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         if(item.getItemId() == R.id.home)
         {
-//            DialogFragment datePicker = new DatePickerFragment();
-//            datePicker.show(getSupportFragmentManager(),"date picker");
             viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
         }
         else if(item.getItemId() == R.id.settings)

@@ -171,8 +171,6 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
     {
         String Comment = Exercises.get(position).getComment();
 
-//        System.out.println("Comment is " + Comment);
-
         if (Comment == null)
         {
             holder.comment_button.setVisibility(View.GONE);
@@ -189,9 +187,6 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         {
             holder.comment_button.setVisibility(View.VISIBLE);
         }
-
-//        System.out.println("Still haven't crashed");
-
     }
 
     public void showVolumePRDialog(ArrayList<String> Records)
@@ -219,7 +214,6 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         recyclerViewPR.setAdapter(stringAdapter);
         recyclerViewPR.setLayoutManager(new LinearLayoutManager(ct));
 
-
         // Show Exercise Dialog Box
         alertDialog.show();
     }
@@ -231,18 +225,9 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
         LayoutInflater inflater = LayoutInflater.from(ct);
         View view = inflater.inflate(R.layout.show_exercise_comment_dialog,null);
         AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
-
-        System.out.println("Debug 1");
         TextView tv_exercise_comment = view.findViewById(R.id.tv_exercise_comment);
-
-        System.out.println("Debug 2");
-
         String Comment = Exercises.get(position).getComment();
-
-
         tv_exercise_comment.setText(Exercises.get(position).getComment());
-
-        System.out.println("Debug 3");
 
         // Show Exercise Dialog Box
         alertDialog.show();

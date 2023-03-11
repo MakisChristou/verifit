@@ -41,10 +41,6 @@ public class BackupService extends Service {
                     String webdavusername = loadSharedPreferences("webdav_username");
                     String webdavpassword = loadSharedPreferences("webdav_password");
 
-                    System.out.println("MainActivity.autoBackup = " + MainActivity.autoBackupRequired);
-                    System.out.println("MainActivity.inAddExerciseActivity = " + MainActivity.inAddExerciseActivity);
-
-
                     String autoBackupRequired = loadSharedPreferences("autoBackupRequired");
                     String inAddExerciseActivity = loadSharedPreferences("inAddExerciseActivity");
 
@@ -52,15 +48,10 @@ public class BackupService extends Service {
                     // Automatic webdav export
                     if(autowebdavbackup.equals("true") && togglewebdav.equals("true") && autoBackupRequired.equals("true") && inAddExerciseActivity.equals("false") &&  !webdavurl.equals("") && !webdavusername.equals("") && !webdavpassword.equals(""))
                     {
-                        System.out.println("Webdav Exporting silently in the background");
                         MainActivity.exportWebDavService(getApplicationContext(), webdavurl, webdavusername, webdavpassword);
-
-
                         MainActivity.autoBackupRequired = false;
                         saveSharedPreferences("false", "autoBackupRequired");
-
                     }
-
 
                     // Check if we should backup every 10 min
                     Thread.sleep(1000*60*10);
@@ -101,9 +92,6 @@ public class BackupService extends Service {
         HandlerThread thread = new HandlerThread("ServiceStartArguments", Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
 
-        //Toast.makeText(this, "Backup Service started", Toast.LENGTH_SHORT).show();
-
-
         // Get the HandlerThread's Looper and use it for our Handler
         serviceLooper = thread.getLooper();
         serviceHandler = new ServiceHandler(serviceLooper);
@@ -111,8 +99,6 @@ public class BackupService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        Toast.makeText(this, "Auto backup enabled", Toast.LENGTH_SHORT).show();
-
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
         Message msg = serviceHandler.obtainMessage();
@@ -131,6 +117,5 @@ public class BackupService extends Service {
 
     @Override
     public void onDestroy() {
-        //Toast.makeText(this, "Backup Service stopped", Toast.LENGTH_SHORT).show();
     }
 }
