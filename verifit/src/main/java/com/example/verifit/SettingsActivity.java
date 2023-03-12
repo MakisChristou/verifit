@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -51,6 +50,9 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
         {
+            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
+
+
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
             Preference importwebdav = findPreference("importwebdav");
@@ -74,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
                 webdavcheckconnection.setVisible(true);
                 autowebdavbackup.setVisible(true);
 
-                saveSharedPreferences("true", "togglewebdav");
+                sharedPreferences.save("true", "togglewebdav");
 
             }
             else
@@ -88,30 +90,30 @@ public class SettingsActivity extends AppCompatActivity {
                 webdavcheckconnection.setVisible(false);
                 autowebdavbackup.setVisible(false);
 
-                saveSharedPreferences("false", "togglewebdav");
+                sharedPreferences.save("false", "togglewebdav");
             }
 
             // Set summary to user config
-            webdavurl.setSummary(loadSharedPreferences("webdav_url"));
-            webdavusername.setSummary(loadSharedPreferences("webdav_username"));
+            webdavurl.setSummary(sharedPreferences.load("webdav_url"));
+            webdavusername.setSummary(sharedPreferences.load("webdav_username"));
             webdavpassword.setSummary(getPasswordStarred());
 
             if (preferenceManager.getSharedPreferences().getBoolean("autowebdavbackup", true))
             {
-                saveSharedPreferences("true", "autowebdavbackup");
+                sharedPreferences.save("true", "autowebdavbackup");
             }
             else
             {
-                saveSharedPreferences("false", "autowebdavbackup");
+                sharedPreferences.save("false", "autowebdavbackup");
             }
 
             if (preferenceManager.getSharedPreferences().getBoolean("autobackup", true))
             {
-                saveSharedPreferences("true", "autobackup");
+                sharedPreferences.save("true", "autobackup");
             }
             else
             {
-                saveSharedPreferences("false", "autobackup");
+                sharedPreferences.save("false", "autobackup");
             }
 
             // On user update save Webdav config in shared preferences
@@ -120,8 +122,8 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                    saveSharedPreferences(newValue.toString(), "webdav_url");
-                    webdavurl.setSummary(loadSharedPreferences("webdav_url"));
+                    sharedPreferences.save(newValue.toString(), "webdav_url");
+                    webdavurl.setSummary(sharedPreferences.load("webdav_url"));
                     return false;
                 }
             });
@@ -130,8 +132,8 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                    saveSharedPreferences(newValue.toString(), "webdav_username");
-                    webdavusername.setSummary(loadSharedPreferences("webdav_username"));
+                    sharedPreferences.save(newValue.toString(), "webdav_username");
+                    webdavusername.setSummary(sharedPreferences.load("webdav_username"));
                     return false;
                 }
             });
@@ -140,7 +142,7 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                    saveSharedPreferences(newValue.toString(), "webdav_password");
+                    sharedPreferences.save(newValue.toString(), "webdav_password");
                     webdavpassword.setSummary(getPasswordStarred());
                     return false;
                 }
@@ -164,25 +166,10 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
 
-
-        public void saveSharedPreferences(String value, String key)
-        {
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(key, value);
-            editor.apply();
-        }
-
-        public String loadSharedPreferences(String key)
-        {
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
-            String text = sharedPreferences.getString(key, "");
-            return text;
-        }
-
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
             String key = preference.getKey();
+            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
 
             // Backup & Restore
             if (key.equals("importcsv"))
@@ -233,7 +220,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true)) {
                     // Your switch is on
                     System.out.println("Toggle is on");
-                    saveSharedPreferences("true", "togglewebdav");
+                    sharedPreferences.save("true", "togglewebdav");
 
 
                     Toast.makeText(getContext(), "Webdav is on", Toast.LENGTH_SHORT).show();
@@ -257,7 +244,7 @@ public class SettingsActivity extends AppCompatActivity {
                     // Your switch is off
                     System.out.println("Toggle is off");
                     Toast.makeText(getContext(), "Webdav is off", Toast.LENGTH_SHORT).show();
-                    saveSharedPreferences("false", "togglewebdav");
+                    sharedPreferences.save("false", "togglewebdav");
 
 
                     Preference importwebdav = findPreference("importwebdav");
@@ -280,9 +267,9 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 System.out.println("Clicked on Import Webdav");
                 // Load Shared Preferences if they exist
-                String webdav_url = loadSharedPreferences("webdav_url");
-                String webdav_username = loadSharedPreferences("webdav_username");
-                String webdav_password = loadSharedPreferences("webdav_password");
+                String webdav_url = sharedPreferences.load("webdav_url");
+                String webdav_username = sharedPreferences.load("webdav_username");
+                String webdav_password = sharedPreferences.load("webdav_password");
 
                 if(webdav_url.isEmpty() || webdav_username.isEmpty() || webdav_password.isEmpty())
                 {
@@ -307,9 +294,9 @@ public class SettingsActivity extends AppCompatActivity {
             else if (key.equals("exportwebdav"))
             {
                 // Load Shared Preferences if they exist
-                String webdav_url = loadSharedPreferences("webdav_url");
-                String webdav_username = loadSharedPreferences("webdav_username");
-                String webdav_password = loadSharedPreferences("webdav_password");
+                String webdav_url = sharedPreferences.load("webdav_url");
+                String webdav_username = sharedPreferences.load("webdav_username");
+                String webdav_password = sharedPreferences.load("webdav_password");
 
                 if(webdav_url.isEmpty() || webdav_username.isEmpty() || webdav_password.isEmpty())
                 {
@@ -342,9 +329,9 @@ public class SettingsActivity extends AppCompatActivity {
                 System.out.println("Webdav Check Connection");
 
                 // Load Shared Preferences if they exist
-                String webdav_url = loadSharedPreferences("webdav_url");
-                String webdav_username = loadSharedPreferences("webdav_username");
-                String webdav_password = loadSharedPreferences("webdav_password");
+                String webdav_url = sharedPreferences.load("webdav_url");
+                String webdav_username = sharedPreferences.load("webdav_username");
+                String webdav_password = sharedPreferences.load("webdav_password");
 
                 if(webdav_url.isEmpty() || webdav_username.isEmpty() || webdav_password.isEmpty())
                 {
@@ -369,13 +356,13 @@ public class SettingsActivity extends AppCompatActivity {
                 {
                     System.out.println("Auto Webdav backup is on");
                     Toast.makeText(getContext(), "Auto Webdav backup is on", Toast.LENGTH_SHORT).show();
-                    saveSharedPreferences("true", "autowebdavbackup");
+                    sharedPreferences.save("true", "autowebdavbackup");
                 }
                 else
                 {
                     System.out.println("Auto Webdav backup is off");
                     Toast.makeText(getContext(), "Auto Webdav backup is off", Toast.LENGTH_SHORT).show();
-                    saveSharedPreferences("false", "autowebdavbackup");
+                    sharedPreferences.save("false", "autowebdavbackup");
                 }
             }
 
@@ -387,13 +374,13 @@ public class SettingsActivity extends AppCompatActivity {
                 {
                     System.out.println("Auto backup is on");
                     Toast.makeText(getContext(), "Auto backup is on", Toast.LENGTH_SHORT).show();
-                    saveSharedPreferences("true", "autobackup");
+                    sharedPreferences.save("true", "autobackup");
                 }
                 else
                 {
                     System.out.println("Auto backup is off");
                     Toast.makeText(getContext(), "Auto backup is off", Toast.LENGTH_SHORT).show();
-                    saveSharedPreferences("false", "autobackup");
+                    sharedPreferences.save("false", "autobackup");
                 }
             }
 
@@ -415,7 +402,6 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.com/donate/?hosted_button_id=YFZX88G8XDSN4"));
                 startActivity(browserIntent);
-//                donate();
             }
             else if(key.equals("privacy_policy"))
             {
@@ -435,6 +421,11 @@ public class SettingsActivity extends AppCompatActivity {
             else if (key.equals("help"))
             {
                 Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
+            }
+            else if(key.equals("verifit_rs_login"))
+            {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
             }
 
             return true;
@@ -487,10 +478,6 @@ public class SettingsActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.donate_dialog,null);
             AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
-
-//            Button bt_bitcoin = view.findViewById(R.id.bt_bitcoin);
-//            Button bt_monero = view.findViewById(R.id.bt_monero);
-
             ImageView crypto_imageView = view.findViewById(R.id.crypto_imageView);
 
 
@@ -513,37 +500,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-
-//            bt_bitcoin.setOnClickListener(new View.OnClickListener()
-//            {
-//                @Override
-//                public void onClick(View view)
-//                {
-//                    crypto_imageView.setImageResource(R.drawable.btc);
-//
-//                    // Copy Corresponding Address to Clipboard
-//                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-//                    ClipData clip = ClipData.newPlainText("btc", "3QdfqBxpLdasMfihYxBKjdoHGEy9YbPcWP");
-//                    clipboard.setPrimaryClip(clip);
-//                    Toast.makeText(getContext(),"BTC Address Copied",Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//
-//            bt_monero.setOnClickListener(new View.OnClickListener()
-//            {
-//                @Override
-//                public void onClick(View view)
-//                {
-//                    crypto_imageView.setImageResource(R.drawable.xmr);
-//                    // Copy Corresponding Address to Clipboard
-//                    ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-//                    ClipData clip = ClipData.newPlainText("xmr", "42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is");
-//                    clipboard.setPrimaryClip(clip);
-//                    Toast.makeText(getContext(),"XMR Address Copied",Toast.LENGTH_SHORT).show();
-//
-//                }
-//            });
-
             // Show Exercise Dialog Box
             alertDialog.show();
         }
@@ -551,7 +507,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         public String getPasswordStarred()
         {
-            int passwordLength = loadSharedPreferences("webdav_password").length();
+            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
+
+            int passwordLength = sharedPreferences.load("webdav_password").length();
             String password = "";
 
             for(int i = 0; i < passwordLength; i++)

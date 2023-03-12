@@ -2,7 +2,36 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="Backup: Local Storage">
+    <PreferenceCategory app:title="Account">
+
+        <Preference
+            app:key="verifit_rs_signup"
+            app:summary="Create a free account."
+            app:title="Sign Up"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            app:key="verifit_rs_login"
+            app:summary="Already have an account? Login here."
+            app:title="Login"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            app:key="verifit_rs_logged_in"
+            app:summary="makis_christou@protonmail.com"
+            app:title="You are logged in as:"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            app:key="verifit_rs_settings"
+            app:summary="General account preferences."
+            app:title="Settings"
+            app:useSimpleSummaryProvider="false" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory app:title="Offline Backup">
 
         <Preference
             app:key="importcsv"
@@ -22,8 +51,9 @@
             app:title="Clear Data"
             app:useSimpleSummaryProvider="false" />
 
+    </PreferenceCategory>
 
-    <PreferenceCategory app:title="Backup: Webdav">
+    <PreferenceCategory app:title="Webdav Backup">
 
         <SwitchPreference
             android:defaultValue="false"
@@ -70,7 +100,7 @@
             android:summary="Periodically export workouts to your webdav server"
             android:title="Auto Export" />
 
-    </PreferenceCategory>
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="General">

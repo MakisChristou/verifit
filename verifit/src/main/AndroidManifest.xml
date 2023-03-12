@@ -4,51 +4,54 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
         <service android:name=".BackupService" />
 
-        <activity android:name=".SplashScreenActivity"/>
+        <activity android:name=".SplashScreenActivity" />
         <activity
-            android:name="com.example.verifit.ChartsActivity"
-            android:label="Charts"/>
+            android:name=".ChartsActivity"
+            android:label="Charts" />
         <activity
-            android:name="com.example.verifit.CustomExerciseActivity"
-            android:label="New Exercise"/>
+            android:name=".CustomExerciseActivity"
+            android:label="New Exercise" />
         <activity
-            android:name="com.example.verifit.ExercisesActivity"
+            android:name=".ExercisesActivity"
             android:label="Exercises" />
         <activity
-            android:name="com.example.verifit.DayActivity"
+            android:name=".DayActivity"
             android:label="Day" />
         <activity
-            android:name="com.example.verifit.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="Settings"
-            android:parentActivityName=".PersonalRecordsActivity"/>
+            android:parentActivityName=".PersonalRecordsActivity" />
         <activity
-            android:name="com.example.verifit.CalculatorActivity"
+            android:name=".CalculatorActivity"
             android:label="Plate Calculator" />
         <activity
-            android:name="com.example.verifit.PersonalRecordsActivity"
+            android:name=".PersonalRecordsActivity"
             android:label="Personal Records" />
         <activity
-            android:name="com.example.verifit.AddExerciseActivity"
+            android:name=".AddExerciseActivity"
             android:label="Add Exercise" />
         <activity
-            android:name="com.example.verifit.DiaryActivity"
+            android:name=".DiaryActivity"
             android:label="Diary" />
         <activity
-            android:name="com.example.verifit.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

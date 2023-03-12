@@ -104,15 +104,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
+
         // No need for backup, not adding exercises
         if(!doesSharedPreferenceExist("autoBackupRequired"))
         {
-            saveSharedPreferences("false", "autoBackupRequired");
+            sharedPreferences.save("false", "autoBackupRequired");
         }
 
         if(!doesSharedPreferenceExist("inAddExerciseActivity"))
         {
-            saveSharedPreferences("false", "inAddExerciseActivity");
+            sharedPreferences.save("false", "inAddExerciseActivity");
         }
 
         // Hacky way to have the same code run in onRestart() as well
@@ -128,21 +130,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return true;
         }
         return false;
-    }
-
-    public void saveSharedPreferences(String value, String key)
-    {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
-
-    public String loadSharedPreferences(String key)
-    {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
-        String text = sharedPreferences.getString(key, "");
-        return text;
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass)

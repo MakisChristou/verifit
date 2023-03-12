@@ -3,7 +3,6 @@ package com.example.verifit;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -31,21 +30,24 @@ public class BackupService extends Service {
         }
         @Override
         public void handleMessage(Message msg) {
+
+            SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+
             try
             {
                 while(true)
                 {
-                    String autowebdavbackup = loadSharedPreferences("autowebdavbackup");
-                    String togglewebdav = loadSharedPreferences("togglewebdav");
-                    String autobackup = loadSharedPreferences("autobackup");
+                    String autowebdavbackup = sharedPreferences.load("autowebdavbackup");
+                    String togglewebdav = sharedPreferences.load("togglewebdav");
+                    String autobackup = sharedPreferences.load("autobackup");
                     Date now = new Date();
 
-                    String webdavurl = loadSharedPreferences("webdav_url");
-                    String webdavusername = loadSharedPreferences("webdav_username");
-                    String webdavpassword = loadSharedPreferences("webdav_password");
+                    String webdavurl = sharedPreferences.load("webdav_url");
+                    String webdavusername = sharedPreferences.load("webdav_username");
+                    String webdavpassword = sharedPreferences.load("webdav_password");
 
-                    String autoBackupRequired = loadSharedPreferences("autoBackupRequired");
-                    String inAddExerciseActivity = loadSharedPreferences("inAddExerciseActivity");
+                    String autoBackupRequired = sharedPreferences.load("autoBackupRequired");
+                    String inAddExerciseActivity = sharedPreferences.load("inAddExerciseActivity");
 
                     
                     // Automatic webdav export
@@ -53,7 +55,7 @@ public class BackupService extends Service {
                     {
                         exportWebDavService(getApplicationContext(), webdavurl, webdavusername, webdavpassword);
                         MainActivity.autoBackupRequired = false;
-                        saveSharedPreferences("false", "autoBackupRequired");
+                        sharedPreferences.save("false", "autoBackupRequired");
                     }
 
                     // Check if we should backup every 10 min
@@ -68,21 +70,6 @@ public class BackupService extends Service {
             // Stop the service using the startId, so that we don't stop
             // the service in the middle of handling another job
             stopSelf(msg.arg1);
-        }
-
-        public void saveSharedPreferences(String value, String key)
-        {
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(key, value);
-            editor.apply();
-        }
-
-        public String loadSharedPreferences(String key)
-        {
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences", MODE_PRIVATE);
-            String text = sharedPreferences.getString(key, "");
-            return text;
         }
     }
 
