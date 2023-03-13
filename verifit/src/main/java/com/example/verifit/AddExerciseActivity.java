@@ -2,7 +2,6 @@ package com.example.verifit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -84,7 +83,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         plus_weight = findViewById(R.id.plus_weight);
         minus_weight = findViewById(R.id.minus_weight);
         bt_clear = findViewById(R.id.bt_clear);
-        bt_save = findViewById(R.id.bt_save);
+        bt_save = findViewById(R.id.bt_login_signup);
 
         // Self Explanatory I guess
         initActivity();

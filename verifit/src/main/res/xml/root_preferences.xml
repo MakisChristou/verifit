@@ -5,15 +5,9 @@
     <PreferenceCategory app:title="Account">
 
         <Preference
-            app:key="verifit_rs_signup"
-            app:summary="Create a free account."
-            app:title="Sign Up"
-            app:useSimpleSummaryProvider="false" />
-
-        <Preference
-            app:key="verifit_rs_login"
-            app:summary="Already have an account? Login here."
-            app:title="Login"
+            app:key="verifit_rs_login_signup_logout"
+            app:summary="Login or create a free account"
+            app:title="Login/Sign Up"
             app:useSimpleSummaryProvider="false" />
 
         <Preference

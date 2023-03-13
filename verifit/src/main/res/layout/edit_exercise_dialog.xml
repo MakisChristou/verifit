@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_exercise_name" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_save"
+        android:id="@+id/bt_login_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -78,7 +78,7 @@
         android:textAllCaps="false"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_save"
+        app:layout_constraintStart_toEndOf="@+id/bt_login_signup"
         app:layout_constraintTop_toBottomOf="@+id/blue_line" />
 
     <View

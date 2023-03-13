@@ -176,13 +176,13 @@
         app:backgroundTint="@color/core_white"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_save"
+        app:layout_constraintStart_toEndOf="@+id/bt_login_signup"
         app:layout_constraintTop_toBottomOf="@+id/et_reps"
         app:strokeColor="@color/colorPrimary"
         app:strokeWidth="1dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_save"
+        android:id="@+id/bt_login_signup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -209,7 +209,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_save">
+        app:layout_constraintTop_toBottomOf="@+id/bt_login_signup">
 
     </androidx.recyclerview.widget.RecyclerView>
 

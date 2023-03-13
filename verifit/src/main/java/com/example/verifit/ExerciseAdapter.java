@@ -218,7 +218,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
                 AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
 
                 // Find views
-                Button bt_save = view.findViewById(R.id.bt_save);
+                Button bt_save = view.findViewById(R.id.bt_login_signup);
                 Button bt_cancel = view.findViewById(R.id.bt_cancel);
                 EditText et_exercise_name = view.findViewById(R.id.et_exercise_name);
                 Spinner spinner = view.findViewById(R.id.spinner);

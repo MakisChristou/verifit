@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setExportBackupName();
 
         // Rename top bar to something sensible
-        getSupportActionBar().setTitle("VeriFit");
+        getSupportActionBar().setTitle("Verifit");
 
         // From Settings Activity when importing CSV
         Intent in = getIntent();

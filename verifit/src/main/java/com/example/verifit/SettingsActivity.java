@@ -23,6 +23,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.example.verifit.verifitrs.UsersApi;
 import com.example.verifit.webdav.CheckWebdavThread;
 import com.example.verifit.webdav.ClickedOnWebdavThread;
 import com.example.verifit.webdav.ExportWebdavThread;
@@ -63,6 +64,10 @@ public class SettingsActivity extends AppCompatActivity {
             Preference webdavcheckconnection = findPreference("webdavcheckconnection");
             Preference autowebdavbackup = findPreference("autowebdavbackup");
             Preference autobackup = findPreference("autobackup");
+
+
+            setVerifitRsSettingsVisibility();
+
 
             PreferenceManager preferenceManager = getPreferenceManager();
             if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true))
@@ -165,6 +170,31 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
+
+        public void setVerifitRsSettingsVisibility()
+        {
+            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
+
+            Preference verifit_rs_logged_in = findPreference("verifit_rs_logged_in");
+            Preference verifit_rs_settings = findPreference("verifit_rs_settings");
+            Preference verifit_rs_login_signup_logout = findPreference("verifit_rs_login_signup_logout");
+
+            // User is not logged in
+            if(sharedPreferences.load("verifit_rs_token").isEmpty())
+            {
+                verifit_rs_logged_in.setVisible(false);
+                verifit_rs_settings.setVisible(false);
+                verifit_rs_login_signup_logout.setTitle("Login/Sign Up");
+                verifit_rs_login_signup_logout.setSummary("Login or create a free account");
+            }
+            else
+            {
+                verifit_rs_logged_in.setVisible(false);
+                verifit_rs_settings.setVisible(true);
+                verifit_rs_login_signup_logout.setTitle("Logout");
+                verifit_rs_login_signup_logout.setSummary("You are logged in as " + sharedPreferences.load("verifit_rs_username"));
+            }
+        }
 
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
@@ -422,10 +452,19 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
             }
-            else if(key.equals("verifit_rs_login"))
+            else if(key.equals("verifit_rs_login_signup_logout"))
             {
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
+                // If user is not logged in
+                if(sharedPreferences.load("verifit_rs_token").isEmpty())
+                {
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    UsersApi users = new UsersApi(getContext(),"http://192.168.1.116:3000", sharedPreferences.load("verifit_rs_username"), sharedPreferences.load("verifit_rs_password"));
+                    users.logout();
+                }
             }
 
             return true;
