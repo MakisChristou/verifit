@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.verifit.Exercise;
+import com.example.verifit.R;
 
 public class CustomExerciseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -59,7 +62,7 @@ public class CustomExerciseActivity extends AppCompatActivity implements Adapter
                 MainActivity.KnownExercises.add(new_exercise);
                 MainActivity.saveKnownExerciseData(getApplicationContext());
                 Toast.makeText(getApplicationContext(),"Exercise Saved",Toast.LENGTH_SHORT).show();
-                Intent in = new Intent(this,ExercisesActivity.class);
+                Intent in = new Intent(this, ExercisesActivity.class);
                 startActivity(in);
             }
             else

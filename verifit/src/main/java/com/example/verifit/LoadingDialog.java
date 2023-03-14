@@ -11,12 +11,12 @@ public class LoadingDialog {
     private AlertDialog dialog;
 
 
-    LoadingDialog(Activity activity)
+    public LoadingDialog(Activity activity)
     {
         this.activity = activity;
     }
 
-    void loadingAlertDialog()
+    public void loadingAlertDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 

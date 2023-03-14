@@ -157,7 +157,7 @@ public class ExercisePersonalStats {
         this.MaxSetVolumeWeight = MaxSetVolumeWeight;
     }
 
-    ExercisePersonalStats()
+    public ExercisePersonalStats()
     {
         this.exerciseName = "";
         this.totalSets = 0.0;

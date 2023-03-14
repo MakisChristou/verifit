@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 
@@ -6,15 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -25,28 +21,29 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.example.verifit.BackupService;
+import com.example.verifit.CSVFile;
+import com.example.verifit.Exercise;
+import com.example.verifit.R;
+import com.example.verifit.ViewPagerWorkoutDayAdapter;
+import com.example.verifit.WebdavAdapter;
+import com.example.verifit.WorkoutDay;
+import com.example.verifit.WorkoutExercise;
+import com.example.verifit.WorkoutSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.thegrizzlylabs.sardineandroid.DavResource;
-import com.thegrizzlylabs.sardineandroid.Sardine;
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -1219,7 +1216,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         else if(item.getItemId() == R.id.exercises)
         {
-            Intent in = new Intent(this,ExercisesActivity.class);
+            Intent in = new Intent(this, ExercisesActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }

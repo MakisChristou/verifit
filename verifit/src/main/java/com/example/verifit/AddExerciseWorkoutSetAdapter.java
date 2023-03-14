@@ -1,7 +1,6 @@
 package com.example.verifit;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.verifit.ui.AddExerciseActivity;
 
 import java.util.ArrayList;
 

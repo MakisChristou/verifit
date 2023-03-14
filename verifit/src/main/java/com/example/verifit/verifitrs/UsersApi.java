@@ -1,13 +1,7 @@
 package com.example.verifit.verifitrs;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
-import android.content.Intent;
 
-import com.example.verifit.DayActivity;
-import com.example.verifit.MainActivity;
-import com.example.verifit.SettingsActivity;
 import com.example.verifit.SharedPreferences;
 import com.example.verifit.SnackBarWithMessage;
 import com.google.gson.Gson;

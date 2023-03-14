@@ -1,8 +1,10 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.verifit.R;
 
 
 // Plate Calculator and One Repetition Maximum Calculator

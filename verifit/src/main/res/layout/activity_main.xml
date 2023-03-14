@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/core_grey_05"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

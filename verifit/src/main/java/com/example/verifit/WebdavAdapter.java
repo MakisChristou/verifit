@@ -14,6 +14,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.verifit.ui.MainActivity;
 import com.example.verifit.webdav.DeleteWebdavThread;
 import com.example.verifit.webdav.ImportWebdavThread;
 import com.thegrizzlylabs.sardineandroid.DavResource;

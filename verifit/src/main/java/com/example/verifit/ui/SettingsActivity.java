@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,6 +23,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.example.verifit.LoadingDialog;
+import com.example.verifit.R;
+import com.example.verifit.SharedPreferences;
 import com.example.verifit.verifitrs.UsersApi;
 import com.example.verifit.webdav.CheckWebdavThread;
 import com.example.verifit.webdav.ClickedOnWebdavThread;

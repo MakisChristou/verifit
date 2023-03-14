@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.verifit.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -416,7 +417,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         }
         else if(item.getItemId() == R.id.exercises)
         {
-            Intent in = new Intent(this,ExercisesActivity.class);
+            Intent in = new Intent(this, ExercisesActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }

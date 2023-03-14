@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/core_grey_05"
     android:orientation="vertical"
-    tools:context=".DayActivity">
+    tools:context=".ui.DayActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_day"

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.verifit.LoadingDialog;
-import com.example.verifit.MainActivity;
+import com.example.verifit.ui.MainActivity;
 import com.example.verifit.R;
 import com.example.verifit.WebdavAdapter;
 import com.thegrizzlylabs.sardineandroid.DavResource;

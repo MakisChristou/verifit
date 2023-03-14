@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.verifit.KeyboardHider;
+import com.example.verifit.R;
+import com.example.verifit.SharedPreferences;
 import com.example.verifit.verifitrs.UsersApi;
 
 public class LoginActivity extends AppCompatActivity {

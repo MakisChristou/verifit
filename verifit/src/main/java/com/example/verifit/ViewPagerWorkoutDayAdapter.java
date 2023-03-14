@@ -11,6 +11,10 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.verifit.ui.ExercisesActivity;
+import com.example.verifit.ui.MainActivity;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,7 +89,7 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
             @Override
             public void onClick(View view)
             {
-                Intent in = new Intent(ct,ExercisesActivity.class);
+                Intent in = new Intent(ct, ExercisesActivity.class);
                 MainActivity.date_selected = Date_Str1;
                 ct.startActivity(in);
             }

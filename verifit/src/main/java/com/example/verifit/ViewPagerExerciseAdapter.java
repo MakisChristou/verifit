@@ -5,13 +5,16 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.verifit.ui.AddExerciseActivity;
+import com.example.verifit.ui.MainActivity;
+
 import java.util.ArrayList;
 
 
@@ -54,7 +57,7 @@ public class ViewPagerExerciseAdapter extends RecyclerView.Adapter<ViewPagerExer
             @Override
             public void onClick(View view)
             {
-                Intent in = new Intent(ct,AddExerciseActivity.class);
+                Intent in = new Intent(ct, AddExerciseActivity.class);
                 in.putExtra("exercise",Exercises.get(position).getExercise());
                 MainActivity.date_selected = Exercises.get(position).getDate();
                 ct.startActivity(in);

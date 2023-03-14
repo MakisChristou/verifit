@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.verifit.DiaryAdapter;
+import com.example.verifit.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DiaryActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -123,7 +125,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         }
         else if(item.getItemId() == R.id.exercises)
         {
-            Intent in = new Intent(this,ExercisesActivity.class);
+            Intent in = new Intent(this, ExercisesActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }

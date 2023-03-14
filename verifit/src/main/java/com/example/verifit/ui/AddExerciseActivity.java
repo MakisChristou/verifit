@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +23,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.verifit.AddExerciseWorkoutSetAdapter;
+import com.example.verifit.ExerciseHistoryExerciseAdapter;
+import com.example.verifit.R;
+import com.example.verifit.WorkoutDay;
+import com.example.verifit.WorkoutExercise;
+import com.example.verifit.WorkoutSet;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;

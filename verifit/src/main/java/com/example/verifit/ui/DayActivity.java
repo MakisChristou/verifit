@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.verifit.DayExerciseAdapter;
+import com.example.verifit.R;
+import com.example.verifit.WorkoutExercise;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -105,7 +110,7 @@ public class DayActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.add)
         {
-            Intent in = new Intent(this,ExercisesActivity.class);
+            Intent in = new Intent(this, ExercisesActivity.class);
             startActivity(in);
         }
         else if(item.getItemId() == R.id.diary)

@@ -13,10 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.verifit.ui.DayActivity;
+import com.example.verifit.ui.MainActivity;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 // Adapter for WorkoutDay Class
@@ -139,7 +142,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(ct,DayActivity.class);
+                Intent in = new Intent(ct, DayActivity.class);
                 // Update Date Selected in MainActivity
                 MainActivity.date_selected = Workout_Days.get(position).getDate();
                 in.putExtra("date",Workout_Days.get(position).getDate());

@@ -8,7 +8,6 @@ import android.os.StrictMode;
 import android.widget.Toast;
 
 import com.example.verifit.LoadingDialog;
-import com.example.verifit.MainActivity;
 import com.thegrizzlylabs.sardineandroid.DavResource;
 import com.thegrizzlylabs.sardineandroid.Sardine;
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;

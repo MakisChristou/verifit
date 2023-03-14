@@ -3,7 +3,6 @@ package com.example.verifit;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -13,6 +12,7 @@ import android.os.StrictMode;
 import android.widget.Toast;
 import android.os.Process;
 
+import com.example.verifit.ui.MainActivity;
 import com.thegrizzlylabs.sardineandroid.Sardine;
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 

@@ -13,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.verifit.ui.AddExerciseActivity;
+import com.example.verifit.ui.MainActivity;
+
 import java.util.ArrayList;
 
 
@@ -105,7 +109,7 @@ public class DayExerciseAdapter extends RecyclerView.Adapter<DayExerciseAdapter.
     // Go to Add Exercise
     public void startIntent(int position)
     {
-        Intent in = new Intent(ct,AddExerciseActivity.class);
+        Intent in = new Intent(ct, AddExerciseActivity.class);
         in.putExtra("exercise",Exercises.get(position).getExercise());
         ct.startActivity(in);
     }

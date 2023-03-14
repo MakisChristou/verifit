@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/core_grey_05"
-    tools:context=".ChartsActivity">
+    tools:context=".ui.ChartsActivity">
 
     <ScrollView
         android:layout_width="match_parent"

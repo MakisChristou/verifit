@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/core_grey_05"
     android:orientation="vertical"
-    tools:context=".PersonalRecordsActivity">
+    tools:context=".ui.PersonalRecordsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

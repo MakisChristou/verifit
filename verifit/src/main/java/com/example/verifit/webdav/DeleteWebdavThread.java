@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.os.StrictMode;
 
 import com.example.verifit.LoadingDialog;
-import com.example.verifit.MainActivity;
 import com.example.verifit.WebdavAdapter;
 import com.thegrizzlylabs.sardineandroid.Sardine;
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;

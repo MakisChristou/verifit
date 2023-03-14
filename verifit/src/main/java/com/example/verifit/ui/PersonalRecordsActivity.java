@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 
+import com.example.verifit.ExercisePersonalStats;
+import com.example.verifit.ExerciseStatsAdapter;
+import com.example.verifit.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -75,17 +78,17 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
             String exerciseCategory = MainActivity.getExerciseCategory(currentExerciseName);
 
             ExercisePersonalStats exercisePersonalStats = new ExercisePersonalStats();
-            exercisePersonalStats.exerciseName = currentExerciseName;
-            exercisePersonalStats.exerciseCategory = exerciseCategory;
-            exercisePersonalStats.maxVolume = MainActivity.VolumePRs.get(currentExerciseName);
-            exercisePersonalStats.maxSetVolume = MainActivity.SetVolumePRs.get(currentExerciseName).first * MainActivity.SetVolumePRs.get(currentExerciseName).second;
-            exercisePersonalStats.maxSetVolumeReps = MainActivity.SetVolumePRs.get(currentExerciseName).first; // First = Reps
-            exercisePersonalStats.MaxSetVolumeWeight = MainActivity.SetVolumePRs.get(currentExerciseName).second; // Second = Weight
-            exercisePersonalStats.maxReps = MainActivity.MaxRepsPRs.get(currentExerciseName);
-            exercisePersonalStats.maxWeight = MainActivity.MaxWeightPRs.get(currentExerciseName);
-            exercisePersonalStats.actual1RM = MainActivity.ActualOneRepMaxPRs.get(currentExerciseName);
-            exercisePersonalStats.estimated1RM = MainActivity.EstimatedOneRMPRs.get(currentExerciseName);
-            exercisePersonalStats.isFavorite = MainActivity.isExerciseFavorite(currentExerciseName);
+            exercisePersonalStats.setExerciseName(currentExerciseName);
+            exercisePersonalStats.setExerciseCategory(exerciseCategory);
+            exercisePersonalStats.setMaxVolume(MainActivity.VolumePRs.get(currentExerciseName));
+            exercisePersonalStats.setMaxSetVolume(MainActivity.SetVolumePRs.get(currentExerciseName).first * MainActivity.SetVolumePRs.get(currentExerciseName).second);
+            exercisePersonalStats.setMaxSetVolumeReps(MainActivity.SetVolumePRs.get(currentExerciseName).first); // First = Reps
+            exercisePersonalStats.setMaxSetVolumeWeight(MainActivity.SetVolumePRs.get(currentExerciseName).second); // Second = Weight
+            exercisePersonalStats.setMaxReps(MainActivity.MaxRepsPRs.get(currentExerciseName));
+            exercisePersonalStats.setMaxWeight(MainActivity.MaxWeightPRs.get(currentExerciseName));
+            exercisePersonalStats.setActual1RM(MainActivity.ActualOneRepMaxPRs.get(currentExerciseName));
+            exercisePersonalStats.setEstimated1RM(MainActivity.EstimatedOneRMPRs.get(currentExerciseName));
+            exercisePersonalStats.setFavorite(MainActivity.isExerciseFavorite(currentExerciseName));
 
 
             if(MainActivity.VolumePRs.get(currentExerciseName) == 0.0)
@@ -172,7 +175,7 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
         }
         else if(item.getItemId() == R.id.exercises)
         {
-            Intent in = new Intent(this,ExercisesActivity.class);
+            Intent in = new Intent(this, ExercisesActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }

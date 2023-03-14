@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 
+import com.example.verifit.ExerciseAdapter;
+import com.example.verifit.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ExercisesActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -52,7 +54,7 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
 
         // Find Recycler View Object
         recyclerView = findViewById(R.id.recycler_view_exercises);
-        exerciseAdapter = new ExerciseAdapter(this,MainActivity.KnownExercises);
+        exerciseAdapter = new ExerciseAdapter(this, MainActivity.KnownExercises);
         recyclerView.setAdapter(exerciseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -91,12 +93,12 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
 
         if(item.getItemId() == R.id.add)
         {
-            Intent in = new Intent(this,CustomExerciseActivity.class);
+            Intent in = new Intent(this, CustomExerciseActivity.class);
             startActivity(in);
         }
         else if(item.getItemId() == R.id.settings)
         {
-            Intent in = new Intent(getApplicationContext(),SettingsActivity.class);
+            Intent in = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(in);
         }
         return super.onOptionsItemSelected(item);
@@ -119,13 +121,13 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
         }
         else if(item.getItemId() == R.id.diary)
         {
-            Intent in = new Intent(this,DiaryActivity.class);
+            Intent in = new Intent(this, DiaryActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
         else if(item.getItemId() == R.id.charts)
         {
-            Intent in = new Intent(this,ChartsActivity.class);
+            Intent in = new Intent(this, ChartsActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
