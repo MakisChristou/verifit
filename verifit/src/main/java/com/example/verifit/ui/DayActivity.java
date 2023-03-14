@@ -12,7 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.verifit.DayExerciseAdapter;
+import com.example.verifit.adapters.DayExerciseAdapter;
 import com.example.verifit.R;
 import com.example.verifit.WorkoutExercise;
 

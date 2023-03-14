@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,6 +12,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.verifit.R;
+import com.example.verifit.WorkoutDay;
+import com.example.verifit.WorkoutExercise;
 import com.example.verifit.ui.ExercisesActivity;
 import com.example.verifit.ui.MainActivity;
 

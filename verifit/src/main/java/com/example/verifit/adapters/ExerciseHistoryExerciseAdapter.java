@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.verifit.R;
+import com.example.verifit.WorkoutExercise;
 
 import java.text.DateFormat;
 import java.text.ParseException;

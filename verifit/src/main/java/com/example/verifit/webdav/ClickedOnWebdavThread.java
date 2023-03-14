@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.verifit.LoadingDialog;
 import com.example.verifit.ui.MainActivity;
 import com.example.verifit.R;
-import com.example.verifit.WebdavAdapter;
+import com.example.verifit.adapters.WebdavAdapter;
 import com.thegrizzlylabs.sardineandroid.DavResource;
 import com.thegrizzlylabs.sardineandroid.Sardine;
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;

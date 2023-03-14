@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.verifit.R;
+import com.example.verifit.WorkoutSet;
 
 import java.util.ArrayList;
 

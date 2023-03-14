@@ -12,7 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 
-import com.example.verifit.ExerciseAdapter;
+import com.example.verifit.adapters.ExerciseAdapter;
 import com.example.verifit.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

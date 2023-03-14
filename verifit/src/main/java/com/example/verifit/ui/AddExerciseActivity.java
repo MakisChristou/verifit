@@ -23,8 +23,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.verifit.AddExerciseWorkoutSetAdapter;
-import com.example.verifit.ExerciseHistoryExerciseAdapter;
+import com.example.verifit.adapters.AddExerciseWorkoutSetAdapter;
+import com.example.verifit.adapters.ExerciseHistoryExerciseAdapter;
 import com.example.verifit.R;
 import com.example.verifit.WorkoutDay;
 import com.example.verifit.WorkoutExercise;

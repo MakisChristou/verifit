@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 
 import com.example.verifit.ExercisePersonalStats;
-import com.example.verifit.ExerciseStatsAdapter;
+import com.example.verifit.adapters.ExerciseStatsAdapter;
 import com.example.verifit.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

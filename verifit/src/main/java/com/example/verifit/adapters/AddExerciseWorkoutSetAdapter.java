@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.adapters;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -12,6 +12,8 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.verifit.R;
+import com.example.verifit.WorkoutSet;
 import com.example.verifit.ui.AddExerciseActivity;
 
 import java.util.ArrayList;

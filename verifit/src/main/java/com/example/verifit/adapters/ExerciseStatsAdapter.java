@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,8 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.verifit.ExercisePersonalStats;
+import com.example.verifit.R;
 import com.example.verifit.ui.MainActivity;
 import com.example.verifit.ui.PersonalRecordsActivity;
 

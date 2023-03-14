@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.verifit.R;
+import com.example.verifit.WorkoutExercise;
 import com.example.verifit.ui.AddExerciseActivity;
 import com.example.verifit.ui.MainActivity;
 
