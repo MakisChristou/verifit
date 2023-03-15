@@ -85,9 +85,9 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         // Add Data pairs in List
         ArrayList<BarEntry> workouts = new ArrayList<BarEntry>();
 
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            workouts.add(new BarEntry(i,MainActivity.workoutDays.get(i).getDayVolume().floatValue()));
+            workouts.add(new BarEntry(i,MainActivity.dataStorage.getWorkoutDays().get(i).getDayVolume().floatValue()));
         }
 
         // Add Date Labels to workout
@@ -140,9 +140,9 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         // Find Workout Years
         HashSet<String> Years = new HashSet<>();
 
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            String date = MainActivity.workoutDays.get(i).getDate();
+            String date = MainActivity.dataStorage.getWorkoutDays().get(i).getDate();
             String year = date.substring(0,4);
             Years.add(year);
         }
@@ -157,9 +157,9 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         });
 
         // Calculate number of workouts per year
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            String date = MainActivity.workoutDays.get(i).getDate();
+            String date = MainActivity.dataStorage.getWorkoutDays().get(i).getDate();
             String year = date.substring(0,4);
 
             int workouts = Years_Workouts.get(year);
@@ -210,11 +210,11 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         // Find Workout Years
         HashSet<String> Bodyparts = new HashSet<>();
 
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
+            for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
             {
-                String Exercise = MainActivity.workoutDays.get(i).getSets().get(j).getCategory();
+                String Exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getCategory();
                 Bodyparts.add(Exercise);
             }
         }
@@ -229,11 +229,11 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         });
 
         // Calculate number of workouts per year
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
+            for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
             {
-                String Exercise = MainActivity.workoutDays.get(i).getSets().get(j).getCategory();
+                String Exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getCategory();
 
                 int Exercise_Workouts = Number_Bodyparts.get(Exercise);
                 Number_Bodyparts.put(Exercise,Exercise_Workouts+1);
@@ -286,11 +286,11 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         // Find Workout Years
         HashSet<String> Exercises = new HashSet<>();
 
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
+            for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
             {
-                String Exercise = MainActivity.workoutDays.get(i).getSets().get(j).getExercise();
+                String Exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise();
                 Exercises.add(Exercise);
             }
         }
@@ -305,11 +305,11 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         });
 
         // Calculate number of workouts per year
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
+            for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
             {
-                String Exercise = MainActivity.workoutDays.get(i).getSets().get(j).getExercise();
+                String Exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise();
 
                 //System.out.println(Exercise);
 

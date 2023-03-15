@@ -29,7 +29,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         setContentView(R.layout.activity_diary);
 
         System.out.println("DiaryActivity::OnCreate()");
-        System.out.println("Size: " + MainActivity.workoutDays.size());
+        System.out.println("Size: " + MainActivity.dataStorage.getWorkoutDays().size());
 
         initActivity();
     }
@@ -59,11 +59,11 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
 
         if(date_clicked != null)
         {
-            position = MainActivity.getDayPosition(date_clicked);
+            position = MainActivity.dataStorage.getDayPosition(date_clicked);
         }
 
         System.out.println("Date is " + date_clicked + " and position is: " + position);
-        System.out.println("MainActivity.Workout_Days.size(): " + MainActivity.workoutDays.size());
+        System.out.println("MainActivity.Workout_Days.size(): " + MainActivity.dataStorage.getWorkoutDays().size());
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -74,26 +74,23 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         recyclerView = findViewById(R.id.recycler_view);
 
         // Notify User in case of empty diary
-        if(MainActivity.workoutDays.isEmpty())
+        if(MainActivity.dataStorage.getWorkoutDays().isEmpty())
         {
             Toast.makeText(this, "Empty Diary", Toast.LENGTH_SHORT).show();
         }
         else
         {
             // So the adapter has correct information
-            MainActivity.calculatePersonalRecords();
+            MainActivity.dataStorage.calculatePersonalRecords();
 
             // Crash Otherwise
-            diaryAdapter = new DiaryAdapter(this, MainActivity.workoutDays);
+            diaryAdapter = new DiaryAdapter(this, MainActivity.dataStorage.getWorkoutDays());
             recyclerView.setAdapter(diaryAdapter);
-//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
             LinearLayoutManager lm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true); // last argument (true) is flag for reverse layout
             lm.setReverseLayout(true);
             lm.setStackFromEnd(true);
             recyclerView.setLayoutManager(lm);
-
-//            recyclerView.scrollToPosition();
 
             // BUG HERE FIX IT SER
             if(position >= 0)

@@ -75,7 +75,7 @@ public class ViewPagerExerciseAdapter extends RecyclerView.Adapter<ViewPagerExer
     // Simple
     public void setCategoryIconTint(MyViewHolder holder, String exercise_name)
     {
-        String exercise_category = MainActivity.getExerciseCategory(exercise_name);
+        String exercise_category = MainActivity.dataStorage.getExerciseCategory(exercise_name);
 
         if(exercise_category.equals("Shoulders"))
         {

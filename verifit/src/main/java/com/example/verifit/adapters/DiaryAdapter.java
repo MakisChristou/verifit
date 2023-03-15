@@ -65,7 +65,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
 
             // Change RecyclerView items
-            DiaryExerciseAdapter workoutExerciseAdapter = new DiaryExerciseAdapter(ct, MainActivity.workoutDays.get(position).getExercises());
+            DiaryExerciseAdapter workoutExerciseAdapter = new DiaryExerciseAdapter(ct, MainActivity.dataStorage.getWorkoutDays().get(position).getExercises());
             holder.recyclerView.setAdapter(workoutExerciseAdapter);
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
 

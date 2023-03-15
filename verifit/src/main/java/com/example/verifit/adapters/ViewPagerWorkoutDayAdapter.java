@@ -58,11 +58,11 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
 
         // Find which exercises were performed that given date
         ArrayList<WorkoutExercise> Today_Execrises = new ArrayList<WorkoutExercise>();
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            if(Date_Str1.equals(MainActivity.workoutDays.get(i).getDate()))
+            if(Date_Str1.equals(MainActivity.dataStorage.getWorkoutDays().get(i).getDate()))
             {
-                Today_Execrises = MainActivity.workoutDays.get(i).getExercises();
+                Today_Execrises = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises();
             }
         }
 

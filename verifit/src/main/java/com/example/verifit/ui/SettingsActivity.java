@@ -489,8 +489,8 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view)
                 {
-                    MainActivity.workoutDays.clear();
-                    MainActivity.saveWorkoutData(getContext());
+                    MainActivity.dataStorage.getWorkoutDays().clear();
+                    MainActivity.dataStorage.saveWorkoutData(getContext());
                     alertDialog.dismiss();
                     Toast.makeText(getContext(),"Data Deleted",Toast.LENGTH_SHORT).show();
                     Intent in = new Intent(getContext(),MainActivity.class);

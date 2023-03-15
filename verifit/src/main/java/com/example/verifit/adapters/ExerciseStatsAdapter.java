@@ -163,13 +163,13 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
 
                     String exercise_name = exercisePersonalStats.get(position).getExerciseName();
 
-                    Boolean isFavorite = MainActivity.isExerciseFavorite(exercise_name);
+                    Boolean isFavorite = MainActivity.dataStorage.isExerciseFavorite(exercise_name);
 
 
-                    MainActivity.setFavoriteExercise(exercise_name, !isFavorite);
+                    MainActivity.dataStorage.setFavoriteExercise(exercise_name, !isFavorite);
 
 
-                    isFavorite = MainActivity.isExerciseFavorite(exercise_name);
+                    isFavorite = MainActivity.dataStorage.isExerciseFavorite(exercise_name);
 
 
                     PersonalRecordsActivity.calculatePersonalRecords();
@@ -189,7 +189,7 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
     // Simple
     public void setCategoryIconTint(ExerciseStatsAdapter.MyViewHolder holder, String exercise_name, Boolean isFavorite, int position)
     {
-        String exercise_category = MainActivity.getExerciseCategory(exercise_name);
+        String exercise_category = MainActivity.dataStorage.getExerciseCategory(exercise_name);
 
         if(!isFavorite)
         {

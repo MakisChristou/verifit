@@ -137,7 +137,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                 Double weight = Double.parseDouble(et_weight.getText().toString());
 
                 // Create New Set Object
-                WorkoutSet workoutSet = new WorkoutSet(MainActivity.dateSelected,exercise_name, MainActivity.getExerciseCategory(exercise_name),reps,weight);
+                WorkoutSet workoutSet = new WorkoutSet(MainActivity.dateSelected,exercise_name, MainActivity.dataStorage.getExerciseCategory(exercise_name),reps,weight);
 
                 // Ignore wrong input
                 if(reps == 0 || weight == 0 || reps < 0 || weight < 0)
@@ -148,13 +148,13 @@ public class AddExerciseActivity extends AppCompatActivity {
                 else
                 {
                     // Find if workout day already exists
-                    int position = MainActivity.getDayPosition(MainActivity.dateSelected);
+                    int position = MainActivity.dataStorage.getDayPosition(MainActivity.dateSelected);
 
                     // If workout day exists
                     if(position >= 0)
                     {
                         // Find comment of that workout day/exercise
-                        WorkoutDay workoutDay = MainActivity.workoutDays.get(position);
+                        WorkoutDay workoutDay = MainActivity.dataStorage.getWorkoutDays().get(position);
 
                         for(int i = 0; i < workoutDay.getSets().size(); i++)
                         {
@@ -179,7 +179,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                         }
                         // To Do: Use mutex here
                         // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
-                        MainActivity.workoutDays.get(position).addSet(workoutSet);
+                        MainActivity.dataStorage.getWorkoutDays().get(position).addSet(workoutSet);
                     }
                     // If not construct new workout day
                     else
@@ -189,7 +189,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
                         // To Do: Use mutex here
                         // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
-                        MainActivity.workoutDays.add(workoutDay);
+                        MainActivity.dataStorage.getWorkoutDays().add(workoutDay);
                     }
 
                     // Update Local Data Structure
@@ -211,20 +211,20 @@ public class AddExerciseActivity extends AppCompatActivity {
             to_be_updated_set.getExercise();
 
             // Find the set in main data structure and delete it
-            for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+            for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
             {
-                for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
+                for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
                 {
-                    if(MainActivity.workoutDays.get(i).getSets().get(j).equals(to_be_updated_set))
+                    if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).equals(to_be_updated_set))
                     {
                         Double reps = Double.parseDouble(String.valueOf(et_reps.getText()));
                         Double weight = Double.parseDouble(String.valueOf(et_weight.getText()));
 
-                        MainActivity.workoutDays.get(i).getSets().get(j).setReps(reps);
-                        MainActivity.workoutDays.get(i).getSets().get(j).setWeight(weight);
+                        MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).setReps(reps);
+                        MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).setWeight(weight);
 
                         // Manually update data because of bad design choices
-                        MainActivity.workoutDays.get(i).UpdateData();
+                        MainActivity.dataStorage.getWorkoutDays().get(i).UpdateData();
                         break;
                     }
                 }
@@ -295,22 +295,22 @@ public class AddExerciseActivity extends AppCompatActivity {
                 System.out.println(Clicked_Set);
 
                 // Find the set in main data structure and delete it
-                for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+                for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
                 {
-                    if(MainActivity.workoutDays.get(i).getSets().contains(to_be_removed_set))
+                    if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().contains(to_be_removed_set))
                     {
-                        MainActivity.workoutDays.get(i).removeSet(to_be_removed_set);
+                        MainActivity.dataStorage.getWorkoutDays().get(i).removeSet(to_be_removed_set);
                         break;
                     }
                 }
 
                 // Cleanup days with 0 sets
-                for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+                for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
                 {
-                    if(MainActivity.workoutDays.get(i).getSets().size() == 0)
+                    if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size() == 0)
                     {
                         System.out.println("Deleting day with 0 sets");
-                        MainActivity.workoutDays.remove(i);
+                        MainActivity.dataStorage.getWorkoutDays().remove(i);
                     }
                 }
 
@@ -365,12 +365,12 @@ public class AddExerciseActivity extends AppCompatActivity {
         System.out.println("On Stop1");
 
         // Sort Before Saving
-        MainActivity.sortWorkoutDaysDate();
+        MainActivity.dataStorage.sortWorkoutDaysDate();
 
         System.out.println("On Stop2");
 
         // Actually Save Changes in shared preferences
-        MainActivity.saveWorkoutData(getApplicationContext());
+        MainActivity.dataStorage.saveWorkoutData(getApplicationContext());
 
         System.out.println("On Stop3");
 
@@ -459,17 +459,17 @@ public class AddExerciseActivity extends AppCompatActivity {
         Todays_Exercise_Sets.clear();
 
         // Find Sets for a specific date and exercise
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
             // If date matches
-            if(MainActivity.workoutDays.get(i).getDate().equals(MainActivity.dateSelected))
+            if(MainActivity.dataStorage.getWorkoutDays().get(i).getDate().equals(MainActivity.dateSelected))
             {
-                for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
+                for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
                 {
                     // If exercise matches
-                    if(AddExerciseActivity.exercise_name.equals(MainActivity.workoutDays.get(i).getSets().get(j).getExercise()))
+                    if(AddExerciseActivity.exercise_name.equals(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise()))
                     {
-                        Todays_Exercise_Sets.add(MainActivity.workoutDays.get(i).getSets().get(j));
+                        Todays_Exercise_Sets.add(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j));
                     }
                 }
             }
@@ -488,17 +488,17 @@ public class AddExerciseActivity extends AppCompatActivity {
         Todays_Exercise_Sets.clear();
 
         // Find Sets for a specific date and exercise
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
             // If date matches
-            if(MainActivity.workoutDays.get(i).getDate().equals(MainActivity.dateSelected))
+            if(MainActivity.dataStorage.getWorkoutDays().get(i).getDate().equals(MainActivity.dateSelected))
             {
-                for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
+                for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
                 {
                     // If exercise matches
-                    if(exercise_name.equals(MainActivity.workoutDays.get(i).getSets().get(j).getExercise()))
+                    if(exercise_name.equals(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise()))
                     {
-                        Todays_Exercise_Sets.add(MainActivity.workoutDays.get(i).getSets().get(j));
+                        Todays_Exercise_Sets.add(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j));
                     }
                 }
             }
@@ -532,15 +532,15 @@ public class AddExerciseActivity extends AppCompatActivity {
         Double max_exercise_volume = 0.0;
 
         // Find Max Weight and Reps for a specific exercise
-        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
         {
-            for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
+            for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
             {
-                if(MainActivity.workoutDays.get(i).getSets().get(j).getVolume() > max_exercise_volume && MainActivity.workoutDays.get(i).getSets().get(j).getExercise().equals(exercise_name))
+                if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getVolume() > max_exercise_volume && MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise().equals(exercise_name))
                 {
-                    max_exercise_volume = MainActivity.workoutDays.get(i).getSets().get(j).getVolume();
-                    max_reps = (int)Math.round(MainActivity.workoutDays.get(i).getSets().get(j).getReps());
-                    max_weight = MainActivity.workoutDays.get(i).getSets().get(j).getWeight();
+                    max_exercise_volume = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getVolume();
+                    max_reps = (int)Math.round(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getReps());
+                    max_weight = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getWeight();
                 }
             }
         }
@@ -682,13 +682,13 @@ public class AddExerciseActivity extends AppCompatActivity {
             ArrayList<WorkoutExercise> All_Performed_Sessions = new ArrayList<>();
 
             // Find all performed sessions of a specific exercise and add them to local data structure
-            for(int i = MainActivity.workoutDays.size()-1; i >= 0; i--)
+            for(int i = MainActivity.dataStorage.getWorkoutDays().size()-1; i >= 0; i--)
             {
-                for(int j = 0; j < MainActivity.workoutDays.get(i).getExercises().size(); j++)
+                for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().size(); j++)
                 {
-                    if(MainActivity.workoutDays.get(i).getExercises().get(j).getExercise().equals(exercise_name))
+                    if(MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getExercise().equals(exercise_name))
                     {
-                        All_Performed_Sessions.add(MainActivity.workoutDays.get(i).getExercises().get(j));
+                        All_Performed_Sessions.add(MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j));
                     }
                 }
             }
@@ -730,11 +730,11 @@ public class AddExerciseActivity extends AppCompatActivity {
             int x = 0;
 
             // Get Exercise Volume
-            for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+            for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
             {
-                for (int j = 0; j < MainActivity.workoutDays.get(i).getExercises().size(); j++)
+                for (int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().size(); j++)
                 {
-                    WorkoutExercise current_exercise = MainActivity.workoutDays.get(i).getExercises().get(j);
+                    WorkoutExercise current_exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j);
 
                     if(current_exercise.getExercise().equals(exercise_name))
                     {
@@ -777,16 +777,16 @@ public class AddExerciseActivity extends AppCompatActivity {
 
             // Check if exercise exists (to show the comment if it has one)
             // Find if workout day already exists
-            int exercise_position = MainActivity.getExercisePosition(MainActivity.dateSelected,exercise_name);
+            int exercise_position = MainActivity.dataStorage.getExercisePosition(MainActivity.dateSelected,exercise_name);
 
             // Exists, then show the comment
             if(exercise_position >= 0)
             {
                 System.out.println("We can comment, exercise exists");
 
-                int day_position = MainActivity.getDayPosition(MainActivity.dateSelected);
+                int day_position = MainActivity.dataStorage.getDayPosition(MainActivity.dateSelected);
 
-                String comment = MainActivity.workoutDays.get(day_position).getExercises().get(exercise_position).getComment();
+                String comment = MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).getComment();
 
                 et_exercise_comment.setText(comment);
             }
@@ -834,7 +834,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Check if exercise exists (cannot comment on non-existant exercise)
         // Find if workout day already exists
-        int exercise_position = MainActivity.getExercisePosition(MainActivity.dateSelected,exercise_name);
+        int exercise_position = MainActivity.dataStorage.getExercisePosition(MainActivity.dateSelected,exercise_name);
 
         if(exercise_position >= 0)
         {
@@ -856,15 +856,15 @@ public class AddExerciseActivity extends AppCompatActivity {
         System.out.println(comment);
 
         // Get the date for today
-        int day_position = MainActivity.getDayPosition(MainActivity.dateSelected);
+        int day_position = MainActivity.dataStorage.getDayPosition(MainActivity.dateSelected);
 
         // Modify the data structure to add the comment
-        MainActivity.workoutDays.get(day_position).getExercises().get(exercise_position).setComment(comment);
+        MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).setComment(comment);
 
 //        // Also modifiy individual sets
-        for(int i = 0; i < MainActivity.workoutDays.get(day_position).getSets().size(); i++)
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().get(day_position).getSets().size(); i++)
         {
-            MainActivity.workoutDays.get(day_position).getSets().get(i).setComment(comment);
+            MainActivity.dataStorage.getWorkoutDays().get(day_position).getSets().get(i).setComment(comment);
         }
 
         updateTodaysExercises();
@@ -886,7 +886,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Check if exercise exists (cannot comment on non-existant exercise)
         // Find if workout day already exists
-        int exercise_position = MainActivity.getExercisePosition(MainActivity.dateSelected,exercise_name);
+        int exercise_position = MainActivity.dataStorage.getExercisePosition(MainActivity.dateSelected,exercise_name);
 
         if(exercise_position >= 0)
         {
@@ -906,10 +906,10 @@ public class AddExerciseActivity extends AppCompatActivity {
         System.out.println(comment);
 
         // Get the date for today
-        int day_position = MainActivity.getDayPosition(MainActivity.dateSelected);
+        int day_position = MainActivity.dataStorage.getDayPosition(MainActivity.dateSelected);
 
         // Modify the data structure to add the comment
-        MainActivity.workoutDays.get(day_position).getExercises().get(exercise_position).setComment(comment);
+        MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).setComment(comment);
 
 
         Toast.makeText(getApplicationContext(),"Comment Cleared",Toast.LENGTH_SHORT).show();

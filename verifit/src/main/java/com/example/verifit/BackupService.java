@@ -122,18 +122,18 @@ public class BackupService extends Service {
         try {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
-            for(int i = 0; i < MainActivity.workoutDays.size(); i++)
+            for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
             {
-                for(int j = 0; j < MainActivity.workoutDays.get(i).getExercises().size(); j++)
+                for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().size(); j++)
                 {
-                    String exerciseComment = MainActivity.workoutDays.get(i).getExercises().get(j).getComment();
-                    for(int k = 0; k < MainActivity.workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
+                    String exerciseComment = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getComment();
+                    for(int k = 0; k < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().size(); k++)
                     {
-                        String Date = MainActivity.workoutDays.get(i).getExercises().get(j).getDate();
-                        String exerciseName = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getExercise();
-                        String exerciseCategory = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getCategory();
-                        Double Weight = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getWeight();
-                        Double Reps = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getReps();
+                        String Date = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getDate();
+                        String exerciseName = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseCategory = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getCategory();
+                        Double Weight = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getWeight();
+                        Double Reps = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getReps();
                         output.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
                     }
                 }

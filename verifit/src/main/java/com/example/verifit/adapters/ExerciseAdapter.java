@@ -87,8 +87,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
 //
 //
 //                // Save Results
-//                MainActivity.saveKnownExerciseData(ct);
-//                MainActivity.saveWorkoutData(ct);
+//                MainActivity.dataStorage.saveKnownExerciseData(ct);
+//                MainActivity.dataStorage.saveWorkoutData(ct);
 //
 //
 //                return true;
@@ -277,9 +277,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
                         if(new_exercise_category != null && !new_exercise_category.isEmpty() && new_exercise_category.length() > 0 && new_exercise_name != null && !new_exercise_name.isEmpty() && new_exercise_name.length() > 0)
                         {
                             System.out.println(new_exercise_category + " " + et_exercise_name.getText().toString());
-                            MainActivity.editExercise(exercise_name,new_exercise_name,new_exercise_category);
-                            MainActivity.saveWorkoutData(ct);
-                            MainActivity.saveKnownExerciseData(ct);
+                            MainActivity.dataStorage.editExercise(exercise_name,new_exercise_name,new_exercise_category);
+                            MainActivity.dataStorage.saveWorkoutData(ct);
+                            MainActivity.dataStorage.saveKnownExerciseData(ct);
                             notifyDataSetChanged();
                             alertDialog.dismiss();
                         }
@@ -326,14 +326,14 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
                     public void onClick(View view)
                     {
                         // Delete Exercise from MainActivity Data Structures
-                        MainActivity.deleteExercise(Exercises.get(position).getName());
+                        MainActivity.dataStorage.deleteExercise(Exercises.get(position).getName());
 
                         // Delete Exercise from Adapter's local data structure
                         deleteExercise(Exercises.get(position).getName());
 
                         // Save Results
-                        MainActivity.saveKnownExerciseData(ct);
-                        MainActivity.saveWorkoutData(ct);
+                        MainActivity.dataStorage.saveKnownExerciseData(ct);
+                        MainActivity.dataStorage.saveWorkoutData(ct);
 
                         alertDialog.dismiss();
                     }
