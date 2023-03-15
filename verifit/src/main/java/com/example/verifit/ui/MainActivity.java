@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Use View Pager with Infinite Days
         viewPager2 = findViewById(R.id.viewPager2);
         viewPager2.setAdapter(new ViewPagerWorkoutDayAdapter(this, infiniteWorkoutDays));
-        viewPager2.setCurrentItem((infiniteWorkoutDays.size()+1)/2); // Navigate to today
+        viewPager2.setCurrentItem(((infiniteWorkoutDays.size()+1)/2)-1); // Navigate to today
     }
 
     // Formats backup name in case of export
@@ -548,7 +548,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             if(MainActivity.knownExercises.get(i).getName().equals(exerciseName))
             {
-                System.out.println("Setting exercise " + exerciseName + " as favorite: " + isFavorite);
                 MainActivity.knownExercises.get(i).setFavorite(isFavorite);
             }
         }
