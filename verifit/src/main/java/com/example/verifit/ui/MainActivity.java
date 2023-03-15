@@ -71,21 +71,20 @@ import java.util.TreeSet;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , DatePickerDialog.OnDateSetListener{
 
-    // "Data Structures"
-    public static Set<String> Days = new TreeSet<String>();
-    public static ArrayList<WorkoutSet> Sets = new ArrayList<WorkoutSet>();
-    public static ArrayList<WorkoutDay> Workout_Days = new ArrayList<WorkoutDay>();
-    public static ArrayList<Exercise> KnownExercises = new ArrayList<Exercise>(); // Initialized with hardcoded exercises
-    public static String date_selected; // Used for other activities to get the selected date, by default it's set to today
-    public static HashMap<String,Double> VolumePRs = new HashMap<String,Double>();
-    public static HashMap<String, Pair<Double,Double>> SetVolumePRs = new HashMap<String, Pair<Double,Double>>(); // first = reps, second = weight
-    public static HashMap<String,Double> ActualOneRepMaxPRs = new HashMap<String,Double>();
-    public static HashMap<String,Double> EstimatedOneRMPRs = new HashMap<String,Double>();
-    public static HashMap<String,Double> MaxRepsPRs = new HashMap<String,Double>();
-    public static HashMap<String,Double> MaxWeightPRs = new HashMap<String,Double>();
-    public static HashMap<String,Double> LastTimeVolume = new HashMap<String,Double>(); // Holds last workout's volume for each exercise
+    public static Set<String> days = new TreeSet<String>();
+    public static ArrayList<WorkoutSet> sets = new ArrayList<WorkoutSet>();
+    public static ArrayList<WorkoutDay> workoutDays = new ArrayList<WorkoutDay>();
+    public static ArrayList<Exercise> knownExercises = new ArrayList<Exercise>(); // Initialized with hardcoded exercises
+    public static String dateSelected; // Used for other activities to get the selected date, by default it's set to today
+    public static HashMap<String,Double> volumePRs = new HashMap<String,Double>();
+    public static HashMap<String, Pair<Double,Double>> setVolumePRs = new HashMap<String, Pair<Double,Double>>(); // first = reps, second = weight
+    public static HashMap<String,Double> actualOneRepMaxPRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> estimatedOneRMPRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> maxRepsPRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> maxWeightPRs = new HashMap<String,Double>();
+    public static HashMap<String,Double> lastTimeVolume = new HashMap<String,Double>(); // Holds last workout's volume for each exercise
     public ViewPager2 viewPager2; // View Pager that is used in main activity
-    public static ArrayList<WorkoutDay> Infinite_Workout_Days = new ArrayList<WorkoutDay>(); // Used to populate the viewPager object in MainActivity with "infinite" days
+    public static ArrayList<WorkoutDay> infiniteWorkoutDays = new ArrayList<WorkoutDay>(); // Used to populate the viewPager object in MainActivity with "infinite" days
     public static Boolean autoBackupRequired = false;
     public static Boolean inAddExerciseActivity = false;
     public static WebdavAdapter webdavAdapter;
@@ -150,8 +149,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // If backup background service has not started, start it
         if(!isMyServiceRunning(BackupService.class))
         {
-            System.out.println("Starting Service");
-            // Start background service, allegedly
+            // Start background service
             Intent intent = new Intent(this, BackupService.class);
             startService(intent);
         }
@@ -165,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Date selected is by default today
         Date date_clicked = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        date_selected = dateFormat.format(date_clicked);
+        dateSelected = dateFormat.format(date_clicked);
     }
 
     // When choosing date from DatePicker
@@ -181,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         day = String.format("%02d", i2);
 
         String date_clicked = year+"-"+month+"-"+day;
-        MainActivity.date_selected = date_clicked;
+        MainActivity.dateSelected = date_clicked;
 
         // Start Intent
         Intent in = new Intent(getApplicationContext(), DayActivity.class);
@@ -296,10 +294,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void initViewPager()
     {
         // Skip creation of empty workouts if you don't have to
-        if(Infinite_Workout_Days.isEmpty())
+        if(infiniteWorkoutDays.isEmpty())
         {
             // "Infinite" Data Structure
-            Infinite_Workout_Days.clear();
+            infiniteWorkoutDays.clear();
 
             // Find start and End Dates
             Calendar c = Calendar.getInstance();
@@ -324,14 +322,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 // Create new mostly empty object
                 WorkoutDay today = new WorkoutDay();
                 today.setDate(date_str);
-                Infinite_Workout_Days.add(today);
+                infiniteWorkoutDays.add(today);
             }
         }
 
         // Use View Pager with Infinite Days
         viewPager2 = findViewById(R.id.viewPager2);
-        viewPager2.setAdapter(new ViewPagerWorkoutDayAdapter(this,Infinite_Workout_Days));
-        viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
+        viewPager2.setAdapter(new ViewPagerWorkoutDayAdapter(this, infiniteWorkoutDays));
+        viewPager2.setCurrentItem((infiniteWorkoutDays.size()+1)/2); // Navigate to today
     }
 
     // Formats backup name in case of export
@@ -376,9 +374,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Returns index of day
     public static int getDayPosition(String Date)
     {
-        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
         {
-            if(MainActivity.Workout_Days.get(i).getDate().equals(Date))
+            if(MainActivity.workoutDays.get(i).getDate().equals(Date))
             {
                 return i;
             }
@@ -397,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return -1;
         }
 
-        ArrayList<WorkoutExercise> Exercises = MainActivity.Workout_Days.get(day_position).getExercises();
+        ArrayList<WorkoutExercise> Exercises = MainActivity.workoutDays.get(day_position).getExercises();
 
         for(int i = 0; i < Exercises.size(); i++)
         {
@@ -406,7 +404,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return i;
             }
         }
-
         return -1;
     }
 
@@ -439,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static void CSVtoSets(List csvList)
     {
         // Remove potential Duplicates
-        MainActivity.Sets.clear();
+        MainActivity.sets.clear();
 
         // i = 1 since first row is only Strings
         for(int i = 1; i < csvList.size(); i++)
@@ -460,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
 
             WorkoutSet workoutSet = new WorkoutSet(Date,Exercise,Category,Double.parseDouble(Weight),Double.parseDouble(Reps),Comment);
-            Sets.add(workoutSet);
+            sets.add(workoutSet);
         }
     }
 
@@ -468,17 +465,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static void SetsToEverything()
     {
         // Clear Data Structures
-        MainActivity.Days.clear();
-        Workout_Days.clear();
+        MainActivity.days.clear();
+        workoutDays.clear();
 
         // i = 1 since first row is only Strings
-        for(int i = 0; i < Sets.size(); i++)
+        for(int i = 0; i < sets.size(); i++)
         {
-            MainActivity.Days.add(Sets.get(i).getDate());
+            MainActivity.days.add(sets.get(i).getDate());
         }
 
 
-        Iterator<String> it = MainActivity.Days.iterator();
+        Iterator<String> it = MainActivity.days.iterator();
 
         // Construct Workout_Days Array List
         while (it.hasNext())
@@ -489,70 +486,70 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             ArrayList<WorkoutSet> temp_day_sets = new ArrayList<WorkoutSet>();
 
             // For all Sets
-            for(int i = 0; i < Sets.size(); i++)
+            for(int i = 0; i < sets.size(); i++)
             {
                 // If Date matches add Set Object to Workout_Day Object
-                if(Date.equals(Sets.get(i).getDate()))
+                if(Date.equals(sets.get(i).getDate()))
                 {
-                    temp_day.addSet(Sets.get(i));
+                    temp_day.addSet(sets.get(i));
                 }
             }
-            MainActivity.Workout_Days.add(temp_day);
+            MainActivity.workoutDays.add(temp_day);
         }
     }
 
     // Initialized KnownExercises ArrayList with some hardcoded exercises
     public void initKnownExercises()
     {
-        KnownExercises.clear();
+        knownExercises.clear();
         // Some hardcoded Exercises
-        KnownExercises.add(new Exercise("Flat Barbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Incline Barbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Decline Barbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Flat Dumbbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Incline Dumbbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Decline Dumbbell Bench Press","Chest"));
-        KnownExercises.add(new Exercise("Chin Up","Back"));
-        KnownExercises.add(new Exercise("Seated Dumbbell Press","Shoulders"));
-        KnownExercises.add(new Exercise("Ring Dip","Chest"));
-        KnownExercises.add(new Exercise("Lateral Cable Raise","Shoulders"));
-        KnownExercises.add(new Exercise("Lateral Dumbbell Raise","Shoulders"));
-        KnownExercises.add(new Exercise("Barbell Curl","Biceps"));
-        KnownExercises.add(new Exercise("Tricep Extension","Triceps"));
-        KnownExercises.add(new Exercise("Squat","Legs"));
-        KnownExercises.add(new Exercise("Leg Extension","Legs"));
-        KnownExercises.add(new Exercise("Hammstring Leg Curl","Legs"));
-        KnownExercises.add(new Exercise("Deadlift","Back"));
-        KnownExercises.add(new Exercise("Sumo Deadlift","Back"));
-        KnownExercises.add(new Exercise("Seated Machine Chest Press","Chest"));
-        KnownExercises.add(new Exercise("Seated Machine Shoulder Press","Shoulders"));
-        KnownExercises.add(new Exercise("Seated Calf Raise","Legs"));
-        KnownExercises.add(new Exercise("Donkey Calf Raise","Legs"));
-        KnownExercises.add(new Exercise("Standing Calf Raise","Legs"));
-        KnownExercises.add(new Exercise("Seated Machine Curl","Biceps"));
-        KnownExercises.add(new Exercise("Lat Pulldown","Back"));
-        KnownExercises.add(new Exercise("Pull Up","Back"));
-        KnownExercises.add(new Exercise("Push Up","Chest"));
-        KnownExercises.add(new Exercise("Leg Press","Legs"));
-        KnownExercises.add(new Exercise("Push Press","Shoulders"));
-        KnownExercises.add(new Exercise("Dumbbell Curl","Biceps"));
-        KnownExercises.add(new Exercise("Decline Hammer Strength Chest Press","Chest"));
-        KnownExercises.add(new Exercise("Leg Extension Machine","Legs"));
-        KnownExercises.add(new Exercise("Seated Calf Raise Machine","Legs"));
-        KnownExercises.add(new Exercise("Lying Triceps Extension","Triceps"));
-        KnownExercises.add(new Exercise("Cable Curl","Biceps"));
-        KnownExercises.add(new Exercise("Hammer Strength Shoulder Press","Shoulders"));
+        knownExercises.add(new Exercise("Flat Barbell Bench Press","Chest"));
+        knownExercises.add(new Exercise("Incline Barbell Bench Press","Chest"));
+        knownExercises.add(new Exercise("Decline Barbell Bench Press","Chest"));
+        knownExercises.add(new Exercise("Flat Dumbbell Bench Press","Chest"));
+        knownExercises.add(new Exercise("Incline Dumbbell Bench Press","Chest"));
+        knownExercises.add(new Exercise("Decline Dumbbell Bench Press","Chest"));
+        knownExercises.add(new Exercise("Chin Up","Back"));
+        knownExercises.add(new Exercise("Seated Dumbbell Press","Shoulders"));
+        knownExercises.add(new Exercise("Ring Dip","Chest"));
+        knownExercises.add(new Exercise("Lateral Cable Raise","Shoulders"));
+        knownExercises.add(new Exercise("Lateral Dumbbell Raise","Shoulders"));
+        knownExercises.add(new Exercise("Barbell Curl","Biceps"));
+        knownExercises.add(new Exercise("Tricep Extension","Triceps"));
+        knownExercises.add(new Exercise("Squat","Legs"));
+        knownExercises.add(new Exercise("Leg Extension","Legs"));
+        knownExercises.add(new Exercise("Hammstring Leg Curl","Legs"));
+        knownExercises.add(new Exercise("Deadlift","Back"));
+        knownExercises.add(new Exercise("Sumo Deadlift","Back"));
+        knownExercises.add(new Exercise("Seated Machine Chest Press","Chest"));
+        knownExercises.add(new Exercise("Seated Machine Shoulder Press","Shoulders"));
+        knownExercises.add(new Exercise("Seated Calf Raise","Legs"));
+        knownExercises.add(new Exercise("Donkey Calf Raise","Legs"));
+        knownExercises.add(new Exercise("Standing Calf Raise","Legs"));
+        knownExercises.add(new Exercise("Seated Machine Curl","Biceps"));
+        knownExercises.add(new Exercise("Lat Pulldown","Back"));
+        knownExercises.add(new Exercise("Pull Up","Back"));
+        knownExercises.add(new Exercise("Push Up","Chest"));
+        knownExercises.add(new Exercise("Leg Press","Legs"));
+        knownExercises.add(new Exercise("Push Press","Shoulders"));
+        knownExercises.add(new Exercise("Dumbbell Curl","Biceps"));
+        knownExercises.add(new Exercise("Decline Hammer Strength Chest Press","Chest"));
+        knownExercises.add(new Exercise("Leg Extension Machine","Legs"));
+        knownExercises.add(new Exercise("Seated Calf Raise Machine","Legs"));
+        knownExercises.add(new Exercise("Lying Triceps Extension","Triceps"));
+        knownExercises.add(new Exercise("Cable Curl","Biceps"));
+        knownExercises.add(new Exercise("Hammer Strength Shoulder Press","Shoulders"));
     }
 
     public static void setFavoriteExercise(String exerciseName, Boolean isFavorite)
     {
         // Initialize Volume Record Hashmap
-        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        for(int i = 0; i < MainActivity.knownExercises.size(); i++)
         {
-            if(MainActivity.KnownExercises.get(i).getName().equals(exerciseName))
+            if(MainActivity.knownExercises.get(i).getName().equals(exerciseName))
             {
                 System.out.println("Setting exercise " + exerciseName + " as favorite: " + isFavorite);
-                MainActivity.KnownExercises.get(i).setFavorite(isFavorite);
+                MainActivity.knownExercises.get(i).setFavorite(isFavorite);
             }
         }
     }
@@ -560,93 +557,93 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Calculate all Volume Personal Records from scratch
     public static void calculatePersonalRecords()
     {
-        MainActivity.VolumePRs.clear();
-        MainActivity.SetVolumePRs.clear();
-        MainActivity.ActualOneRepMaxPRs.clear();
-        MainActivity.EstimatedOneRMPRs.clear();
-        MainActivity.MaxRepsPRs.clear();
-        MainActivity.MaxWeightPRs.clear();
-        MainActivity.LastTimeVolume.clear();
+        MainActivity.volumePRs.clear();
+        MainActivity.setVolumePRs.clear();
+        MainActivity.actualOneRepMaxPRs.clear();
+        MainActivity.estimatedOneRMPRs.clear();
+        MainActivity.maxRepsPRs.clear();
+        MainActivity.maxWeightPRs.clear();
+        MainActivity.lastTimeVolume.clear();
 
         // Initialize Volume Record Hashmap
-        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        for(int i = 0; i < MainActivity.knownExercises.size(); i++)
         {
-            MainActivity.VolumePRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
-            MainActivity.SetVolumePRs.put((MainActivity.KnownExercises.get(i).getName()),new Pair(0.0, 0.0));
-            MainActivity.ActualOneRepMaxPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
-            MainActivity.EstimatedOneRMPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
-            MainActivity.MaxRepsPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
-            MainActivity.MaxWeightPRs.put((MainActivity.KnownExercises.get(i).getName()),0.0);
-            MainActivity.LastTimeVolume.put((MainActivity.KnownExercises.get(i).getName()),0.0);
+            MainActivity.volumePRs.put((MainActivity.knownExercises.get(i).getName()),0.0);
+            MainActivity.setVolumePRs.put((MainActivity.knownExercises.get(i).getName()),new Pair(0.0, 0.0));
+            MainActivity.actualOneRepMaxPRs.put((MainActivity.knownExercises.get(i).getName()),0.0);
+            MainActivity.estimatedOneRMPRs.put((MainActivity.knownExercises.get(i).getName()),0.0);
+            MainActivity.maxRepsPRs.put((MainActivity.knownExercises.get(i).getName()),0.0);
+            MainActivity.maxWeightPRs.put((MainActivity.knownExercises.get(i).getName()),0.0);
+            MainActivity.lastTimeVolume.put((MainActivity.knownExercises.get(i).getName()),0.0);
         }
 
         // Calculate Volume PRs
-        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        for(int i = 0; i < MainActivity.knownExercises.size(); i++)
         {
-            for(int j = 0; j < MainActivity.Workout_Days.size(); j++)
+            for(int j = 0; j < MainActivity.workoutDays.size(); j++)
             {
-                for(int k = 0; k < MainActivity.Workout_Days.get(j).getExercises().size(); k++)
+                for(int k = 0; k < MainActivity.workoutDays.get(j).getExercises().size(); k++)
                 {
-                    if(MainActivity.Workout_Days.get(j).getExercises().get(k).getExercise().equals(MainActivity.KnownExercises.get(i).getName()))
+                    if(MainActivity.workoutDays.get(j).getExercises().get(k).getExercise().equals(MainActivity.knownExercises.get(i).getName()))
                     {
                         // Per Exercise Volume Personal Records
-                        if(VolumePRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume()))
+                        if(volumePRs.get(MainActivity.knownExercises.get(i).getName()) < (MainActivity.workoutDays.get(j).getExercises().get(k).getVolume()))
                         {
-                            MainActivity.Workout_Days.get(j).getExercises().get(k).setVolumePR(true);
-                            VolumePRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
+                            MainActivity.workoutDays.get(j).getExercises().get(k).setVolumePR(true);
+                            volumePRs.put(MainActivity.knownExercises.get(i).getName(),MainActivity.workoutDays.get(j).getExercises().get(k).getVolume());
                         }
 
-                        Double setVolume = SetVolumePRs.get(MainActivity.KnownExercises.get(i).getName()).first * SetVolumePRs.get(MainActivity.KnownExercises.get(i).getName()).second;
+                        Double setVolume = setVolumePRs.get(MainActivity.knownExercises.get(i).getName()).first * setVolumePRs.get(MainActivity.knownExercises.get(i).getName()).second;
 
                         // Per Set Volume Personal Records
-                        if(setVolume  < (MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxSetVolume()))
+                        if(setVolume  < (MainActivity.workoutDays.get(j).getExercises().get(k).getMaxSetVolume()))
                         {
-                            Double maxReps = MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxReps();
-                            Double maxWeight = MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxWeight();
+                            Double maxReps = MainActivity.workoutDays.get(j).getExercises().get(k).getMaxReps();
+                            Double maxWeight = MainActivity.workoutDays.get(j).getExercises().get(k).getMaxWeight();
 
                             Pair pair = new Pair(maxReps, maxWeight);
 
-                            SetVolumePRs.put(MainActivity.KnownExercises.get(i).getName(), pair);
+                            setVolumePRs.put(MainActivity.knownExercises.get(i).getName(), pair);
                         }
 
                         // Actual One Repetition Maximum
-                        if(ActualOneRepMaxPRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getActualOneRepMax()))
+                        if(actualOneRepMaxPRs.get(MainActivity.knownExercises.get(i).getName()) < (MainActivity.workoutDays.get(j).getExercises().get(k).getActualOneRepMax()))
                         {
-                            MainActivity.Workout_Days.get(j).getExercises().get(k).setActualOneRepMaxPR(true);
-                            ActualOneRepMaxPRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getActualOneRepMax());
+                            MainActivity.workoutDays.get(j).getExercises().get(k).setActualOneRepMaxPR(true);
+                            actualOneRepMaxPRs.put(MainActivity.knownExercises.get(i).getName(),MainActivity.workoutDays.get(j).getExercises().get(k).getActualOneRepMax());
                         }
 
                         // Estimated One Repetition Maximum
-                        if(EstimatedOneRMPRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getEstimatedOneRepMax()))
+                        if(estimatedOneRMPRs.get(MainActivity.knownExercises.get(i).getName()) < (MainActivity.workoutDays.get(j).getExercises().get(k).getEstimatedOneRepMax()))
                         {
-                            MainActivity.Workout_Days.get(j).getExercises().get(k).setEstimatedOneRepMaxPR(true);
-                            EstimatedOneRMPRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getEstimatedOneRepMax());
+                            MainActivity.workoutDays.get(j).getExercises().get(k).setEstimatedOneRepMaxPR(true);
+                            estimatedOneRMPRs.put(MainActivity.knownExercises.get(i).getName(),MainActivity.workoutDays.get(j).getExercises().get(k).getEstimatedOneRepMax());
                         }
 
                         // Max Repetitions Personal Records
-                        if(MaxRepsPRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxReps()))
+                        if(maxRepsPRs.get(MainActivity.knownExercises.get(i).getName()) < (MainActivity.workoutDays.get(j).getExercises().get(k).getMaxReps()))
                         {
-                            MainActivity.Workout_Days.get(j).getExercises().get(k).setMaxRepsPR(true);
-                            MaxRepsPRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxReps());
+                            MainActivity.workoutDays.get(j).getExercises().get(k).setMaxRepsPR(true);
+                            maxRepsPRs.put(MainActivity.knownExercises.get(i).getName(),MainActivity.workoutDays.get(j).getExercises().get(k).getMaxReps());
                         }
 
                         // Max Weight Personal Records
-                        if(MaxWeightPRs.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxWeight()))
+                        if(maxWeightPRs.get(MainActivity.knownExercises.get(i).getName()) < (MainActivity.workoutDays.get(j).getExercises().get(k).getMaxWeight()))
                         {
-                            MainActivity.Workout_Days.get(j).getExercises().get(k).setMaxWeightPR(true);
-                            MaxWeightPRs.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getMaxWeight());
+                            MainActivity.workoutDays.get(j).getExercises().get(k).setMaxWeightPR(true);
+                            maxWeightPRs.put(MainActivity.knownExercises.get(i).getName(),MainActivity.workoutDays.get(j).getExercises().get(k).getMaxWeight());
                         }
 
                         // Harder Than Last Time!
-                        if(LastTimeVolume.get(MainActivity.KnownExercises.get(i).getName()) < (MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume()))
+                        if(lastTimeVolume.get(MainActivity.knownExercises.get(i).getName()) < (MainActivity.workoutDays.get(j).getExercises().get(k).getVolume()))
                         {
-                            MainActivity.Workout_Days.get(j).getExercises().get(k).setHTLT(true);
-                            LastTimeVolume.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
+                            MainActivity.workoutDays.get(j).getExercises().get(k).setHTLT(true);
+                            lastTimeVolume.put(MainActivity.knownExercises.get(i).getName(),MainActivity.workoutDays.get(j).getExercises().get(k).getVolume());
                         }
                         // This needs to be updates since we are dealing with last time and not overall maximums
                         else
                         {
-                            LastTimeVolume.put(MainActivity.KnownExercises.get(i).getName(),MainActivity.Workout_Days.get(j).getExercises().get(k).getVolume());
+                            lastTimeVolume.put(MainActivity.knownExercises.get(i).getName(),MainActivity.workoutDays.get(j).getExercises().get(k).getVolume());
                         }
                     }
                 }
@@ -661,7 +658,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         SharedPreferences sharedPreferences = ct.getSharedPreferences("shared preferences",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(Workout_Days);
+        String json = gson.toJson(workoutDays);
         editor.putString("workouts",json);
         editor.apply();
     }
@@ -669,18 +666,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Loads Workout_Days Array List from shared preferences
     public void loadWorkoutData()
     {
-        if(Workout_Days.isEmpty())
+        if(workoutDays.isEmpty())
         {
             SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
             Gson gson = new Gson();
             String json = sharedPreferences.getString("workouts",null);
             Type type = new TypeToken<ArrayList<WorkoutDay>>(){}.getType();
-            Workout_Days = gson.fromJson(json,type);
+            workoutDays = gson.fromJson(json,type);
 
             // If there are no previously saved entries make a new object
-            if(Workout_Days == null)
+            if(workoutDays == null)
             {
-                Workout_Days = new ArrayList<WorkoutDay>();
+                workoutDays = new ArrayList<WorkoutDay>();
             }
         }
     }
@@ -692,7 +689,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         SharedPreferences sharedPreferences = ct.getSharedPreferences("shared preferences",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(KnownExercises);
+        String json = gson.toJson(knownExercises);
         editor.putString("known_exercises",json);
         editor.apply();
     }
@@ -700,28 +697,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Loads Workout_Days Array List from shared preferences
     public void loadKnownExercisesData()
     {
-        if(KnownExercises.isEmpty())
+        if(knownExercises.isEmpty())
         {
             SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
             Gson gson = new Gson();
             String json = sharedPreferences.getString("known_exercises",null);
             Type type = new TypeToken<ArrayList<Exercise>>(){}.getType();
-            KnownExercises = gson.fromJson(json,type);
+            knownExercises = gson.fromJson(json,type);
 
             // If there are no previously saved entries make a new object
-            if(KnownExercises == null || KnownExercises.isEmpty())
+            if(knownExercises == null || knownExercises.isEmpty())
             {
-                KnownExercises = new ArrayList<Exercise>();
+                knownExercises = new ArrayList<Exercise>();
                 initKnownExercises();
             }
         }
 
         // Those who have previously saved entries will have null in this case
-        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        for(int i = 0; i < MainActivity.knownExercises.size(); i++)
         {
-            if(MainActivity.KnownExercises.get(i).getFavorite() == null)
+            if(MainActivity.knownExercises.get(i).getFavorite() == null)
             {
-                MainActivity.KnownExercises.get(i).setFavorite(false);
+                MainActivity.knownExercises.get(i).setFavorite(false);
             }
         }
     }
@@ -822,18 +819,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 outputStream.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
 
-                for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+                for(int i = 0; i < MainActivity.workoutDays.size(); i++)
                 {
-                    for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                    for(int j = 0; j < MainActivity.workoutDays.get(i).getExercises().size(); j++)
                     {
-                        String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
-                        for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                        String exerciseComment = MainActivity.workoutDays.get(i).getExercises().get(j).getComment();
+                        for(int k = 0; k < MainActivity.workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
                         {
-                            String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
-                            String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
-                            String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
-                            Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
-                            Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+                            String Date = MainActivity.workoutDays.get(i).getExercises().get(j).getDate();
+                            String exerciseName = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                            String exerciseCategory = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                            Double Weight = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                            Double Reps = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getReps();
                             outputStream.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
                         }
                     }
@@ -917,18 +914,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 FileOutputStream fos = new FileOutputStream(textfile);
                 fos.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
 
-                for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+                for(int i = 0; i < MainActivity.workoutDays.size(); i++)
                 {
-                    for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                    for(int j = 0; j < MainActivity.workoutDays.get(i).getExercises().size(); j++)
                     {
-                        String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
-                        for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                        String exerciseComment = MainActivity.workoutDays.get(i).getExercises().get(j).getComment();
+                        for(int k = 0; k < MainActivity.workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
                         {
-                            String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
-                            String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
-                            String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
-                            Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
-                            Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+                            String Date = MainActivity.workoutDays.get(i).getExercises().get(j).getDate();
+                            String exerciseName = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                            String exerciseCategory = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                            Double Weight = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                            Double Reps = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getReps();
                             fos.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
                         }
                     }
@@ -973,18 +970,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
             outputStream.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
 
-            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            for(int i = 0; i < MainActivity.workoutDays.size(); i++)
             {
-                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                for(int j = 0; j < MainActivity.workoutDays.get(i).getExercises().size(); j++)
                 {
-                    String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
-                    for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                    String exerciseComment = MainActivity.workoutDays.get(i).getExercises().get(j).getComment();
+                    for(int k = 0; k < MainActivity.workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
                     {
-                        String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
-                        String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
-                        String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
-                        Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
-                        Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+                        String Date = MainActivity.workoutDays.get(i).getExercises().get(j).getDate();
+                        String exerciseName = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseCategory = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                        Double Weight = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                        Double Reps = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getReps();
                         outputStream.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
                     }
                 }
@@ -1003,10 +1000,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void clearDataStructures()
     {
         // Clear everything just in case
-        this.Workout_Days.clear();
-        this.KnownExercises.clear(); // This removes all known exercises
-        this.Sets.clear();
-        this.Days.clear();
+        this.workoutDays.clear();
+        this.knownExercises.clear(); // This removes all known exercises
+        this.sets.clear();
+        this.days.clear();
         saveWorkoutData(this);
         saveKnownExerciseData(this);
     }
@@ -1014,7 +1011,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Inefficient bubble sort but does the job
     public static void sortWorkoutDaysDate()
     {
-        Collections.sort(MainActivity.Workout_Days, new Comparator<WorkoutDay>() {
+        Collections.sort(MainActivity.workoutDays, new Comparator<WorkoutDay>() {
             @Override
             public int compare(WorkoutDay workoutDay, WorkoutDay t1)
             {
@@ -1039,9 +1036,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Just Check if an exercise is known
     public static boolean doesExerciseExist(String exercise_name)
     {
-        for(int i = 0; i < KnownExercises.size(); i++)
+        for(int i = 0; i < knownExercises.size(); i++)
         {
-            if(KnownExercises.get(i).getName().equals(exercise_name))
+            if(knownExercises.get(i).getName().equals(exercise_name))
             {
                 return true;
             }
@@ -1052,11 +1049,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Returns the exercise category if exists, else it returns an empty string
     public static String getExerciseCategory(String Exercise)
     {
-        for(int i = 0; i < KnownExercises.size(); i++)
+        for(int i = 0; i < knownExercises.size(); i++)
         {
-            if(KnownExercises.get(i).getName().equals(Exercise))
+            if(knownExercises.get(i).getName().equals(Exercise))
             {
-                return KnownExercises.get(i).getBodyPart();
+                return knownExercises.get(i).getBodyPart();
             }
         }
         return "";
@@ -1065,12 +1062,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Returns the exercise category if exists, else it returns an empty string
     public static Boolean isExerciseFavorite(String Exercise)
     {
-        for(int i = 0; i < KnownExercises.size(); i++)
+        for(int i = 0; i < knownExercises.size(); i++)
         {
-            if(KnownExercises.get(i).getName().equals(Exercise))
+            if(knownExercises.get(i).getName().equals(Exercise))
             {
                 //System.out.println(Exercise + " " + KnownExercises.get(i).getFavorite());
-                return KnownExercises.get(i).getFavorite();
+                return knownExercises.get(i).getFavorite();
             }
         }
         return false;
@@ -1080,7 +1077,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static void deleteExercise(String exercise_name)
     {
         // Iterate Workout Days
-        for (Iterator<WorkoutDay> dayIterator = MainActivity.Workout_Days.iterator(); dayIterator.hasNext(); )
+        for (Iterator<WorkoutDay> dayIterator = MainActivity.workoutDays.iterator(); dayIterator.hasNext(); )
         {
             WorkoutDay currentDay = dayIterator.next();
 
@@ -1112,7 +1109,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         // Iterate Known Exercises data structure
-        for(Iterator<Exercise> exerciseIterator = MainActivity.KnownExercises.iterator(); exerciseIterator.hasNext();)
+        for(Iterator<Exercise> exerciseIterator = MainActivity.knownExercises.iterator(); exerciseIterator.hasNext();)
         {
             Exercise current_exercise = exerciseIterator.next();
 
@@ -1126,38 +1123,38 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // Changes exercise name and body part
     public static void editExercise(String exercise_name, String new_exercise_name, String new_exercise_bodypart)
     {
-        for(int i = 0; i < MainActivity.KnownExercises.size(); i++)
+        for(int i = 0; i < MainActivity.knownExercises.size(); i++)
         {
-            if(KnownExercises.get(i).getName().equals(exercise_name))
+            if(knownExercises.get(i).getName().equals(exercise_name))
             {
-                KnownExercises.get(i).setName(new_exercise_name);
-                KnownExercises.get(i).setBodyPart(new_exercise_bodypart);
+                knownExercises.get(i).setName(new_exercise_name);
+                knownExercises.get(i).setBodyPart(new_exercise_bodypart);
             }
         }
 
-        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
         {
-            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
             {
-                if(MainActivity.Workout_Days.get(i).getSets().get(j).getExercise().equals(exercise_name))
+                if(MainActivity.workoutDays.get(i).getSets().get(j).getExercise().equals(exercise_name))
                 {
-                    MainActivity.Workout_Days.get(i).getSets().get(j).setExercise(new_exercise_name);
-                    MainActivity.Workout_Days.get(i).getSets().get(j).setCategory(new_exercise_bodypart);
+                    MainActivity.workoutDays.get(i).getSets().get(j).setExercise(new_exercise_name);
+                    MainActivity.workoutDays.get(i).getSets().get(j).setCategory(new_exercise_bodypart);
                 }
             }
 
-            for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+            for(int j = 0; j < MainActivity.workoutDays.get(i).getExercises().size(); j++)
             {
-                if(MainActivity.Workout_Days.get(i).getExercises().get(j).getExercise().equals(exercise_name))
+                if(MainActivity.workoutDays.get(i).getExercises().get(j).getExercise().equals(exercise_name))
                 {
-                    MainActivity.Workout_Days.get(i).getExercises().get(j).setExercise(new_exercise_name);
+                    MainActivity.workoutDays.get(i).getExercises().get(j).setExercise(new_exercise_name);
 
-                    for(int k = 0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                    for(int k = 0; k < MainActivity.workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
                     {
-                        if(MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise().equals(exercise_name))
+                        if(MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getExercise().equals(exercise_name))
                         {
-                            MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).setExercise(new_exercise_name);
-                            MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).setCategory(new_exercise_bodypart);
+                            MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).setExercise(new_exercise_name);
+                            MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).setCategory(new_exercise_bodypart);
                         }
                     }
 
@@ -1174,12 +1171,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Make new ArrayList which will hold duplicates
         ArrayList<Exercise> DuplicateKnownExercises = new ArrayList<>();
 
-        for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+        for(int i = 0; i < MainActivity.workoutDays.size(); i++)
         {
-            for(int j = 0; j < MainActivity.Workout_Days.get(i).getSets().size(); j++)
+            for(int j = 0; j < MainActivity.workoutDays.get(i).getSets().size(); j++)
             {
-                String Name = MainActivity.Workout_Days.get(i).getSets().get(j).getExercise();
-                String Bodypart = MainActivity.Workout_Days.get(i).getSets().get(j).getCategory();
+                String Name = MainActivity.workoutDays.get(i).getSets().get(j).getExercise();
+                String Bodypart = MainActivity.workoutDays.get(i).getSets().get(j).getCategory();
                 DuplicateKnownExercises.add(new Exercise(Name,Bodypart));
             }
         }
@@ -1192,13 +1189,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         for (Exercise event : DuplicateKnownExercises) {
             boolean isFound = false;
             // check if the event name exists in noRepeat
-            for (Exercise e : MainActivity.KnownExercises) {
+            for (Exercise e : MainActivity.knownExercises) {
                 if (e.getName().equals(event.getName()) || (e.equals(event))) {
                     isFound = true;
                     break;
                 }
             }
-            if (!isFound) KnownExercises.add(event);
+            if (!isFound) knownExercises.add(event);
         }
     }
 
@@ -1223,7 +1220,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         else if(item.getItemId() == R.id.diary)
         {
             Intent in = new Intent(this,DiaryActivity.class);
-            in.putExtra("date", date_selected);
+            in.putExtra("date", dateSelected);
             startActivity(in);
             overridePendingTransition(0,0);
         }
@@ -1256,7 +1253,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         if(item.getItemId() == R.id.home)
         {
-            viewPager2.setCurrentItem((Infinite_Workout_Days.size()+1)/2); // Navigate to today
+            viewPager2.setCurrentItem((infiniteWorkoutDays.size()+1)/2); // Navigate to today
         }
         else if(item.getItemId() == R.id.settings)
         {

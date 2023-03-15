@@ -327,9 +327,9 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
             {
                 Intent in = new Intent(ct, AddExerciseActivity.class);
                 in.putExtra("exercise",Exercises.get(position).getExercise());
-                MainActivity.date_selected = Exercises.get(position).getDate(); // this is required by AddExerciseActivity
+                MainActivity.dateSelected = Exercises.get(position).getDate(); // this is required by AddExerciseActivity
                 System.out.println(Exercises.get(position).getExercise());
-                System.out.println(MainActivity.date_selected);
+                System.out.println(MainActivity.dateSelected);
                 ct.startActivity(in);
             }
         });

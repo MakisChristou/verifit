@@ -65,7 +65,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
 
             // Change RecyclerView items
-            DiaryExerciseAdapter workoutExerciseAdapter = new DiaryExerciseAdapter(ct, MainActivity.Workout_Days.get(position).getExercises());
+            DiaryExerciseAdapter workoutExerciseAdapter = new DiaryExerciseAdapter(ct, MainActivity.workoutDays.get(position).getExercises());
             holder.recyclerView.setAdapter(workoutExerciseAdapter);
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(ct));
 
@@ -146,7 +146,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             public void onClick(View view) {
                 Intent in = new Intent(ct, DayActivity.class);
                 // Update Date Selected in MainActivity
-                MainActivity.date_selected = Workout_Days.get(position).getDate();
+                MainActivity.dateSelected = Workout_Days.get(position).getDate();
                 in.putExtra("date",Workout_Days.get(position).getDate());
                 ct.startActivity(in);
             }

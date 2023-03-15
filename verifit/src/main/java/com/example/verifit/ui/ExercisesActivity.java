@@ -54,7 +54,7 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
 
         // Find Recycler View Object
         recyclerView = findViewById(R.id.recycler_view_exercises);
-        exerciseAdapter = new ExerciseAdapter(this, MainActivity.KnownExercises);
+        exerciseAdapter = new ExerciseAdapter(this, MainActivity.knownExercises);
         recyclerView.setAdapter(exerciseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

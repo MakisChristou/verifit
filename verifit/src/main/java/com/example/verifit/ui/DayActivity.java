@@ -61,11 +61,11 @@ public class DayActivity extends AppCompatActivity {
 
             ArrayList<WorkoutExercise> Today_Execrises = new ArrayList<WorkoutExercise>();
 
-            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            for(int i = 0; i < MainActivity.workoutDays.size(); i++)
             {
-                if(date_clicked.equals(MainActivity.Workout_Days.get(i).getDate()))
+                if(date_clicked.equals(MainActivity.workoutDays.get(i).getDate()))
                 {
-                    Today_Execrises = MainActivity.Workout_Days.get(i).getExercises();
+                    Today_Execrises = MainActivity.workoutDays.get(i).getExercises();
                 }
             }
 

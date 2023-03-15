@@ -59,7 +59,7 @@ public class CustomExerciseActivity extends AppCompatActivity implements Adapter
             if(!MainActivity.doesExerciseExist(et_exercise_name.getText().toString()))
             {
                 Exercise new_exercise = new Exercise(et_exercise_name.getText().toString(),selected_category);
-                MainActivity.KnownExercises.add(new_exercise);
+                MainActivity.knownExercises.add(new_exercise);
                 MainActivity.saveKnownExerciseData(getApplicationContext());
                 Toast.makeText(getApplicationContext(),"Exercise Saved",Toast.LENGTH_SHORT).show();
                 Intent in = new Intent(this, ExercisesActivity.class);

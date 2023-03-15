@@ -72,7 +72,7 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
 
         PersonalRecordsActivity.exerciseStats.clear();
 
-        for (HashMap.Entry<String,Double> entry : MainActivity.VolumePRs.entrySet())
+        for (HashMap.Entry<String,Double> entry : MainActivity.volumePRs.entrySet())
         {
             String currentExerciseName = entry.getKey();
             String exerciseCategory = MainActivity.getExerciseCategory(currentExerciseName);
@@ -80,18 +80,18 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
             ExercisePersonalStats exercisePersonalStats = new ExercisePersonalStats();
             exercisePersonalStats.setExerciseName(currentExerciseName);
             exercisePersonalStats.setExerciseCategory(exerciseCategory);
-            exercisePersonalStats.setMaxVolume(MainActivity.VolumePRs.get(currentExerciseName));
-            exercisePersonalStats.setMaxSetVolume(MainActivity.SetVolumePRs.get(currentExerciseName).first * MainActivity.SetVolumePRs.get(currentExerciseName).second);
-            exercisePersonalStats.setMaxSetVolumeReps(MainActivity.SetVolumePRs.get(currentExerciseName).first); // First = Reps
-            exercisePersonalStats.setMaxSetVolumeWeight(MainActivity.SetVolumePRs.get(currentExerciseName).second); // Second = Weight
-            exercisePersonalStats.setMaxReps(MainActivity.MaxRepsPRs.get(currentExerciseName));
-            exercisePersonalStats.setMaxWeight(MainActivity.MaxWeightPRs.get(currentExerciseName));
-            exercisePersonalStats.setActual1RM(MainActivity.ActualOneRepMaxPRs.get(currentExerciseName));
-            exercisePersonalStats.setEstimated1RM(MainActivity.EstimatedOneRMPRs.get(currentExerciseName));
+            exercisePersonalStats.setMaxVolume(MainActivity.volumePRs.get(currentExerciseName));
+            exercisePersonalStats.setMaxSetVolume(MainActivity.setVolumePRs.get(currentExerciseName).first * MainActivity.setVolumePRs.get(currentExerciseName).second);
+            exercisePersonalStats.setMaxSetVolumeReps(MainActivity.setVolumePRs.get(currentExerciseName).first); // First = Reps
+            exercisePersonalStats.setMaxSetVolumeWeight(MainActivity.setVolumePRs.get(currentExerciseName).second); // Second = Weight
+            exercisePersonalStats.setMaxReps(MainActivity.maxRepsPRs.get(currentExerciseName));
+            exercisePersonalStats.setMaxWeight(MainActivity.maxWeightPRs.get(currentExerciseName));
+            exercisePersonalStats.setActual1RM(MainActivity.actualOneRepMaxPRs.get(currentExerciseName));
+            exercisePersonalStats.setEstimated1RM(MainActivity.estimatedOneRMPRs.get(currentExerciseName));
             exercisePersonalStats.setFavorite(MainActivity.isExerciseFavorite(currentExerciseName));
 
 
-            if(MainActivity.VolumePRs.get(currentExerciseName) == 0.0)
+            if(MainActivity.volumePRs.get(currentExerciseName) == 0.0)
             {
                 // Skip this exercise, it was not even performed
             }

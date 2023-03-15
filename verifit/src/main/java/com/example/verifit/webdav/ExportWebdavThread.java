@@ -44,18 +44,18 @@ public class ExportWebdavThread extends Thread{
         try {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             output.write("Date,Exercise,Category,Weight (kg),Reps,Comment\n".getBytes());
-            for(int i = 0; i < MainActivity.Workout_Days.size(); i++)
+            for(int i = 0; i < MainActivity.workoutDays.size(); i++)
             {
-                for(int j = 0; j < MainActivity.Workout_Days.get(i).getExercises().size(); j++)
+                for(int j = 0; j < MainActivity.workoutDays.get(i).getExercises().size(); j++)
                 {
-                    String exerciseComment = MainActivity.Workout_Days.get(i).getExercises().get(j).getComment();
-                    for(int k=0; k < MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().size(); k++)
+                    String exerciseComment = MainActivity.workoutDays.get(i).getExercises().get(j).getComment();
+                    for(int k = 0; k < MainActivity.workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
                     {
-                        String Date = MainActivity.Workout_Days.get(i).getExercises().get(j).getDate();
-                        String exerciseName = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getExercise();
-                        String exerciseCategory = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getCategory();
-                        Double Weight = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getWeight();
-                        Double Reps = MainActivity.Workout_Days.get(i).getExercises().get(j).getSets().get(k).getReps();
+                        String Date = MainActivity.workoutDays.get(i).getExercises().get(j).getDate();
+                        String exerciseName = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseCategory = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getCategory();
+                        Double Weight = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getWeight();
+                        Double Reps = MainActivity.workoutDays.get(i).getExercises().get(j).getSets().get(k).getReps();
                         output.write((Date + "," + exerciseName+ "," + exerciseCategory + "," + Weight + "," + Reps + "," + exerciseComment + "\n").getBytes());
                     }
                 }

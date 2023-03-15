@@ -29,7 +29,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         setContentView(R.layout.activity_diary);
 
         System.out.println("DiaryActivity::OnCreate()");
-        System.out.println("Size: " + MainActivity.Workout_Days.size());
+        System.out.println("Size: " + MainActivity.workoutDays.size());
 
         initActivity();
     }
@@ -63,7 +63,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         }
 
         System.out.println("Date is " + date_clicked + " and position is: " + position);
-        System.out.println("MainActivity.Workout_Days.size(): " + MainActivity.Workout_Days.size());
+        System.out.println("MainActivity.Workout_Days.size(): " + MainActivity.workoutDays.size());
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -74,7 +74,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
         recyclerView = findViewById(R.id.recycler_view);
 
         // Notify User in case of empty diary
-        if(MainActivity.Workout_Days.isEmpty())
+        if(MainActivity.workoutDays.isEmpty())
         {
             Toast.makeText(this, "Empty Diary", Toast.LENGTH_SHORT).show();
         }
@@ -84,7 +84,7 @@ public class DiaryActivity extends AppCompatActivity implements BottomNavigation
             MainActivity.calculatePersonalRecords();
 
             // Crash Otherwise
-            diaryAdapter = new DiaryAdapter(this, MainActivity.Workout_Days);
+            diaryAdapter = new DiaryAdapter(this, MainActivity.workoutDays);
             recyclerView.setAdapter(diaryAdapter);
 //            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
