@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.verifit.Exercise;
+import com.example.verifit.model.Exercise;
 import com.example.verifit.R;
 
 public class CustomExerciseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

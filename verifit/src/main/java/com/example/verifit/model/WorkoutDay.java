@@ -1,4 +1,4 @@
-package com.example.verifit;
+package com.example.verifit.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;

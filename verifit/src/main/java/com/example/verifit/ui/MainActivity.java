@@ -18,16 +18,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
-import com.example.verifit.BackupService;
 import com.example.verifit.DataStorage;
 import com.example.verifit.R;
 import com.example.verifit.SnackBarWithMessage;
-import com.example.verifit.WorkoutSet;
+import com.example.verifit.model.WorkoutSet;
 import com.example.verifit.adapters.ViewPagerWorkoutDayAdapter;
 import com.example.verifit.adapters.WebdavAdapter;
-import com.example.verifit.WorkoutDay;
+import com.example.verifit.model.WorkoutDay;
 import com.example.verifit.verifitrs.WorkoutSetsApi;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -44,9 +42,6 @@ import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , DatePickerDialog.OnDateSetListener{
 

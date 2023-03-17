@@ -3,7 +3,7 @@ package com.example.verifit.verifitrs;
 import android.content.Context;
 
 import com.example.verifit.SharedPreferences;
-import com.example.verifit.WorkoutSet;
+import com.example.verifit.model.WorkoutSet;
 
 import org.json.JSONException;
 import org.json.JSONObject;

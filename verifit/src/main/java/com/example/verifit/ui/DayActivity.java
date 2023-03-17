@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.verifit.adapters.DayExerciseAdapter;
 import com.example.verifit.R;
-import com.example.verifit.WorkoutExercise;
+import com.example.verifit.model.WorkoutExercise;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

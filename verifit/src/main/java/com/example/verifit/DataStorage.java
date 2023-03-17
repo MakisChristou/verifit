@@ -16,6 +16,10 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
+import com.example.verifit.model.Exercise;
+import com.example.verifit.model.WorkoutDay;
+import com.example.verifit.model.WorkoutExercise;
+import com.example.verifit.model.WorkoutSet;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

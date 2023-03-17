@@ -11,7 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.verifit.R;
-import com.example.verifit.WorkoutSet;
+import com.example.verifit.model.WorkoutSet;
 
 import java.util.ArrayList;
 

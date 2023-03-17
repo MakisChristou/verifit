@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.verifit.R;
-import com.example.verifit.WorkoutDay;
+import com.example.verifit.model.WorkoutDay;
 import com.example.verifit.ui.DayActivity;
 import com.example.verifit.ui.MainActivity;
 

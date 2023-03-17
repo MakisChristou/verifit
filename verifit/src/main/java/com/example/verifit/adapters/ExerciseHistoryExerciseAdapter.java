@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.verifit.R;
-import com.example.verifit.WorkoutExercise;
+import com.example.verifit.model.WorkoutExercise;
 
 import java.text.DateFormat;
 import java.text.ParseException;
