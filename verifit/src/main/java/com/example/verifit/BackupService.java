@@ -130,7 +130,7 @@ public class BackupService extends Service {
                     for(int k = 0; k < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().size(); k++)
                     {
                         String Date = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getDate();
-                        String exerciseName = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseName = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getExerciseName();
                         String exerciseCategory = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getCategory();
                         Double Weight = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getWeight();
                         Double Reps = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getSets().get(k).getReps();

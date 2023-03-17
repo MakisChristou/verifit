@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,18 +24,28 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.verifit.SnackBarWithMessage;
 import com.example.verifit.adapters.AddExerciseWorkoutSetAdapter;
 import com.example.verifit.adapters.ExerciseHistoryExerciseAdapter;
 import com.example.verifit.R;
 import com.example.verifit.WorkoutDay;
 import com.example.verifit.WorkoutExercise;
 import com.example.verifit.WorkoutSet;
+import com.example.verifit.verifitrs.WorkoutSetsApi;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class AddExerciseActivity extends AppCompatActivity {
 
@@ -160,13 +171,9 @@ public class AddExerciseActivity extends AppCompatActivity {
                         {
                             WorkoutSet workoutSet1 = workoutDay.getSets().get(i);
 
-                            if(workoutSet1.getExercise().equals(exercise_name))
+                            if(workoutSet1.getExerciseName().equals(exercise_name))
                             {
                                 String exerciseComment = workoutSet1.getComment();
-                                System.out.println("Exercise Name: " + exercise_name);
-                                System.out.println("Exercise Comment: " + exerciseComment);
-
-
                                 if(exerciseComment == "null" || exerciseComment == null)
                                 {
                                     workoutSet.setComment("");
@@ -177,24 +184,84 @@ public class AddExerciseActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        // To Do: Use mutex here
-                        // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
-                        MainActivity.dataStorage.getWorkoutDays().get(position).addSet(workoutSet);
+
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                        workoutSetsApi.postWorkoutSet(workoutSet, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                // Handle error
+                                runOnUiThread(() -> {
+                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                                    snackBarWithMessage.showSnackbar(e.toString());
+                                });
+                            }
+
+                            @Override
+                            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                                if (200 == response.code())
+                                {
+                                    Integer set_id = getSetIdFromResponse(response);
+                                    workoutSet.setId(set_id);
+
+                                    MainActivity.dataStorage.getWorkoutDays().get(position).addSet(workoutSet);
+
+                                    runOnUiThread(()->{
+                                        updateTodaysExercises();
+                                    });
+                                }
+                                else
+                                {
+                                    runOnUiThread(() -> {
+                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                                        snackBarWithMessage.showSnackbar(response.toString());
+                                    });
+                                }
+                            }
+                        });
                     }
                     // If not construct new workout day
                     else
                     {
-                        WorkoutDay workoutDay = new WorkoutDay();
-                        workoutDay.addSet(workoutSet);
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                        workoutSetsApi.postWorkoutSet(workoutSet, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                // Show error
+                                runOnUiThread(() -> {
+                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                                    snackBarWithMessage.showSnackbar(e.toString());
+                                });
+                            }
 
-                        // To Do: Use mutex here
-                        // To Do: Start save on a background thread (we don't want the UI thread to hog up when the mutex is locked)
-                        MainActivity.dataStorage.getWorkoutDays().add(workoutDay);
+                            @Override
+                            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                                if (200 == response.code())
+                                {
+                                    Integer set_id = getSetIdFromResponse(response);
+
+                                    workoutSet.setId(set_id);
+
+                                    WorkoutDay workoutDay = new WorkoutDay();
+                                    workoutDay.addSet(workoutSet);
+                                    MainActivity.dataStorage.getWorkoutDays().add(workoutDay);
+
+                                    // Update local data structure
+                                    runOnUiThread(()->{
+                                        updateTodaysExercises();
+                                    });
+                                }
+                                else
+                                {
+                                    runOnUiThread(()->{
+                                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                                    });
+                                }
+                            }
+                        });
+
                     }
-
-                    // Update Local Data Structure
-                    updateTodaysExercises();
-                    Toast.makeText(getApplicationContext(),"Set Logged",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -204,47 +271,97 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Update Functionality
         else
         {
-
             WorkoutSet to_be_updated_set = Todays_Exercise_Sets.get(Clicked_Set);
 
             to_be_updated_set.getDate();
-            to_be_updated_set.getExercise();
+            to_be_updated_set.getExerciseName();
 
             // Find the set in main data structure and delete it
-            for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
+            for (int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
             {
-                for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
+                for (int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
                 {
-                    if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).equals(to_be_updated_set))
+                    if (MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).equals(to_be_updated_set))
                     {
+                        final int finalI = i;
+                        final int finalJ = j;
+
                         Double reps = Double.parseDouble(String.valueOf(et_reps.getText()));
                         Double weight = Double.parseDouble(String.valueOf(et_weight.getText()));
 
-                        MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).setReps(reps);
-                        MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).setWeight(weight);
+                        // Create temp set
+                        WorkoutSet set = new WorkoutSet();
+                        set.setComment(to_be_updated_set.getComment());
+                        set.setExerciseName(to_be_updated_set.getExerciseName());
+                        set.setCategory(to_be_updated_set.getCategory());
+                        set.setId(to_be_updated_set.getId());
+                        set.setReps(reps);
+                        set.setWeight(weight);
 
-                        // Manually update data because of bad design choices
-                        MainActivity.dataStorage.getWorkoutDays().get(i).UpdateData();
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                        workoutSetsApi.updateWorkoutSet(set, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                // Show error
+                                runOnUiThread(() -> {
+                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                                    snackBarWithMessage.showSnackbar(e.toString());
+                                });
+                            }
+
+                            @Override
+                            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                                if (200 == response.code())
+                                {
+                                    MainActivity.dataStorage.getWorkoutDays().get(finalI).getSets().get(finalJ).setReps(reps);
+                                    MainActivity.dataStorage.getWorkoutDays().get(finalI).getSets().get(finalJ).setWeight(weight);
+
+                                    // Manually update data because of bad design choices
+                                    MainActivity.dataStorage.getWorkoutDays().get(finalI).UpdateData();
+
+                                    // Let the user know I guess
+                                    runOnUiThread(() -> {
+                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                                        snackBarWithMessage.showSnackbar("Set Updated!");
+                                    });
+
+
+                                    bt_save.setText("Save");
+                                    bt_clear.setText("Clear");
+
+                                    AddExerciseActivity.isEditMode = false;
+
+                                    runOnUiThread(() -> {
+                                        updateTodaysExercises();
+                                    });
+                                }
+                                else
+                                {
+                                    runOnUiThread(() -> {
+                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                                        snackBarWithMessage.showSnackbar(response.toString());
+                                    });
+                                }
+                            }
+                        });
+
                         break;
                     }
                 }
             }
-
-            // Let the user know I guess
-            Toast.makeText(getApplicationContext(),"Set Updated",Toast.LENGTH_SHORT).show();
-
-
-
-
-            // Update Local Data Structure
-            updateTodaysExercises();
-
-
-            bt_save.setText("Save");
-            bt_clear.setText("Clear");
-
-            AddExerciseActivity.isEditMode = false;
         }
+
+    }
+
+    public Integer getSetIdFromResponse(okhttp3.Response response) throws IOException
+    {
+        String jsonString = response.body().string();
+        Gson gson = new Gson();
+        Type listType = new TypeToken<Integer>() {}.getType();
+        Integer set_id = gson.fromJson(jsonString, listType);
+
+        return  set_id;
     }
 
     // Clear
@@ -292,39 +409,62 @@ public class AddExerciseActivity extends AppCompatActivity {
                 // Get soon to be deleted set
                 WorkoutSet to_be_removed_set = Todays_Exercise_Sets.get(Clicked_Set);
 
-                System.out.println(Clicked_Set);
-
                 // Find the set in main data structure and delete it
                 for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
                 {
                     if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().contains(to_be_removed_set))
                     {
                         MainActivity.dataStorage.getWorkoutDays().get(i).removeSet(to_be_removed_set);
+
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(ct, "http://192.168.1.116:3000");
+                        workoutSetsApi.deleteWorkoutSet(to_be_removed_set, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                // Show error
+                                ((Activity) ct).runOnUiThread(() -> {
+                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(((Activity) ct));
+                                    snackBarWithMessage.showSnackbar(e.toString());
+                                });
+                            }
+
+                            @Override
+                            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                                if (200 == response.code())
+                                {
+                                    // Cleanup potential days with 0 sets
+                                    for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
+                                    {
+                                        if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size() == 0)
+                                        {
+                                            MainActivity.dataStorage.getWorkoutDays().remove(i);
+                                        }
+                                    }
+
+                                    ((Activity) ct).runOnUiThread(() -> {
+                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(((Activity) ct));
+                                        snackBarWithMessage.showSnackbar("Set Deleted!");
+
+                                        // Update Local Data Structure
+                                        updateTodaysExercises();
+
+                                        alertDialog.dismiss();
+                                    });
+                                }
+                                else
+                                {
+                                    ((Activity) ct).runOnUiThread(() -> {
+                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(((Activity) ct));
+                                        snackBarWithMessage.showSnackbar(response.toString());
+                                    });
+                                }
+                            }
+                        });
+
                         break;
                     }
                 }
 
-                // Cleanup days with 0 sets
-                for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
-                {
-                    if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size() == 0)
-                    {
-                        System.out.println("Deleting day with 0 sets");
-                        MainActivity.dataStorage.getWorkoutDays().remove(i);
-                    }
-                }
 
-
-                // Let the user know I guess
-                Toast.makeText(ct,"Set Deleted",Toast.LENGTH_SHORT).show();
-
-                // Update Local Data Structure
-                updateTodaysExercises();
-
-                alertDialog.dismiss();
-
-                // Update Clicked set to avoid crash
-//                AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size()-1;
             }
         });
 
@@ -362,17 +502,11 @@ public class AddExerciseActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        System.out.println("On Stop1");
-
         // Sort Before Saving
         MainActivity.dataStorage.sortWorkoutDaysDate();
 
-        System.out.println("On Stop2");
-
         // Actually Save Changes in shared preferences
         MainActivity.dataStorage.saveWorkoutData(getApplicationContext());
-
-        System.out.println("On Stop3");
 
         // User cannot modify data structures, thus we can let service auto backup without race conditions
         MainActivity.inAddExerciseActivity = false;
@@ -467,7 +601,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                 for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
                 {
                     // If exercise matches
-                    if(AddExerciseActivity.exercise_name.equals(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise()))
+                    if(AddExerciseActivity.exercise_name.equals(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExerciseName()))
                     {
                         Todays_Exercise_Sets.add(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j));
                     }
@@ -496,7 +630,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                 for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
                 {
                     // If exercise matches
-                    if(exercise_name.equals(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise()))
+                    if(exercise_name.equals(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExerciseName()))
                     {
                         Todays_Exercise_Sets.add(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j));
                     }
@@ -514,10 +648,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Set Edit Text values to max set volume if possible
         initEditTexts();
 
-
-
         bt_clear.setText("Clear");
-
 
         // Initialize Integer position or else we get a crash
         AddExerciseActivity.Clicked_Set = Todays_Exercise_Sets.size() - 1;
@@ -536,7 +667,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         {
             for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
             {
-                if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getVolume() > max_exercise_volume && MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise().equals(exercise_name))
+                if(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getVolume() > max_exercise_volume && MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExerciseName().equals(exercise_name))
                 {
                     max_exercise_volume = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getVolume();
                     max_reps = (int)Math.round(MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getReps());
@@ -825,13 +956,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
         sharedPreferences.save("true", "autoBackupRequired");
 
-        // Check for empty input
-        if(et_exercise_comment.getText().toString().isEmpty())
-        {
-            Toast.makeText(getApplicationContext(),"Please write a comment",Toast.LENGTH_SHORT).show();
-            return ;
-        }
-
         // Check if exercise exists (cannot comment on non-existant exercise)
         // Find if workout day already exists
         int exercise_position = MainActivity.dataStorage.getExercisePosition(MainActivity.dateSelected,exercise_name);
@@ -847,31 +971,77 @@ public class AddExerciseActivity extends AppCompatActivity {
             return;
         }
 
+        String comment;
 
-
-        // Get user comment
-        String comment = et_exercise_comment.getText().toString();
-
-        // Print it for sanity check
-        System.out.println(comment);
+        if(et_exercise_comment.getText().toString().isEmpty())
+        {
+            comment = "";
+        }
+        else
+        {
+            comment = et_exercise_comment.getText().toString(); // Get user comment
+        }
 
         // Get the date for today
         int day_position = MainActivity.dataStorage.getDayPosition(MainActivity.dateSelected);
 
+
         // Modify the data structure to add the comment
         MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).setComment(comment);
 
-//        // Also modifiy individual sets
-        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().get(day_position).getSets().size(); i++)
+
+        final int finalSize = MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).getSets().size();
+
+        // Also modify individual sets
+        for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).getSets().size(); i++)
         {
-            MainActivity.dataStorage.getWorkoutDays().get(day_position).getSets().get(i).setComment(comment);
+
+            final int finalI = i;
+
+            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+            WorkoutSet set_to_be_updated = MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).getSets().get(i);
+
+            set_to_be_updated.setComment(comment);
+            workoutSetsApi.updateWorkoutSet(set_to_be_updated, new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e)
+                {
+                    // Show error
+                    runOnUiThread(() -> {
+                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                        snackBarWithMessage.showSnackbar(e.toString());
+                    });
+                }
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    if(200 == response.code())
+                    {
+                        MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).getSets().get(finalI).setComment(comment);
+
+                        runOnUiThread(() -> {
+                            updateTodaysExercises();
+                        });
+
+                        if (finalI == finalSize-1)
+                        {
+                            runOnUiThread(() -> {
+                                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                                snackBarWithMessage.showSnackbar("Comment Logged");
+                            });
+                        }
+                    }
+                    else
+                    {
+                        // Show error
+                        runOnUiThread(() -> {
+                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                            snackBarWithMessage.showSnackbar(response.toString());
+                        });
+                    }
+                }
+            });
         }
-
-        updateTodaysExercises();
-
-
-        Toast.makeText(getApplicationContext(),"Comment Logged",Toast.LENGTH_SHORT).show();
-
     }
 
     // Makes necessary checks and clears comment
@@ -883,36 +1053,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         sharedPreferences.save("true", "autoBackupRequired");
 
         et_exercise_comment.setText("");
-
-        // Check if exercise exists (cannot comment on non-existant exercise)
-        // Find if workout day already exists
-        int exercise_position = MainActivity.dataStorage.getExercisePosition(MainActivity.dateSelected,exercise_name);
-
-        if(exercise_position >= 0)
-        {
-            System.out.println("We can comment, exercise exists");
-        }
-        else
-        {
-            System.out.println("We can't comment, exercise doesn't exist");
-            Toast.makeText(getApplicationContext(),"Can't comment without sets",Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Get user comment
-        String comment = et_exercise_comment.getText().toString();
-
-        // Print it for sanity check
-        System.out.println(comment);
-
-        // Get the date for today
-        int day_position = MainActivity.dataStorage.getDayPosition(MainActivity.dateSelected);
-
-        // Modify the data structure to add the comment
-        MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).setComment(comment);
-
-
-        Toast.makeText(getApplicationContext(),"Comment Cleared",Toast.LENGTH_SHORT).show();
     }
 
     public void startTimer()

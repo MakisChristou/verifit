@@ -44,4 +44,5 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.thegrizzlylabs:sardine-android:0.8'
     implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.android.volley:volley:1.0.0'
 }

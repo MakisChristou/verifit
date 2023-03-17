@@ -18,26 +18,41 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.example.verifit.BackupService;
 import com.example.verifit.DataStorage;
 import com.example.verifit.R;
+import com.example.verifit.SnackBarWithMessage;
+import com.example.verifit.WorkoutSet;
 import com.example.verifit.adapters.ViewPagerWorkoutDayAdapter;
 import com.example.verifit.adapters.WebdavAdapter;
 import com.example.verifit.WorkoutDay;
+import com.example.verifit.verifitrs.WorkoutSetsApi;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , DatePickerDialog.OnDateSetListener{
-    
+
     public static DataStorage dataStorage = new DataStorage(); // Holds all Verifit data and handles file I/O
     public static String dateSelected; // Used for other activities to get the selected date, by default it's set to today
-    public ViewPager2 viewPager2; // View Pager that is used in main activity
+    public static ViewPager2 viewPager2; // View Pager that is used in main activity
     public static Boolean autoBackupRequired = false;
     public static Boolean inAddExerciseActivity = false;
     public static WebdavAdapter webdavAdapter;
@@ -97,12 +112,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         initActivity();
 
         // If backup background service has not started, start it
-        if(!isMyServiceRunning(BackupService.class))
-        {
-            // Start background service
-            Intent intent = new Intent(this, BackupService.class);
-            startService(intent);
-        }
+//        if(!isMyServiceRunning(BackupService.class))
+//        {
+//            // Start background service
+//            Intent intent = new Intent(this, BackupService.class);
+//            startService(intent);
+//        }
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -189,14 +204,52 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // No intent
         else
         {
-            // Get WorkoutDays from shared preferences
-            dataStorage.loadWorkoutData(getApplicationContext());
+            // Offline / Webdav Mode
+//            dataStorage.loadWorkoutData(getApplicationContext());
+//            dataStorage.loadKnownExercisesData(getApplicationContext());
 
-            // Get Known Exercises from shared preferences
-            dataStorage.loadKnownExercisesData(getApplicationContext());
+            // Cloud Mode
+            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+            workoutSetsApi.getAllWorkoutSets(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    // Show error
+                    runOnUiThread(() -> {
+                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
+                        snackBarWithMessage.showSnackbar(e.toString());
+                    });
+                }
 
-            // After Loading Data Initialize ViewPager
-            initViewPager();
+                @Override
+                public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                    if (200 == response.code())
+                    {
+                        String jsonString = response.body().string();
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<ArrayList<WorkoutSet>>() {}.getType();
+                        ArrayList<WorkoutSet> sets = gson.fromJson(jsonString, listType);
+
+                        MainActivity.dataStorage.readFromSets(sets, getApplicationContext());
+
+                        runOnUiThread(() -> initViewPager());
+
+//                        runOnUiThread(() -> {
+//                            com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
+//                            String username = sharedPreferences.load("verifit_rs_username");
+//
+//                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
+//                            snackBarWithMessage.showSnackbar("Welcome back " + username);
+//                        });
+                    }
+                    else
+                    {
+                        runOnUiThread(() -> {
+                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
+                            snackBarWithMessage.showSnackbar(response.toString());
+                        });
+                    }
+                }
+            });
         }
     }
 
@@ -226,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void initViewPager()
     {
         // Skip creation of empty workouts if you don't have to
-        if(dataStorage.getInfiniteWorkoutDays().isEmpty())
+        if(dataStorage.getInfiniteWorkoutDays().isEmpty() || dataStorage.getInfiniteWorkoutDays() == null)
         {
             // "Infinite" Data Structure
             dataStorage.getInfiniteWorkoutDays().clear();

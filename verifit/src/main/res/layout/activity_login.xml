@@ -32,6 +32,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_username" />
 
+    <EditText
+        android:id="@+id/et_password2"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textWebPassword"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_login_signup"
         android:layout_width="wrap_content"
@@ -42,12 +56,12 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:onClick="clicked_login_signup"
-        android:text="Sign Up"
+        android:text="Login"
         android:textAllCaps="false"
         app:cornerRadius="5dp"
         app:layout_constraintEnd_toStartOf="@+id/bt_cancel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+        app:layout_constraintTop_toBottomOf="@+id/et_password2" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_cancel"
@@ -64,7 +78,7 @@
         app:cornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_login_signup"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+        app:layout_constraintTop_toBottomOf="@+id/et_password2" />
 
     <TextView
         android:id="@+id/textView9"
@@ -73,7 +87,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
-        android:text="Already have an account?"
+        android:text="Don't have an account yet?"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bt_login_signup" />
@@ -86,7 +100,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="5dp"
         android:onClick="toggle_signup"
-        android:text="Login instead"
+        android:text="Create a free account"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"

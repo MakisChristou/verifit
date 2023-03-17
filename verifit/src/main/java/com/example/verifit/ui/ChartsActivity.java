@@ -290,7 +290,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         {
             for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
             {
-                String Exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise();
+                String Exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExerciseName();
                 Exercises.add(Exercise);
             }
         }
@@ -309,7 +309,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         {
             for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getSets().size(); j++)
             {
-                String Exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExercise();
+                String Exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getSets().get(j).getExerciseName();
 
                 //System.out.println(Exercise);
 

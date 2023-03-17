@@ -34,8 +34,9 @@ public class UsersApi {
     }
 
 
-    public void login()
+    public void login(okhttp3.Callback callback)
     {
+        url += "/users/login";
         OkHttpClient client = new OkHttpClient();
 
         // Create a JSON object to send in the request body
@@ -47,8 +48,6 @@ public class UsersApi {
             System.out.println(e);
         }
 
-        url += "/users/login";
-
         // Create a RequestBody object with the JSON object
         RequestBody requestBody = RequestBody.create(jsonObject.toString(), MediaType.parse("application/json; charset=utf-8"));
 
@@ -59,39 +58,7 @@ public class UsersApi {
                 .build();
 
         // Send the HTTP request asynchronously
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // Handle error
-                System.out.println(e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseBody = response.body().string();
-                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(context);
-
-                if (200 == response.code())
-                {
-                    Gson gson = new Gson();
-                    ResponseUser responseUser = gson.fromJson(responseBody, ResponseUser.class);
-
-                    SharedPreferences sharedPreferences = new SharedPreferences(context);
-                    sharedPreferences.save(responseUser.getToken(), "verifit_rs_token");
-                    sharedPreferences.save(username, "verifit_rs_username");
-                    sharedPreferences.save(password, "verifit_rs_password");
-
-
-                    snackBarWithMessage.showSnackbar("Logged in as " + responseUser.getUsername());
-
-                }
-                else
-                {
-                    snackBarWithMessage.showSnackbar(response.toString());
-                }
-            }
-        });
-
+        client.newCall(request).enqueue(callback);
     }
 
     public void logout()

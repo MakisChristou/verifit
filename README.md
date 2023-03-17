@@ -34,8 +34,10 @@ height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.whatever.verifit)
 <img width="200" src="/metadata/screenshots/Screenshot13.jpg"> <img width="200" src="/metadata/screenshots/Screenshot14.jpg"> <img width="200" src="/metadata/screenshots/Screenshot15.jpg"> <img width="200" src="/metadata/screenshots/Screenshot16.jpg"> 
 
 ## Libraries Used
-* [MPAndroid Chart](https://github.com/PhilJay/MPAndroidChart)
-* [Sardine](https://github.com/lookfirst/sardine)
+* [MPAndroid Chart](https://github.com/PhilJay/MPAndroidChart) for displaying charts
+* [Sardine](https://github.com/lookfirst/sardine) for webdav requests
+* [Gson](https://github.com/google/gson) for Json parsing and serialization
+* [Volley](https://github.com/google/volley) for http requests
 
 ## Setting up a webdav server
 ```bash

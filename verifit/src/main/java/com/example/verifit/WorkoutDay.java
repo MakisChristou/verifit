@@ -66,7 +66,7 @@ public class WorkoutDay {
         {
             WorkoutSet temp_set = (WorkoutSet) day_sets.get(j);
             Day_Volume = Day_Volume + temp_set.getVolume();
-            Exercises_Set.add(temp_set.getExercise());
+            Exercises_Set.add(temp_set.getExerciseName());
         }
 
         // Iterate Day's Performed Exercises
@@ -93,7 +93,7 @@ public class WorkoutDay {
             for(int j = 0; j < day_sets.size(); j++)
             {
                 WorkoutSet temp_set = (WorkoutSet) day_sets.get(j);
-                if(temp_set.getExercise().equals(exercise_name))
+                if(temp_set.getExerciseName().equals(exercise_name))
                 {
                     // Cumulative Values
                     exercise_volume = exercise_volume + temp_set.getVolume();

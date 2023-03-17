@@ -63,8 +63,8 @@ public class ImportWebdavThread extends Thread{
                     csvList = csvFile.read();
 
                     // Here is where the magic happens
-                    MainActivity.dataStorage.CSVtoSets(csvList); // Read File and Construct Local Objects
-                    MainActivity.dataStorage.SetsToEverything(); // Convert Set Objects to Day Objects
+                    MainActivity.dataStorage.csvToSets(csvList); // Read File and Construct Local Objects
+                    MainActivity.dataStorage.setsToEverything(); // Convert Set Objects to Day Objects
                     MainActivity.dataStorage.csvToKnownExercises(); // Find all Exercises in CSV and add them to known exercises
                     MainActivity.dataStorage.saveKnownExerciseData(context); // Save KnownExercises in CSV
                     MainActivity.dataStorage.saveWorkoutData(context); // Save WorkoutDays in Shared Preferences

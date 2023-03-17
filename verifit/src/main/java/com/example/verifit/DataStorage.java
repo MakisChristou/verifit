@@ -184,7 +184,7 @@ public class DataStorage {
     }
 
     // Converts CSV file to Internally used Dat Structure
-    public void CSVtoSets(List csvList)
+    public void csvToSets(List csvList)
     {
         // Remove potential Duplicates
         sets.clear();
@@ -213,7 +213,7 @@ public class DataStorage {
     }
 
     // Updates All other Data Structures
-    public void SetsToEverything()
+    public void setsToEverything()
     {
         // Clear Data Structures
         days.clear();
@@ -232,11 +232,8 @@ public class DataStorage {
         while (it.hasNext())
         {
             String Date = it.next();
-
             WorkoutDay temp_day = new WorkoutDay();
-            ArrayList<WorkoutSet> temp_day_sets = new ArrayList<WorkoutSet>();
 
-            // For all Sets
             for(int i = 0; i < sets.size(); i++)
             {
                 // If Date matches add Set Object to Workout_Day Object
@@ -484,8 +481,8 @@ public class DataStorage {
             csvList = csvFile.read();
 
             // Here is where the magic happens
-            CSVtoSets(csvList); // Read File and Construct Local Objects
-            SetsToEverything(); // Convert Set Objects to Day Objects
+            csvToSets(csvList); // Read File and Construct Local Objects
+            setsToEverything(); // Convert Set Objects to Day Objects
             csvToKnownExercises(); // Find all Exercises in CSV and add them to known exercises
             saveKnownExerciseData(context); // Save KnownExercises in CSV
             saveWorkoutData(context); // Save WorkoutDays in Shared Preferences
@@ -500,6 +497,26 @@ public class DataStorage {
             return false;
         }
 
+    }
+
+    public void readFromSets(ArrayList<WorkoutSet> sets, Context context)
+    {
+        clearDataStructures(context);
+
+        this.sets = sets;
+        initKnownExercises();
+        modifySets(); // bad design requires this
+        setsToEverything();
+        csvToKnownExercises();
+    }
+
+    public void modifySets()
+    {
+        for(int i = 0; i < sets.size(); i++)
+        {
+            String date = sets.get(i).getDate().substring(0,10);
+            sets.get(i).setDate(date);
+        }
     }
 
     // Export backup function using Storage Access Framework
@@ -535,7 +552,7 @@ public class DataStorage {
                     for(int k = 0; k < workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
                     {
                         String Date = workoutDays.get(i).getExercises().get(j).getDate();
-                        String exerciseName = workoutDays.get(i).getExercises().get(j).getSets().get(k).getExercise();
+                        String exerciseName = workoutDays.get(i).getExercises().get(j).getSets().get(k).getExerciseName();
                         String exerciseCategory = workoutDays.get(i).getExercises().get(j).getSets().get(k).getCategory();
                         Double Weight = workoutDays.get(i).getExercises().get(j).getSets().get(k).getWeight();
                         Double Reps = workoutDays.get(i).getExercises().get(j).getSets().get(k).getReps();
@@ -652,7 +669,7 @@ public class DataStorage {
             for(Iterator<WorkoutSet> setIterator = currentDay.getSets().iterator(); setIterator.hasNext();)
             {
                 WorkoutSet current_set = setIterator.next();
-                if(current_set.getExercise().equals(exercise_name))
+                if(current_set.getExerciseName().equals(exercise_name))
                 {
                     setIterator.remove();
                 }
@@ -693,9 +710,9 @@ public class DataStorage {
         {
             for(int j = 0; j < workoutDays.get(i).getSets().size(); j++)
             {
-                if(workoutDays.get(i).getSets().get(j).getExercise().equals(exercise_name))
+                if(workoutDays.get(i).getSets().get(j).getExerciseName().equals(exercise_name))
                 {
-                    workoutDays.get(i).getSets().get(j).setExercise(new_exercise_name);
+                    workoutDays.get(i).getSets().get(j).setExerciseName(new_exercise_name);
                     workoutDays.get(i).getSets().get(j).setCategory(new_exercise_bodypart);
                 }
             }
@@ -708,9 +725,9 @@ public class DataStorage {
 
                     for(int k = 0; k < workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
                     {
-                        if(workoutDays.get(i).getExercises().get(j).getSets().get(k).getExercise().equals(exercise_name))
+                        if(workoutDays.get(i).getExercises().get(j).getSets().get(k).getExerciseName().equals(exercise_name))
                         {
-                            workoutDays.get(i).getExercises().get(j).getSets().get(k).setExercise(new_exercise_name);
+                            workoutDays.get(i).getExercises().get(j).getSets().get(k).setExerciseName(new_exercise_name);
                             workoutDays.get(i).getExercises().get(j).getSets().get(k).setCategory(new_exercise_bodypart);
                         }
                     }
@@ -732,7 +749,7 @@ public class DataStorage {
         {
             for(int j = 0; j < workoutDays.get(i).getSets().size(); j++)
             {
-                String Name = workoutDays.get(i).getSets().get(j).getExercise();
+                String Name = workoutDays.get(i).getSets().get(j).getExerciseName();
                 String Bodypart = workoutDays.get(i).getSets().get(j).getCategory();
                 DuplicateKnownExercises.add(new Exercise(Name,Bodypart));
             }
