@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.2"
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -10,9 +10,10 @@ android {
     defaultConfig {
         applicationId "com.whatever.verifit"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 11
         versionName "1.0.11"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,4 +46,5 @@ dependencies {
     implementation 'com.github.thegrizzlylabs:sardine-android:0.8'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.android.volley:volley:1.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
 }

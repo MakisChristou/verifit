@@ -1,9 +1,13 @@
 package com.example.verifit.verifitrs;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.example.verifit.DataStorage;
 import com.example.verifit.SharedPreferences;
 import com.example.verifit.SnackBarWithMessage;
+import com.example.verifit.ui.LoginActivity;
+import com.example.verifit.ui.MainActivity;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -99,10 +103,14 @@ public class UsersApi {
                 sharedPreferences.save("", "verifit_rs_username");
                 sharedPreferences.save("", "verifit_rs_password");
                 sharedPreferences.save("", "verifit_rs_token");
+                sharedPreferences.save("offline","mode");
+                MainActivity.dataStorage.clearDataStructures(context);
 
                 if (200 == response.code())
                 {
-                    snackBarWithMessage.showSnackbar("Logged Out");
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("message", "verifit_rs_logout"); // Replace "key" with a key identifier and "value" with the actual string value
+                    context.startActivity(intent);
                 }
                 else
                 {
@@ -160,7 +168,9 @@ public class UsersApi {
                     sharedPreferences.save(username, "verifit_rs_username");
                     sharedPreferences.save(password, "verifit_rs_password");
 
-                    snackBarWithMessage.showSnackbar("Account created for " + responseUser.getUsername());
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("message", "verifit_rs_signup");
+                    context.startActivity(intent);
                 }
                 else
                 {

@@ -11,15 +11,21 @@
             app:useSimpleSummaryProvider="false" />
 
         <Preference
-            app:key="verifit_rs_logged_in"
-            app:summary="makis_christou@protonmail.com"
-            app:title="You are logged in as:"
+            app:key="verifit_rs_import"
+            app:summary="Import to account from phone storage"
+            app:title="Import"
             app:useSimpleSummaryProvider="false" />
 
         <Preference
-            app:key="verifit_rs_settings"
-            app:summary="General account preferences."
-            app:title="Settings"
+            app:key="verifit_rs_export"
+            app:summary="Export from account to phone storage"
+            app:title="Export"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            app:key="verifit_rs_delete_all"
+            app:summary="Delete all account workout data"
+            app:title="Delete all"
             app:useSimpleSummaryProvider="false" />
 
     </PreferenceCategory>

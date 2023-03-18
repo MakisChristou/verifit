@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,10 +27,18 @@ import androidx.preference.PreferenceManager;
 import com.example.verifit.LoadingDialog;
 import com.example.verifit.R;
 import com.example.verifit.SharedPreferences;
+import com.example.verifit.SnackBarWithMessage;
 import com.example.verifit.verifitrs.UsersApi;
+import com.example.verifit.verifitrs.WorkoutSetsApi;
 import com.example.verifit.webdav.CheckWebdavThread;
 import com.example.verifit.webdav.ClickedOnWebdavThread;
 import com.example.verifit.webdav.ExportWebdavThread;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -177,23 +186,27 @@ public class SettingsActivity extends AppCompatActivity {
         public void setVerifitRsSettingsVisibility()
         {
             SharedPreferences sharedPreferences = new SharedPreferences(getContext());
-
-            Preference verifit_rs_logged_in = findPreference("verifit_rs_logged_in");
-            Preference verifit_rs_settings = findPreference("verifit_rs_settings");
             Preference verifit_rs_login_signup_logout = findPreference("verifit_rs_login_signup_logout");
+            Preference verifit_rs_import = findPreference("verifit_rs_import");
+            Preference verifit_rs_export = findPreference("verifit_rs_export");
+            Preference verifit_rs_delete_all = findPreference("verifit_rs_delete_all");
 
             // User is not logged in
             if(sharedPreferences.load("verifit_rs_token").isEmpty())
             {
-                verifit_rs_logged_in.setVisible(false);
-                verifit_rs_settings.setVisible(false);
+                verifit_rs_import.setVisible(false);
+                verifit_rs_export.setVisible(false);
+                verifit_rs_delete_all.setVisible(false);
+
                 verifit_rs_login_signup_logout.setTitle("Login/Sign Up");
                 verifit_rs_login_signup_logout.setSummary("Login or create a free account");
             }
             else
             {
-                verifit_rs_logged_in.setVisible(false);
-                verifit_rs_settings.setVisible(true);
+                verifit_rs_import.setVisible(true);
+                verifit_rs_export.setVisible(true);
+                verifit_rs_delete_all.setVisible(true);
+
                 verifit_rs_login_signup_logout.setTitle("Logout");
                 verifit_rs_login_signup_logout.setSummary("You are logged in as " + sharedPreferences.load("verifit_rs_username"));
             }
@@ -213,12 +226,14 @@ public class SettingsActivity extends AppCompatActivity {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
 
+
                 Button bt_yes3 = view.findViewById(R.id.bt_yes3);
                 Button bt_no3 = view.findViewById(R.id.bt_no3);
 
                 bt_yes3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        logoutFromVerifitRs();
                         Intent in = new Intent(getActivity(), MainActivity.class);
                         in.putExtra("doit", "importcsv");
                         startActivity(in);
@@ -231,11 +246,7 @@ public class SettingsActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
-
-
                 alertDialog.show();
-
-
             }
             else if (key.equals("exportcsv"))
             {
@@ -250,50 +261,14 @@ public class SettingsActivity extends AppCompatActivity {
             else if (key.equals("togglewebdav"))
             {
                 PreferenceManager preferenceManager = getPreferenceManager();
-                if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true)) {
-                    // Your switch is on
-                    System.out.println("Toggle is on");
-                    sharedPreferences.save("true", "togglewebdav");
 
-
-                    Toast.makeText(getContext(), "Webdav is on", Toast.LENGTH_SHORT).show();
-                    Preference importwebdav = findPreference("importwebdav");
-                    importwebdav.setVisible(true);
-                    Preference excportwebdav = findPreference("exportwebdav");
-                    excportwebdav.setVisible(true);
-                    Preference webdavurl = findPreference("webdavurl");
-                    webdavurl.setVisible(true);
-                    Preference webdavusername = findPreference("webdavusername");
-                    webdavusername.setVisible(true);
-                    Preference webdavpassword = findPreference("webdavpassword");
-                    webdavpassword.setVisible(true);
-                    Preference webdavcheckconnection = findPreference("webdavcheckconnection");
-                    webdavcheckconnection.setVisible(true);
-                    Preference autowebdavbackup = findPreference("autowebdavbackup");
-                    autowebdavbackup.setVisible(true);
+                if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true))
+                {
+                    turnWebdavOn();
                 }
                 else
                 {
-                    // Your switch is off
-                    System.out.println("Toggle is off");
-                    Toast.makeText(getContext(), "Webdav is off", Toast.LENGTH_SHORT).show();
-                    sharedPreferences.save("false", "togglewebdav");
-
-
-                    Preference importwebdav = findPreference("importwebdav");
-                    importwebdav.setVisible(false);
-                    Preference excportwebdav = findPreference("exportwebdav");
-                    excportwebdav.setVisible(false);
-                    Preference webdavurl = findPreference("webdavurl");
-                    webdavurl.setVisible(false);
-                    Preference webdavusername = findPreference("webdavusername");
-                    webdavusername.setVisible(false);
-                    Preference webdavpassword = findPreference("webdavpassword");
-                    webdavpassword.setVisible(false);
-                    Preference webdavcheckconnection = findPreference("webdavcheckconnection");
-                    webdavcheckconnection.setVisible(false);
-                    Preference autowebdavbackup = findPreference("autowebdavbackup");
-                    autowebdavbackup.setVisible(false);
+                    turnWebdavOff();
                 }
             }
             else if (key.equals("importwebdav"))
@@ -333,7 +308,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if(webdav_url.isEmpty() || webdav_username.isEmpty() || webdav_password.isEmpty())
                 {
-                    Toast.makeText(getContext(), "Some fields are empty, cannot export", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Some fields are empty", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -469,8 +444,163 @@ public class SettingsActivity extends AppCompatActivity {
                     users.logout();
                 }
             }
+            else if(key.equals("verifit_rs_import"))
+            {
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View view = inflater.inflate(R.layout.import_warning_dialog, null);
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
+
+                TextView tv_date = view.findViewById(R.id.tv_date);
+
+                tv_date.setText("Upload all sets?");
+
+                Button bt_yes3 = view.findViewById(R.id.bt_yes3);
+                Button bt_no3 = view.findViewById(R.id.bt_no3);
+
+                bt_yes3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        sharedPreferences.save("cloud", "import_mode");
+
+                        Intent in = new Intent(getActivity(), MainActivity.class);
+                        in.putExtra("doit", "importcsv");
+                        startActivity(in);
+                    }
+                });
+
+                bt_no3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+            }
+            else if(key.equals("verifit_rs_export"))
+            {
+                // Same as offline export since we are exporting everything in local data structures
+                Intent in = new Intent(getActivity(), MainActivity.class);
+                in.putExtra("doit", "exportcsv");
+                startActivity(in);
+            }
+            else if(key.equals("verifit_rs_delete_all"))
+            {
+
+                // Prepare to show exercise dialog box
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View view = inflater.inflate(R.layout.import_warning_dialog, null);
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
+
+                TextView tv_date = view.findViewById(R.id.tv_date);
+
+                tv_date.setText("Delete all account data?");
+
+                Button bt_yes3 = view.findViewById(R.id.bt_yes3);
+                Button bt_no3 = view.findViewById(R.id.bt_no3);
+
+                bt_yes3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getContext(), "http://192.168.1.116:3000");
+                        workoutSetsApi.deleteWorkoutSets(MainActivity.dataStorage.getSets(), new Callback() {
+                            @Override
+                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                System.out.println(e.toString());
+                            }
+
+                            @Override
+                            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+                            {
+                                alertDialog.dismiss();
+
+                                if(200 == response.code())
+                                {
+                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
+                                    snackBarWithMessage.showSnackbar("All data deleted");
+                                }
+                                else
+                                {
+                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
+                                    snackBarWithMessage.showSnackbar(response.toString());
+                                }
+                            }
+                        });
+
+                    }
+                });
+
+                bt_no3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+            }
 
             return true;
+        }
+
+        public void turnWebdavOff()
+        {
+
+            Toast.makeText(getContext(), "Webdav is off", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
+            sharedPreferences.save("false", "togglewebdav");
+
+            // Essentially logout from verifit-rs
+            logoutFromVerifitRs();
+
+            Preference importwebdav = findPreference("importwebdav");
+            importwebdav.setVisible(false);
+            Preference excportwebdav = findPreference("exportwebdav");
+            excportwebdav.setVisible(false);
+            Preference webdavurl = findPreference("webdavurl");
+            webdavurl.setVisible(false);
+            Preference webdavusername = findPreference("webdavusername");
+            webdavusername.setVisible(false);
+            Preference webdavpassword = findPreference("webdavpassword");
+            webdavpassword.setVisible(false);
+            Preference webdavcheckconnection = findPreference("webdavcheckconnection");
+            webdavcheckconnection.setVisible(false);
+            Preference autowebdavbackup = findPreference("autowebdavbackup");
+            autowebdavbackup.setVisible(false);
+        }
+
+        public void turnWebdavOn()
+        {
+            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
+            sharedPreferences.save("true", "togglewebdav");
+
+            logoutFromVerifitRs();
+
+            Toast.makeText(getContext(), "Webdav is on", Toast.LENGTH_SHORT).show();
+            Preference importwebdav = findPreference("importwebdav");
+            importwebdav.setVisible(true);
+            Preference excportwebdav = findPreference("exportwebdav");
+            excportwebdav.setVisible(true);
+            Preference webdavurl = findPreference("webdavurl");
+            webdavurl.setVisible(true);
+            Preference webdavusername = findPreference("webdavusername");
+            webdavusername.setVisible(true);
+            Preference webdavpassword = findPreference("webdavpassword");
+            webdavpassword.setVisible(true);
+            Preference webdavcheckconnection = findPreference("webdavcheckconnection");
+            webdavcheckconnection.setVisible(true);
+            Preference autowebdavbackup = findPreference("autowebdavbackup");
+            autowebdavbackup.setVisible(true);
+        }
+
+
+        public void logoutFromVerifitRs()
+        {
+            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
+            sharedPreferences.save("offline", "mode");
+            sharedPreferences.save("", "verifit_rs_token");
+            sharedPreferences.save("", "verifit_rs_username");
+            sharedPreferences.save("", "verifit_rs_password");
         }
 
         // Delete all currently saved workout data
@@ -513,38 +643,38 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Donations activity
         // Delete all currently saved workout data
-        public void donate()
-        {
-            // Prepare to show exercise dialog box
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.donate_dialog,null);
-            AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
-
-            ImageView crypto_imageView = view.findViewById(R.id.crypto_imageView);
-
-
-            crypto_imageView.setImageResource(R.drawable.xmr);
-            // Copy Corresponding Address to Clipboard
-            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("xmr", "42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is");
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(getContext(),"XMR Address Copied",Toast.LENGTH_SHORT).show();
-
-
-            Button monero_button = view.findViewById(R.id.monero_button);
-
-
-            monero_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.getmonero.org/"));
-                    startActivity(browserIntent);
-                }
-            });
-
-            // Show Exercise Dialog Box
-            alertDialog.show();
-        }
+//        public void donate()
+//        {
+//            // Prepare to show exercise dialog box
+//            LayoutInflater inflater = LayoutInflater.from(getContext());
+//            View view = inflater.inflate(R.layout.donate_dialog,null);
+//            AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
+//
+//            ImageView crypto_imageView = view.findViewById(R.id.crypto_imageView);
+//
+//
+//            crypto_imageView.setImageResource(R.drawable.xmr);
+//            // Copy Corresponding Address to Clipboard
+//            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
+//            ClipData clip = ClipData.newPlainText("xmr", "42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is");
+//            clipboard.setPrimaryClip(clip);
+//            Toast.makeText(getContext(),"XMR Address Copied",Toast.LENGTH_SHORT).show();
+//
+//
+//            Button monero_button = view.findViewById(R.id.monero_button);
+//
+//
+//            monero_button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.getmonero.org/"));
+//                    startActivity(browserIntent);
+//                }
+//            });
+//
+//            // Show Exercise Dialog Box
+//            alertDialog.show();
+//        }
 
 
         public String getPasswordStarred()

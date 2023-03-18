@@ -582,8 +582,8 @@ public class DataStorage {
         this.knownExercises.clear(); // This removes all known exercises
         this.sets.clear();
         this.days.clear();
-        saveWorkoutData(context);
-        saveKnownExerciseData(context);
+        this.saveWorkoutData(context);
+        this.saveKnownExerciseData(context);
     }
 
     // Inefficient bubble sort but does the job

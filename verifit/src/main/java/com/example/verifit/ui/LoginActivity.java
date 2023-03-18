@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Login");
-
     }
 
 
@@ -40,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     {
         SharedPreferences sharedPreferences = new SharedPreferences(this);
 
-        // Default should be Sign Up
+        // Default should be Login
         if(sharedPreferences.load("user_state").isEmpty() || sharedPreferences.load("user_state").equals("login"))
         {
             verifit_rs_login(view);
@@ -71,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 // Handle error
                 runOnUiThread(() -> {
-                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
+                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
                     snackBarWithMessage.showSnackbar(e.toString());
                 });
             }
@@ -89,14 +88,25 @@ public class LoginActivity extends AppCompatActivity {
                     sharedPreferences.save(responseUser.getToken(), "verifit_rs_token");
                     sharedPreferences.save(username, "verifit_rs_username");
                     sharedPreferences.save(password, "verifit_rs_password");
+                    sharedPreferences.save("online","mode");
+
 
                     runOnUiThread(() -> {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("message", "verifit_rs_login");
                         startActivity(intent);
                     });
                 }
                 else
                 {
+                    // You are logged out
+                    SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+                    sharedPreferences.save("", "verifit_rs_username");
+                    sharedPreferences.save("", "verifit_rs_password");
+                    sharedPreferences.save("", "verifit_rs_token");
+                    sharedPreferences.save("offline","mode");
+                    MainActivity.dataStorage.clearDataStructures(getApplicationContext());
+
                     runOnUiThread(() -> {
                         SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
                         snackBarWithMessage.showSnackbar(response.toString());
@@ -115,6 +125,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public void cancel(View view)
     {
+        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+        sharedPreferences.save("", "verifit_rs_username");
+        sharedPreferences.save("", "verifit_rs_password");
+        sharedPreferences.save("", "verifit_rs_token");
+        sharedPreferences.save("offline","mode");
+        MainActivity.dataStorage.clearDataStructures(getApplicationContext());
+
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
@@ -141,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
         else
         {
             runOnUiThread(() -> {
-                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
                 snackBarWithMessage.showSnackbar("Passwords do not match");
             });
         }
@@ -157,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
         {
             sharedPreferences.save("signup", "user_state");
         }
-        else
+        else if(sharedPreferences.load("user_state").equals("signup"))
         {
             sharedPreferences.save("login", "user_state");
         }

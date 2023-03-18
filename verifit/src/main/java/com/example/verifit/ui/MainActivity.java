@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 
+import com.example.verifit.BackupService;
 import com.example.verifit.DataStorage;
 import com.example.verifit.R;
 import com.example.verifit.SnackBarWithMessage;
@@ -42,6 +43,7 @@ import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , DatePickerDialog.OnDateSetListener{
 
@@ -107,12 +109,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         initActivity();
 
         // If backup background service has not started, start it
-//        if(!isMyServiceRunning(BackupService.class))
-//        {
-//            // Start background service
-//            Intent intent = new Intent(this, BackupService.class);
-//            startService(intent);
-//        }
+        if(!isMyServiceRunning(BackupService.class))
+        {
+            // Start background service
+            Intent intent = new Intent(this, BackupService.class);
+            startService(intent);
+        }
 
         // Bottom Navigation Bar Intents
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -163,17 +165,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // From Settings Activity when importing CSV
         Intent in = getIntent();
 
-        String WhatToDO = null;
-        WhatToDO = in.getStringExtra("doit");
+        String whatToDo = in.getStringExtra("doit");
+
+        String message = in.getStringExtra("message");
 
         // If Intent coming from settings activity
-        if(WhatToDO != null)
+        if(whatToDo != null)
         {
-            if(WhatToDO.equals("importcsv"))
+            if(whatToDo.equals("importcsv"))
             {
                 fileSearch();
             }
-            else if(WhatToDO.equals("exportcsv"))
+            else if(whatToDo.equals("exportcsv"))
             {
                 // Android 11 and above
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
@@ -184,13 +187,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 // Or else nothing comes up
                 initViewPager();
             }
-            else if(WhatToDO.equals("exportwebdav"))
+            else if(whatToDo.equals("exportwebdav"))
             {
                 // After Loading Data Initialize ViewPager
                 initViewPager();
             }
             // Data already saved, just init view pager
-            else if(WhatToDO.equals("importwebdav"))
+            else if(whatToDo.equals("importwebdav"))
             {
                 // After Loading Data Initialize ViewPager
                 initViewPager();
@@ -200,51 +203,86 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         else
         {
             // Offline / Webdav Mode
-//            dataStorage.loadWorkoutData(getApplicationContext());
-//            dataStorage.loadKnownExercisesData(getApplicationContext());
+            com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
+            String mode = sharedPreferences.load("mode");
 
-            // Cloud Mode
-            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
-            workoutSetsApi.getAllWorkoutSets(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    // Show error
-                    runOnUiThread(() -> {
-                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
-                        snackBarWithMessage.showSnackbar(e.toString());
-                    });
-                }
+            System.out.println("MODE IS " + mode);
 
-                @Override
-                public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                    if (200 == response.code())
-                    {
-                        String jsonString = response.body().string();
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<ArrayList<WorkoutSet>>() {}.getType();
-                        ArrayList<WorkoutSet> sets = gson.fromJson(jsonString, listType);
-
-                        MainActivity.dataStorage.readFromSets(sets, getApplicationContext());
-
-                        runOnUiThread(() -> initViewPager());
-
-//                        runOnUiThread(() -> {
-//                            com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
-//                            String username = sharedPreferences.load("verifit_rs_username");
-//
-//                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
-//                            snackBarWithMessage.showSnackbar("Welcome back " + username);
-//                        });
-                    }
-                    else
-                    {
+            if(mode.equals("") || mode.equals("offline"))
+            {
+                sharedPreferences.save("offline", "mode");
+                dataStorage.loadWorkoutData(getApplicationContext());
+                dataStorage.loadKnownExercisesData(getApplicationContext());
+                initViewPager();
+            }
+            else
+            {
+                // Cloud Mode
+                WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                workoutSetsApi.getAllWorkoutSets(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        // Show error
                         runOnUiThread(() -> {
                             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
-                            snackBarWithMessage.showSnackbar(response.toString());
+                            snackBarWithMessage.showSnackbar(e.toString());
                         });
                     }
-                }
-            });
+
+                    @Override
+                    public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                        if (200 == response.code())
+                        {
+                            String jsonString = response.body().string();
+                            Gson gson = new Gson();
+                            Type listType = new TypeToken<ArrayList<WorkoutSet>>() {}.getType();
+                            ArrayList<WorkoutSet> sets = gson.fromJson(jsonString, listType);
+
+                            MainActivity.dataStorage.readFromSets(sets, getApplicationContext());
+
+                            runOnUiThread(() -> initViewPager());
+                        }
+                        else
+                        {
+                            // If logged out login again
+                            if(response.message().equals("Unauthorized"))
+                            {
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }
+
+
+                            runOnUiThread(() -> {
+                                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
+                                snackBarWithMessage.showSnackbar(response.toString());
+                            });
+                        }
+                    }
+                });
+            }
+        }
+        // Display login/logout messages
+        if(message != null)
+        {
+            if(message.equals("verifit_rs_login"))
+            {
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
+                snackBarWithMessage.showSnackbar("Welcome back!");
+            }
+            else if(message.equals("verifit_rs_logout"))
+            {
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
+                snackBarWithMessage.showSnackbar("Logged out");
+            }
+            else if(message.equals("verifit_rs_signup"))
+            {
+                com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
+
+                String email = sharedPreferences.load("verifit_rs_username");
+
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
+                snackBarWithMessage.showSnackbar("Account created for " + email);
+            }
         }
     }
 
@@ -345,7 +383,55 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 {
                     if(dataStorage.readFile(uri, getApplicationContext()))
                     {
-                        initViewPager();
+                        com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
+                        String import_mode = sharedPreferences.load("import_mode");
+
+                        System.out.println("Import Mode: " + import_mode);
+
+                        if(import_mode.equals("cloud"))
+                        {
+                            // Reset import mode
+                            sharedPreferences.save("", "import_mode");
+
+                            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                            workoutSetsApi.postWorkoutSets(dataStorage.getSets(), new Callback()
+                            {
+                                @Override
+                                public void onFailure(@NonNull Call call, @NonNull IOException e)
+                                {
+//                                    runOnUiThread(() -> {
+//                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
+//                                        snackBarWithMessage.showSnackbar(e.toString());
+//                                    });
+                                }
+
+                                @Override
+                                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+                                {
+                                    if(200 == response.code())
+                                    {
+                                        System.out.println(response.toString());
+//                                        runOnUiThread(() -> {
+//                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
+//                                            snackBarWithMessage.showSnackbar(response.toString());
+////                                            initViewPager();
+//                                        });
+                                    }
+                                    else
+                                    {
+                                        System.out.println(response.toString());
+//                                        runOnUiThread(() -> {
+//                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
+//                                            snackBarWithMessage.showSnackbar(response.toString());
+//                                        });
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            initViewPager();
+                        }
                     }
                 }
             }

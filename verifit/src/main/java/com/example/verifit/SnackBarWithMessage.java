@@ -19,12 +19,12 @@ public class SnackBarWithMessage {
 
 
         // Set an action for the Snackbar
-        snackbar.setAction("View", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Handle the action click
-            }
-        });
+//        snackbar.setAction("View", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Handle the action click
+//            }
+//        });
 
 
         // Show the Snackbar
