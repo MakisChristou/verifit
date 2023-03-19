@@ -35,12 +35,6 @@ public class WorkoutSetsApi {
         this.password = password;
     }
 
-
-    public void getWorkoutSet()
-    {
-
-    }
-
     public void postWorkoutSet(WorkoutSet set, okhttp3.Callback callback)
     {
         url += "/sets";

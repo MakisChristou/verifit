@@ -17,7 +17,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 
 import com.example.verifit.BackupService;
 import com.example.verifit.DataStorage;
@@ -222,25 +224,36 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 workoutSetsApi.getAllWorkoutSets(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
+
+                        // Effectively logout the user
+                        sharedPreferences.save("", "verifit_rs_username");
+                        sharedPreferences.save("", "verifit_rs_password");
+                        sharedPreferences.save("", "verifit_rs_token");
+                        sharedPreferences.save("offline","mode");
+                        MainActivity.dataStorage.clearDataStructures(getApplicationContext());
+
                         // Show error
                         runOnUiThread(() -> {
                             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
                             snackBarWithMessage.showSnackbar(e.toString());
                         });
+
                     }
 
                     @Override
                     public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                        if (200 == response.code())
-                        {
+                        if (200 == response.code()) {
                             String jsonString = response.body().string();
                             Gson gson = new Gson();
-                            Type listType = new TypeToken<ArrayList<WorkoutSet>>() {}.getType();
+                            Type listType = new TypeToken<ArrayList<WorkoutSet>>() {
+                            }.getType();
                             ArrayList<WorkoutSet> sets = gson.fromJson(jsonString, listType);
 
                             MainActivity.dataStorage.readFromSets(sets, getApplicationContext());
 
-                            runOnUiThread(() -> initViewPager());
+                            runOnUiThread(() -> {
+                                initViewPager();
+                            });
                         }
                         else
                         {
@@ -344,10 +357,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
 
+
+
         // Use View Pager with Infinite Days
         viewPager2 = findViewById(R.id.viewPager2);
         viewPager2.setAdapter(new ViewPagerWorkoutDayAdapter(this, dataStorage.getInfiniteWorkoutDays()));
+        viewPager2.setVisibility(View.VISIBLE);
         viewPager2.setCurrentItem(((dataStorage.getInfiniteWorkoutDays().size()+1)/2)-1); // Navigate to today
+
+        ProgressBar progressBar = findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
     }
 
     // Formats backup name in case of export
@@ -491,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         if(item.getItemId() == R.id.home)
         {
-            viewPager2.setCurrentItem((dataStorage.getInfiniteWorkoutDays().size()+1)/2); // Navigate to today
+            viewPager2.setCurrentItem(((dataStorage.getInfiniteWorkoutDays().size()+1)/2)-1); // Navigate to today
         }
         else if(item.getItemId() == R.id.settings)
         {
