@@ -440,7 +440,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    UsersApi users = new UsersApi(getContext(),"http://192.168.1.116:3000", sharedPreferences.load("verifit_rs_username"), sharedPreferences.load("verifit_rs_password"));
+                    UsersApi users = new UsersApi(getContext(),getString(R.string.API_ENDPOINT), sharedPreferences.load("verifit_rs_username"), sharedPreferences.load("verifit_rs_password"));
                     users.logout();
                 }
             }
@@ -502,7 +502,7 @@ public class SettingsActivity extends AppCompatActivity {
                 bt_yes3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getContext(), "http://192.168.1.116:3000");
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getContext(), getString(R.string.API_ENDPOINT));
                         workoutSetsApi.deleteWorkoutSets(MainActivity.dataStorage.getSets(), new Callback() {
                             @Override
                             public void onFailure(@NonNull Call call, @NonNull IOException e) {

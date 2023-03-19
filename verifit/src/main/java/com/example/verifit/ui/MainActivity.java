@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             else
             {
                 // Cloud Mode
-                WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                 workoutSetsApi.getAllWorkoutSets(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             // Reset import mode
                             sharedPreferences.save("", "import_mode");
 
-                            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                             workoutSetsApi.postWorkoutSets(dataStorage.getSets(), new Callback()
                             {
                                 @Override

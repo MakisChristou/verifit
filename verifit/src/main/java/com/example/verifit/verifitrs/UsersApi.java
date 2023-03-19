@@ -151,6 +151,15 @@ public class UsersApi {
             public void onFailure(Call call, IOException e) {
                 // Handle error
                 System.out.println(e);
+
+                // You are logged out
+                SharedPreferences sharedPreferences = new SharedPreferences(context);
+                sharedPreferences.save("", "verifit_rs_username");
+                sharedPreferences.save("", "verifit_rs_password");
+                sharedPreferences.save("", "verifit_rs_token");
+                sharedPreferences.save("offline","mode");
+                MainActivity.dataStorage.clearDataStructures(context);
+
             }
 
             @Override
@@ -174,6 +183,14 @@ public class UsersApi {
                 }
                 else
                 {
+                    // You are logged out
+                    SharedPreferences sharedPreferences = new SharedPreferences(context);
+                    sharedPreferences.save("", "verifit_rs_username");
+                    sharedPreferences.save("", "verifit_rs_password");
+                    sharedPreferences.save("", "verifit_rs_token");
+                    sharedPreferences.save("offline","mode");
+                    MainActivity.dataStorage.clearDataStructures(context);
+
                     snackBarWithMessage.showSnackbar(response.toString());
                 }
             }

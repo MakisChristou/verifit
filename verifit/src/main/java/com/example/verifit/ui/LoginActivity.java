@@ -20,6 +20,8 @@ import com.example.verifit.verifitrs.UsersApi;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,6 +33,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Set the mode to login to avoid bugs
+        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+        sharedPreferences.save("login", "user_state");
         setTitle("Login");
     }
 
@@ -63,11 +69,24 @@ public class LoginActivity extends AppCompatActivity {
         String username = et_username.getText().toString();
         String password = et_password.getText().toString();
 
-        UsersApi users = new UsersApi(this,"http://192.168.1.116:3000", username, password);
+        if(!checkEmail(username))
+        {
+            runOnUiThread(() -> {
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                snackBarWithMessage.showSnackbar("Not a valid email");
+            });
+            return;
+        }
+
+        UsersApi users = new UsersApi(this,getString(R.string.API_ENDPOINT), username, password);
 
         users.login(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+
+                // You are logged out
+                enableOfflineMode();
+
                 // Handle error
                 runOnUiThread(() -> {
                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
@@ -81,15 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (200 == response.code())
                 {
-                    Gson gson = new Gson();
-                    ResponseUser responseUser = gson.fromJson(responseBody, ResponseUser.class);
-
-                    SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
-                    sharedPreferences.save(responseUser.getToken(), "verifit_rs_token");
-                    sharedPreferences.save(username, "verifit_rs_username");
-                    sharedPreferences.save(password, "verifit_rs_password");
-                    sharedPreferences.save("online","mode");
-
+                    enableOnlineMode(responseBody, username, password);
 
                     runOnUiThread(() -> {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -99,13 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    // You are logged out
-                    SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
-                    sharedPreferences.save("", "verifit_rs_username");
-                    sharedPreferences.save("", "verifit_rs_password");
-                    sharedPreferences.save("", "verifit_rs_token");
-                    sharedPreferences.save("offline","mode");
-                    MainActivity.dataStorage.clearDataStructures(getApplicationContext());
+                    enableOfflineMode();
 
                     runOnUiThread(() -> {
                         SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
@@ -117,13 +122,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void verifit_rs_logout(View view)
-    {
-        UsersApi users = new UsersApi(this,"http://192.168.1.116:3000", "", "");
-        users.logout();
-    }
-
-    public void cancel(View view)
+    public void enableOfflineMode()
     {
         SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
         sharedPreferences.save("", "verifit_rs_username");
@@ -131,6 +130,63 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences.save("", "verifit_rs_token");
         sharedPreferences.save("offline","mode");
         MainActivity.dataStorage.clearDataStructures(getApplicationContext());
+    }
+
+    public void enableOnlineMode(String responseBody, String username, String password)
+    {
+        Gson gson = new Gson();
+        ResponseUser responseUser = gson.fromJson(responseBody, ResponseUser.class);
+        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+        sharedPreferences.save(responseUser.getToken(), "verifit_rs_token");
+        sharedPreferences.save(username, "verifit_rs_username");
+        sharedPreferences.save(password, "verifit_rs_password");
+        sharedPreferences.save("online","mode");
+    }
+
+    public boolean checkEmail(String email)
+    {
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    public boolean checkPassword(String password) {
+        // Check for null or empty input
+        if (password == null || password.trim().isEmpty()) {
+            return false;
+        }
+
+        // Check if the password is at least 8 characters long
+        if (password.length() < 10) {
+            return false;
+        }
+
+        // Check if the password contains at least one letter
+        boolean hasLetter = false;
+        // Check if the password contains at least one number
+        boolean hasNumber = false;
+
+        for (char ch : password.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                hasLetter = true;
+            } else if (Character.isDigit(ch)) {
+                hasNumber = true;
+            }
+
+            // If both conditions are met, return true
+            if (hasLetter && hasNumber) {
+                return true;
+            }
+        }
+
+        // If either condition is not met, return false
+        return false;
+    }
+
+    public void cancel(View view)
+    {
+        enableOfflineMode();
 
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
@@ -150,18 +206,36 @@ public class LoginActivity extends AppCompatActivity {
         String password = et_password.getText().toString();
         String password2 = et_password_2.getText().toString();
 
-        if(password.equals(password2))
-        {
-            UsersApi users = new UsersApi(this,"http://192.168.1.116:3000", username, password);
-            users.createAccount();
-        }
-        else
+        if(!password.equals(password2))
         {
             runOnUiThread(() -> {
                 SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
                 snackBarWithMessage.showSnackbar("Passwords do not match");
             });
+            return;
         }
+
+
+        if(!checkEmail(username))
+        {
+            runOnUiThread(() -> {
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                snackBarWithMessage.showSnackbar("Not a valid email");
+            });
+            return;
+        }
+
+
+        if(!checkPassword(password))
+        {
+            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+            snackBarWithMessage.showSnackbar("Password must contain letters and numbers and be of length >= 10");
+            return;
+        }
+
+
+        UsersApi users = new UsersApi(this,getString(R.string.API_ENDPOINT), username, password);
+        users.createAccount();
     }
 
 

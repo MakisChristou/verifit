@@ -16,6 +16,7 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="API_ENDPOINT">https://verifit.xyz</string>
 
     <string-array name="Categories">
         <item>Chest</item>

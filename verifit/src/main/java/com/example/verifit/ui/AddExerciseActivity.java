@@ -185,7 +185,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                             }
                         }
 
-                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                         workoutSetsApi.postWorkoutSet(workoutSet, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
@@ -223,7 +223,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                     // If not construct new workout day
                     else
                     {
-                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                         workoutSetsApi.postWorkoutSet(workoutSet, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
@@ -298,7 +298,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                         set.setReps(reps);
                         set.setWeight(weight);
 
-                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                         workoutSetsApi.updateWorkoutSet(set, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
@@ -416,7 +416,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                     {
                         MainActivity.dataStorage.getWorkoutDays().get(i).removeSet(to_be_removed_set);
 
-                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(ct, "http://192.168.1.116:3000");
+                        WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(ct, ct.getString(R.string.API_ENDPOINT));
                         workoutSetsApi.deleteWorkoutSet(to_be_removed_set, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
@@ -998,7 +998,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
             final int finalI = i;
 
-            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), "http://192.168.1.116:3000");
+            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
             WorkoutSet set_to_be_updated = MainActivity.dataStorage.getWorkoutDays().get(day_position).getExercises().get(exercise_position).getSets().get(i);
 
             set_to_be_updated.setComment(comment);
