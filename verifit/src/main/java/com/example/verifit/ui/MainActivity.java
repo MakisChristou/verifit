@@ -217,11 +217,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 dataStorage.loadKnownExercisesData(getApplicationContext());
                 initViewPager();
             }
-            // Most naive way to implement caching
-            else if(dataStorage.getWorkoutDays().size() > 0)
-            {
-                initViewPager();
-            }
+//            // Most naive way to implement caching
+//            else if(dataStorage.getWorkoutDays().size() > 0)
+//            {
+//                initViewPager();
+//            }
             else
             {
                 // Cloud Mode
