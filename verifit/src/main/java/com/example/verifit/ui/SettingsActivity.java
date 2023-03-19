@@ -516,6 +516,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                                 if(200 == response.code())
                                 {
+
+                                    MainActivity.dataStorage.clearDataStructures(getContext());
+
                                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
                                     snackBarWithMessage.showSnackbar("All data deleted");
                                 }
@@ -602,6 +605,7 @@ public class SettingsActivity extends AppCompatActivity {
             sharedPreferences.save("", "verifit_rs_username");
             sharedPreferences.save("", "verifit_rs_password");
         }
+
 
         // Delete all currently saved workout data
         public void deleteData()

@@ -39,7 +39,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/non_expandable_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
 
 
                     <TextView
@@ -96,12 +97,11 @@
                         android:id="@+id/pieChart"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
-                        android:visibility="visible"
                         android:layout_marginTop="10dp"
+                        android:visibility="visible"
                         app:layout_constraintTop_toBottomOf="@+id/blue_line">
 
                     </com.github.mikephil.charting.charts.PieChart>
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

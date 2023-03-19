@@ -37,13 +37,14 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="Settings"
-            android:parentActivityName=".ui.PersonalRecordsActivity" />
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.CalculatorActivity"
             android:label="Plate Calculator" />
         <activity
             android:name=".ui.PersonalRecordsActivity"
-            android:label="Personal Records" />
+            android:label="Personal Records"
+            android:parentActivityName=".ui.ChartsActivity"/>
         <activity
             android:name=".ui.AddExerciseActivity"
             android:label="Add Exercise" />

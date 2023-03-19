@@ -72,8 +72,6 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         pieChartBodyparts();
 
         piChartExercises();
-
-
     }
 
     public void barChartVolumes()
@@ -435,7 +433,7 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         }
         else if(item.getItemId() == R.id.me)
         {
-            Intent in = new Intent(this, PersonalRecordsActivity.class);
+            Intent in = new Intent(this, SettingsActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
@@ -456,6 +454,11 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         if(item.getItemId() == R.id.settings)
         {
             Intent in = new Intent(this,SettingsActivity.class);
+            startActivity(in);
+        }
+        else if(item.getItemId() == R.id.personal_records)
+        {
+            Intent in = new Intent(this,PersonalRecordsActivity.class);
             startActivity(in);
         }
         return super.onOptionsItemSelected(item);

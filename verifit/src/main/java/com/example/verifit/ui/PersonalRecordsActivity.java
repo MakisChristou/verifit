@@ -141,11 +141,7 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
                 return false;
             }
         });
-
-
-
         return true;
-//        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -156,9 +152,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
             Intent in = new Intent(this,SettingsActivity.class);
             startActivity(in);
         }
-
-
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -133,7 +133,7 @@ public class ExercisesActivity extends AppCompatActivity implements BottomNaviga
         }
         else if(item.getItemId() == R.id.me)
         {
-            Intent in = new Intent(this, PersonalRecordsActivity.class);
+            Intent in = new Intent(this, SettingsActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }

@@ -208,8 +208,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
             String mode = sharedPreferences.load("mode");
 
-            System.out.println("MODE IS " + mode);
-
             if(mode.equals("") || mode.equals("offline"))
             {
                 sharedPreferences.save("offline", "mode");
@@ -217,11 +215,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 dataStorage.loadKnownExercisesData(getApplicationContext());
                 initViewPager();
             }
-//            // Most naive way to implement caching
-//            else if(dataStorage.getWorkoutDays().size() > 0)
-//            {
-//                initViewPager();
-//            }
+            // Most naive way to implement caching
+            else if(dataStorage.getWorkoutDays().size() > 0)
+            {
+                initViewPager();
+            }
             else
             {
                 // Cloud Mode
@@ -242,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
                             snackBarWithMessage.showSnackbar(e.toString());
                         });
-
                     }
 
                     @Override
@@ -295,9 +292,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             else if(message.equals("verifit_rs_signup"))
             {
                 com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
-
                 String email = sharedPreferences.load("verifit_rs_username");
-
                 SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
                 snackBarWithMessage.showSnackbar("Account created for " + email);
             }
@@ -410,8 +405,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
                         String import_mode = sharedPreferences.load("import_mode");
 
-                        System.out.println("Import Mode: " + import_mode);
-
                         if(import_mode.equals("cloud"))
                         {
                             // Reset import mode
@@ -423,32 +416,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 @Override
                                 public void onFailure(@NonNull Call call, @NonNull IOException e)
                                 {
-//                                    runOnUiThread(() -> {
-//                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
-//                                        snackBarWithMessage.showSnackbar(e.toString());
-//                                    });
+                                    runOnUiThread(() -> {
+                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
+                                        snackBarWithMessage.showSnackbar(e.toString());
+                                    });
                                 }
 
                                 @Override
                                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
                                 {
-                                    if(200 == response.code())
-                                    {
-                                        System.out.println(response.toString());
-//                                        runOnUiThread(() -> {
-//                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
-//                                            snackBarWithMessage.showSnackbar(response.toString());
-////                                            initViewPager();
-//                                        });
-                                    }
-                                    else
-                                    {
-                                        System.out.println(response.toString());
-//                                        runOnUiThread(() -> {
-//                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
-//                                            snackBarWithMessage.showSnackbar(response.toString());
-//                                        });
-                                    }
                                 }
                             });
                         }
@@ -494,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         else if(item.getItemId() == R.id.me)
         {
-            Intent in = new Intent(this, PersonalRecordsActivity.class);
+            Intent in = new Intent(this, SettingsActivity.class);
             startActivity(in);
             overridePendingTransition(0,0);
         }
