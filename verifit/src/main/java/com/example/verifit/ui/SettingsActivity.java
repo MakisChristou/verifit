@@ -525,7 +525,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 else
                                 {
                                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
-                                    snackBarWithMessage.showSnackbar(response.toString());
+                                    snackBarWithMessage.showSnackbar(response.message().toString());
                                 }
                             }
                         });

@@ -206,9 +206,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             // Offline / Webdav Mode
             com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
-            String mode = sharedPreferences.load("mode");
 
-            if(mode.equals("") || mode.equals("offline"))
+            if(sharedPreferences.isOfflineMode())
             {
                 sharedPreferences.save("offline", "mode");
                 dataStorage.loadWorkoutData(getApplicationContext());
@@ -228,27 +227,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     @Override
                     public void onFailure(Call call, IOException e) {
 
-                        // Effectively logout the user
-                        sharedPreferences.save("", "verifit_rs_username");
-                        sharedPreferences.save("", "verifit_rs_password");
-                        sharedPreferences.save("", "verifit_rs_token");
-                        sharedPreferences.save("offline","mode");
-                        MainActivity.dataStorage.clearDataStructures(getApplicationContext());
+                        sharedPreferences.enableOfflineMode();
 
                         // Show error
                         runOnUiThread(() -> {
+                            initViewPager();
                             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
                             snackBarWithMessage.showSnackbar(e.toString());
                         });
                     }
 
                     @Override
-                    public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                        if (200 == response.code()) {
+                    public void onResponse(Call call, okhttp3.Response response) throws IOException
+                    {
+                        if (200 == response.code())
+                        {
                             String jsonString = response.body().string();
                             Gson gson = new Gson();
-                            Type listType = new TypeToken<ArrayList<WorkoutSet>>() {
-                            }.getType();
+                            Type listType = new TypeToken<ArrayList<WorkoutSet>>() {}.getType();
                             ArrayList<WorkoutSet> sets = gson.fromJson(jsonString, listType);
 
                             MainActivity.dataStorage.readFromSets(sets, getApplicationContext());
@@ -259,17 +255,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         }
                         else
                         {
+                            sharedPreferences.enableOfflineMode();
+
                             // If logged out login again
                             if(response.message().equals("Unauthorized"))
                             {
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                 startActivity(intent);
                             }
-
+                            else if(response.message().equals("Bad Gateway"))
+                            {
+                                runOnUiThread(() -> {
+                                    initViewPager();
+                                });
+                            }
 
                             runOnUiThread(() -> {
                                 SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
-                                snackBarWithMessage.showSnackbar(response.toString());
+                                snackBarWithMessage.showSnackbar(response.message().toString());
                             });
                         }
                     }
@@ -356,8 +359,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 dataStorage.getInfiniteWorkoutDays().add(today);
             }
         }
-
-
 
         // Use View Pager with Infinite Days
         viewPager2 = findViewById(R.id.viewPager2);

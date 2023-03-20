@@ -93,18 +93,15 @@ public class UsersApi {
             @Override
             public void onFailure(Call call, IOException e) {
                 // Handle error
-                System.out.println(e);
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(context);
+                snackBarWithMessage.showSnackbar(e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(context);
 
-                sharedPreferences.save("", "verifit_rs_username");
-                sharedPreferences.save("", "verifit_rs_password");
-                sharedPreferences.save("", "verifit_rs_token");
-                sharedPreferences.save("offline","mode");
-                MainActivity.dataStorage.clearDataStructures(context);
+
+                sharedPreferences.enableOfflineMode();
 
                 if (200 == response.code())
                 {
@@ -114,7 +111,8 @@ public class UsersApi {
                 }
                 else
                 {
-                    snackBarWithMessage.showSnackbar(response.toString());
+                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(context);
+                    snackBarWithMessage.showSnackbar(response.message().toString());
                 }
             }
         });
@@ -191,7 +189,7 @@ public class UsersApi {
                     sharedPreferences.save("offline","mode");
                     MainActivity.dataStorage.clearDataStructures(context);
 
-                    snackBarWithMessage.showSnackbar(response.toString());
+                    snackBarWithMessage.showSnackbar(response.message().toString());
                 }
             }
         });

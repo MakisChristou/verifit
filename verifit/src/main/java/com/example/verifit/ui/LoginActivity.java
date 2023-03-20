@@ -85,7 +85,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
 
                 // You are logged out
-                enableOfflineMode();
+                SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+                sharedPreferences.enableOfflineMode();
 
                 // Handle error
                 runOnUiThread(() -> {
@@ -97,10 +98,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseBody = response.body().string();
+                SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+
 
                 if (200 == response.code())
                 {
-                    enableOnlineMode(responseBody, username, password);
+                    sharedPreferences.enableOnlineMode(responseBody, username, password);
 
                     runOnUiThread(() -> {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -110,37 +113,32 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    enableOfflineMode();
+                    sharedPreferences.enableOfflineMode();
 
-                    runOnUiThread(() -> {
-                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                        snackBarWithMessage.showSnackbar(response.toString());
-                    });
+                    if(response.message().equals("Unauthorized"))
+                    {
+                        runOnUiThread(() -> {
+                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                            snackBarWithMessage.showSnackbar("Invalid password");
+                        });
+                    }
+                    else if (response.message().equals("Not Found"))
+                    {
+                        runOnUiThread(() -> {
+                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                            snackBarWithMessage.showSnackbar("Account not found");
+                        });
+                    }
+                    else
+                    {
+                        runOnUiThread(() -> {
+                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                            snackBarWithMessage.showSnackbar(response.message().toString());
+                        });
+                    }
                 }
             }
         });
-    }
-
-
-    public void enableOfflineMode()
-    {
-        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
-        sharedPreferences.save("", "verifit_rs_username");
-        sharedPreferences.save("", "verifit_rs_password");
-        sharedPreferences.save("", "verifit_rs_token");
-        sharedPreferences.save("offline","mode");
-        MainActivity.dataStorage.clearDataStructures(getApplicationContext());
-    }
-
-    public void enableOnlineMode(String responseBody, String username, String password)
-    {
-        Gson gson = new Gson();
-        ResponseUser responseUser = gson.fromJson(responseBody, ResponseUser.class);
-        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
-        sharedPreferences.save(responseUser.getToken(), "verifit_rs_token");
-        sharedPreferences.save(username, "verifit_rs_username");
-        sharedPreferences.save(password, "verifit_rs_password");
-        sharedPreferences.save("online","mode");
     }
 
     public boolean checkEmail(String email)
@@ -186,7 +184,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void cancel(View view)
     {
-        enableOfflineMode();
+        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+        sharedPreferences.enableOfflineMode();
 
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);

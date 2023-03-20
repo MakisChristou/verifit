@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 
-public class PersonalRecordsActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class PersonalRecordsActivity extends AppCompatActivity {
 
     public static ArrayList<ExercisePersonalStats> exerciseStats = new ArrayList();
     public static RecyclerView recyclerView;
@@ -34,8 +34,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_records);
-
-        onCreateStuff();
 
         calculatePersonalRecords();
 
@@ -48,16 +46,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
         exerciseStatsAdapter = new ExerciseStatsAdapter(this, PersonalRecordsActivity.exerciseStats);
         recyclerView.setAdapter(exerciseStatsAdapter);
     }
-
-
-    public void onCreateStuff()
-    {
-        // Bottom Navigation Bar Intents
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        bottomNavigationView.setSelectedItemId(R.id.me);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-    }
-
 
     @Override
     protected void onStop() {
@@ -114,7 +102,6 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
     @Override
     protected void onRestart() {
         super.onRestart();
-        onCreateStuff();
     }
 
     @Override
@@ -153,43 +140,5 @@ public class PersonalRecordsActivity extends AppCompatActivity implements Bottom
             startActivity(in);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // Navigates to given activity based on the selected menu item
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-
-        if(item.getItemId() == R.id.home)
-        {
-            Intent in = new Intent(this,MainActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        else if(item.getItemId() == R.id.exercises)
-        {
-            Intent in = new Intent(this, ExercisesActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        else if(item.getItemId() == R.id.diary)
-        {
-            Intent in = new Intent(this,DiaryActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        else if(item.getItemId() == R.id.charts)
-        {
-            Intent in = new Intent(this,ChartsActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        else if(item.getItemId() == R.id.me)
-        {
-            Intent in = new Intent(this, PersonalRecordsActivity.class);
-            startActivity(in);
-            overridePendingTransition(0,0);
-        }
-        return true;
     }
 }
