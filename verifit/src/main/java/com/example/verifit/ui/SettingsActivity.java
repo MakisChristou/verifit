@@ -447,8 +447,32 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    final LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                    loadingDialog.loadingAlertDialog();
+
                     UsersApi users = new UsersApi(getContext(),getString(R.string.API_ENDPOINT), sharedPreferences.load("verifit_rs_username"), sharedPreferences.load("verifit_rs_password"));
-                    users.logout();
+                    users.logout(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            // Handle error
+                            loadingDialog.dismissDialog();
+                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
+                            snackBarWithMessage.showSnackbar(e.toString());
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+
+                            sharedPreferences.enableOfflineMode();
+
+                            loadingDialog.dismissDialog();
+
+                            // Whether success or not we still logout the user
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            intent.putExtra("message", "verifit_rs_logout"); // Replace "key" with a key identifier and "value" with the actual string value
+                            getContext().startActivity(intent);
+                        }
+                    });
                 }
             }
             else if(key.equals("verifit_rs_import"))
@@ -469,7 +493,6 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onClick(View view) {
 
                         sharedPreferences.save("cloud", "import_mode");
-
                         Intent in = new Intent(getActivity(), MainActivity.class);
                         in.putExtra("doit", "importcsv");
                         startActivity(in);
@@ -509,23 +532,30 @@ public class SettingsActivity extends AppCompatActivity {
                 bt_yes3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        final LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                        loadingDialog.loadingAlertDialog();
+
                         WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getContext(), getString(R.string.API_ENDPOINT));
                         workoutSetsApi.deleteWorkoutSets(MainActivity.dataStorage.getSets(), new Callback() {
                             @Override
-                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                                System.out.println(e.toString());
+                            public void onFailure(@NonNull Call call, @NonNull IOException e)
+                            {
+                                loadingDialog.dismissDialog();
+                                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
+                                snackBarWithMessage.showSnackbar(e.toString());
                             }
 
                             @Override
                             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
                             {
                                 alertDialog.dismiss();
+                                loadingDialog.dismissDialog();
 
                                 if(200 == response.code())
                                 {
 
                                     MainActivity.dataStorage.clearDataStructures(getContext());
-
                                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
                                     snackBarWithMessage.showSnackbar("All data deleted");
                                 }
@@ -536,7 +566,6 @@ public class SettingsActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
                     }
                 });
 

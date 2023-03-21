@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.verifit.LoadingDialog;
 import com.example.verifit.SnackBarWithMessage;
 import com.example.verifit.adapters.AddExerciseWorkoutSetAdapter;
 import com.example.verifit.adapters.ExerciseHistoryExerciseAdapter;
@@ -194,15 +195,21 @@ public class AddExerciseActivity extends AppCompatActivity {
                         }
                         else
                         {
+                            final LoadingDialog loadingDialog = new LoadingDialog(AddExerciseActivity.this);
+                            loadingDialog.loadingAlertDialog();
+
                             WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                             workoutSetsApi.postWorkoutSet(workoutSet, new Callback() {
                                 @Override
                                 public void onFailure(Call call, IOException e) {
+                                    loadingDialog.dismissDialog();
                                     showSnackbarMessage(e.toString());
                                 }
 
                                 @Override
                                 public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                                    loadingDialog.dismissDialog();
 
                                     if (200 == response.code())
                                     {
@@ -228,16 +235,22 @@ public class AddExerciseActivity extends AppCompatActivity {
                         }
                         else
                         {
+                            final LoadingDialog loadingDialog = new LoadingDialog(AddExerciseActivity.this);
+                            loadingDialog.loadingAlertDialog();
+
                             WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                             workoutSetsApi.postWorkoutSet(workoutSet, new Callback() {
                                 @Override
                                 public void onFailure(Call call, IOException e) {
                                     // Show error
+                                    loadingDialog.dismissDialog();
                                     showSnackbarMessage(e.toString());
                                 }
 
                                 @Override
                                 public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                                    loadingDialog.dismissDialog();
 
                                     if (200 == response.code())
                                     {
@@ -297,16 +310,22 @@ public class AddExerciseActivity extends AppCompatActivity {
                         }
                         else
                         {
+                            final LoadingDialog loadingDialog = new LoadingDialog(AddExerciseActivity.this);
+                            loadingDialog.loadingAlertDialog();
+
                             WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                             workoutSetsApi.updateWorkoutSet(set, new Callback() {
                                 @Override
-                                public void onFailure(Call call, IOException e) {
-                                    // Show error
+                                public void onFailure(Call call, IOException e)
+                                {
+                                    loadingDialog.dismissDialog();
                                     showSnackbarMessage(e.toString());
                                 }
 
                                 @Override
                                 public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                                    loadingDialog.dismissDialog();
 
                                     if (200 == response.code())
                                     {
@@ -441,16 +460,22 @@ public class AddExerciseActivity extends AppCompatActivity {
 
                         if(sharedPreferences.isOfflineMode())
                         {
-                            deleteSetLogic(ct, finalI, to_be_removed_set, alertDialog);
+                            deleteSetLogic(ct, finalI, to_be_removed_set);
+                            alertDialog.dismiss();
                         }
                         else
                         {
+                            final LoadingDialog loadingDialog = new LoadingDialog((Activity) ct);
+                            loadingDialog.loadingAlertDialog();
+
                             WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(ct, ct.getString(R.string.API_ENDPOINT));
                             workoutSetsApi.deleteWorkoutSet(to_be_removed_set, new Callback() {
                                 @Override
                                 public void onFailure(Call call, IOException e) {
                                     // Show error
                                     ((Activity) ct).runOnUiThread(() -> {
+                                        loadingDialog.dismissDialog();
+                                        alertDialog.dismiss();
                                         SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(((Activity) ct));
                                         snackBarWithMessage.showSnackbar(e.toString());
                                     });
@@ -458,9 +483,13 @@ public class AddExerciseActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                                    loadingDialog.dismissDialog();
+                                    alertDialog.dismiss();
+
                                     if (200 == response.code())
                                     {
-                                        deleteSetLogic(ct, finalI, to_be_removed_set, alertDialog);
+                                        deleteSetLogic(ct, finalI, to_be_removed_set);
                                     }
                                     else
                                     {
@@ -482,7 +511,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public static void deleteSetLogic(Context ct, int finalI, WorkoutSet to_be_removed_set, AlertDialog alertDialog)
+    public static void deleteSetLogic(Context ct, int finalI, WorkoutSet to_be_removed_set)
     {
         MainActivity.dataStorage.getWorkoutDays().get(finalI).removeSet(to_be_removed_set);
 
@@ -503,7 +532,6 @@ public class AddExerciseActivity extends AppCompatActivity {
             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(((Activity) ct));
             snackBarWithMessage.showSnackbar("Set Deleted!");
             updateTodaysExercises();
-            alertDialog.dismiss();
         });
     }
 
@@ -1041,20 +1069,28 @@ public class AddExerciseActivity extends AppCompatActivity {
             }
             else
             {
+                final LoadingDialog loadingDialog = new LoadingDialog(AddExerciseActivity.this);
+                loadingDialog.loadingAlertDialog();
+
                 WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
                 workoutSetsApi.updateWorkoutSet(set_to_be_updated, new Callback() {
                     @Override
                     public void onFailure(@NonNull Call call, @NonNull IOException e)
                     {
+                        loadingDialog.dismissDialog();
+                        alertDialog.dismiss();
                         showSnackbarMessage(e.toString());
                     }
 
                     @Override
                     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        loadingDialog.dismissDialog();
+                        alertDialog.dismiss();
+
                         if(200 == response.code())
                         {
                             updateCommentInSet(day_position, exercise_position, finalI, finalSize, comment);
-                            alertDialog.dismiss();
+
                         }
                         else
                         {

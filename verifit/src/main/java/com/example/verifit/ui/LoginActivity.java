@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.verifit.KeyboardHider;
+import com.example.verifit.LoadingDialog;
 import com.example.verifit.R;
 import com.example.verifit.SharedPreferences;
 import com.example.verifit.SnackBarWithMessage;
@@ -78,8 +79,10 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        UsersApi users = new UsersApi(this,getString(R.string.API_ENDPOINT), username, password);
+        final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
+        loadingDialog.loadingAlertDialog();
 
+        UsersApi users = new UsersApi(this,getString(R.string.API_ENDPOINT), username, password);
         users.login(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -90,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Handle error
                 runOnUiThread(() -> {
+                    loadingDialog.dismissDialog();
                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
                     snackBarWithMessage.showSnackbar(e.toString());
                 });
@@ -100,6 +104,9 @@ public class LoginActivity extends AppCompatActivity {
                 String responseBody = response.body().string();
                 SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
 
+                runOnUiThread(() -> {
+                    loadingDialog.dismissDialog();
+                });
 
                 if (200 == response.code())
                 {
@@ -224,7 +231,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-
         if(!checkPassword(password))
         {
             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
@@ -232,9 +238,55 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
+        loadingDialog.loadingAlertDialog();
 
         UsersApi users = new UsersApi(this,getString(R.string.API_ENDPOINT), username, password);
-        users.createAccount();
+        users.createAccount(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+                loadingDialog.dismissDialog();
+
+                // You are logged out
+                SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+                sharedPreferences.enableOfflineMode();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String responseBody = response.body().string();
+
+                loadingDialog.dismissDialog();
+
+                if (200 == response.code())
+                {
+                    // Login
+                    SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+                    sharedPreferences.enableOnlineMode(responseBody, username, password);
+
+                    runOnUiThread(() -> {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("message", "verifit_rs_signup");
+                        startActivity(intent);
+                    });
+
+                }
+                else
+                {
+                    // You are logged out
+                    SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+                    sharedPreferences.enableOfflineMode();
+
+                    runOnUiThread(() -> {
+                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                        snackBarWithMessage.showSnackbar(response.message().toString());
+                    });
+
+                }
+            }
+        });
     }
 
 

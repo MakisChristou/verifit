@@ -65,7 +65,7 @@ public class UsersApi {
         client.newCall(request).enqueue(callback);
     }
 
-    public void logout()
+    public void logout(okhttp3.Callback callback)
     {
         OkHttpClient client = new OkHttpClient();
 
@@ -89,37 +89,10 @@ public class UsersApi {
 
 
         // Send the HTTP request asynchronously
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // Handle error
-                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(context);
-                snackBarWithMessage.showSnackbar(e.toString());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-
-                sharedPreferences.enableOfflineMode();
-
-                if (200 == response.code())
-                {
-                    Intent intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("message", "verifit_rs_logout"); // Replace "key" with a key identifier and "value" with the actual string value
-                    context.startActivity(intent);
-                }
-                else
-                {
-                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(context);
-                    snackBarWithMessage.showSnackbar(response.message().toString());
-                }
-            }
-        });
-
+        client.newCall(request).enqueue(callback);
     }
 
-    public void createAccount()
+    public void createAccount(okhttp3.Callback callback)
     {
         OkHttpClient client = new OkHttpClient();
 
@@ -144,56 +117,7 @@ public class UsersApi {
                 .build();
 
         // Send the HTTP request asynchronously
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // Handle error
-                System.out.println(e);
-
-                // You are logged out
-                SharedPreferences sharedPreferences = new SharedPreferences(context);
-                sharedPreferences.save("", "verifit_rs_username");
-                sharedPreferences.save("", "verifit_rs_password");
-                sharedPreferences.save("", "verifit_rs_token");
-                sharedPreferences.save("offline","mode");
-                MainActivity.dataStorage.clearDataStructures(context);
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseBody = response.body().string();
-                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(context);
-
-                if (200 == response.code())
-                {
-                    Gson gson = new Gson();
-                    ResponseUser responseUser = gson.fromJson(responseBody, ResponseUser.class);
-
-                    SharedPreferences sharedPreferences = new SharedPreferences(context);
-                    sharedPreferences.save(responseUser.getToken(), "verifit_rs_token");
-                    sharedPreferences.save(username, "verifit_rs_username");
-                    sharedPreferences.save(password, "verifit_rs_password");
-
-                    Intent intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("message", "verifit_rs_signup");
-                    context.startActivity(intent);
-                }
-                else
-                {
-                    // You are logged out
-                    SharedPreferences sharedPreferences = new SharedPreferences(context);
-                    sharedPreferences.save("", "verifit_rs_username");
-                    sharedPreferences.save("", "verifit_rs_password");
-                    sharedPreferences.save("", "verifit_rs_token");
-                    sharedPreferences.save("offline","mode");
-                    MainActivity.dataStorage.clearDataStructures(context);
-
-                    snackBarWithMessage.showSnackbar(response.message().toString());
-                }
-            }
-        });
-
+        client.newCall(request).enqueue(callback);
     }
 
     public void deleteAccount()
