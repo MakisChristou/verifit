@@ -76,7 +76,7 @@
         android:layout_marginRight="100dp"
         android:text="Cancel"
         android:textAllCaps="false"
-        android:textColor="#000000"
+        android:textColor="@color/colorPrimary"
         app:backgroundTint="#FFFFFF"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
