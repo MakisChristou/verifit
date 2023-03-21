@@ -75,6 +75,8 @@
         android:onClick="cancel"
         android:text="Cancel"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        app:backgroundTint="#FFFFFF"
         app:cornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_login_signup"

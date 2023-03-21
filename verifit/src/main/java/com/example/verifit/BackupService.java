@@ -39,8 +39,6 @@ public class BackupService extends Service {
                 {
                     String autowebdavbackup = sharedPreferences.load("autowebdavbackup");
                     String togglewebdav = sharedPreferences.load("togglewebdav");
-                    String autobackup = sharedPreferences.load("autobackup");
-                    Date now = new Date();
 
                     String webdavurl = sharedPreferences.load("webdav_url");
                     String webdavusername = sharedPreferences.load("webdav_username");

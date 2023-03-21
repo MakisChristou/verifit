@@ -106,30 +106,94 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="310dp">
+                    android:layout_height="280dp">
 
                     <TextView
                         android:id="@+id/tv_maxweight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="2dp"
+                        android:text="0"
+                        android:textColor="@color/core_black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+                    <TextView
+                        android:id="@+id/tv_maxweight_reps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="2dp"
-                        android:text="0 kg"
+                        android:text="0"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/tv_maxweight_reps3"
+                        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+                    <TextView
+                        android:id="@+id/tv_maxweight_reps3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:text="kg"
                         android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_maxweight"
+                        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+                    <TextView
+                        android:id="@+id/tv_maxweight_reps7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:text="kg"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_maxreps_weight"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                    <TextView
+                        android:id="@+id/tv_maxweight_reps8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:text="reps"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_maxreps_reps"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                    <TextView
+                        android:id="@+id/tv_maxweight_reps6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:text="reps"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_maxweight_reps"
                         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="60dp"
-                        android:text="Max Reps"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="80dp"
+                        android:text="Reps"
                         android:textColor="@color/core_black"
-                        android:textStyle="bold"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -137,51 +201,25 @@
                         android:id="@+id/textView18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="110dp"
-                        android:text="Max Set Volume"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="150dp"
+                        android:text="Set Volume"
                         android:textColor="@color/core_black"
-                        android:textStyle="bold"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView19"
+                        android:id="@+id/tv_est_actual_1rm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="160dp"
-                        android:text="Max Workout Volume"
-                        android:textColor="@color/core_black"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView20"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="210dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="220dp"
                         android:text="Estimated 1RM"
                         android:textColor="@color/core_black"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView21"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="260dp"
-                        android:text="Actual 1RM"
-                        android:textColor="@color/core_black"
-                        android:textStyle="bold"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -189,89 +227,126 @@
                         android:id="@+id/textView1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginLeft="35dp"
                         android:layout_marginTop="10dp"
-                        android:text="Max Weight"
+                        android:text="Weight"
                         android:textColor="@color/core_black"
-                        android:textStyle="bold"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_maxreps"
+                        android:id="@+id/tv_maxreps_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="2dp"
+                        android:text="0"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                    <TextView
+                        android:id="@+id/tv_maxreps_reps"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="2dp"
-                        android:text="0 kg"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="0"
+                        android:textColor="@color/core_black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/tv_maxweight_reps7"
                         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
                     <TextView
                         android:id="@+id/tv_max_set_volume"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="2dp"
-                        android:text="0 kg"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:text="kg"
                         android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_max_set_volume_weight"
+                        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+                    <TextView
+                        android:id="@+id/tv_max_set_volume3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:text="reps"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_max_set_volume_reps"
+                        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+                    <TextView
+                        android:id="@+id/tv_max_set_volume4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:text="kg"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_estimated_1rm"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_est_actual_1rm" />
+
+                    <TextView
+                        android:id="@+id/tv_max_set_volume_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="1dp"
+                        android:text="0"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
                     <TextView
-                        android:id="@+id/tv_max_volume"
+                        android:id="@+id/tv_max_set_volume_reps"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="2dp"
-                        android:text="0 kg"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                        android:layout_marginTop="1dp"
+                        android:text="0"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/tv_max_set_volume"
+                        app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
                     <TextView
                         android:id="@+id/tv_estimated_1rm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginLeft="35dp"
                         android:layout_marginTop="2dp"
-                        android:text="0 kg"
-                        android:textSize="12sp"
+                        android:text="0"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-                    <TextView
-                        android:id="@+id/tv_actual_1rm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="2dp"
-                        android:text="0 kg"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_est_actual_1rm" />
 
                     <View
                         android:id="@+id/grey_line"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="105dp"
-                        android:background="@color/core_grey_02"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:layout_editor_absoluteX="0dp" />
-
-                    <View
-                        android:id="@+id/grey_line4"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="155dp"
+                        android:layout_marginTop="140dp"
                         android:background="@color/core_grey_02"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
@@ -280,7 +355,7 @@
                         android:id="@+id/grey_line5"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="205dp"
+                        android:layout_marginTop="210dp"
                         android:background="@color/core_grey_02"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
@@ -289,7 +364,7 @@
                         android:id="@+id/grey_line6"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="255dp"
+                        android:layout_marginTop="280dp"
                         android:background="@color/core_grey_02"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
@@ -298,7 +373,7 @@
                         android:id="@+id/grey_line2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="55dp"
+                        android:layout_marginTop="70dp"
                         android:background="@color/core_grey_02"
                         app:layout_constraintTop_toTopOf="parent" />
 

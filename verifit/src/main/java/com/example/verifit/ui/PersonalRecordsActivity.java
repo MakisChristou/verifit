@@ -78,6 +78,10 @@ public class PersonalRecordsActivity extends AppCompatActivity {
             exercisePersonalStats.setEstimated1RM(MainActivity.dataStorage.getEstimatedOneRMPRs().get(currentExerciseName));
             exercisePersonalStats.setFavorite(MainActivity.dataStorage.isExerciseFavorite(currentExerciseName));
 
+            exercisePersonalStats.setMaxWeightSet(MainActivity.dataStorage.getMaxWeightSetPRs().get(currentExerciseName));
+            exercisePersonalStats.setMaxRepsSet(MainActivity.dataStorage.getMaxRepsSetPRs().get(currentExerciseName));
+            exercisePersonalStats.setMaxVolumeSet(MainActivity.dataStorage.getMaxVolumeSetPRs().get(currentExerciseName));
+
 
             if(MainActivity.dataStorage.getVolumePRs().get(currentExerciseName) == 0.0)
             {

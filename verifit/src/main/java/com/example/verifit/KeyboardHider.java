@@ -22,7 +22,6 @@ public class KeyboardHider {
         // Hide the soft keyboard if shown
         if (imm.isAcceptingText())
         {
-
             imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
         }
 

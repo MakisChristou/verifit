@@ -24,6 +24,9 @@ public class WorkoutExercise {
     private boolean HTLT; // Is HARDER THAN LAST TIME?
     private String Comment=""; // Comment about the specific exercise of that day (e.g. machine settings)
 
+    WorkoutSet maxVolumeSet;
+    WorkoutSet maxRepsSet;
+    WorkoutSet maxWeightSet;
 
 
     public boolean isActualOneRepMaxPR() {
@@ -142,5 +145,29 @@ public class WorkoutExercise {
     }
     public void setVolume(Double volume) {
         Volume = volume;
+    }
+
+    public WorkoutSet getMaxVolumeSet() {
+        return maxVolumeSet;
+    }
+
+    public void setMaxVolumeSet(WorkoutSet maxVolumeSet) {
+        this.maxVolumeSet = maxVolumeSet;
+    }
+
+    public WorkoutSet getMaxRepsSet() {
+        return maxRepsSet;
+    }
+
+    public void setMaxRepsSet(WorkoutSet maxRepsSet) {
+        this.maxRepsSet = maxRepsSet;
+    }
+
+    public WorkoutSet getMaxWeightSet() {
+        return maxWeightSet;
+    }
+
+    public void setMaxWeightSet(WorkoutSet maxWeightSet) {
+        this.maxWeightSet = maxWeightSet;
     }
 }

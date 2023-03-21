@@ -54,6 +54,34 @@ public class DataStorage {
     HashMap<String,Double> maxWeightPRs = new HashMap<String,Double>();
     HashMap<String,Double> lastTimeVolume = new HashMap<String,Double>(); // Holds last workout's volume for each exercise
     ArrayList<WorkoutDay> infiniteWorkoutDays = new ArrayList<WorkoutDay>(); // Used to populate the viewPager object in MainActivity with "infinite" days
+    HashMap<String, WorkoutSet> maxVolumeSetPRs = new HashMap<String, WorkoutSet>();
+    HashMap<String, WorkoutSet> maxRepsSetPRs = new HashMap<String, WorkoutSet>();
+    HashMap<String, WorkoutSet> maxWeightSetPRs = new HashMap<String, WorkoutSet>();
+
+
+    public HashMap<String, WorkoutSet> getMaxVolumeSetPRs() {
+        return maxVolumeSetPRs;
+    }
+
+    public void setMaxVolumeSetPRs(HashMap<String, WorkoutSet> maxVolumeSetPRs) {
+        this.maxVolumeSetPRs = maxVolumeSetPRs;
+    }
+
+    public HashMap<String, WorkoutSet> getMaxRepsSetPRs() {
+        return maxRepsSetPRs;
+    }
+
+    public void setMaxRepsSetPRs(HashMap<String, WorkoutSet> maxRepsSetPRs) {
+        this.maxRepsSetPRs = maxRepsSetPRs;
+    }
+
+    public HashMap<String, WorkoutSet> getMaxWeightSetPRs() {
+        return maxWeightSetPRs;
+    }
+
+    public void setMaxWeightSetPRs(HashMap<String, WorkoutSet> maxWeightSetPRs) {
+        this.maxWeightSetPRs = maxWeightSetPRs;
+    }
 
     public Set<String> getDays() {
         return days;
@@ -355,6 +383,11 @@ public class DataStorage {
                             Pair pair = new Pair(maxReps, maxWeight);
 
                             setVolumePRs.put(knownExercises.get(i).getName(), pair);
+
+                            WorkoutSet temp_set = new WorkoutSet();
+                            temp_set.setReps(maxReps);
+                            temp_set.setWeight(maxWeight);
+                            maxVolumeSetPRs.put(knownExercises.get(i).getName(), temp_set);
                         }
 
                         // Actual One Repetition Maximum
@@ -376,6 +409,7 @@ public class DataStorage {
                         {
                             workoutDays.get(j).getExercises().get(k).setMaxRepsPR(true);
                             maxRepsPRs.put(knownExercises.get(i).getName(),workoutDays.get(j).getExercises().get(k).getMaxReps());
+                            maxRepsSetPRs.put(knownExercises.get(i).getName(), workoutDays.get(j).getExercises().get(k).getMaxRepsSet());
                         }
 
                         // Max Weight Personal Records
@@ -383,6 +417,7 @@ public class DataStorage {
                         {
                             workoutDays.get(j).getExercises().get(k).setMaxWeightPR(true);
                             maxWeightPRs.put(knownExercises.get(i).getName(),workoutDays.get(j).getExercises().get(k).getMaxWeight());
+                            maxWeightSetPRs.put(knownExercises.get(i).getName(),workoutDays.get(j).getExercises().get(k).getMaxWeightSet());
                         }
 
                         // Harder Than Last Time!

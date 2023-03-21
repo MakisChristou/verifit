@@ -1,5 +1,9 @@
 package com.example.verifit;
 
+import android.util.Pair;
+
+import com.example.verifit.model.WorkoutSet;
+
 public class ExercisePersonalStats {
 
     String exerciseName;
@@ -19,6 +23,11 @@ public class ExercisePersonalStats {
     Double averageSetsPerWeek;
     Double averageSetsPerWeekLastMoth;
     Double lastWeekSets;
+
+    WorkoutSet maxVolumeSet;
+    WorkoutSet maxRepsSet;
+    WorkoutSet maxWeightSet;
+
 
     public Boolean getFavorite() {
         return isFavorite;
@@ -157,6 +166,30 @@ public class ExercisePersonalStats {
         this.MaxSetVolumeWeight = MaxSetVolumeWeight;
     }
 
+    public WorkoutSet getMaxVolumeSet() {
+        return maxVolumeSet;
+    }
+
+    public void setMaxVolumeSet(WorkoutSet maxVolumeSet) {
+        this.maxVolumeSet = maxVolumeSet;
+    }
+
+    public WorkoutSet getMaxRepsSet() {
+        return maxRepsSet;
+    }
+
+    public void setMaxRepsSet(WorkoutSet maxRepsSet) {
+        this.maxRepsSet = maxRepsSet;
+    }
+
+    public WorkoutSet getMaxWeightSet() {
+        return maxWeightSet;
+    }
+
+    public void setMaxWeightSet(WorkoutSet maxWeightSet) {
+        this.maxWeightSet = maxWeightSet;
+    }
+
     public ExercisePersonalStats()
     {
         this.exerciseName = "";
@@ -175,6 +208,10 @@ public class ExercisePersonalStats {
         this.averageSetsPerWeek = 0.0;
         this.averageSetsPerWeekLastMoth = 0.0;
         this.lastWeekSets = 0.0;
+
+        this.maxVolumeSet = new WorkoutSet();
+        this.maxRepsSet = new WorkoutSet();
+        this.maxWeightSet = new WorkoutSet();
     }
 
 

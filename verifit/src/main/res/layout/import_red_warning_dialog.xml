@@ -7,16 +7,16 @@
 
     <TextView
         android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Delete selected set?"
+        android:text="This will overwrite all saved data"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,6 +59,7 @@
         android:textColor="#000000"
         app:backgroundTint="#FFFFFF"
         app:cornerRadius="10dp"
+        app:iconTint="#E8E8E8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_yes3"
         app:layout_constraintTop_toBottomOf="@+id/blue_line" />

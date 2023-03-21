@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.verifit.ExercisePersonalStats;
 import com.example.verifit.R;
+import com.example.verifit.model.WorkoutSet;
 import com.example.verifit.ui.MainActivity;
 import com.example.verifit.ui.PersonalRecordsActivity;
 
@@ -52,33 +53,46 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        // Get exercise name
+
         String exercise_name = exercisePersonalStats.get(position).getExerciseName();
         String exercise_category = exercisePersonalStats.get(position).getExerciseCategory();
         String max_weight = exercisePersonalStats.get(position).getMaxWeight().toString();
         String max_reps = exercisePersonalStats.get(position).getMaxReps().toString();
         String max_set_volume = exercisePersonalStats.get(position).getMaxSetVolume().toString();
-        String max_volume = exercisePersonalStats.get(position).getMaxVolume().toString();
-        String estimated_1rm = exercisePersonalStats.get(position).getEstimated1RM().toString();
+        String estimated_1rm = String.valueOf(Math.floor(exercisePersonalStats.get(position).getEstimated1RM()));
         String actual_1rm = exercisePersonalStats.get(position).getActual1RM().toString();
         Boolean isFavorite = exercisePersonalStats.get(position).getFavorite();
 
+        WorkoutSet max_volume_set = exercisePersonalStats.get(position).getMaxVolumeSet();
+        WorkoutSet max_reps_set = exercisePersonalStats.get(position).getMaxRepsSet();
+        WorkoutSet max_weight_set = exercisePersonalStats.get(position).getMaxWeightSet();
 
         holder.tv_exercise_name.setText(exercise_name);
         holder.tv_exercise_category.setText(exercise_category);
-        holder.tv_maxweight.setText(max_weight + " kg");
-        holder.tv_maxreps.setText(max_reps + " kg");
-        holder.tv_maxsetvolume.setText(max_set_volume + " kg");
-        holder.tv_maxvolume.setText(max_volume + " kg");
-        holder.tv_estimated_1rm.setText(estimated_1rm + " kg");
 
+        // Best weight set
+        holder.tv_maxweight.setText(max_weight_set.getWeight().toString());
+        holder.tv_maxweight_reps.setText(max_weight_set.getReps().toString());
+
+        // Best reps set
+        holder.tv_maxreps_weight.setText(max_reps_set.getWeight().toString());
+        holder.tv_maxreps_reps.setText(max_reps_set.getReps().toString());
+
+        // Best Volume set
+        holder.tv_maxsetvolume_weight.setText(max_volume_set.getWeight().toString());
+        holder.tv_maxsetvolume_reps.setText(max_volume_set.getReps().toString());
+
+
+        // if 1rm was performed
         if(actual_1rm.equals("0.0"))
         {
-            holder.tv_actual_1rm.setText("n/a");
+            holder.tv_est_actual_1rm.setText("Estimated 1RM");
+            holder.tv_estimated_1rm.setText(estimated_1rm);
         }
         else
         {
-            holder.tv_actual_1rm.setText(actual_1rm + " kg");
+            holder.tv_est_actual_1rm.setText("1RM");
+            holder.tv_estimated_1rm.setText(actual_1rm);
         }
 
 
@@ -295,11 +309,17 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
         TextView tv_exercise_name;
         TextView tv_exercise_category;
         TextView tv_maxweight;
-        TextView tv_maxreps;
+        TextView tv_maxweight_reps;
+        TextView tv_maxreps_weight;
+        TextView tv_maxreps_reps;
         TextView tv_maxsetvolume;
+        TextView tv_maxsetvolume_weight;
+        TextView tv_maxsetvolume_reps;
+
         TextView tv_maxvolume;
         TextView tv_estimated_1rm;
-        TextView tv_actual_1rm;
+
+        TextView tv_est_actual_1rm;
         CardView cardview_viewpager;
         CardView cardview_stats;
         ImageButton favoriteButton;
@@ -311,11 +331,14 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
             tv_exercise_name = itemView.findViewById(R.id.tv_exercise_name);
             tv_exercise_category = itemView.findViewById(R.id.exerciseCategory);
             tv_maxweight = itemView.findViewById(R.id.tv_maxweight);
-            tv_maxreps = itemView.findViewById(R.id.tv_maxreps);
+            tv_maxweight_reps = itemView.findViewById(R.id.tv_maxweight_reps);
+            tv_maxreps_weight = itemView.findViewById(R.id.tv_maxreps_weight);
+            tv_maxreps_reps = itemView.findViewById(R.id.tv_maxreps_reps);
             tv_maxsetvolume = itemView.findViewById(R.id.tv_max_set_volume);
-            tv_maxvolume = itemView.findViewById(R.id.tv_max_volume);
+            tv_maxsetvolume_weight = itemView.findViewById(R.id.tv_max_set_volume_weight);
+            tv_maxsetvolume_reps = itemView.findViewById(R.id.tv_max_set_volume_reps);
             tv_estimated_1rm = itemView.findViewById(R.id.tv_estimated_1rm);
-            tv_actual_1rm = itemView.findViewById(R.id.tv_actual_1rm);
+            tv_est_actual_1rm = itemView.findViewById(R.id.tv_est_actual_1rm);
             cardview_viewpager = itemView.findViewById(R.id.cardview_viewpager);
             cardview_stats = itemView.findViewById(R.id.cardview_stats);
             favoriteButton  = itemView.findViewById(R.id.favoriteButton);

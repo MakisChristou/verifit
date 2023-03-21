@@ -31,7 +31,7 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory app:title="Offline Backup">
+    <PreferenceCategory app:title="Offline Settings">
 
         <Preference
             app:key="importcsv"
@@ -53,7 +53,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Webdav Backup">
+    <PreferenceCategory app:title="Webdav Settings">
 
         <SwitchPreference
             android:defaultValue="false"
@@ -136,11 +136,11 @@
             app:title="Licence"
             app:useSimpleSummaryProvider="false" />
 
-<!--        <Preference-->
-<!--            app:key="privacy_policy"-->
-<!--            app:summary="Learn more about our privacy policy"-->
-<!--            app:title="Privacy Policy"-->
-<!--            app:useSimpleSummaryProvider="false" />-->
+        <Preference
+            app:key="privacy_policy"
+            app:summary="Learn more about our privacy policy"
+            app:title="Privacy Policy"
+            app:useSimpleSummaryProvider="false" />
 
         <Preference
             app:key="reddit"

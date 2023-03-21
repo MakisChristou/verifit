@@ -88,6 +88,10 @@ public class WorkoutDay {
             double exercise_max_set_volume = 0.0;
             String exercise_comment = "";
 
+            WorkoutSet exercise_max_volume_set = new WorkoutSet();
+            WorkoutSet exercise_max_reps_set = new WorkoutSet();
+            WorkoutSet exercise_max_weight_set = new WorkoutSet();
+
             ArrayList<WorkoutSet> exercise_sets = new ArrayList<WorkoutSet>();
 
             for(int j = 0; j < day_sets.size(); j++)
@@ -115,14 +119,17 @@ public class WorkoutDay {
                     if(temp_set.getReps() > exercise_max_reps)
                     {
                         exercise_max_reps = temp_set.getReps();
+                        exercise_max_reps_set = temp_set;
                     }
                     if(temp_set.getWeight() > exercise_max_weight)
                     {
                         exercise_max_weight = temp_set.getWeight();
+                        exercise_max_weight_set = temp_set;
                     }
                     if((temp_set.getReps()* temp_set.getWeight()) > exercise_max_set_volume)
                     {
                         exercise_max_set_volume = temp_set.getReps()* temp_set.getWeight();
+                        exercise_max_volume_set = temp_set;
                     }
                 }
 
@@ -138,7 +145,9 @@ public class WorkoutDay {
                 day_exercise.setMaxSetVolume(exercise_max_set_volume);
                 day_exercise.setActualOneRepMax(exercise_actual_one_rep_max);
                 day_exercise.setComment(exercise_comment);
-
+                day_exercise.setMaxVolumeSet(exercise_max_volume_set);
+                day_exercise.setMaxWeightSet(exercise_max_weight_set);
+                day_exercise.setMaxRepsSet(exercise_max_reps_set);
             }
             Day_Exercises.add(day_exercise);
         }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 
 import com.example.verifit.LoadingDialog;
@@ -65,28 +67,24 @@ public class SettingsActivity extends AppCompatActivity {
         {
             SharedPreferences sharedPreferences = new SharedPreferences(getContext());
 
-
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
             Preference importwebdav = findPreference("importwebdav");
-            Preference excportwebdav = findPreference("exportwebdav");
+            Preference exportwebdav = findPreference("exportwebdav");
             Preference webdavurl = findPreference("webdavurl");
             Preference webdavusername = findPreference("webdavusername");
             Preference webdavpassword = findPreference("webdavpassword");
             Preference webdavcheckconnection = findPreference("webdavcheckconnection");
             Preference autowebdavbackup = findPreference("autowebdavbackup");
-            Preference autobackup = findPreference("autobackup");
-
-
-            setVerifitRsSettingsVisibility();
-
+            Preference togglewebdav = findPreference("togglewebdav");
 
             PreferenceManager preferenceManager = getPreferenceManager();
             if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true))
             {
+                System.out.println("onCreatePreferences() Webdav on");
                 // Webdav switch is on
                 importwebdav.setVisible(true);
-                excportwebdav.setVisible(true);
+                exportwebdav.setVisible(true);
                 webdavurl.setVisible(true);
                 webdavusername.setVisible(true);
                 webdavpassword.setVisible(true);
@@ -100,7 +98,7 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 // Webdav switch is off
                 importwebdav.setVisible(false);
-                excportwebdav.setVisible(false);
+                exportwebdav.setVisible(false);
                 webdavurl.setVisible(false);
                 webdavusername.setVisible(false);
                 webdavpassword.setVisible(false);
@@ -109,6 +107,8 @@ public class SettingsActivity extends AppCompatActivity {
 
                 sharedPreferences.save("false", "togglewebdav");
             }
+
+            setVerifitRsSettingsVisibility();
 
             // Set summary to user config
             webdavurl.setSummary(sharedPreferences.load("webdav_url"));
@@ -209,6 +209,8 @@ public class SettingsActivity extends AppCompatActivity {
 
                 verifit_rs_login_signup_logout.setTitle("Logout");
                 verifit_rs_login_signup_logout.setSummary("You are logged in as " + sharedPreferences.load("verifit_rs_username"));
+
+                disableOfflineSettings();
             }
         }
 
@@ -264,10 +266,12 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if (preferenceManager.getSharedPreferences().getBoolean("togglewebdav", true))
                 {
+                    System.out.println("Turning webdav on");
                     turnWebdavOn();
                 }
                 else
                 {
+                    System.out.println("Turning webdav off");
                     turnWebdavOff();
                 }
             }
@@ -356,7 +360,6 @@ public class SettingsActivity extends AppCompatActivity {
                     checkWebdavThread.start();
                 }
             }
-
             else if(key.equals("autowebdavbackup"))
             {
                 PreferenceManager preferenceManager = getPreferenceManager();
@@ -413,8 +416,12 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else if(key.equals("privacy_policy"))
             {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://verifit.xyz/policy/"));
-                startActivity(browserIntent);
+                // Prepare to show exercise dialog box
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View view = inflater.inflate(R.layout.privacy_policy_dialog,null);
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
+
+                alertDialog.show();
             }
             else if(key.equals("reddit"))
             {
@@ -447,7 +454,7 @@ public class SettingsActivity extends AppCompatActivity {
             else if(key.equals("verifit_rs_import"))
             {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                View view = inflater.inflate(R.layout.import_warning_dialog, null);
+                View view = inflater.inflate(R.layout.import_mild_warning_dialog, null);
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
                 TextView tv_date = view.findViewById(R.id.tv_date);
@@ -489,7 +496,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 // Prepare to show exercise dialog box
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                View view = inflater.inflate(R.layout.import_warning_dialog, null);
+                View view = inflater.inflate(R.layout.import_red_warning_dialog, null);
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(view).create();
 
                 TextView tv_date = view.findViewById(R.id.tv_date);
@@ -547,14 +554,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         public void turnWebdavOff()
         {
-
             Toast.makeText(getContext(), "Webdav is off", Toast.LENGTH_SHORT).show();
 
             SharedPreferences sharedPreferences = new SharedPreferences(getContext());
             sharedPreferences.save("false", "togglewebdav");
-
-            // Essentially logout from verifit-rs
-            logoutFromVerifitRs();
 
             Preference importwebdav = findPreference("importwebdav");
             importwebdav.setVisible(false);
@@ -578,6 +581,8 @@ public class SettingsActivity extends AppCompatActivity {
             sharedPreferences.save("true", "togglewebdav");
 
             logoutFromVerifitRs();
+
+            System.out.println("turnWebdavOn() Webdav on");
 
             Toast.makeText(getContext(), "Webdav is on", Toast.LENGTH_SHORT).show();
             Preference importwebdav = findPreference("importwebdav");
@@ -606,6 +611,41 @@ public class SettingsActivity extends AppCompatActivity {
             sharedPreferences.save("", "verifit_rs_password");
         }
 
+
+        public void disableOfflineSettings()
+        {
+            System.out.println("Disabling Offline Settings");
+
+            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
+            sharedPreferences.save("false", "togglewebdav");
+
+            Preference importwebdav = findPreference("importwebdav");
+            Preference exportwebdav = findPreference("exportwebdav");
+            Preference webdavurl = findPreference("webdavurl");
+            Preference webdavusername = findPreference("webdavusername");
+            Preference webdavpassword = findPreference("webdavpassword");
+            Preference webdavcheckconnection = findPreference("webdavcheckconnection");
+            Preference autowebdavbackup = findPreference("autowebdavbackup");
+            Preference togglewebdav = findPreference("togglewebdav");
+
+            importwebdav.setVisible(false);
+            exportwebdav.setVisible(false);
+            webdavurl.setVisible(false);
+            webdavusername.setVisible(false);
+            webdavpassword.setVisible(false);
+            webdavcheckconnection.setVisible(false);
+            autowebdavbackup.setVisible(false);
+            togglewebdav.setVisible(false);
+
+            Preference importcsv = findPreference("importcsv");
+            Preference exportcsv = findPreference("exportcsv");
+            Preference deletedata = findPreference("deletedata");
+
+            importcsv.setVisible(false);
+            exportcsv.setVisible(false);
+            deletedata.setVisible(false);
+
+        }
 
         // Delete all currently saved workout data
         public void deleteData()
