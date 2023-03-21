@@ -1,5 +1,6 @@
 package com.example.verifit.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -21,15 +22,25 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.verifit.LoadingDialog;
 import com.example.verifit.SharedPreferences;
 import com.example.verifit.SnackBarWithMessage;
 import com.example.verifit.model.Exercise;
 import com.example.verifit.R;
+import com.example.verifit.model.WorkoutSet;
 import com.example.verifit.ui.AddExerciseActivity;
+import com.example.verifit.ui.LoginActivity;
 import com.example.verifit.ui.MainActivity;
+import com.example.verifit.verifitrs.WorkoutSetsApi;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 // Adapter for Exercise Class
@@ -73,30 +84,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
                 ct.startActivity(in);
             }
         });
-
-
-//        // Open Contextual Action Mode Menu
-//        holder.cardview_exercise_1.setOnLongClickListener(new View.OnLongClickListener()
-//        {
-//            @Override
-//            public boolean onLongClick(View view)
-//            {
-//                // Delete Exercise from MainActivity Data Structures
-//                MainActivity.deleteExercise(Exercises.get(position).getName());
-//
-//                // Delete Exercise from Adapter's local data structure
-//                deleteExercise(Exercises.get(position).getName());
-//
-//
-//                // Save Results
-//                MainActivity.dataStorage.saveKnownExerciseData(ct);
-//                MainActivity.dataStorage.saveWorkoutData(ct);
-//
-//
-//                return true;
-//            }
-//        });
-
     }
 
 
@@ -308,8 +295,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
                     snackBarWithMessage.showSnackbar("Not implemented for online mode");
                 }
-
-
             }
 
             // Delete Exercise
@@ -345,35 +330,74 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
 
                         if(sharedPreferences.isOfflineMode())
                         {
-                            // Delete Exercise from MainActivity Data Structures
-                            MainActivity.dataStorage.deleteExercise(Exercises.get(position).getName());
-
-                            // Delete Exercise from Adapter's local data structure
-                            deleteExercise(Exercises.get(position).getName());
-
-                            // Save Results
-                            MainActivity.dataStorage.saveKnownExerciseData(ct);
-                            MainActivity.dataStorage.saveWorkoutData(ct);
+                            locallyDeleteExercise(position, ct);
                         }
                         else
                         {
-                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
-                            snackBarWithMessage.showSnackbar("Not implemented for online mode!");
+                            final LoadingDialog loadingDialog = new LoadingDialog((Activity) ct);
+                            loadingDialog.loadingAlertDialog();
+
+                            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(ct, ct.getString(R.string.API_ENDPOINT));
+                            List<WorkoutSet> to_be_deleted_sets = MainActivity.dataStorage.deleteExerciseGetSets(Exercises.get(position).getName());
+
+                            workoutSetsApi.deleteWorkoutSets(to_be_deleted_sets, new Callback() {
+                                @Override
+                                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                    loadingDialog.dismissDialog();
+
+                                    ((Activity) ct).runOnUiThread(() -> {
+                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
+                                        snackBarWithMessage.showSnackbar(e.toString());
+                                    });
+                                }
+
+                                @Override
+                                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                                    loadingDialog.dismissDialog();
+
+                                    if(200 == response.code()){
+
+                                        ((Activity) ct).runOnUiThread(() -> {
+                                            locallyDeleteExercise(position, ct);
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
+                                            snackBarWithMessage.showSnackbar("Exercise Deleted");
+                                        });
+
+                                    }
+                                    else
+                                    {
+                                        ((Activity) ct).runOnUiThread(() -> {
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
+                                            snackBarWithMessage.showSnackbar(response.message().toString());
+                                        });
+                                    }
+                                }
+                            });
+
                         }
-
-
 
                         alertDialog.dismiss();
                     }
                 });
-
-
                 alertDialog.show();
                 return true;
             }
-
-
             return false;
+        }
+
+
+        public void locallyDeleteExercise(int position, Context ct)
+        {
+            // Delete Exercise from MainActivity Data Structures
+            MainActivity.dataStorage.deleteExercise(Exercises.get(position).getName());
+
+            // Delete Exercise from Adapter's local data structure
+            deleteExercise(Exercises.get(position).getName());
+
+            // Save Results
+            MainActivity.dataStorage.saveKnownExerciseData(ct);
+            MainActivity.dataStorage.saveWorkoutData(ct);
         }
 
         // Spinner On Item Selected Methods

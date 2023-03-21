@@ -733,6 +733,29 @@ public class DataStorage {
         }
     }
 
+    // Returns all the sets to be deleted if we were to run deleteExercise
+    public List<WorkoutSet> deleteExerciseGetSets(String exercise_name)
+    {
+        List<WorkoutSet> to_be_delete_sets = new ArrayList<>();
+
+        // Iterate Workout Days
+        for (Iterator<WorkoutDay> dayIterator = workoutDays.iterator(); dayIterator.hasNext(); )
+        {
+            WorkoutDay currentDay = dayIterator.next();
+
+            // Iterate Workout Sets
+            for(Iterator<WorkoutSet> setIterator = currentDay.getSets().iterator(); setIterator.hasNext();)
+            {
+                WorkoutSet current_set = setIterator.next();
+                if(current_set.getExerciseName().equals(exercise_name))
+                {
+                    to_be_delete_sets.add(current_set);
+                }
+            }
+        }
+        return to_be_delete_sets;
+    }
+
     // Changes exercise name and body part
     public void editExercise(String exercise_name, String new_exercise_name, String new_exercise_bodypart)
     {

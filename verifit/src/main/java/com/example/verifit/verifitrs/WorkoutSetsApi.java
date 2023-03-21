@@ -210,6 +210,45 @@ public class WorkoutSetsApi {
         client.newCall(request).enqueue(callback);
     }
 
+    public void updateWorkoutSets(List<WorkoutSet> sets, okhttp3.Callback callback) {
+        url += "/sets/bulk";
+
+        OkHttpClient client = new OkHttpClient();
+        JSONArray jsonArray = new JSONArray();
+
+        for (WorkoutSet set : sets) {
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+                jsonObject.put("date", set.getDate() + "T00:00:00.000000+00:00"); // has to be same formatting as the server
+                jsonObject.put("exercise_name", set.getExerciseName());
+                jsonObject.put("category", set.getCategory());
+                jsonObject.put("reps", set.getReps());
+                jsonObject.put("weight", set.getWeight());
+                jsonObject.put("comment", set.getComment());
+
+                jsonArray.put(jsonObject);
+            } catch (JSONException e) {
+                System.out.println(e);
+            }
+        }
+
+        RequestBody requestBody = RequestBody.create(jsonArray.toString(), MediaType.parse("application/json; charset=utf-8"));
+
+        SharedPreferences sharedPreferences = new SharedPreferences(context);
+        String token = sharedPreferences.load("verifit_rs_token");
+
+        // Create a Request object with the URL and RequestBody
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .put(requestBody)
+                .build();
+
+        // Send the HTTP request asynchronously
+        client.newCall(request).enqueue(callback);
+    }
+
     public void getAllWorkoutSets(okhttp3.Callback callback)
     {
         OkHttpClient client = new OkHttpClient();

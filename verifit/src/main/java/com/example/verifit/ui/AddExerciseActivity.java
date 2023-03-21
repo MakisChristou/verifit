@@ -530,7 +530,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         ((Activity) ct).runOnUiThread(() -> {
             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(((Activity) ct));
-            snackBarWithMessage.showSnackbar("Set Deleted!");
+            snackBarWithMessage.showSnackbar("Set Deleted");
             updateTodaysExercises();
         });
     }
@@ -1112,7 +1112,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         if (finalI == finalSize-1) // Show popup only when last set comment is saved
         {
-            showSnackbarMessage("Comment Logged!");
+            showSnackbarMessage("Comment Logged");
         }
     }
 
