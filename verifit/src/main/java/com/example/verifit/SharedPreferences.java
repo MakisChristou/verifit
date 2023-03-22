@@ -60,4 +60,10 @@ public class SharedPreferences {
         return sharedPreferences.load("mode").equals("offline") || sharedPreferences.load("mode").equals("");
     }
 
+    public void clearJWT()
+    {
+        SharedPreferences sharedPreferences = new SharedPreferences(context);
+        sharedPreferences.save("", "verifit_rs_token");
+    }
+
 }

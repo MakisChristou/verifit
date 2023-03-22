@@ -261,7 +261,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                                     else
                                     {
                                         runOnUiThread(()->{
-                                            Toast.makeText(getApplicationContext(), response.message().toString(), Toast.LENGTH_SHORT).show();
+                                            showSnackbarMessage(response.message());
                                         });
                                     }
                                 }

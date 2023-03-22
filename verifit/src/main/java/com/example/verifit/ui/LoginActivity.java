@@ -39,8 +39,25 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
         sharedPreferences.save("login", "user_state");
         setTitle("Login");
+
+        showSavedCredentials();
     }
 
+    public void showSavedCredentials()
+    {
+        EditText et_username = findViewById(R.id.et_username);
+        EditText et_password = findViewById(R.id.et_password);
+
+        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+        String saved_username = sharedPreferences.load("verifit_rs_username");
+        String saved_password = sharedPreferences.load("verifit_rs_password");
+
+        if(!saved_password.equals("") && !saved_password.equals(""))
+        {
+            et_username.setText(saved_username);
+            et_password.setText(saved_password);
+        }
+    }
 
     public void clicked_login_signup(View view)
     {

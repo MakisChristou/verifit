@@ -255,8 +255,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         }
                         else
                         {
-                            sharedPreferences.enableOfflineMode();
-
                             // If logged out login again
                             if(response.message().equals("Unauthorized"))
                             {
@@ -265,9 +263,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             }
                             else if(response.message().equals("Bad Gateway"))
                             {
+                                sharedPreferences.enableOfflineMode();
                                 runOnUiThread(() -> {
                                     initViewPager();
                                 });
+                            }
+                            else
+                            {
+                                sharedPreferences.enableOfflineMode();
                             }
 
                             runOnUiThread(() -> {
