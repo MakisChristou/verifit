@@ -220,6 +220,7 @@ public class WorkoutSetsApi {
             JSONObject jsonObject = new JSONObject();
 
             try {
+                jsonObject.put("id", set.getId());
                 jsonObject.put("date", set.getDate() + "T00:00:00.000000+00:00"); // has to be same formatting as the server
                 jsonObject.put("exercise_name", set.getExerciseName());
                 jsonObject.put("category", set.getCategory());

@@ -204,97 +204,130 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
             if(item.getItemId() == R.id.edit)
             {
 
-                SharedPreferences sharedPreferences = new SharedPreferences(ct);
-                if(sharedPreferences.isOfflineMode())
+
+                int position = getAdapterPosition();
+                System.out.println("Edit");
+
+                // Prepare to show exercise dialog box
+                LayoutInflater inflater = LayoutInflater.from(ct);
+                View view = inflater.inflate(R.layout.edit_exercise_dialog,null);
+                AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
+
+                // Find views
+                Button bt_save = view.findViewById(R.id.bt_login_signup);
+                Button bt_cancel = view.findViewById(R.id.bt_cancel);
+                EditText et_exercise_name = view.findViewById(R.id.et_exercise_name);
+                Spinner spinner = view.findViewById(R.id.spinner);
+
+
+                // Setup Spinner Stuff
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(ct,R.array.Categories, android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(this);
+
+                // Get Array from xml
+                String[] listValue;
+                listValue = ct.getResources().getStringArray(R.array.Categories);
+
+                // Find Current Category position
+                for(int i = 0; i < listValue.length; i++)
                 {
-                    int position = getAdapterPosition();
-                    System.out.println("Edit");
-
-                    // Prepare to show exercise dialog box
-                    LayoutInflater inflater = LayoutInflater.from(ct);
-                    View view = inflater.inflate(R.layout.edit_exercise_dialog,null);
-                    AlertDialog alertDialog = new AlertDialog.Builder(ct).setView(view).create();
-
-                    // Find views
-                    Button bt_save = view.findViewById(R.id.bt_login_signup);
-                    Button bt_cancel = view.findViewById(R.id.bt_cancel);
-                    EditText et_exercise_name = view.findViewById(R.id.et_exercise_name);
-                    Spinner spinner = view.findViewById(R.id.spinner);
-
-
-                    // Setup Spinner Stuff
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(ct,R.array.Categories, android.R.layout.simple_spinner_item);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner.setAdapter(adapter);
-                    spinner.setOnItemSelectedListener(this);
-
-                    // Get Array from xml
-                    String[] listValue;
-                    listValue = ct.getResources().getStringArray(R.array.Categories);
-
-                    // Find Current Category position
-                    for(int i = 0; i < listValue.length; i++)
+                    if(listValue[i].equals(Exercises.get(position).getBodyPart()))
                     {
-                        if(listValue[i].equals(Exercises.get(position).getBodyPart()))
-                        {
-                            current_exercise_category_position = i;
-                            System.out.println(listValue[i]);
-                        }
+                        current_exercise_category_position = i;
+                        System.out.println(listValue[i]);
                     }
+                }
 
-                    // Set edit text and spinner initial values
-                    exercise_name = Exercises.get(position).getName();
-                    et_exercise_name.setText(exercise_name);
-                    spinner.setSelection(current_exercise_category_position);
+                // Set edit text and spinner initial values
+                exercise_name = Exercises.get(position).getName();
+                et_exercise_name.setText(exercise_name);
+                spinner.setSelection(current_exercise_category_position);
 
-                    // Dismiss Dialog Box
-                    bt_cancel.setOnClickListener(new View.OnClickListener()
+                // Dismiss Dialog Box
+                bt_cancel.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
                     {
-                        @Override
-                        public void onClick(View view)
-                        {
-                            alertDialog.dismiss();
-                        }
-                    });
+                        alertDialog.dismiss();
+                    }
+                });
 
-                    // Replace all instances with new exercise
-                    bt_save.setOnClickListener(new View.OnClickListener()
+                // Replace all instances with new exercise
+                bt_save.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
                     {
-                        @Override
-                        public void onClick(View view)
-                        {
-                            // Get User defined new name
-                            String new_exercise_name = et_exercise_name.getText().toString();
+                        // Get User defined new name
+                        String new_exercise_name = et_exercise_name.getText().toString();
 
-                            // Call Edit Exercise if user gave reasonable input
-                            if(new_exercise_category != null && !new_exercise_category.isEmpty() && new_exercise_category.length() > 0 && new_exercise_name != null && !new_exercise_name.isEmpty() && new_exercise_name.length() > 0)
-                            {
-                                System.out.println(new_exercise_category + " " + et_exercise_name.getText().toString());
-                                MainActivity.dataStorage.editExercise(exercise_name,new_exercise_name,new_exercise_category);
-                                MainActivity.dataStorage.saveWorkoutData(ct);
-                                MainActivity.dataStorage.saveKnownExerciseData(ct);
-                                notifyDataSetChanged();
+                        // Call Edit Exercise if user gave reasonable input
+                        if(new_exercise_category != null && !new_exercise_category.isEmpty() && new_exercise_category.length() > 0 && new_exercise_name != null && !new_exercise_name.isEmpty() && new_exercise_name.length() > 0)
+                        {
+                            SharedPreferences sharedPreferences = new SharedPreferences(ct);
+                            if(sharedPreferences.isOfflineMode()) {
+                                locallyUpdateExercise(new_exercise_name);
                                 alertDialog.dismiss();
                             }
-
-                            // Tell user to stop fucking around
                             else
                             {
-                                Toast.makeText(ct,"Please choose an apropriate name", Toast.LENGTH_SHORT).show();
+
+                                final LoadingDialog loadingDialog = new LoadingDialog((Activity) ct);
+                                loadingDialog.loadingAlertDialog();
+
+                                List<WorkoutSet> to_be_updated_sets = MainActivity.dataStorage.editExerciseGetSets(exercise_name,new_exercise_name,new_exercise_category);
+                                WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(ct, ct.getString(R.string.API_ENDPOINT));
+                                workoutSetsApi.updateWorkoutSets(to_be_updated_sets, new Callback() {
+                                    @Override
+                                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                        ((Activity) ct).runOnUiThread(() -> {
+                                            alertDialog.dismiss();
+                                            loadingDialog.dismissDialog();
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
+                                            snackBarWithMessage.showSnackbar(e.toString());
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                                        System.out.println(response.toString());
+
+                                        ((Activity) ct).runOnUiThread(() -> {
+                                            alertDialog.dismiss();
+                                            loadingDialog.dismissDialog();
+                                        });
+
+                                        if(200 == response.code())
+                                        {
+                                            ((Activity) ct).runOnUiThread(() -> {
+                                                locallyUpdateExercise(new_exercise_name);
+                                                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
+                                                snackBarWithMessage.showSnackbar("Exercise Updated");
+                                            });
+                                        }
+                                        else
+                                        {
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
+                                            snackBarWithMessage.showSnackbar(response.message().toString());
+                                        }
+                                    }
+                                });
                             }
                         }
-                    });
 
-                    alertDialog.show();
-                    return true;
+                        // Tell user to stop fucking around
+                        else
+                        {
+                            Toast.makeText(ct,"Please choose an apropriate name", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
-                }
-                else
-                {
-
-                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
-                    snackBarWithMessage.showSnackbar("Not implemented for online mode");
-                }
+                alertDialog.show();
+                return true;
             }
 
             // Delete Exercise
@@ -384,6 +417,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
                 return true;
             }
             return false;
+        }
+
+
+        public void locallyUpdateExercise(String new_exercise_name)
+        {
+            MainActivity.dataStorage.editExercise(exercise_name,new_exercise_name,new_exercise_category);
+            MainActivity.dataStorage.saveWorkoutData(ct);
+            MainActivity.dataStorage.saveKnownExerciseData(ct);
+            notifyDataSetChanged();
         }
 
 

@@ -20,6 +20,7 @@ import com.example.verifit.model.Exercise;
 import com.example.verifit.model.WorkoutDay;
 import com.example.verifit.model.WorkoutExercise;
 import com.example.verifit.model.WorkoutSet;
+import com.example.verifit.verifitrs.WorkoutSetsApi;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -793,12 +794,47 @@ public class DataStorage {
                             workoutDays.get(i).getExercises().get(j).getSets().get(k).setCategory(new_exercise_bodypart);
                         }
                     }
-
-
                 }
             }
         }
+    }
 
+    // Changes exercise name and body part
+    public List<WorkoutSet> editExerciseGetSets(String exercise_name, String new_exercise_name, String new_exercise_bodypart)
+    {
+        List<WorkoutSet> to_be_updated_sets = new ArrayList<>();
+
+        for(int i = 0; i < workoutDays.size(); i++)
+        {
+            for(int j = 0; j < workoutDays.get(i).getSets().size(); j++)
+            {
+                if(workoutDays.get(i).getSets().get(j).getExerciseName().equals(exercise_name))
+                {
+                    WorkoutSet temp_set = workoutDays.get(i).getSets().get(j);
+                    temp_set.setExerciseName(new_exercise_name);
+                    temp_set.setCategory(new_exercise_bodypart);
+                    to_be_updated_sets.add(temp_set);
+                }
+            }
+
+            for(int j = 0; j < workoutDays.get(i).getExercises().size(); j++)
+            {
+                if(workoutDays.get(i).getExercises().get(j).getExercise().equals(exercise_name))
+                {
+                    for(int k = 0; k < workoutDays.get(i).getExercises().get(j).getSets().size(); k++)
+                    {
+                        if(workoutDays.get(i).getExercises().get(j).getSets().get(k).getExerciseName().equals(exercise_name))
+                        {
+                            WorkoutSet temp_set = workoutDays.get(i).getExercises().get(j).getSets().get(k);
+                            temp_set.setExerciseName(new_exercise_name);
+                            temp_set.setCategory(new_exercise_bodypart);
+                            to_be_updated_sets.add(temp_set);
+                        }
+                    }
+                }
+            }
+        }
+        return to_be_updated_sets;
     }
 
     // Add all exercises found in the csv to the Known Exercises local data structure
