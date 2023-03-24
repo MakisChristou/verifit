@@ -120,19 +120,60 @@ public class UsersApi {
         client.newCall(request).enqueue(callback);
     }
 
-    public void deleteAccount()
+    public void requestPasswordReset(okhttp3.Callback callback)
     {
+        OkHttpClient client = new OkHttpClient();
 
+        // Create a JSON object to send in the request body
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("username", username);
+        } catch (JSONException e) {
+            System.out.println(e);
+        }
+
+        url += "/users/request-password-reset";
+
+        // Create a RequestBody object with the JSON object
+        RequestBody requestBody = RequestBody.create(jsonObject.toString(), MediaType.parse("application/json; charset=utf-8"));
+
+        // Create a Request object with the URL and RequestBody
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        // Send the HTTP request asynchronously
+        client.newCall(request).enqueue(callback);
     }
 
-    public void updateEmail()
+    public void changePassword(String reset_code, okhttp3.Callback callback)
     {
+        OkHttpClient client = new OkHttpClient();
 
-    }
-    
-    public void updatePassword()
-    {
+        // Create a JSON object to send in the request body
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("username", username);
+            jsonObject.put("new_password", password);
+            jsonObject.put("reset_code", reset_code);
+        } catch (JSONException e) {
+            System.out.println(e);
+        }
 
+        url += "/users/change-password";
+
+        // Create a RequestBody object with the JSON object
+        RequestBody requestBody = RequestBody.create(jsonObject.toString(), MediaType.parse("application/json; charset=utf-8"));
+
+        // Create a Request object with the URL and RequestBody
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        // Send the HTTP request asynchronously
+        client.newCall(request).enqueue(callback);
     }
 }
 

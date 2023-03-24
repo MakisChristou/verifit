@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.verifit.KeyboardHider;
 import com.example.verifit.LoadingDialog;
 import com.example.verifit.SnackBarWithMessage;
 import com.example.verifit.adapters.AddExerciseWorkoutSetAdapter;
@@ -130,6 +131,9 @@ public class AddExerciseActivity extends AppCompatActivity {
     // Save / Update
     public void clickSave(View view)
     {
+        KeyboardHider keyboardHider = new KeyboardHider(AddExerciseActivity.this);
+        keyboardHider.hideKeyboard();
+
         // Let backup service know that something has changed
         MainActivity.autoBackupRequired = true;
 

@@ -36,8 +36,6 @@ public class SharedPreferences {
     public void enableOfflineMode()
     {
         SharedPreferences sharedPreferences = new SharedPreferences(context);
-        sharedPreferences.save("", "verifit_rs_username");
-        sharedPreferences.save("", "verifit_rs_password");
         sharedPreferences.save("", "verifit_rs_token");
         sharedPreferences.save("offline","mode");
         MainActivity.dataStorage.clearDataStructures(context);

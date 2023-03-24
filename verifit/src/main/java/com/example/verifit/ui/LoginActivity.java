@@ -3,7 +3,6 @@ package com.example.verifit.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,9 +15,7 @@ import com.example.verifit.LoadingDialog;
 import com.example.verifit.R;
 import com.example.verifit.SharedPreferences;
 import com.example.verifit.SnackBarWithMessage;
-import com.example.verifit.verifitrs.ResponseUser;
 import com.example.verifit.verifitrs.UsersApi;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -43,16 +40,22 @@ public class LoginActivity extends AppCompatActivity {
         showSavedCredentials();
     }
 
+    public void forgot_password(View view)
+    {
+        Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+        startActivity(intent);
+    }
+
     public void showSavedCredentials()
     {
         EditText et_username = findViewById(R.id.et_username);
-        EditText et_password = findViewById(R.id.et_password);
+        EditText et_password = findViewById(R.id.et_reset_code);
 
         SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
         String saved_username = sharedPreferences.load("verifit_rs_username");
         String saved_password = sharedPreferences.load("verifit_rs_password");
 
-        if(!saved_password.equals("") && !saved_password.equals(""))
+        if(!saved_username.equals("") && !saved_password.equals(""))
         {
             et_username.setText(saved_username);
             et_password.setText(saved_password);
@@ -77,12 +80,14 @@ public class LoginActivity extends AppCompatActivity {
 
     public void verifit_rs_login(View view)
     {
-        KeyboardHider keyboardHider = new KeyboardHider(this);
-        keyboardHider.hideKeyboard();
-
+        if(view != null)
+        {
+            KeyboardHider keyboardHider = new KeyboardHider(this);
+            keyboardHider.hideKeyboard();
+        }
 
         EditText et_username = findViewById(R.id.et_username);
-        EditText et_password = findViewById(R.id.et_password);
+        EditText et_password = findViewById(R.id.et_reset_code);
 
         String username = et_username.getText().toString();
         String password = et_password.getText().toString();
@@ -222,7 +227,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         EditText et_username = findViewById(R.id.et_username);
-        EditText et_password = findViewById(R.id.et_password);
+        EditText et_password = findViewById(R.id.et_reset_code);
         EditText et_password_2 = findViewById(R.id.et_password2);
 
         String username = et_username.getText().toString();
@@ -332,6 +337,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView tv_9 = findViewById(R.id.textView9);
         TextView tv_11 = findViewById(R.id.textView11);
         EditText et_pass = findViewById(R.id.et_password2);
+        TextView tv_forgot_password = findViewById(R.id.tv_forgot_password);
 
         // Default should be Sign Up
         if(sharedPreferences.load("user_state").isEmpty() || sharedPreferences.load("user_state").equals("login"))
@@ -343,6 +349,7 @@ public class LoginActivity extends AppCompatActivity {
             tv_11.setText("Create a free account");
 
             et_pass.setVisibility(View.GONE);
+            tv_forgot_password.setVisibility(View.VISIBLE);
         }
         else
         {
@@ -353,6 +360,7 @@ public class LoginActivity extends AppCompatActivity {
             tv_11.setText("Login Instead");
 
             et_pass.setVisibility(View.VISIBLE);
+            tv_forgot_password.setVisibility(View.GONE);
         }
 
     }
