@@ -388,7 +388,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 String dateScrolled = dataStorage.getInfiniteWorkoutDays().get(position).getDate();
                 MainActivity.dateSelected = dateScrolled;
-                System.out.println("Scrolled to " + dateScrolled);
             }
         });
 

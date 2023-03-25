@@ -2,6 +2,7 @@ package com.example.verifit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.verifit.KeyboardHider;
 import com.example.verifit.LoadingDialog;
+import com.example.verifit.MonthXAxisFormatter;
 import com.example.verifit.SnackBarWithMessage;
 import com.example.verifit.adapters.AddExerciseWorkoutSetAdapter;
 import com.example.verifit.adapters.ExerciseHistoryExerciseAdapter;
@@ -34,7 +36,10 @@ import com.example.verifit.model.WorkoutDay;
 import com.example.verifit.model.WorkoutExercise;
 import com.example.verifit.model.WorkoutSet;
 import com.example.verifit.verifitrs.WorkoutSetsApi;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -43,8 +48,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.StringJoiner;
+import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -910,53 +918,126 @@ public class AddExerciseActivity extends AppCompatActivity {
         }
 
         // Exercise Stats Chart
-        else if(item.getItemId() == R.id.graph)
-        {
+        else if (item.getItemId() == R.id.graph) {
             // Prepare to show exercise history dialog box
             LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
-            View view = inflater.inflate(R.layout.exercise_graph_dialog,null);
-            AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
-
+            View view = inflater.inflate(R.layout.exercise_graph_dialog, null);
+            AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this)
+                    .setView(view)
+                    .create();
 
             // Get Chart Object
-            LineChart lineChart = (LineChart) view.findViewById(R.id.lineChart);
+            LineChart lineChart = view.findViewById(R.id.lineChart);
 
             // Create Array List that will hold graph data
-            ArrayList<Entry> Volume_Values = new ArrayList<>();
+            ArrayList<Entry> volumeValues = new ArrayList<>();
+            ArrayList<String> workoutDates = new ArrayList<>();
+            ArrayList<String> workoutMonths = new ArrayList<>();
 
             int x = 0;
 
             // Get Exercise Volume
-            for(int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++)
-            {
-                for (int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().size(); j++)
-                {
-                    WorkoutExercise current_exercise = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j);
+            for (int i = 0; i < MainActivity.dataStorage.getWorkoutDays().size(); i++) {
+                for (int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().size(); j++) {
+                    WorkoutExercise currentExercise = MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j);
 
-                    if(current_exercise.getExercise().equals(exercise_name))
-                    {
-                        Volume_Values.add(new Entry(x,current_exercise.getVolume().floatValue()));
+                    if (currentExercise.getExercise().equals(exercise_name)) {
+                        volumeValues.add(new Entry(x, currentExercise.getVolume().floatValue()));
+                        // Add the date corresponding to the data point
+                        workoutDates.add(MainActivity.dataStorage.getWorkoutDays().get(i).getDate());
+
+                        // Add the month corresponding to the data point
+                        String date = MainActivity.dataStorage.getWorkoutDays().get(i).getDate();
+                        String month = getMonthFromDateString(date);
+                        workoutMonths.add(month);
+
                         x++;
                     }
                 }
             }
 
-            LineDataSet volumeSet = new LineDataSet(Volume_Values,"Volume");
+            LineDataSet volumeSet = new LineDataSet(volumeValues, "kg");
             LineData data = new LineData(volumeSet);
 
-
-            volumeSet.setLineWidth(2f);
+            // Style the line and the values
+            volumeSet.setLineWidth(3f);
+            volumeSet.setColor(ContextCompat.getColor(AddExerciseActivity.this, R.color.colorPrimary));
+            volumeSet.setCircleColor(ContextCompat.getColor(AddExerciseActivity.this, R.color.colorPrimary));
+            volumeSet.setCircleRadius(4f);
+            volumeSet.setCircleHoleColor(Color.WHITE);
             volumeSet.setValueTextSize(10f);
             volumeSet.setValueTextColor(Color.BLACK);
+            volumeSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            // Remove circles around data points
+            volumeSet.setDrawCircles(false);
 
+            // Hide data values next to points
+            volumeSet.setDrawValues(false);
+
+            // Style the chart
             lineChart.setData(data);
             lineChart.getDescription().setEnabled(false);
+            lineChart.setDrawGridBackground(false);
+            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+            lineChart.getXAxis().setDrawGridLines(false);
+            lineChart.getAxisLeft().setDrawGridLines(false);
+            lineChart.getAxisRight().setEnabled(false);
 
+
+            // Enable horizontal grid lines
+            lineChart.getAxisLeft().setDrawGridLines(true);
+            lineChart.getAxisLeft().setGridColor(Color.LTGRAY);
+            lineChart.getAxisLeft().setGridLineWidth(1f);
+
+            // Disable Y-axis line
+            lineChart.getAxisLeft().setDrawAxisLine(false);
+            lineChart.getAxisLeft().setDrawLabels(false);
+
+            // Hide Y-axis values
+            lineChart.getAxisLeft().setEnabled(true);
+            lineChart.getAxisLeft().setTextSize(0f);
+            lineChart.getXAxis().setEnabled(true);
+
+            // Set the custom X-axis value formatter
+            XAxis xAxis = lineChart.getXAxis();
+            xAxis.setValueFormatter(new MonthXAxisFormatter(workoutMonths));
+            xAxis.setGranularity(2f); // Set minimum interval to 1
+            xAxis.setGranularityEnabled(true); // Enable granularity
+
+            xAxis.setLabelCount(5, false); // Display only 5 labels on the X-axis
+
+
+            // Enable pinch zooming
+            lineChart.setPinchZoom(true);
+
+            // Enable scaling (zooming) on both X and Y axes
+            lineChart.setScaleEnabled(true);
+
+            lineChart.animateXY(1000, 1000, Easing.EaseInOutCubic);
+
+
+            // Zoom in to show the last X points
+            int pointsToShow = 10;
+            lineChart.setVisibleXRange(pointsToShow, pointsToShow);
+            lineChart.moveViewToX(volumeValues.size() - pointsToShow);
+
+
+            // Style legend
+            Legend legend = lineChart.getLegend();
+            legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+            legend.setDrawInside(true);
+            legend.setXOffset(30f); // Adjust this value to move the legend horizontally
+            legend.setYOffset(-270); // Adjust this value to move the legend vertically
+            legend.setTextSize(12f);
+            legend.setTextColor(Color.BLACK);
+            legend.setForm(Legend.LegendForm.LINE);
+            legend.setFormLineWidth(3f);
+            legend.setFormSize(14f);
 
             // Show Chart Dialog box
             alertDialog.show();
-
-
         }
 
         // Exercise Comments
@@ -1014,7 +1095,21 @@ public class AddExerciseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Makes necessary checks and saves comment
+    private String getMonthFromDateString(String dateString) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = sdf.parse(dateString);
+            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
+            return monthFormat.format(date);
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+
+        // Makes necessary checks and saves comment
     public void saveComment(AlertDialog alertDialog)
     {
         // Let backup service know that something has changed

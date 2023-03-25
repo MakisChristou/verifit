@@ -15,6 +15,16 @@
         <color name="colorPrimaryDark">#0074bd</color>
         <color name="colorAccent">#262626</color>
 
+    <color name="normalPink">#ff4081</color>
+    <color name="deepPurple">#673ab7</color>
+    <color name="deepOrange">#ff5722</color>
+    <color name="tealGreen">#009688</color>
+    <color name="darkGray">#616161</color>
+    <color name="deepBlue">#303f9f</color>
+
+
+
+
     <!--    Signal Colours -->
     <color name="core_ultramarine">#2c6bed</color>
     <color name="core_ultramarine_light">#6191f3</color>

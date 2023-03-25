@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Graph"
+        android:text="Volume"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="320dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
