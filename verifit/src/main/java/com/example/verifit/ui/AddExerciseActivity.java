@@ -777,144 +777,14 @@ public class AddExerciseActivity extends AppCompatActivity {
         // Timer
         if(item.getItemId() == R.id.timer)
         {
-            // Prepare to show timer dialog box
-            LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
-            View view = inflater.inflate(R.layout.timer_dialog,null);
-            AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
 
-            // Get Objects (use view because dialog box from menu)
-            et_seconds = view.findViewById(R.id.et_seconds);
-            minus_seconds = view.findViewById(R.id.minus_seconds);
-            plus_seconds = view.findViewById(R.id.plus_seconds);
-            bt_start = view.findViewById(R.id.bt_start);
-            bt_reset = view.findViewById(R.id.bt_close);
-
-            // Set default seconds value to 180 i.e 3 minutes
-            if(!TimerRunning)
-            {
-                // Derive String value from chosen start time
-                // et_seconds.setText(String.valueOf((int) START_TIME_IN_MILLIS /1000));
-                loadSeconds();
-            }
-            else
-            {
-                updateCountDownText();
-            }
-
-            // Reset Timer Button
-            bt_reset.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    resetTimer();
-                }
-            });
-
-            // Start Timer Button
-            bt_start.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    if(TimerRunning)
-                    {
-                        pauseTimer();
-                    }
-                    else
-                    {
-                        saveSeconds();
-                        startTimer();
-                    }
-
-                }
-            });
-
-            // Minus Button
-            minus_seconds.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    if(!et_seconds.getText().toString().isEmpty())
-                    {
-                        Double seconds  = Double.parseDouble(et_seconds.getText().toString());
-                        seconds = seconds - 1;
-                        if(seconds < 0)
-                        {
-                            seconds = 0.0;
-                        }
-                        int seconds_int = seconds.intValue();
-                        et_seconds.setText(String.valueOf(seconds_int));
-                    }
-                }
-            });
-
-            // Plus Button
-            plus_seconds.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    if(!et_seconds.getText().toString().isEmpty())
-                    {
-                        Double seconds  = Double.parseDouble(et_seconds.getText().toString());
-                        seconds = seconds + 1;
-                        if(seconds < 0)
-                        {
-                            seconds = 0.0;
-                        }
-                        int seconds_int = seconds.intValue();
-                        et_seconds.setText(String.valueOf(seconds_int));
-                    }
-                }
-            });
-
-            // Show Timer Dialog Box
-            alertDialog.show();
+            setupTimer();
         }
 
         // Exercise History
         else if(item.getItemId() == R.id.history)
         {
-            // Prepare to show exercise history dialog box
-            LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
-            View view = inflater.inflate(R.layout.exercise_history_dialog,null);
-            AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
-
-
-            // Declare local data structure
-            ArrayList<WorkoutExercise> All_Performed_Sessions = new ArrayList<>();
-
-            // Find all performed sessions of a specific exercise and add them to local data structure
-            for(int i = MainActivity.dataStorage.getWorkoutDays().size()-1; i >= 0; i--)
-            {
-                for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().size(); j++)
-                {
-                    if(MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getExercise().equals(exercise_name))
-                    {
-                        All_Performed_Sessions.add(MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j));
-                    }
-                }
-            }
-
-
-            // Set Exercise Name
-            TextView tv_exercise_name = view.findViewById(R.id.tv_exercise_name);
-            tv_exercise_name.setText(exercise_name);
-
-
-            // Set Exercise History Recycler View
-            RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Exercise_History);
-            ExerciseHistoryExerciseAdapter workoutExerciseAdapter4 = new ExerciseHistoryExerciseAdapter(AddExerciseActivity.this,All_Performed_Sessions);
-
-
-            // Crash Here
-            recyclerView.setAdapter(workoutExerciseAdapter4);
-            recyclerView.setLayoutManager(new LinearLayoutManager(AddExerciseActivity.this));
-
-
-            alertDialog.show();
+            return setupExerciseHistory(item);
         }
 
         // Exercise Stats Chart
@@ -956,88 +826,13 @@ public class AddExerciseActivity extends AppCompatActivity {
                 }
             }
 
-            LineDataSet volumeSet = new LineDataSet(volumeValues, "kg");
-            LineData data = new LineData(volumeSet);
+            if(x == 0){
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+                snackBarWithMessage.showSnackbar("No data found");
+                return super.onOptionsItemSelected(item);
+            }
 
-            // Style the line and the values
-            volumeSet.setLineWidth(3f);
-            volumeSet.setColor(ContextCompat.getColor(AddExerciseActivity.this, R.color.colorPrimary));
-            volumeSet.setCircleColor(ContextCompat.getColor(AddExerciseActivity.this, R.color.colorPrimary));
-            volumeSet.setCircleRadius(4f);
-            volumeSet.setCircleHoleColor(Color.WHITE);
-            volumeSet.setValueTextSize(10f);
-            volumeSet.setValueTextColor(Color.BLACK);
-            volumeSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            // Remove circles around data points
-            volumeSet.setDrawCircles(false);
-
-            // Hide data values next to points
-            volumeSet.setDrawValues(false);
-
-            // Style the chart
-            lineChart.setData(data);
-            lineChart.getDescription().setEnabled(false);
-            lineChart.setDrawGridBackground(false);
-            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-            lineChart.getXAxis().setDrawGridLines(false);
-            lineChart.getAxisLeft().setDrawGridLines(false);
-            lineChart.getAxisRight().setEnabled(false);
-
-
-            // Enable horizontal grid lines
-            lineChart.getAxisLeft().setDrawGridLines(true);
-            lineChart.getAxisLeft().setGridColor(Color.LTGRAY);
-            lineChart.getAxisLeft().setGridLineWidth(1f);
-
-            // Disable Y-axis line
-            lineChart.getAxisLeft().setDrawAxisLine(false);
-            lineChart.getAxisLeft().setDrawLabels(false);
-
-            // Hide Y-axis values
-            lineChart.getAxisLeft().setEnabled(true);
-            lineChart.getAxisLeft().setTextSize(0f);
-            lineChart.getXAxis().setEnabled(true);
-
-            // Set the custom X-axis value formatter
-            XAxis xAxis = lineChart.getXAxis();
-            xAxis.setValueFormatter(new MonthXAxisFormatter(workoutMonths));
-            xAxis.setGranularity(2f); // Set minimum interval to 1
-            xAxis.setGranularityEnabled(true); // Enable granularity
-
-            xAxis.setLabelCount(5, false); // Display only 5 labels on the X-axis
-
-
-            // Enable pinch zooming
-            lineChart.setPinchZoom(true);
-
-            // Enable scaling (zooming) on both X and Y axes
-            lineChart.setScaleEnabled(true);
-
-            lineChart.animateXY(1000, 1000, Easing.EaseInOutCubic);
-
-
-            // Zoom in to show the last X points
-            int pointsToShow = 10;
-            lineChart.setVisibleXRange(pointsToShow, pointsToShow);
-            lineChart.moveViewToX(volumeValues.size() - pointsToShow);
-
-
-            // Style legend
-            Legend legend = lineChart.getLegend();
-            legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
-            legend.setDrawInside(true);
-            legend.setXOffset(30f); // Adjust this value to move the legend horizontally
-            legend.setYOffset(-270); // Adjust this value to move the legend vertically
-            legend.setTextSize(12f);
-            legend.setTextColor(Color.BLACK);
-            legend.setForm(Legend.LegendForm.LINE);
-            legend.setFormLineWidth(3f);
-            legend.setFormSize(14f);
-
-            // Show Chart Dialog box
-            alertDialog.show();
+            setupLineChart(alertDialog, volumeValues, lineChart, workoutMonths);
         }
 
         // Exercise Comments
@@ -1106,6 +901,241 @@ public class AddExerciseActivity extends AppCompatActivity {
             e.printStackTrace();
             return "";
         }
+    }
+
+
+    public boolean setupExerciseHistory(MenuItem item) {
+        // Prepare to show exercise history dialog box
+        LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
+        View view = inflater.inflate(R.layout.exercise_history_dialog,null);
+        AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
+
+
+        // Declare local data structure
+        ArrayList<WorkoutExercise> allPerformedSessions = new ArrayList<>();
+
+        // Find all performed sessions of a specific exercise and add them to local data structure
+        for(int i = MainActivity.dataStorage.getWorkoutDays().size()-1; i >= 0; i--)
+        {
+            for(int j = 0; j < MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().size(); j++)
+            {
+                if(MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j).getExercise().equals(exercise_name))
+                {
+                    allPerformedSessions.add(MainActivity.dataStorage.getWorkoutDays().get(i).getExercises().get(j));
+                }
+            }
+        }
+
+        if(allPerformedSessions.size() == 0){
+            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(AddExerciseActivity.this);
+            snackBarWithMessage.showSnackbar("No data found");
+            return super.onOptionsItemSelected(item);
+        }
+
+
+        // Set Exercise Name
+        TextView tv_exercise_name = view.findViewById(R.id.tv_exercise_name);
+        tv_exercise_name.setText(exercise_name);
+
+
+        // Set Exercise History Recycler View
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Exercise_History);
+        ExerciseHistoryExerciseAdapter workoutExerciseAdapter4 = new ExerciseHistoryExerciseAdapter(AddExerciseActivity.this, allPerformedSessions);
+
+
+        // Crash Here
+        recyclerView.setAdapter(workoutExerciseAdapter4);
+        recyclerView.setLayoutManager(new LinearLayoutManager(AddExerciseActivity.this));
+
+
+        alertDialog.show();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void setupLineChart(AlertDialog alertDialog, ArrayList<Entry> volumeValues, LineChart lineChart, ArrayList<String> workoutMonths) {
+        LineDataSet volumeSet = new LineDataSet(volumeValues, "kg");
+        LineData data = new LineData(volumeSet);
+
+        // Style the line and the values
+        volumeSet.setLineWidth(3f);
+        volumeSet.setColor(ContextCompat.getColor(AddExerciseActivity.this, R.color.colorPrimary));
+        volumeSet.setCircleColor(ContextCompat.getColor(AddExerciseActivity.this, R.color.colorPrimary));
+        volumeSet.setCircleRadius(4f);
+        volumeSet.setCircleHoleColor(Color.WHITE);
+        volumeSet.setValueTextSize(10f);
+        volumeSet.setValueTextColor(Color.BLACK);
+        volumeSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        // Remove circles around data points
+        volumeSet.setDrawCircles(false);
+
+        // Hide data values next to points
+        volumeSet.setDrawValues(false);
+
+        // Style the chart
+        lineChart.setData(data);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.getXAxis().setDrawGridLines(false);
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getAxisRight().setEnabled(false);
+
+
+        // Enable horizontal grid lines
+        lineChart.getAxisLeft().setDrawGridLines(true);
+        lineChart.getAxisLeft().setGridColor(Color.LTGRAY);
+        lineChart.getAxisLeft().setGridLineWidth(1f);
+
+        // Disable Y-axis line
+        lineChart.getAxisLeft().setDrawAxisLine(false);
+        lineChart.getAxisLeft().setDrawLabels(false);
+
+        // Hide Y-axis values
+        lineChart.getAxisLeft().setEnabled(true);
+        lineChart.getAxisLeft().setTextSize(0f);
+        lineChart.getXAxis().setEnabled(true);
+
+        // Set the custom X-axis value formatter
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setValueFormatter(new MonthXAxisFormatter(workoutMonths));
+        xAxis.setGranularity(2f); // Set minimum interval to 1
+        xAxis.setGranularityEnabled(true); // Enable granularity
+
+        xAxis.setLabelCount(5, false); // Display only 5 labels on the X-axis
+
+
+        // Enable pinch zooming
+        lineChart.setPinchZoom(true);
+
+        // Enable scaling (zooming) on both X and Y axes
+        lineChart.setScaleEnabled(true);
+
+        lineChart.animateXY(1000, 1000, Easing.EaseInOutCubic);
+
+
+        // Zoom in to show the last X points
+        int pointsToShow = 10;
+        lineChart.setVisibleXRange(pointsToShow, pointsToShow);
+        lineChart.moveViewToX(volumeValues.size() - pointsToShow);
+
+
+        // Style legend
+        Legend legend = lineChart.getLegend();
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+        legend.setDrawInside(true);
+        legend.setXOffset(30f); // Adjust this value to move the legend horizontally
+        legend.setYOffset(-270); // Adjust this value to move the legend vertically
+        legend.setTextSize(12f);
+        legend.setTextColor(Color.BLACK);
+        legend.setForm(Legend.LegendForm.LINE);
+        legend.setFormLineWidth(3f);
+        legend.setFormSize(14f);
+
+        // Show Chart Dialog box
+        alertDialog.show();
+    }
+
+    public void setupTimer() {
+
+        // Prepare to show timer dialog box
+        LayoutInflater inflater = LayoutInflater.from(AddExerciseActivity.this);
+        View view = inflater.inflate(R.layout.timer_dialog,null);
+        AlertDialog alertDialog = new AlertDialog.Builder(AddExerciseActivity.this).setView(view).create();
+
+        // Get Objects (use view because dialog box from menu)
+        et_seconds = view.findViewById(R.id.et_seconds);
+        minus_seconds = view.findViewById(R.id.minus_seconds);
+        plus_seconds = view.findViewById(R.id.plus_seconds);
+        bt_start = view.findViewById(R.id.bt_start);
+        bt_reset = view.findViewById(R.id.bt_close);
+
+        // Set default seconds value to 180 i.e 3 minutes
+        if(!TimerRunning)
+        {
+            // Derive String value from chosen start time
+            // et_seconds.setText(String.valueOf((int) START_TIME_IN_MILLIS /1000));
+            loadSeconds();
+        }
+        else
+        {
+            updateCountDownText();
+        }
+
+        // Reset Timer Button
+        bt_reset.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                resetTimer();
+            }
+        });
+
+        // Start Timer Button
+        bt_start.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(TimerRunning)
+                {
+                    pauseTimer();
+                }
+                else
+                {
+                    saveSeconds();
+                    startTimer();
+                }
+
+            }
+        });
+
+        // Minus Button
+        minus_seconds.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(!et_seconds.getText().toString().isEmpty())
+                {
+                    Double seconds  = Double.parseDouble(et_seconds.getText().toString());
+                    seconds = seconds - 1;
+                    if(seconds < 0)
+                    {
+                        seconds = 0.0;
+                    }
+                    int seconds_int = seconds.intValue();
+                    et_seconds.setText(String.valueOf(seconds_int));
+                }
+            }
+        });
+
+        // Plus Button
+        plus_seconds.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(!et_seconds.getText().toString().isEmpty())
+                {
+                    Double seconds  = Double.parseDouble(et_seconds.getText().toString());
+                    seconds = seconds + 1;
+                    if(seconds < 0)
+                    {
+                        seconds = 0.0;
+                    }
+                    int seconds_int = seconds.intValue();
+                    et_seconds.setText(String.valueOf(seconds_int));
+                }
+            }
+        });
+
+        // Show Timer Dialog Box
+        alertDialog.show();
     }
 
 

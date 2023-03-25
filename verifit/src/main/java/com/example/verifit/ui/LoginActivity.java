@@ -42,6 +42,14 @@ public class LoginActivity extends AppCompatActivity {
 
     public void forgot_password(View view)
     {
+        EditText et_username = findViewById(R.id.et_username);
+        String username = et_username.getText().toString();
+
+        if (username != null && !username.isEmpty()) {
+            SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+            sharedPreferences.save(username, "verifit_rs_username");
+        }
+
         Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
         startActivity(intent);
     }
@@ -49,16 +57,13 @@ public class LoginActivity extends AppCompatActivity {
     public void showSavedCredentials()
     {
         EditText et_username = findViewById(R.id.et_username);
-        EditText et_password = findViewById(R.id.et_reset_code);
 
         SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
         String saved_username = sharedPreferences.load("verifit_rs_username");
-        String saved_password = sharedPreferences.load("verifit_rs_password");
 
-        if(!saved_username.equals("") && !saved_password.equals(""))
+        if(!saved_username.equals(""))
         {
             et_username.setText(saved_username);
-            et_password.setText(saved_password);
         }
     }
 

@@ -48,7 +48,6 @@ public class SharedPreferences {
         SharedPreferences sharedPreferences = new SharedPreferences(context);
         sharedPreferences.save(responseUser.getToken(), "verifit_rs_token");
         sharedPreferences.save(username, "verifit_rs_username");
-        sharedPreferences.save(password, "verifit_rs_password");
         sharedPreferences.save("online","mode");
     }
 
@@ -57,11 +56,4 @@ public class SharedPreferences {
         SharedPreferences sharedPreferences = new SharedPreferences(context);
         return sharedPreferences.load("mode").equals("offline") || sharedPreferences.load("mode").equals("");
     }
-
-    public void clearJWT()
-    {
-        SharedPreferences sharedPreferences = new SharedPreferences(context);
-        sharedPreferences.save("", "verifit_rs_token");
-    }
-
 }

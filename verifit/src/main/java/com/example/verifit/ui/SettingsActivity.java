@@ -192,7 +192,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference verifit_rs_delete_all = findPreference("verifit_rs_delete_all");
 
             // User is not logged in
-            if(sharedPreferences.load("verifit_rs_token").isEmpty())
+            if(sharedPreferences.isOfflineMode())
             {
                 verifit_rs_import.setVisible(false);
                 verifit_rs_export.setVisible(false);
@@ -440,7 +440,7 @@ public class SettingsActivity extends AppCompatActivity {
             else if(key.equals("verifit_rs_login_signup_logout"))
             {
                 // If user is not logged in
-                if(sharedPreferences.load("verifit_rs_token").isEmpty())
+                if(sharedPreferences.isOfflineMode())
                 {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
@@ -647,8 +647,6 @@ public class SettingsActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = new SharedPreferences(getContext());
             sharedPreferences.save("offline", "mode");
             sharedPreferences.save("", "verifit_rs_token");
-            sharedPreferences.save("", "verifit_rs_username");
-            sharedPreferences.save("", "verifit_rs_password");
         }
 
 
