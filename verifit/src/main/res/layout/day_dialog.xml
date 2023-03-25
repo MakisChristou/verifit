@@ -12,9 +12,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="170dp"
-        android:text="Total Exercises"
+        android:text="Exercise"
         android:textColor="@color/core_black"
-        android:textStyle="bold"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:text="exercises"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/totalexercises"
@@ -38,7 +38,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="2dp"
         android:text="4"
-        android:textSize="12sp"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -49,9 +51,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="120dp"
-        android:text="Total Volume"
+        android:text="Volume"
         android:textColor="@color/core_black"
-        android:textStyle="bold"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
@@ -63,7 +65,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="2dp"
         android:text="1840.0"
-        android:textSize="12sp"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -73,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:text="kg"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/totalvolume"
@@ -87,7 +91,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="2dp"
         android:text="4"
-        android:textSize="12sp"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -98,9 +104,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="70dp"
-        android:text="Total Reps"
+        android:text="Reps"
         android:textColor="@color/core_black"
-        android:textStyle="bold"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
@@ -110,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:text="sets"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/volume"
@@ -148,9 +154,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:text="Total Sets"
+        android:text="Sets"
         android:textColor="@color/core_black"
-        android:textStyle="bold"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
@@ -162,7 +168,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="2dp"
         android:text="210"
-        android:textSize="12sp"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -172,7 +180,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:text="reps"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/totalreps"

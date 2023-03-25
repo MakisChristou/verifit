@@ -82,7 +82,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             @Override
             public void onClick(View view)
             {
-                showDayDialog(position);
+                navigateToDay(position);
             }
 
         });
@@ -96,6 +96,15 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
                 System.out.println("More Button");
             }
         });
+    }
+
+    public void navigateToDay(int position)
+    {
+        Intent in = new Intent(ct, DayActivity.class);
+        // Update Date Selected in MainActivity
+        MainActivity.dateSelected = Workout_Days.get(position).getDate();
+        in.putExtra("date",Workout_Days.get(position).getDate());
+        ct.startActivity(in);
     }
 
     // Shows Day's Stats

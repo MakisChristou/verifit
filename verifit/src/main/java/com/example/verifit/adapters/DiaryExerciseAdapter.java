@@ -97,7 +97,7 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
             @Override
             public void onClick(View view)
             {
-                showExerciseDialog(position);
+                navigateToExercise(position);
             }
         });
     }
@@ -276,6 +276,16 @@ public class DiaryExerciseAdapter extends RecyclerView.Adapter<DiaryExerciseAdap
             holder.imageView.setColorFilter(Color.argb(255, 	52, 58, 64)); // Grey AF
         }
     }
+
+    public void navigateToExercise(int position) {
+        Intent in = new Intent(ct, AddExerciseActivity.class);
+        in.putExtra("exercise",Exercises.get(position).getExercise());
+        MainActivity.dateSelected = Exercises.get(position).getDate(); // this is required by AddExerciseActivity
+        System.out.println(Exercises.get(position).getExercise());
+        System.out.println(MainActivity.dateSelected);
+        ct.startActivity(in);
+    }
+
 
     // Blatant copy of FitNotes but ohh well ;)
     public void showExerciseDialog(int position) {
