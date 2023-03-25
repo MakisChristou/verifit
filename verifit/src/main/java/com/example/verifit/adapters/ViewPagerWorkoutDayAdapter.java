@@ -29,6 +29,8 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
     ArrayList<WorkoutDay> Workout_Days;
     Context ct;
 
+    String Date_Str1;
+
     // Constructor
     public ViewPagerWorkoutDayAdapter(Context ct, ArrayList<WorkoutDay> Workout_Days)
     {
@@ -52,9 +54,8 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
     @Override
     public void onBindViewHolder(@NonNull WorkoutDayViewHolder holder, int position)
     {
-
         // Set Data Method used to be here :D
-        String Date_Str1 = Workout_Days.get(position).getDate();
+        Date_Str1 = Workout_Days.get(position).getDate();
 
         // Find which exercises were performed that given date
         ArrayList<WorkoutExercise> Today_Execrises = new ArrayList<WorkoutExercise>();
@@ -119,7 +120,6 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
 
 
     }
-
 
     @Override
     public int getItemCount() {

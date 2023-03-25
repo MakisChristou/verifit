@@ -27,11 +27,10 @@
             android:parentActivityName=".ui.LoginActivity" />
         <activity
             android:name=".ui.LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ui.SettingsActivity"/>
 
         <service android:name=".BackupService" />
-
-        <activity android:name=".SplashScreenActivity" />
         <activity
             android:name=".ui.ChartsActivity"
             android:label="Charts" />

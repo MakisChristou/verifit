@@ -31,6 +31,7 @@ import com.example.verifit.adapters.WebdavAdapter;
 import com.example.verifit.model.WorkoutDay;
 import com.example.verifit.verifitrs.WorkoutSetsApi;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -58,11 +59,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static final int READ_REQUEST_CODE = 42;
     public static String EXPORT_FILENAME = "verifit_backup";
 
+    public FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fab = findViewById(R.id.floatingActionButton);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(MainActivity.this, ExercisesActivity.class);
+                startActivity(in);
+            }
+        });
 
         com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
 
@@ -368,6 +381,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         viewPager2.setAdapter(new ViewPagerWorkoutDayAdapter(this, dataStorage.getInfiniteWorkoutDays()));
         viewPager2.setVisibility(View.VISIBLE);
         viewPager2.setCurrentItem(((dataStorage.getInfiniteWorkoutDays().size()+1)/2)-1); // Navigate to today
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                String dateScrolled = dataStorage.getInfiniteWorkoutDays().get(position).getDate();
+                MainActivity.dateSelected = dateScrolled;
+                System.out.println("Scrolled to " + dateScrolled);
+            }
+        });
 
         ProgressBar progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.GONE);

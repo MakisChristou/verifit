@@ -12,16 +12,15 @@
     <item
         android:id="@+id/exercises"
         android:visible="true"
-        android:icon="@drawable/ic_fitness_center_24px">
+        android:icon="@drawable/fitness_center_rounded">
 
     </item>
 
 
     <item
         android:id="@+id/home"
-        android:icon="@drawable/ic_add_circle_24px"
-        android:visible="true">
-    </item>
+        android:icon="@drawable/home_rounded"
+        android:visible="true"></item>
 
 
 

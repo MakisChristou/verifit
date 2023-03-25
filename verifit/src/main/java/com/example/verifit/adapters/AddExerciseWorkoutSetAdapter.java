@@ -74,8 +74,7 @@ public class AddExerciseWorkoutSetAdapter extends RecyclerView.Adapter<AddExerci
     // Notify AddExerciseActivity of the clicked position
     public void updateView(int position)
     {
-
-        AddExerciseActivity.bt_clear.setText("Clesr");
+        AddExerciseActivity.bt_clear.setText("Clear");
         AddExerciseActivity.bt_save.setText("Save");
 
         // Updates the position of the user selected set in AddExerciseActivity
