@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.verifit.adapters.DayExerciseAdapter;
 import com.example.verifit.R;
 import com.example.verifit.model.WorkoutExercise;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,8 @@ public class DayActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     public DayExerciseAdapter workoutExerciseAdapter;
     String date_clicked;
+
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,16 @@ public class DayActivity extends AppCompatActivity {
     // Haven't we said that already?
     public void initActivity()
     {
+
+        fab = findViewById(R.id.floatingActionButton);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(DayActivity.this, ExercisesActivity.class);
+                startActivity(in);
+            }
+        });
 
         // Recycler View Stuff
         recyclerView = findViewById(R.id.recycler_view_day);
@@ -107,23 +121,6 @@ public class DayActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if(item.getItemId() == R.id.add)
-        {
-            Intent in = new Intent(this, ExercisesActivity.class);
-            startActivity(in);
-        }
-        else if(item.getItemId() == R.id.diary)
-        {
-            Intent in = new Intent(this,DiaryActivity.class);
-            in.putExtra("date",date_clicked);
-            startActivity(in);
-        }
-        else if(item.getItemId() == R.id.calendar)
-        {
-            Intent in = new Intent(this,MainActivity.class);
-            startActivity(in);
-        }
         return super.onOptionsItemSelected(item);
     }
 }

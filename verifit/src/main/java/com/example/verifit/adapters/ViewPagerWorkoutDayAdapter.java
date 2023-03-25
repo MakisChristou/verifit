@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.verifit.R;
 import com.example.verifit.model.WorkoutDay;
 import com.example.verifit.model.WorkoutExercise;
+import com.example.verifit.ui.DayActivity;
 import com.example.verifit.ui.ExercisesActivity;
 import com.example.verifit.ui.MainActivity;
 
@@ -28,8 +29,6 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
 
     ArrayList<WorkoutDay> Workout_Days;
     Context ct;
-
-    String Date_Str1;
 
     // Constructor
     public ViewPagerWorkoutDayAdapter(Context ct, ArrayList<WorkoutDay> Workout_Days)
@@ -55,7 +54,7 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
     public void onBindViewHolder(@NonNull WorkoutDayViewHolder holder, int position)
     {
         // Set Data Method used to be here :D
-        Date_Str1 = Workout_Days.get(position).getDate();
+        String Date_Str1 = Workout_Days.get(position).getDate();
 
         // Find which exercises were performed that given date
         ArrayList<WorkoutExercise> Today_Execrises = new ArrayList<WorkoutExercise>();
@@ -93,9 +92,9 @@ public class ViewPagerWorkoutDayAdapter extends RecyclerView.Adapter<ViewPagerWo
             @Override
             public void onClick(View view)
             {
-                Intent in = new Intent(ct, ExercisesActivity.class);
-                MainActivity.dateSelected = Date_Str1;
-                ct.startActivity(in);
+//                Intent in = new Intent(ct, DayActivity.class);
+//                in.putExtra("date", Date_Str1);
+//                ct.startActivity(in);
             }
         });
 

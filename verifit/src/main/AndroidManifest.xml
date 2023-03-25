@@ -42,6 +42,7 @@
             android:label="Exercises" />
         <activity
             android:name=".ui.DayActivity"
+            android:parentActivityName=".ui.DiaryActivity"
             android:label="Day" />
         <activity
             android:name=".ui.SettingsActivity"
