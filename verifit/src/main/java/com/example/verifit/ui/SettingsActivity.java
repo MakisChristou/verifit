@@ -433,9 +433,9 @@ public class SettingsActivity extends AppCompatActivity {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gnu.org/licenses/gpl-3.0.en.html"));
                 startActivity(browserIntent);
             }
-            else if (key.equals("help"))
+            else if (key.equals("contact_us"))
             {
-                Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
+                composeEmail("support@verifit.xyz", "", getContext());
             }
             else if(key.equals("verifit_rs_login_signup_logout"))
             {
@@ -579,6 +579,17 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             return true;
+        }
+
+        public void composeEmail(String address, String subject, Context context) {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, address);
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            if (intent.resolveActivity(context.getPackageManager()) != null) {
+                System.out.println("Hello");
+                startActivity(intent);
+            }
         }
 
         public void turnWebdavOff()

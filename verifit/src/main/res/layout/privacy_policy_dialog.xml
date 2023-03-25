@@ -42,7 +42,7 @@
         android:gravity="center"
         android:isScrollContainer="true"
         android:scrollbars="vertical"
-        android:text="Verifit collects your email and hashed password to create and secure your account. We store this data on a secure third-party cloud server. We use your information for account management, customer support, and app improvement. Your data is protected with appropriate security measures. By using Verifit, you consent to this Privacy Policy. For more details, visit [yourwebsite.com/privacypolicy] or contact us at support@verifit.com."
+        android:text="Verifit collects your email and hashed password to create and secure your account. We store this data on a secure third-party cloud server. We use your information for account management. Your data is protected with appropriate security measures. By using Verifit, you consent to this Privacy Policy. For more details, visit https://github.com/MakisChristou/verifit or contact us at support@verifit.xyz"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -136,11 +136,11 @@
             app:title="Licence"
             app:useSimpleSummaryProvider="false" />
 
-        <Preference
-            app:key="privacy_policy"
-            app:summary="Learn more about our privacy policy"
-            app:title="Privacy Policy"
-            app:useSimpleSummaryProvider="false" />
+<!--        <Preference-->
+<!--            app:key="privacy_policy"-->
+<!--            app:summary="Learn more about our privacy policy"-->
+<!--            app:title="Privacy Policy"-->
+<!--            app:useSimpleSummaryProvider="false" />-->
 
         <Preference
             app:key="reddit"
@@ -149,9 +149,9 @@
             app:useSimpleSummaryProvider="false" />
 
 <!--        <Preference-->
-<!--            app:key="help"-->
-<!--            app:summary=""-->
-<!--            app:title="Help"-->
+<!--            app:key="contact_us"-->
+<!--            app:summary="If you need to get in touch."-->
+<!--            app:title="Contact Us"-->
 <!--            app:useSimpleSummaryProvider="false" />-->
 
     </PreferenceCategory>
