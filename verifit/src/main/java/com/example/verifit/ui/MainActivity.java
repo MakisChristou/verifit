@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             if(message.equals("verifit_rs_login"))
             {
                 SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
-                snackBarWithMessage.showSnackbar("Welcome back!");
+                snackBarWithMessage.showSnackbar("Welcome back");
             }
             else if(message.equals("verifit_rs_logout"))
             {

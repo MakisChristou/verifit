@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 
 import com.example.verifit.R;
 import com.github.mikephil.charting.animation.Easing;
@@ -64,6 +65,15 @@ public class ChartsActivity extends AppCompatActivity implements BottomNavigatio
         bottomNavigationView.setSelectedItemId(R.id.charts);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
+        ScrollView scrollView = findViewById(R.id.scrollView);
+        if(MainActivity.dataStorage.getWorkoutDays().size() == 0){
+
+            scrollView.setVisibility(View.GONE);
+        }
+        else
+        {
+            scrollView.setVisibility(View.VISIBLE);
+        }
 
         barChartVolumes();
 

@@ -377,7 +377,7 @@ public class AddExerciseActivity extends AppCompatActivity {
 
         // Let the user know I guess
         runOnUiThread(() -> {
-            showSnackbarMessage("Set Updated!");
+            showSnackbarMessage("Set Updated");
             updateTodaysExercises();
         });
 
@@ -406,7 +406,7 @@ public class AddExerciseActivity extends AppCompatActivity {
     {
         runOnUiThread(()->{
             updateTodaysExercises();
-            showSnackbarMessage("Set Added!");
+            showSnackbarMessage("Set Added");
         });
     }
 
