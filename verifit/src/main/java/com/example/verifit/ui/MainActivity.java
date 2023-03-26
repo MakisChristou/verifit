@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.verifit.BackupService;
 import com.example.verifit.DataStorage;
@@ -247,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         runOnUiThread(() -> {
                             initViewPager();
                             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(MainActivity.this);
-                            snackBarWithMessage.showSnackbar(e.toString());
+                            snackBarWithMessage.showSnackbar("Can't connect to server");
                         });
                     }
 
@@ -263,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                             MainActivity.dataStorage.readFromSets(sets, getApplicationContext());
 
-                            // Data loaded succesfully, enable caching from now on
+                            // Data loaded successfully, enable caching from now on
                             sharedPreferences.enableCaching();
 
                             runOnUiThread(() -> {
@@ -432,36 +433,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 {
                     if(dataStorage.readFile(uri, getApplicationContext()))
                     {
-                        com.example.verifit.SharedPreferences sharedPreferences = new com.example.verifit.SharedPreferences(getApplicationContext());
-                        String import_mode = sharedPreferences.load("import_mode");
-
-                        if(import_mode.equals("cloud"))
-                        {
-                            // Reset import mode
-                            sharedPreferences.save("", "import_mode");
-
-                            WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getApplicationContext(), getString(R.string.API_ENDPOINT));
-                            workoutSetsApi.postWorkoutSets(dataStorage.getSets(), new Callback()
-                            {
-                                @Override
-                                public void onFailure(@NonNull Call call, @NonNull IOException e)
-                                {
-                                    runOnUiThread(() -> {
-                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getApplicationContext());
-                                        snackBarWithMessage.showSnackbar(e.toString());
-                                    });
-                                }
-
-                                @Override
-                                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
-                                {
-                                }
-                            });
-                        }
-                        else
-                        {
-                            initViewPager();
-                        }
+                        initViewPager();
                     }
                 }
             }

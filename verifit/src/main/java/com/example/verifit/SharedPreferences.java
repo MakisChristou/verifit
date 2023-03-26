@@ -5,7 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 
 import com.example.verifit.ui.MainActivity;
-import com.example.verifit.verifitrs.ResponseUser;
+import com.example.verifit.verifitrs.ResponseLoginUser;
 import com.google.gson.Gson;
 
 public class SharedPreferences {
@@ -43,9 +43,16 @@ public class SharedPreferences {
     public void enableOnlineMode(String responseBody, String username, String password)
     {
         Gson gson = new Gson();
-        ResponseUser responseUser = gson.fromJson(responseBody, ResponseUser.class);
+        ResponseLoginUser responseUser = gson.fromJson(responseBody, ResponseLoginUser.class);
         SharedPreferences sharedPreferences = new SharedPreferences(context);
         sharedPreferences.save(responseUser.getToken(), "verifit_rs_token");
+        sharedPreferences.save(username, "verifit_rs_username");
+        sharedPreferences.save("online","mode");
+    }
+
+    public void saveUsername(String username)
+    {
+        SharedPreferences sharedPreferences = new SharedPreferences(context);
         sharedPreferences.save(username, "verifit_rs_username");
         sharedPreferences.save("online","mode");
     }

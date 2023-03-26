@@ -489,7 +489,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                                         loadingDialog.dismissDialog();
                                         alertDialog.dismiss();
                                         SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(((Activity) ct));
-                                        snackBarWithMessage.showSnackbar(e.toString());
+                                        snackBarWithMessage.showSnackbar("Can't connect to server");
                                     });
                                 }
 

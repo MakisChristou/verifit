@@ -287,7 +287,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
                                             alertDialog.dismiss();
                                             loadingDialog.dismissDialog();
                                             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
-                                            snackBarWithMessage.showSnackbar(e.toString());
+                                            snackBarWithMessage.showSnackbar("Can't connect to server");
                                         });
                                     }
 
@@ -380,7 +380,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MyView
 
                                     ((Activity) ct).runOnUiThread(() -> {
                                         SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ct);
-                                        snackBarWithMessage.showSnackbar(e.toString());
+                                        snackBarWithMessage.showSnackbar("Can't connect to server");
                                     });
                                 }
 

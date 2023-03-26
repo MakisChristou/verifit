@@ -1,12 +1,12 @@
 package com.example.verifit.verifitrs;
 
-public class ResponseUser {
+public class ResponseLoginUser {
     String username;
     int id;
     String token;
 
 
-    public ResponseUser(String username, int id, String token)
+    public ResponseLoginUser(String username, int id, String token)
     {
         this.username = username;
         this.id = id;

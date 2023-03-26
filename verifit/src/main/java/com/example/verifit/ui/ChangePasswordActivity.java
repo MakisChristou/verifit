@@ -70,7 +70,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     loadingDialog.dismissDialog();
                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ChangePasswordActivity.this);
-                    snackBarWithMessage.showSnackbar(e.toString());
+                    snackBarWithMessage.showSnackbar("Can't connect to server");
                 });
             }
 

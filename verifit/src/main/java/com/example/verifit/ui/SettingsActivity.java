@@ -1,5 +1,7 @@
 package com.example.verifit.ui;
 
+import static com.example.verifit.ui.MainActivity.READ_REQUEST_CODE;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
@@ -457,7 +460,7 @@ public class SettingsActivity extends AppCompatActivity {
                             // Handle error
                             loadingDialog.dismissDialog();
                             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
-                            snackBarWithMessage.showSnackbar(e.toString());
+                            snackBarWithMessage.showSnackbar("Can't connect to server");
                         }
 
                         @Override
@@ -491,11 +494,8 @@ public class SettingsActivity extends AppCompatActivity {
                 bt_yes3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        sharedPreferences.save("cloud", "import_mode");
-                        Intent in = new Intent(getActivity(), MainActivity.class);
-                        in.putExtra("doit", "importcsv");
-                        startActivity(in);
+                        alertDialog.dismiss();
+                        fileSearch();
                     }
                 });
 
@@ -543,7 +543,7 @@ public class SettingsActivity extends AppCompatActivity {
                             {
                                 loadingDialog.dismissDialog();
                                 SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
-                                snackBarWithMessage.showSnackbar(e.toString());
+                                snackBarWithMessage.showSnackbar("Can't connect to server");
                             }
 
                             @Override
@@ -580,6 +580,72 @@ public class SettingsActivity extends AppCompatActivity {
 
             return true;
         }
+
+
+        // Select a file using the build in file manager
+        public void fileSearch()
+        {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("text/*");
+            startActivityForResult(intent,READ_REQUEST_CODE);
+        }
+
+        // When File explorer stops this function runs
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+        {
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Activity.RESULT_OK)
+            {
+                if (data != null)
+                {
+                    Uri uri = data.getData();
+                    if (requestCode == READ_REQUEST_CODE)
+                    {
+                        if(MainActivity.dataStorage.readFile(uri, getContext()))
+                        {
+
+                            final LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                            loadingDialog.loadingAlertDialog();
+
+                                WorkoutSetsApi workoutSetsApi = new WorkoutSetsApi(getContext(), getString(R.string.API_ENDPOINT));
+                                workoutSetsApi.postWorkoutSets(MainActivity.dataStorage.getSets(), new Callback()
+                                {
+                                    @Override
+                                    public void onFailure(@NonNull Call call, @NonNull IOException e)
+                                    {
+                                        loadingDialog.dismissDialog();
+                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
+                                        snackBarWithMessage.showSnackbar("Can't connect to server");
+                                    }
+
+                                    @Override
+                                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+                                    {
+                                        loadingDialog.dismissDialog();
+
+                                        if(200 == response.code()) {
+
+                                            SharedPreferences sharedPreferences = new SharedPreferences(getContext());
+                                            sharedPreferences.disableCaching();
+
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
+                                            snackBarWithMessage.showSnackbar("Data imported successfully");
+                                        }
+                                        else{
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(getContext());
+                                            snackBarWithMessage.showSnackbar(response.message().toString());
+                                        }
+                                    }
+                                });
+                        }
+                    }
+                }
+            }
+        }
+
 
         public void composeEmail(String address, String subject, Context context) {
             Intent intent = new Intent(Intent.ACTION_SENDTO);

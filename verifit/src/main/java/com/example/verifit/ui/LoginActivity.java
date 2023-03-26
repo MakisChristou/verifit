@@ -1,8 +1,10 @@
 package com.example.verifit.ui;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.example.verifit.R;
 import com.example.verifit.SharedPreferences;
 import com.example.verifit.SnackBarWithMessage;
 import com.example.verifit.verifitrs.UsersApi;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -125,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     loadingDialog.dismissDialog();
                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                    snackBarWithMessage.showSnackbar(e.toString());
+                    snackBarWithMessage.showSnackbar("Can't connect to server");
                 });
             }
 
@@ -157,6 +160,62 @@ public class LoginActivity extends AppCompatActivity {
                         runOnUiThread(() -> {
                             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
                             snackBarWithMessage.showSnackbar("Invalid password");
+                        });
+                    }
+                    else if(response.message().equals("Not Acceptable"))
+                    {
+                        runOnUiThread(() -> {
+                            // Create a standard Snackbar with a dismiss button
+                            Snackbar snackbar = Snackbar.make(((Activity) LoginActivity.this).findViewById(android.R.id.content), "Verify your email to login", Snackbar.LENGTH_SHORT);
+                            snackbar.setAction("Resend link", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
+                                    loadingDialog.loadingAlertDialog();
+
+                                    UsersApi usersApi = new UsersApi(LoginActivity.this,getString(R.string.API_ENDPOINT), username, "");
+                                    usersApi.requestEmailVerification(new Callback() {
+                                        @Override
+                                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+                                            runOnUiThread(() -> {
+                                                loadingDialog.dismissDialog();
+                                                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                                snackBarWithMessage.showSnackbar("Can't connect to server");
+                                            });
+
+                                        }
+
+                                        @Override
+                                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                                            runOnUiThread(() -> {
+                                                loadingDialog.dismissDialog();
+                                            });
+
+                                            if(200 == response.code()){
+                                                runOnUiThread(() -> {
+                                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                                    snackBarWithMessage.showSnackbar("Email Sent");
+                                                });
+
+                                            }
+                                            else
+                                            {
+                                                runOnUiThread(() -> {
+                                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                                    snackBarWithMessage.showSnackbar(response.message().toString());
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                    snackbar.dismiss();
+                                }
+                            });
+
+                            snackbar.show();
+
                         });
                     }
                     else if (response.message().equals("Not Found"))
@@ -268,6 +327,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+
         final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
         loadingDialog.loadingAlertDialog();
 
@@ -292,18 +352,16 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (200 == response.code())
                 {
-                    // Login
+
                     SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
-                    sharedPreferences.enableOnlineMode(responseBody, username, password);
+                    sharedPreferences.saveUsername(username);
 
-                    // Since we are also logging in we need to clear any stored workout data
-                    sharedPreferences.disableCaching();
+                        runOnUiThread(() -> {
+                            loadingDialog.dismissDialog();
+                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                            snackBarWithMessage.showSnackbar("Account Created, Verify your email to login");
+                        });
 
-                    runOnUiThread(() -> {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("message", "verifit_rs_signup");
-                        startActivity(intent);
-                    });
 
                 }
                 else

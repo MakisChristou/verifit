@@ -175,5 +175,31 @@ public class UsersApi {
         // Send the HTTP request asynchronously
         client.newCall(request).enqueue(callback);
     }
+
+    public void requestEmailVerification(okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+
+        // Create a JSON object to send in the request body
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("username", username);
+        } catch (JSONException e) {
+            System.out.println(e);
+        }
+
+        url += "/users/request-email-verification";
+
+        // Create a RequestBody object with the JSON object
+        RequestBody requestBody = RequestBody.create(jsonObject.toString(), MediaType.parse("application/json; charset=utf-8"));
+
+        // Create a Request object with the URL and RequestBody
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        // Send the HTTP request asynchronously
+        client.newCall(request).enqueue(callback);
+    }
 }
 

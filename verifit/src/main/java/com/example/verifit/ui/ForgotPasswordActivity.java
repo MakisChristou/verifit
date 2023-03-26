@@ -83,7 +83,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     loadingDialog.dismissDialog();
                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(ForgotPasswordActivity.this);
-                    snackBarWithMessage.showSnackbar(e.toString());
+                    snackBarWithMessage.showSnackbar("Can't connect to server");
                 });
             }
 
