@@ -118,6 +118,9 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
                 sharedPreferences.enableOfflineMode();
 
+                // Disable caching because new data should be loaded
+                sharedPreferences.disableCaching();
+
                 // Handle error
                 runOnUiThread(() -> {
                     loadingDialog.dismissDialog();
@@ -292,6 +295,9 @@ public class LoginActivity extends AppCompatActivity {
                     // Login
                     SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
                     sharedPreferences.enableOnlineMode(responseBody, username, password);
+
+                    // Since we are also logging in we need to clear any stored workout data
+                    sharedPreferences.disableCaching();
 
                     runOnUiThread(() -> {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

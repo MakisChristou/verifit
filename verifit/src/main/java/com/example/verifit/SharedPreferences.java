@@ -17,7 +17,6 @@ public class SharedPreferences {
         this.context = context;
     }
 
-
     public void save(String value, String key)
     {
         android.content.SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
@@ -55,5 +54,24 @@ public class SharedPreferences {
     {
         SharedPreferences sharedPreferences = new SharedPreferences(context);
         return sharedPreferences.load("mode").equals("offline") || sharedPreferences.load("mode").equals("");
+    }
+
+    public void disableCaching(){
+        SharedPreferences sharedPreferences = new SharedPreferences(context);
+        sharedPreferences.save("true", "refresh_required");
+    }
+
+    public void enableCaching(){
+        SharedPreferences sharedPreferences = new SharedPreferences(context);
+        sharedPreferences.save("", "refresh_required");
+    }
+
+    public boolean shouldUseCache() {
+        SharedPreferences sharedPreferences = new SharedPreferences(context);
+        String should_cache = sharedPreferences.load("refresh_required");
+        if (should_cache.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }

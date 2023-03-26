@@ -227,11 +227,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 dataStorage.loadKnownExercisesData(getApplicationContext());
                 initViewPager();
             }
-            // Most naive way to implement caching
-            else if(dataStorage.getWorkoutDays().size() > 0)
+            // Caching: Update screen with local data
+            else if(dataStorage.getWorkoutDays().size() > 0 && sharedPreferences.shouldUseCache())
             {
                 initViewPager();
             }
+            // Fetch data from Rest API and then update screen
             else
             {
                 // Cloud Mode
@@ -261,6 +262,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             ArrayList<WorkoutSet> sets = gson.fromJson(jsonString, listType);
 
                             MainActivity.dataStorage.readFromSets(sets, getApplicationContext());
+
+                            // Data loaded succesfully, enable caching from now on
+                            sharedPreferences.enableCaching();
 
                             runOnUiThread(() -> {
                                 initViewPager();
