@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.verifit.CustomDialog;
 import com.example.verifit.KeyboardHider;
 import com.example.verifit.LoadingDialog;
 import com.example.verifit.R;
@@ -111,160 +112,151 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Here
-        LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
-        View view1 = inflater.inflate(R.layout.import_red_warning_dialog, null);
-        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).setView(view1).create();
-
-        TextView tv_date = view1.findViewById(R.id.tv_date);
-
-        tv_date.setText("This will erase all local data");
-
-        Button bt_yes3 = view1.findViewById(R.id.bt_yes3);
-        bt_yes3.setText("Continue");
-        Button bt_no3 = view1.findViewById(R.id.bt_no3);
-
-        bt_yes3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-                final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
-                loadingDialog.loadingAlertDialog();
-
-                UsersApi users = new UsersApi(LoginActivity.this,getString(R.string.API_ENDPOINT), username, password);
-                users.login(new Callback() {
+        CustomDialog.showDialog(
+                LoginActivity.this,
+                R.layout.import_red_warning_dialog,
+                "This will erase all local data",
+                "Continue",
+                "Cancel",
+                new View.OnClickListener() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
+                    public void onClick(View view) {
+                        final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
+                        loadingDialog.loadingAlertDialog();
 
-                        // You are logged out
-                        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
-                        sharedPreferences.enableOfflineMode();
+                        UsersApi users = new UsersApi(LoginActivity.this,getString(R.string.API_ENDPOINT), username, password);
+                        users.login(new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
 
-                        // Disable caching because new data should be loaded
-                        sharedPreferences.disableCaching();
+                                // You are logged out
+                                SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+                                sharedPreferences.enableOfflineMode();
 
-                        // Handle error
-                        runOnUiThread(() -> {
-                            loadingDialog.dismissDialog();
-                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                            snackBarWithMessage.showSnackbar("Can't connect to server");
-                        });
-                    }
+                                // Disable caching because new data should be loaded
+                                sharedPreferences.disableCaching();
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String responseBody = response.body().string();
-                        SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
-
-                        runOnUiThread(() -> {
-                            loadingDialog.dismissDialog();
-                        });
-
-                        if (200 == response.code())
-                        {
-                            sharedPreferences.enableOnlineMode(responseBody, username, password);
-
-                            runOnUiThread(() -> {
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra("message", "verifit_rs_login");
-                                startActivity(intent);
-                            });
-                        }
-                        else
-                        {
-                            sharedPreferences.enableOfflineMode();
-
-                            if(response.message().equals("Unauthorized"))
-                            {
+                                // Handle error
                                 runOnUiThread(() -> {
+                                    loadingDialog.dismissDialog();
                                     SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                                    snackBarWithMessage.showSnackbar("Invalid password");
+                                    snackBarWithMessage.showSnackbar("Can't connect to server");
                                 });
                             }
-                            else if(response.message().equals("Not Acceptable"))
-                            {
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String responseBody = response.body().string();
+                                SharedPreferences sharedPreferences = new SharedPreferences(getApplicationContext());
+
                                 runOnUiThread(() -> {
-                                    // Create a standard Snackbar with a dismiss button
-                                    Snackbar snackbar = Snackbar.make(((Activity) LoginActivity.this).findViewById(android.R.id.content), "Verify your email to login", Snackbar.LENGTH_SHORT);
-                                    snackbar.setAction("Resend link", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
+                                    loadingDialog.dismissDialog();
+                                });
 
-                                            final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
-                                            loadingDialog.loadingAlertDialog();
+                                if (200 == response.code())
+                                {
+                                    sharedPreferences.enableOnlineMode(responseBody, username, password);
 
-                                            UsersApi usersApi = new UsersApi(LoginActivity.this,getString(R.string.API_ENDPOINT), username, "");
-                                            usersApi.requestEmailVerification(new Callback() {
+                                    runOnUiThread(() -> {
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("message", "verifit_rs_login");
+                                        startActivity(intent);
+                                    });
+                                }
+                                else
+                                {
+                                    sharedPreferences.enableOfflineMode();
+
+                                    if(response.message().equals("Unauthorized"))
+                                    {
+                                        runOnUiThread(() -> {
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                            snackBarWithMessage.showSnackbar("Invalid password");
+                                        });
+                                    }
+                                    else if(response.message().equals("Not Acceptable"))
+                                    {
+                                        runOnUiThread(() -> {
+                                            // Create a standard Snackbar with a dismiss button
+                                            Snackbar snackbar = Snackbar.make(((Activity) LoginActivity.this).findViewById(android.R.id.content), "Verify your email to login", Snackbar.LENGTH_SHORT);
+                                            snackbar.setAction("Resend link", new View.OnClickListener() {
                                                 @Override
-                                                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                                public void onClick(View view) {
 
-                                                    runOnUiThread(() -> {
-                                                        loadingDialog.dismissDialog();
-                                                        SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                                                        snackBarWithMessage.showSnackbar("Can't connect to server");
+                                                    final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
+                                                    loadingDialog.loadingAlertDialog();
+
+                                                    UsersApi usersApi = new UsersApi(LoginActivity.this,getString(R.string.API_ENDPOINT), username, "");
+                                                    usersApi.requestEmailVerification(new Callback() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+                                                            runOnUiThread(() -> {
+                                                                loadingDialog.dismissDialog();
+                                                                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                                                snackBarWithMessage.showSnackbar("Can't connect to server");
+                                                            });
+
+                                                        }
+
+                                                        @Override
+                                                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                                                            runOnUiThread(() -> {
+                                                                loadingDialog.dismissDialog();
+                                                            });
+
+                                                            if(200 == response.code()){
+                                                                runOnUiThread(() -> {
+                                                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                                                    snackBarWithMessage.showSnackbar("Email Sent");
+                                                                });
+
+                                                            }
+                                                            else
+                                                            {
+                                                                runOnUiThread(() -> {
+                                                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                                                    snackBarWithMessage.showSnackbar(response.message().toString());
+                                                                });
+                                                            }
+                                                        }
                                                     });
 
-                                                }
-
-                                                @Override
-                                                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                                                    runOnUiThread(() -> {
-                                                        loadingDialog.dismissDialog();
-                                                    });
-
-                                                    if(200 == response.code()){
-                                                        runOnUiThread(() -> {
-                                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                                                            snackBarWithMessage.showSnackbar("Email Sent");
-                                                        });
-
-                                                    }
-                                                    else
-                                                    {
-                                                        runOnUiThread(() -> {
-                                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                                                            snackBarWithMessage.showSnackbar(response.message().toString());
-                                                        });
-                                                    }
+                                                    snackbar.dismiss();
                                                 }
                                             });
 
-                                            snackbar.dismiss();
-                                        }
-                                    });
+                                            snackbar.show();
 
-                                    snackbar.show();
+                                        });
+                                    }
+                                    else if (response.message().equals("Not Found"))
+                                    {
+                                        runOnUiThread(() -> {
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                            snackBarWithMessage.showSnackbar("Account not found");
+                                        });
+                                    }
+                                    else
+                                    {
+                                        runOnUiThread(() -> {
+                                            SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                                            snackBarWithMessage.showSnackbar(response.message().toString());
+                                        });
+                                    }
+                                }
+                            }
+                        });
 
-                                });
-                            }
-                            else if (response.message().equals("Not Found"))
-                            {
-                                runOnUiThread(() -> {
-                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                                    snackBarWithMessage.showSnackbar("Account not found");
-                                });
-                            }
-                            else
-                            {
-                                runOnUiThread(() -> {
-                                    SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-                                    snackBarWithMessage.showSnackbar(response.message().toString());
-                                });
-                            }
-                        }
                     }
-                });
-            }
-        });
+                },
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-        bt_no3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
-        alertDialog.show();
-
+                    }
+                }
+        );
     }
 
     public boolean checkEmail(String email)
