@@ -17,11 +17,11 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"
-        android:tint="#FFFFFF"
+        android:tint="@color/core_white"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/recycler_view_day"
-        app:rippleColor="#FFFFFF"
+        app:rippleColor="@color/core_white"
         app:srcCompat="@drawable/ic_add_24px"
         app:tint="@color/core_white" />
 

@@ -57,11 +57,11 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"
-        android:tint="#FFFFFF"
+        android:tint="@color/core_white"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="#FFFFFF"
+        app:rippleColor="@color/core_white"
         app:srcCompat="@drawable/ic_add_24px"
         app:tint="@color/core_white" />
 

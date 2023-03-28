@@ -42,7 +42,7 @@
         android:text="Reset"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
-        app:backgroundTint="#FFFFFF"
+        app:backgroundTint="@color/core_white"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_start"

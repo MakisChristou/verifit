@@ -57,9 +57,9 @@
         android:text="No"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
-        app:backgroundTint="#FFFFFF"
+        app:backgroundTint="@color/core_white"
         app:cornerRadius="10dp"
-        app:iconTint="#FFFFFF"
+        app:iconTint="@color/core_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_yes3"
         app:layout_constraintTop_toBottomOf="@+id/blue_line" />

@@ -192,7 +192,7 @@
         android:onClick="clickSave"
         android:text="Save"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/core_white"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toStartOf="@+id/bt_clear"
         app:layout_constraintStart_toStartOf="parent"

@@ -54,7 +54,7 @@
         android:text="Close"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
-        app:backgroundTint="#FFFFFF"
+        app:backgroundTint="@color/core_white"
         app:cornerRadius="10dp"
         app:iconTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
