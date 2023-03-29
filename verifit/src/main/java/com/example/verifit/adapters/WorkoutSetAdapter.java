@@ -74,7 +74,8 @@ public class WorkoutSetAdapter extends RecyclerView.Adapter<WorkoutSetAdapter.My
         reps.setText(String.valueOf(repetitions));
 
         volume.setText(Workout_Sets.get(position).getVolume().toString());
-        onerepmax.setText(Workout_Sets.get(position).getEplayOneRepMax().toString());
+        Double est1rm = Math.floor(Workout_Sets.get(position).getEplayOneRepMax());
+        onerepmax.setText(est1rm.toString());
 
         kg.setText(Workout_Sets.get(position).getWeight().toString());
 

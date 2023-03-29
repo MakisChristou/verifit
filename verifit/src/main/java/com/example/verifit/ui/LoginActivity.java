@@ -112,6 +112,15 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        if(!checkPassword(password))
+        {
+            runOnUiThread(() -> {
+                SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
+                snackBarWithMessage.showSnackbar("Must contain letters and numbers and be of length >= 10");
+            });
+            return;
+        }
+
         CustomDialog.showDialog(
                 LoginActivity.this,
                 R.layout.import_red_warning_dialog,
@@ -274,7 +283,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Check if the password is at least 8 characters long
-        if (password.length() < 10) {
+        if (password.length() < 10 || password.length() > 64) {
             return false;
         }
 
@@ -345,7 +354,7 @@ public class LoginActivity extends AppCompatActivity {
         if(!checkPassword(password))
         {
             SnackBarWithMessage snackBarWithMessage = new SnackBarWithMessage(LoginActivity.this);
-            snackBarWithMessage.showSnackbar("Password must contain letters and numbers and be of length >= 10");
+            snackBarWithMessage.showSnackbar("Must contain letters and numbers and be of length >= 10");
             return;
         }
 
