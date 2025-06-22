@@ -41,24 +41,30 @@ height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.whatever.verifit)
 * [Sardine](https://github.com/lookfirst/sardine) for webdav requests
 * [Gson](https://github.com/google/gson) for Json parsing and serialization
 
+## Development
+
+### Getting Started
+1. Clone the repository
+2. Open the project in Android Studio (latest stable version recommended)
+3. Sync the project with Gradle files
+4. Build and run the app on an emulator or physical device
+
+### Contribution Guidelines
+We welcome contributions! Before submitting a pull request, please:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Ensure all tests pass
+5. Submit a pull request with a clear description of your changes
+
+### Improvement Plan
+Check out our [Improvement Plan](Improvement%20Plan.md) for a detailed roadmap of planned enhancements, architectural improvements, and modernization efforts for Verifit. This document outlines our vision for the project's future development.
+
 ## Setting up a webdav server
 ```bash
 sudo apt install docker
 docker run -d -p 80:80 -v /data/webdav:/var/lib/dav -e USERNAME=user -e PASSWORD=password bytemark/webdav
 ```
 
-
-
-## Donations
-### Donate with Monero
-
-42uCPZuxsSS3FNNx6RMDAMVmHVwYBfg3JVMuPKMwadeEfwyykFLkwAH8j4B12ziU7PBCMjLwpPbbDgBw45N4wMpsM3Dy7is
-
- <img width="200" src="/verifit/src/main/res/drawable/xmr.png">
-
-
-### Donate with Paypal
-[<img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png"
-alt="Donate with paypal"
-height="80">](https://www.paypal.com/donate/?hosted_button_id=YFZX88G8XDSN4)
-
+## License
+Verifit is open-source software licensed under the [MIT License](LICENSE).
